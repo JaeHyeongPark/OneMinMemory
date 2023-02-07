@@ -1,6 +1,11 @@
+import MainPage from "./MainScreen/M-MainPage";
+import React from "react";
+
 function App() {
   return (
-    <h1>1분 추억</h1>
+    <React.Fragment>
+      <MainPage />
+    </React.Fragment>
   );
 }
 

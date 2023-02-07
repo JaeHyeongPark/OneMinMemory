@@ -1,0 +1,92 @@
+.MHcontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 1920px;
+  height: 80px;
+
+  /* 1min/skyblue */
+
+  background: #d9e8ef;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+.MHInner {
+  box-sizing: border-box;
+
+  /* Auto layout */
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  gap: auto;
+
+  width: 1880px;
+  height: 60px;
+
+  /* 1min/navy */
+
+  border-bottom: 1px solid #272833;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  align-self: center;
+  flex-grow: 0;
+}
+
+.MHbutton {
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  /* padding: 8px 12px; */
+  /* padding-left:auto; */
+  /* padding-left: 3px; */
+  width: 95px;
+  height: 38px;
+
+  /* 1min/button */
+
+  background: #7c3aed;
+  border-radius: 10px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+.MHbutton span {
+  /* width: 71px;
+  height: 22px; */
+  align-self: center;
+  font-family: "Segoe UI";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 140%;
+  /* or 22px */
+
+  display: flex;
+  align-items: center;
+
+  /* white */
+
+  color: #ffffff;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}

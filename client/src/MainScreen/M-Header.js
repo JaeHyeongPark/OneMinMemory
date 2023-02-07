@@ -10,7 +10,7 @@ function MainHeader() {
           <FcPhotoReel size={40} />
         </h1>
         <button className={css.MHbutton}>
-          <span>FeedBack</span>
+          <p>이용 방법</p>
         </button>
       </div>
         <hr />

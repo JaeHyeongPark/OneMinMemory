@@ -8,13 +8,13 @@ function MainFooter() {
     <div className={css.footercontainer}>
       <div className={css.footertag}>
         <div className={css.tags}>
-          <a href="http://localhost:3000/">
+          <a href="https://github.com/JaeHyeongPark/namanmoo">
             <BsGithub size={40} color="#ffffff" />
           </a>
-          <a href="http://localhost:3000/">
+          <a href="https://www.youtube.com/premium">
             <TfiYoutube size={40} color="#ffffff" />
           </a>
-          <a href="http://localhost:3000/">
+          <a href="https://www.instagram.com/">
             <BsInstagram size={40} color="#ffffff" />
           </a>
         </div>

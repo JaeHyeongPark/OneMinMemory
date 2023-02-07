@@ -1,11 +1,16 @@
 import MainPage from "./MainScreen/M-MainPage";
 import React from "react";
+import { Route, BrowserRouter, Routes, Navigate } from "react-router-dom";
 
 function App() {
   return (
-    <React.Fragment>
-      <MainPage />
-    </React.Fragment>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainPage/>}/>
+        <Route path="/login" element={<MainPage/>}/>
+        <Route path="/*" element={<Navigate to={"/"} />} />  
+      </Routes>
+    </BrowserRouter>
   );
 }
 

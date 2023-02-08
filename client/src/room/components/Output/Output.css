@@ -17,12 +17,12 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
-  padding: 20px 60px;
+  /* padding: 20px 60px; */
   border: solid 1px #272833;
   background-color: #d9e8ef;
 }
 
-.FinishedPhoto {
+.playlist_layout {
   height: 132px;
   flex-grow: 1;
   display: flex;
@@ -35,7 +35,7 @@
   border: solid 2px #272833;
 }
 
-.Preview {
+.insert_music_button {
   width: 79px;
   height: 74px;
   flex-grow: 0;
@@ -48,14 +48,14 @@
   background-color: #7c3aed;
 }
 
-.play-button-o {
+.insert_music_icon {
   width: 32px;
   height: 32px;
   flex-grow: 0;
   /* background-color: #fff; */
 }
 
-.musicspan {
+.music_span {
   width: 59px;
   height: 22px;
   flex-grow: 0;
@@ -78,12 +78,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  padding: 20px 40px;
+  /* padding: 20px 40px; */
   border: solid 1px #d9e8ef;
   background-color: #272833;
 }
 
-.Buttons {
+.finished_layout {
   height: 142px;
   align-self: stretch;
   flex-grow: 0;
@@ -95,7 +95,7 @@
   padding: 10px;
 }
 
-.min-ButtonGroup1 {
+.preview_button_group {
   width: 123px;
   height: 38px;
   flex-grow: 0;
@@ -106,18 +106,7 @@
   padding: 0;
 }
 
-.min-ButtonGroup3 {
-  width: 116px;
-  height: 44px;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-
-.min-Button1 {
+.preview_button {
   width: 123px;
   height: 38px;
   flex-grow: 0;
@@ -131,7 +120,7 @@
   background-color: #ed7566;
 }
 
-.prelabel {
+.preview_label {
   width: 74px;
   height: 28px;
   flex-grow: 0;
@@ -154,7 +143,18 @@ img.polaroid {
   transform: rotate(-180deg);
 }
 
-.min-Button3 {
+.render_button_group {
+  width: 116px;
+  height: 44px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.render_button {
   width: 116px;
   height: 44px;
   flex-grow: 0;
@@ -177,7 +177,7 @@ img.infinity {
   transform: rotate(-180deg);
 }
 
-.renlabel {
+.render_label {
   width: 67px;
   height: 34px;
   flex-grow: 0;

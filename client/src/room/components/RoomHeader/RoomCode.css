@@ -1,0 +1,14 @@
+.room_number {
+  width: 75px;
+  height: 40px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 28.4px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}

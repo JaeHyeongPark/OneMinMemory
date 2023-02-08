@@ -6,7 +6,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  /* padding: 20px; */
   border: solid 1px #d9e8ef;
   background-color: #272833;
 }
@@ -48,7 +48,7 @@ img.component-cans {
   background-color: #40c0e7;
 }
 
-.Name {
+.name_layout {
   height: 28px;
   align-self: stretch;
   flex-grow: 0;
@@ -59,7 +59,7 @@ img.component-cans {
   padding: 0;
 }
 
-.NAME {
+.name_span {
   width: 53px;
   height: 28px;
   flex-grow: 0;

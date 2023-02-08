@@ -44,7 +44,7 @@
   padding: 0;
 }
 
-.LogoIcon {
+.logo_and_icon {
   width: 137px;
   height: 40px;
   flex-grow: 0;
@@ -55,7 +55,7 @@
   padding: 0;
 }
 
-.min {
+.title {
   width: 105px;
   height: 40px;
   flex-grow: 0;
@@ -70,7 +70,7 @@
   color: #fff;
 }
 
-.min-logoIcon {
+.logoicon {
   width: 32px;
   align-self: stretch;
   flex-grow: 0;
@@ -102,22 +102,7 @@
   color: #fff;
 }
 
-.XXXX {
-  width: 75px;
-  height: 40px;
-  flex-grow: 0;
-  font-family: "Pretendard";
-  font-size: 28.4px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.4;
-  letter-spacing: normal;
-  text-align: left;
-  color: #fff;
-}
-
-.min-invite {
+.invite_layout {
   width: 123px;
   height: 38px;
   flex-grow: 0;
@@ -128,7 +113,7 @@
   padding: 0;
 }
 
-.min-ButtonGroup {
+.invite_button_group {
   width: 123px;
   height: 38px;
   flex-grow: 0;
@@ -139,7 +124,7 @@
   padding: 0;
 }
 
-.min-Button {
+.invite_button {
   width: 123px;
   height: 38px;
   flex-grow: 0;
@@ -161,7 +146,7 @@ img.user-add {
   /* transform: rotate(-180deg); */
 }
 
-.invitelabel {
+.invite_label {
   width: 74px;
   height: 28px;
   flex-grow: 0;

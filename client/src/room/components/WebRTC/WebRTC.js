@@ -10,26 +10,26 @@ const WebRTC = () => {
       <div className="CAMs">
         <div className="CamFrame">
           <img src={cans} className="img.component-cans" />
-          <div className="Name">
-            <span className="NAME">Name</span>
+          <div className="name_layout">
+            <span className="name_span">Name</span>
           </div>
         </div>
         <div className="CamFrame">
           <img src={cans} className="img.component-cans" />
-          <div className="Name">
-            <span className="NAME">Name</span>
+          <div className="name_layout">
+            <span className="name_span">Name</span>
           </div>
         </div>
         <div className="CamFrame">
           <img src={cans} className="img.component-cans" />
-          <div className="Name">
-            <span className="NAME">Name</span>
+          <div className="name_layout">
+            <span className="name_span">Name</span>
           </div>
         </div>
         <div className="CamFrame">
           <img src={cans} className="img.component-cans" />
-          <div className="Name">
-            <span className="NAME">Name</span>
+          <div className="name_layout">
+            <span className="name_span">Name</span>
           </div>
         </div>
       </div>

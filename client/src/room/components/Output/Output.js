@@ -10,26 +10,26 @@ const Output = () => {
   return (
     <div className="ROOM-FOOTER">
       <div className="ROOM-FOOTER-TEST">
-        <div className="FinishedPhoto"></div>
-        <div className="Preview">
-          <div className="play-button-o">
+        <div className="playlist_layout"></div>
+        <div className="insert_music_button">
+          <div className="insert_music_icon">
             <img src={playbuttono} />
           </div>
-          <span className="musicspan">음악넣기</span>
+          <span className="music_span">음악넣기</span>
         </div>
       </div>
       <div className="ROOM-FOOTER-BUTTONS">
-        <div className="Buttons">
-          <div className="min-ButtonGroup1">
-            <div className="min-Button1">
+        <div className="finished_layout">
+          <div className="preview_button_group">
+            <div className="preview_button">
               <img src={polaroid} className="img.polaroid" />
-              <label className="prelabel">미리보기</label>
+              <label className="preview_label">미리보기</label>
             </div>
           </div>
-          <div className="min-ButtonGroup3">
-            <div className="min-Button3">
+          <div className="render_button_group">
+            <div className="render_button">
               <img src={infinity} className="img.infinity" />
-              <label className="renlabel">렌더링</label>
+              <label className="render_label">렌더링</label>
             </div>
           </div>
         </div>

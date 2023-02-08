@@ -35,6 +35,7 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<MainPage />} />
         <Route path="/room" element={<Room />} />
+        <Route path="/room/:roomcode" element={<Room />} />
         <Route path="/*" element={<Navigate to="/" />} />
       </Routes>
     );

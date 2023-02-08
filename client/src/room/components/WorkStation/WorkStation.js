@@ -1,54 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 
-import Arrow from "../../assets/Arrow.svg";
-import brush from "../../assets/brush.svg";
-import arrowdowno from "../../assets/arrow-down-o.svg";
+import PhotoBox from "./PhotoBox";
+import OpenedPhotoBox from "./OpenedPhotoBox";
+import Canvas from "./Canvas";
+import Effects from "./Effects";
 
 import "./WorkStation.css";
 
 const WorkStation = () => {
+  const [photoBoxIsOpen, setPhotoBoxIsOpen] = useState(false);
+
+  const openBoxHandler = () => {
+    setPhotoBoxIsOpen(true);
+  };
+
+  const closeBoxHandler = () => {
+    setPhotoBoxIsOpen(false);
+  };
+
   return (
-    <div className="ROOM-BODY-CANVAS">
-      <div className="min-PhotoBoxGroup">
-        <div className="min-PhotoBox">
-          <div className="Photos"></div>
-          <div className="OpenWork">
-            <div className="OpenUploadFrame">
-              <img src={Arrow} className="Icon-Arrow" />
-            </div>
-            <div className="min-invite">
-              <div className="min-ButtonGroup">
-                <div className="min-Button">
-                  <label className="worklabel">작업하기</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <React.Fragment>
+      <div className="ROOM-BODY-CANVAS">
+        {photoBoxIsOpen ? (
+          <OpenedPhotoBox closeBox={closeBoxHandler} />
+        ) : (
+          <PhotoBox openBox={openBoxHandler} />
+        )}
+        <Canvas />
+        <Effects />
       </div>
-      <div className="SelectedPhoto"></div>
-      <div className="EffectBox">
-        <div className="Effects">
-          <div className="effect">
-            <img src={brush} className="brush" />
-          </div>
-          <div className="effect">
-            <img src={brush} className="brush" />
-          </div>
-          <div className="effect">
-            <img src={brush} className="brush" />
-          </div>
-        </div>
-        <div className="Finished">
-          <div className="min-ButtonGroup2">
-            <div className="min-Button2">
-              <img src={arrowdowno} className="img.arrow-down-o" />
-              <label className="playlabel">재생 목록으로 이동</label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </React.Fragment>
   );
 };
 

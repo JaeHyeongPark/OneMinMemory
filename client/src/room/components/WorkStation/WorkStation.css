@@ -1,14 +1,3 @@
-.ROOM-BODY {
-  height: 900px;
-  align-self: stretch;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 0;
-}
-
 .ROOM-BODY-CANVAS {
   height: 900px;
   flex-grow: 1;
@@ -231,6 +220,14 @@ img.Icon-Arrow {
   padding: 0;
 }
 
+img.arrow-down-o {
+  width: 24px;
+  height: 24px;
+  flex-grow: 0;
+  object-fit: contain;
+  transform: rotate(-180deg);
+}
+
 .playlabel {
   width: 222px;
   height: 39px;
@@ -244,88 +241,4 @@ img.Icon-Arrow {
   letter-spacing: normal;
   text-align: center;
   color: #fff;
-}
-
-img.arrow-down-o {
-  width: 24px;
-  height: 24px;
-  flex-grow: 0;
-  object-fit: contain;
-  transform: rotate(-180deg);
-}
-
-.ROOM-BODY-WebRTC {
-  width: 280px;
-  height: 900px;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  border: solid 1px #d9e8ef;
-  background-color: #272833;
-}
-
-.CAMs {
-  width: 240px;
-  height: 862px;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 10px;
-  padding: 0;
-  background-color: #272833;
-}
-
-.CamFrame {
-  width: 240px;
-  height: 208px;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-
-img.component-cans {
-  width: 240px;
-  height: 180px;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  object-fit: contain;
-  background-color: #40c0e7;
-}
-
-.Name {
-  height: 28px;
-  align-self: stretch;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 0;
-}
-
-.NAME {
-  width: 53px;
-  height: 28px;
-  flex-grow: 0;
-  font-family: "Pretendard";
-  font-size: 20px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.4;
-  letter-spacing: normal;
-  text-align: left;
-  color: #a6a6a6;
 }

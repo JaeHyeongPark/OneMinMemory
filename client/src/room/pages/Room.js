@@ -1,17 +1,15 @@
 import React from "react";
 
 import RoomHeader from "./RoomHeader";
-import RoomBody from "./RoomBody";
-import RoomFooter from "./RoomFooter";
+import Contents from "./Contents";
 
 const Room = () => {
   return (
     <React.Fragment>
       <RoomHeader />
       <main>
-        <RoomBody />
+        <Contents />
       </main>
-      <RoomFooter />
     </React.Fragment>
   );
 };

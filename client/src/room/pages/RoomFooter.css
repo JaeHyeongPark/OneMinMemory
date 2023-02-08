@@ -1,0 +1,193 @@
+.ROOM-FOOTER {
+  height: 180px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0;
+}
+
+.ROOM-FOOTER-TEST {
+  height: 180px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 60px;
+  border: solid 1px #272833;
+  background-color: #d9e8ef;
+}
+
+.FinishedPhoto {
+  height: 132px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  gap: 5px;
+  padding: 20px;
+  border-radius: 15px;
+  border: solid 2px #272833;
+}
+
+.Preview {
+  width: 79px;
+  height: 74px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-radius: 15px;
+  background-color: #7c3aed;
+}
+
+.play-button-o {
+  width: 32px;
+  height: 32px;
+  flex-grow: 0;
+  /* background-color: #fff; */
+}
+
+.musicspan {
+  width: 59px;
+  height: 22px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 16px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+}
+
+.ROOM-FOOTER-BUTTONS {
+  width: 280px;
+  height: 180px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 20px 40px;
+  border: solid 1px #d9e8ef;
+  background-color: #272833;
+}
+
+.Buttons {
+  height: 142px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 10px;
+}
+
+.min-ButtonGroup1 {
+  width: 123px;
+  height: 38px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.min-ButtonGroup3 {
+  width: 116px;
+  height: 44px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.min-Button1 {
+  width: 123px;
+  height: 38px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #ed7566;
+}
+
+.prelabel {
+  width: 74px;
+  height: 28px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+}
+
+img.polaroid {
+  width: 24px;
+  height: 24px;
+  flex-grow: 0;
+  object-fit: contain;
+  transform: rotate(-180deg);
+}
+
+.min-Button3 {
+  width: 116px;
+  height: 44px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: solid 2px #e74733;
+  background-color: #ffc043;
+}
+
+img.infinity {
+  width: 24px;
+  height: 24px;
+  flex-grow: 0;
+  object-fit: contain;
+  transform: rotate(-180deg);
+}
+
+.renlabel {
+  width: 67px;
+  height: 34px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 24px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #272833;
+}

@@ -1,0 +1,177 @@
+.ROOM-HEADER {
+  height: 60px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0;
+  background-color: #272833;
+}
+
+.Container {
+  height: 60px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0 20px;
+}
+
+.Inner {
+  height: 60px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 60px;
+}
+
+.min-roomname {
+  width: 245px;
+  height: 40px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+}
+
+.LogoIcon {
+  width: 137px;
+  height: 40px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.min {
+  width: 105px;
+  height: 40px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 28.4px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
+.min-logoIcon {
+  width: 32px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0;
+}
+
+.photo-512-white-1 {
+  width: 32px;
+  height: 32px;
+  flex-grow: 0;
+}
+
+.slash {
+  width: 13px;
+  height: 40px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 28.4px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
+.XXXX {
+  width: 75px;
+  height: 40px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 28.4px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
+.min-invite {
+  width: 123px;
+  height: 38px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.min-ButtonGroup {
+  width: 123px;
+  height: 38px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0;
+}
+
+.min-Button {
+  width: 123px;
+  height: 38px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #0070d2;
+}
+
+img.user-add {
+  width: 24px;
+  height: 24px;
+  flex-grow: 0;
+  object-fit: contain;
+  /* transform: rotate(-180deg); */
+}
+
+.invitelabel {
+  width: 74px;
+  height: 28px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+}

@@ -22,7 +22,7 @@ function LoginPage() {
     );
   } else {
     context = (
-      <Link to="/workspace">
+      <Link to="/room">
         <img src={Startimage} alt="" />
       </Link>
     );

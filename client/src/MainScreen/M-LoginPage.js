@@ -17,7 +17,7 @@ function LoginPage() {
   if (!Islogin) {
     context = (
       <Link to="/login">
-        <img src={Loginimage} alt="" />
+        <img src={Loginimage} alt="" onClick={changeMode}/>
       </Link>
     );
   } else {
@@ -33,7 +33,9 @@ function LoginPage() {
         <h1>일분추억</h1>
         <p>함께한 시간을 더 아름답게</p>
       </div>
-      <div className={css.kakaologo}>{context}</div>
+      <div className={css.kakaologo}>
+        {context}
+      </div>
     </div>
   );
 }

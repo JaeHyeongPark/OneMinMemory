@@ -8,6 +8,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage/>}/>
         <Route path="/login" element={<MainPage/>}/>
+        <Route path="/workspace" element={<MainPage/>}/>
         <Route path="/*" element={<Navigate to={"/"} />} />  
       </Routes>
     </BrowserRouter>

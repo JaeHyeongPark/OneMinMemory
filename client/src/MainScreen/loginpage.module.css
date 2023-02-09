@@ -25,7 +25,7 @@
   width: 360px;
   height: 46px;
 
-  font-family: "Segoe UI";
+  font-family: "Pretendard";
   font-style: normal;
   font-weight: 700;
   font-size: 64px;
@@ -48,7 +48,7 @@
   width: 360px;
   height: 21px;
 
-  font-family: "Segoe UI";
+  font-family: "Pretendard";
   font-style: normal;
   font-weight: 400;
   font-size: 24px;
@@ -99,4 +99,3 @@
   order: 1;
   flex-grow: 0;
 }
-

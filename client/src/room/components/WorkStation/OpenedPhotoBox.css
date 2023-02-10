@@ -26,13 +26,14 @@
   height: 700px;
   align-self: stretch;
   flex-grow: 0;
-  display: flex;
+  /* display: flex; */
   flex-direction: row;
   justify-content: flex-start;
   align-items: stretch;
   gap: 10px;
   padding: 10px;
   border: solid 2px #272833;
+  overflow: scroll;
 }
 
 .opened_functions {
@@ -62,10 +63,10 @@
 }
 
 .upload_button {
-  width: 105px;
+  width: 5.5rem;
   height: 38px;
   flex-grow: 0;
-  display: flex;
+  /* display: flex; */
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -73,6 +74,10 @@
   padding: 5px 10px;
   border-radius: 10px;
   background-color: #36a06d;
+}
+.upload_button input{
+  opacity: 0;
+  display: none;
 }
 
 .upload_label {

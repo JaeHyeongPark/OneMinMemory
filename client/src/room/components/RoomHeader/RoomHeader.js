@@ -14,7 +14,7 @@ const RoomHeader = (props) => {
             <div className="logo_and_icon">
               <span className="title">일분추억</span>
               <div className="logoicon">
-                <img src={photologo} className="photo-512-white-1" />
+                <img src={photologo} className="photo-512-white-1" alt="a"/>
               </div>
             </div>
             <span className="slash">/</span>
@@ -23,7 +23,7 @@ const RoomHeader = (props) => {
           <div className="invite_layout">
             <div className="invite_button_group">
               <div className="invite_button">
-                <img src={useradd} className="img.user-add" />
+                <img src={useradd} className="img.user-add" alt="a"/>
                 <label className="invite_label">초대하기</label>
               </div>
             </div>

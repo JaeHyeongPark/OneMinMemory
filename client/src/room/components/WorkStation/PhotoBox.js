@@ -7,10 +7,12 @@ const PhotoBox = (props) => {
   return (
     <div className="closed_photobox_group">
       <div className="closed_photobox">
-        <div className="closed_preview_photos"></div>
+        <div className="closed_preview_photos">
+      
+        </div>
         <div className="open_and_work">
           <button onClick={props.openBox} className="open_button">
-            <img src={Arrow} className="Icon-Arrow" />
+            <img src={Arrow} alt="a"className="Icon-Arrow" />
           </button>
           <div className="work_layout">
             <div className="work_button_group">

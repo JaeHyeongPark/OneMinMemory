@@ -1,121 +1,73 @@
-/* .closed_photobox_group {
-  height: 130px;
-  align-self: stretch;
+/* 230211 수정 css */
+.title_and_photobox {
+  width: 660px;
+  height: 900px;
   flex-grow: 0;
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
   padding: 0;
 }
 
-.closed_photobox {
-  height: 130px;
-  flex-grow: 1;
+.fileupload_title {
+  box-sizing: border-box;
+
+  /* Auto layout */
+
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  gap: 20px;
-  padding: 0 20px;
-  border-radius: 15px;
-  background-color: #d9e8ef;
-}
-
-.closed_preview_photos {
-  height: 96px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: stretch;
+  padding: 10px 20px;
   gap: 10px;
-  padding: 5px;
-  border: solid 2px #272833;
+
+  width: 550px;
+  height: 50px;
+
+  background: rgba(255, 255, 255, 0.7);
+  /* 1min/navy */
+
+  border-width: 1px 1px 0px 1px;
+  border-style: solid;
+  border-color: #272833;
+  border-radius: 10px 10px 0px 0px;
 }
 
-.open_and_work {
-  width: 100px;
-  align-self: stretch;
-  flex-grow: 0;
+.cloud {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 10px 0;
+  padding: 0px;
+
+  width: 36px;
+  height: 26.23px;
 }
 
-.open_button {
-  width: 100px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0;
-  background: transparent;
-  border: none;
-}
-
-img.Icon-Arrow {
-  width: 60px;
-  height: 78px;
+img.cloud {
+  width: 36px;
+  height: 26.2px;
   flex-grow: 0;
   object-fit: contain;
+  background-color: #174291;
 }
 
-.work_layout {
-  width: 94px;
-  height: 38px;
+.cloud_span {
+  width: 97px;
+  height: 40px;
   flex-grow: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-
-.work_button_group {
-  width: 94px;
-  height: 38px;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 0;
-}
-
-.work_button {
-  width: 94px;
-  height: 38px;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  border-radius: 10px;
-  background-color: #0070d2;
-}
-
-.work_label {
-  width: 74px;
-  height: 28px;
-  flex-grow: 0;
-  font-family: "Pretendard";
-  font-size: 20px;
+  font-family: Pretendard;
+  font-size: 28.4px;
   font-weight: bold;
   font-stretch: normal;
   font-style: normal;
   line-height: 1.4;
   letter-spacing: normal;
   text-align: center;
-  color: #fff;
-} */
+  color: #174291;
+}
 
-/* 230211 수정 css */
 .PhotoBox {
   width: 660px;
   height: 820px;
@@ -124,14 +76,14 @@ img.Icon-Arrow {
   flex-direction: row;
   justify-content: center;
   align-items: stretch;
-  gap: 10px;
-  padding: 10px;
+  gap: 2px;
+  padding: 5px;
   border-radius: 15px;
   border: solid 2px #272833;
   background-color: #d9e8ef;
 }
 
-.PhotosButton {
+.Photos_and_Button {
   align-self: stretch;
   flex-grow: 1;
   display: flex;
@@ -161,7 +113,7 @@ img.Icon-Arrow {
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 23px;
+  gap: 25px;
   padding: 0;
 }
 
@@ -176,4 +128,245 @@ img.Icon-Arrow {
   padding: 0;
   border: solid 1px #000;
   background-color: #d9e8ef;
+}
+
+.PhotoBox-Button {
+  height: 48px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 20px;
+  border-radius: 15px;
+  border: solid 1px #272833;
+  background-color: #d9e8ef;
+}
+
+.uploadButton {
+  width: 105px;
+  height: 38px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #36a06d;
+}
+
+.upload_label {
+  width: 56px;
+  height: 28px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+}
+
+img.software-upload {
+  width: 24px;
+  height: 24px;
+  flex-grow: 0;
+  object-fit: contain;
+  transform: rotate(-180deg);
+}
+
+.delete_label {
+  width: 56px;
+  height: 28px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+}
+
+img.trash {
+  width: 24px;
+  height: 24px;
+  flex-grow: 0;
+  object-fit: contain;
+  transform: rotate(-180deg);
+}
+
+.delete_button {
+  width: 105px;
+  height: 38px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #e74733;
+}
+
+.filterButton {
+  width: 250px;
+  height: 38px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #2b2b2b;
+}
+
+.filter_label {
+  width: 201px;
+  height: 28px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+}
+
+img.filters {
+  width: 24px;
+  height: 24px;
+  flex-grow: 0;
+  object-fit: contain;
+  transform: rotate(-180deg);
+}
+
+.Work_and_arrow {
+  width: 60px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0;
+}
+
+.Work {
+  width: 44px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  background-color: #0070d2;
+}
+
+.work_label {
+  width: 23px;
+  height: 136px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 24px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+}
+
+img.image {
+  width: 24px;
+  height: 24px;
+  flex-grow: 0;
+  object-fit: contain;
+}
+
+.Arrow {
+  width: 28px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  background-color: #7da8f7;
+  border-radius: 0px 10px 10px 0px;
+}
+
+img.Icon-Arrow {
+  width: 42px;
+  height: 48px;
+  flex-grow: 0;
+  object-fit: contain;
+}
+
+.Username_and_canvas {
+  align-self: stretch;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 5px;
+}
+
+.Username {
+  box-sizing: border-box;
+
+  /* Auto layout */
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 30px;
+
+  width: 500px;
+  height: 50px;
+
+  /* blue/800 */
+
+  background: #102c60;
+  /* white */
+
+  border-width: 1px 1px 0px 1px;
+  border-style: solid;
+  border-color: #ffffff;
+  border-radius: 15px 15px 0px 0px;
+}
+
+.USER_canvan_span {
+  width: 191px;
+  height: 40px;
+  flex-grow: 0;
+  font-family: Pretendard;
+  font-size: 28.4px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
 }

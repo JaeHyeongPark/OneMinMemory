@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import PhotoBox from "./PhotoBox";
-import OpenedPhotoBox from "./OpenedPhotoBox";
 import Canvas from "./Canvas";
 import Effects from "./Effects";
 
@@ -13,7 +12,7 @@ const WorkStation = () => {
       <div className="ROOM-BODY-WorkStation">
         <PhotoBox />
         <Canvas />
-        <Effects />
+        {/* <Effects /> */}
       </div>
     </React.Fragment>
   );

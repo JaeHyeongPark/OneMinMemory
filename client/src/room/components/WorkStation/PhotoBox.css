@@ -1,4 +1,4 @@
-.closed_photobox_group {
+/* .closed_photobox_group {
   height: 130px;
   align-self: stretch;
   flex-grow: 0;
@@ -113,4 +113,67 @@ img.Icon-Arrow {
   letter-spacing: normal;
   text-align: center;
   color: #fff;
+} */
+
+/* 230211 수정 css */
+.PhotoBox {
+  width: 660px;
+  height: 820px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 15px;
+  border: solid 2px #272833;
+  background-color: #d9e8ef;
+}
+
+.PhotosButton {
+  align-self: stretch;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
+}
+
+.upload_Photos {
+  align-self: stretch;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 10px;
+  border: solid 1px #272833;
+}
+
+.upload_Photos_layout {
+  width: 549px;
+  height: 80px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 23px;
+  padding: 0;
+}
+
+.upload_img {
+  width: 120px;
+  height: 80px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
+  border: solid 1px #000;
+  background-color: #d9e8ef;
 }

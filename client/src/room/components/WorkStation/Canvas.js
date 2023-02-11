@@ -175,6 +175,7 @@ import "./Canvas.css";
 import Slider from "./Sliders";
 import SidebarItem from "./SidebarItem";
 import FrameInterpolation from "./FrameInterpolation";
+import CanvasDraw from "react-canvas-draw";
 
 const DEFAULT_OPTIONS = [
   {
@@ -255,10 +256,11 @@ function Canvas() {
   const selectedOption = options[selectedOptionIndex];
   const [imgFile, setImgFile] = useState("");
   const imgRef = useRef();
+  const canvasRef = useRef(null);
 
   const saveImgFile = (e) => {
     e.preventDefault();
-
+    setImgFile(null);
     const reader = new FileReader();
     const file = e.target.files[0];
 
@@ -267,6 +269,11 @@ function Canvas() {
     };
     reader.readAsDataURL(file);
   };
+
+  // const handleSaveImage = () => {
+  //   const dataURL = canvasRef.current.canvas.drawing.toDataURL();
+  //   localStorage.setItem("savedImage", dataURL);
+  // };
 
   function handleSliderChange({ target }) {
     setOptions((prevOptions) => {
@@ -285,43 +292,12 @@ function Canvas() {
     return { filter: filters.join(" ") };
   }
 
-  console.log(getImageStyle());
+  const applyInterpolation = () => {};
 
   return (
     // <div className="SelectedPhoto">
     //   <div className="container">
-    //     <label className="main-image" htmlFor="main-image">
-    //       업로드
-    //       <div className="uploaded-image">
-    //         <img src={imgFile} alt="uploaded" style={getImageStyle()} />
-    //       </div>
-    //     </label>
-    //     <input
-    //       className="image-input"
-    //       type="file"
-    //       accept="image/*"
-    //       onChange={saveImgFile}
-    //     />
-    //     <div className="sidebar">
-    //       {options.map((option, index) => {
-    //         return (
-    //           <SidebarItem
-    //             key={index}
-    //             name={option.name}
-    //             active={index === selectedOptionIndex}
-    //             handleClick={() => setSelectedOptionIndex(index)}
-    //           />
-    //         );
-    //       })}
-    //     </div>
-    //     <Slider
-    //       min={selectedOption.range.min}
-    //       max={selectedOption.range.max}
-    //       value={selectedOption.value}
-    //       handleChange={handleSliderChange}
-    //     />
-    //   </div>
-    // </div>
+
     <React.Fragment>
       <div className="Username_and_canvas">
         <div className="Username">
@@ -329,17 +305,27 @@ function Canvas() {
         </div>
         <div className="canvas">
           <div className="container">
-            <label className="main-image" htmlFor="main-image">
-              <div className="uploaded-image">
-                <img src={imgFile} alt="uploaded" style={getImageStyle()} />
-              </div>
-            </label>
+            {/* <label className="main-image" htmlFor="main-image"> */}
+            <div className="uploaded-image">
+              {/* {<img src={imgFile} alt="uploaded" style={getImageStyle()} /> && (
+                <CanvasDraw
+                  ref={canvasRef}
+                  canvasHeight={500}
+                  canvasWidth={500}
+                  brushRadius={3}
+                  lazyRadius={0}
+                  imgSrc={imgFile}
+                />
+              )} */}
+              <img src={imgFile} alt="uploaded" style={getImageStyle()} />
+            </div>
             <input
               className="image-input"
               type="file"
               accept="image/*"
               onChange={saveImgFile}
             />
+            {/* </label> */}
             <div className="sidebar">
               {options.map((option, index) => {
                 return (
@@ -351,7 +337,7 @@ function Canvas() {
                   />
                 );
               })}
-              <FrameInterpolation />
+              <FrameInterpolation handleClick={() => applyInterpolation} />
             </div>
             <Slider
               min={selectedOption.range.min}

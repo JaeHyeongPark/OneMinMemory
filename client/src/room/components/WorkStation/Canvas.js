@@ -113,8 +113,6 @@ function Canvas() {
     return { filter: filters.join(" ") };
   }
 
-  console.log(getImageStyle());
-
   return (
     <React.Fragment>
       <div className="Username_and_canvas">

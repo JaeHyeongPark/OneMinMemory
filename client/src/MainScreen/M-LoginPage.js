@@ -17,7 +17,7 @@ function LoginPage() {
   if (!Islogin) {
     context = (
       <Link to="/login">
-        <img src={Loginimage} alt="" />
+        <img src={Loginimage} alt="" onClick={changeMode} />
       </Link>
     );
   } else {

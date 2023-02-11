@@ -3,12 +3,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import filters from "../../assets/filters.svg";
-import image from "../../assets/image.svg";
 import cloud from "../../assets/cloud.svg";
-import RightArrow from "../../assets/RightArrow.svg";
 import ImageShow from "./Image_Up_Check_Del/ImageShow";
 import ImageUpload from "./Image_Up_Check_Del/ImageUpload";
 import ImageDel from "./Image_Up_Check_Del/ImageDel";
+import WorkButton from "./Image_Up_Check_Del/WorkButton";
 import "./PhotoBox.css";
 
 const PhotoBox = (props) => {
@@ -57,15 +56,7 @@ const PhotoBox = (props) => {
               </div>
             </div>
           </div>
-          <div className="Work_and_arrow">
-            <div className="Work">
-              <img src={image} className="img.image" alt="a"/>
-              <label className="work_label">작 업 하 기</label>
-            </div>
-            <div className="Arrow">
-              <img src={RightArrow} className="img.Icon-Arrow" alt="a"/>
-            </div>
-          </div>
+            <WorkButton view={view}/>
         </div>
       </div>
     </React.Fragment>

@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useContext } from "react";
+import ImageContext from "./Image_Up_Check_Del/ImageContext";
 
 import "./Canvas.css";
 import Slider from "./Sliders";
@@ -81,20 +82,7 @@ function Canvas() {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
   const [options, setOptions] = useState(DEFAULT_OPTIONS);
   const selectedOption = options[selectedOptionIndex];
-  const [imgFile, setImgFile] = useState("");
-  const imgRef = useRef();
-
-  const saveImgFile = (e) => {
-    e.preventDefault();
-
-    const reader = new FileReader();
-    const file = e.target.files[0];
-
-    reader.onload = () => {
-      setImgFile(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
+  const ToCanvas = useContext(ImageContext);
 
   function handleSliderChange({ target }) {
     setOptions((prevOptions) => {
@@ -121,18 +109,9 @@ function Canvas() {
         </div>
         <div className="canvas">
           <div className="container">
-            <label className="main-image" htmlFor="main-image">
-              업로드
-              <div className="uploaded-image">
-                <img src={imgFile} alt="uploaded" style={getImageStyle()} />
-              </div>
-            </label>
-            <input
-              className="image-input"
-              type="file"
-              accept="image/*"
-              onChange={saveImgFile}
-            />
+            <div className="uploaded-image">
+              {ToCanvas.url ? <img src={ToCanvas.url} alt="uploaded" style={getImageStyle()} /> : <></>}
+            </div>
             <div className="sidebar">
               {options.map((option, index) => {
                 return (

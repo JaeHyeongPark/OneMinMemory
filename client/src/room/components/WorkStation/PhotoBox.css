@@ -132,6 +132,10 @@ img.cloud {
   border: solid 1px #000;
   background-color: #d9e8ef;
 }
+.upload_img:hover{
+  transform: scale(1.4);
+}
+
 .select_img {
   width: 120px;
   height: 80px;
@@ -237,6 +241,9 @@ img.trash {
   padding: 5px 10px;
   border-radius: 10px;
   background-color: #e74733;
+}
+.delete_button input{
+  display: none;
 }
 
 .filterButton {

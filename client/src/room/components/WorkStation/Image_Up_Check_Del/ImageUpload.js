@@ -8,7 +8,6 @@ const ImageUpload = (props) => {
     
         const formdata = new FormData();
         for (let i = 0; i < images.length; i++) {
-          console.log(images[i], i);
           formdata.append("images", images[i]);
           formdata.append("lastModified", images[i].lastModified);
         }

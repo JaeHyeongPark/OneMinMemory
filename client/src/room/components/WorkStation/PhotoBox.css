@@ -57,7 +57,7 @@ img.cloud {
   width: 97px;
   height: 40px;
   flex-grow: 0;
-  font-family: Pretendard;
+  font-family: "Pretendard";
   font-size: 28.4px;
   font-weight: bold;
   font-stretch: normal;
@@ -360,7 +360,7 @@ img.Icon-Arrow {
   width: 191px;
   height: 40px;
   flex-grow: 0;
-  font-family: Pretendard;
+  font-family: "Pretendard";
   font-size: 28.4px;
   font-weight: bold;
   font-stretch: normal;

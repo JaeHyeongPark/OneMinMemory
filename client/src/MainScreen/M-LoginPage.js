@@ -22,7 +22,7 @@ function LoginPage() {
     );
   } else {
     context = (
-      <Link to="/workspace">
+      <Link to="/room">
         <img src={Startimage} alt="" />
       </Link>
     );
@@ -33,7 +33,9 @@ function LoginPage() {
         <h1>일분추억</h1>
         <p>함께한 시간을 더 아름답게</p>
       </div>
-      <div className={css.kakaologo}>{context}</div>
+      <div className={css.kakaologo} onClick={changeMode}>
+        {context}
+      </div>
     </div>
   );
 }

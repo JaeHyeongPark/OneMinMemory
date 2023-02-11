@@ -15,8 +15,9 @@ const ImageDel = (props) => {
   return (
     <div className="delete_button">
       <img src={trash} className="img.trash" alt="a" />
+      <label className="delete_label" htmlFor="delete_btn">지우기</label>
       <input
-        className="delete_label"
+        id="delete_btn"
         onClick={deleteImage}
         value="지우기"
         type="button"

@@ -1,18 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-// const dotenv = require("dotenv");
-// const multer = require("multer");
-// const AWS = require("aws-sdk");
 
 const AWS_S3_router = require("./Router_storage/AWS-S3-Router")
-
-// dotenv.config();
-// AWS.config.update({
-//   region: "ap-northeast-2",
-//   accessKeyId: process.env.Access_key_ID,
-//   secretAccessKey: process.env.Secret_access_key,
-// });
 
 // const s3 = new AWS.S3()
 const app = express();

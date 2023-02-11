@@ -31,7 +31,7 @@ const ImageShow = (props) => {
           src={url}
           alt="a"
           onClick={() => {
-            props.onClick(url);
+            selectimage(url);
           }}
         />
       );

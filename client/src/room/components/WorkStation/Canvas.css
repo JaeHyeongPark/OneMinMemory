@@ -30,16 +30,10 @@ body {
   grid-template-areas:
     "image sidebar"
     "slider sidebar";
-<<<<<<< HEAD
-  height: 60vh;
-  width: 80vw;
-  background-color: #dadada;
-=======
   height: 100%;
   width: 100%;
   border-radius: 15px;
   background-color: #fff;
->>>>>>> Front
 }
 
 .uploaded-image {
@@ -87,10 +81,7 @@ body {
   background-color: hsl(265, 100%, 86%);
   padding: 1rem;
   position: relative;
-<<<<<<< HEAD
-=======
   border-radius: 0px 15px 0px 0px;
->>>>>>> Front
   transition: background-color 150ms;
 }
 

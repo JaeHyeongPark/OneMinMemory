@@ -1,4 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
+import ImageContext from "./Image_Up_Check_Del/ImageContext";
+
 import "./Canvas.css";
 import Slider from "./Sliders";
 import SidebarItem from "./SidebarItem";
@@ -83,21 +85,8 @@ function Canvas() {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
   const [options, setOptions] = useState(DEFAULT_OPTIONS);
   const selectedOption = options[selectedOptionIndex];
-  const [imgFile, setImgFile] = useState("");
-  const imgRef = useRef();
-  const canvasRef = useRef(null);
-
-  const saveImgFile = (e) => {
-    e.preventDefault();
-    setImgFile(null);
-    const reader = new FileReader();
-    const file = e.target.files[0];
-
-    reader.onload = () => {
-      setImgFile(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
+  const canvasRef = useRef();
+  const ToCanvas = useContext(ImageContext);
 
   // const handleSaveImage = () => {
   //   const dataURL = canvasRef.current.canvas.drawing.toDataURL();
@@ -143,9 +132,6 @@ function Canvas() {
   const applyInterpolation = () => {};
 
   return (
-    // <div className="SelectedPhoto">
-    //   <div className="container">
-
     <React.Fragment>
       <div className="Username_and_canvas">
         <div className="Username">
@@ -153,23 +139,16 @@ function Canvas() {
         </div>
         <div className="canvas">
           <div className="container">
-            {/* <label className="main-image" htmlFor="main-image"> */}
-            <div className="uploaded-image" id="img_canvas">
-              {/* {<img src={imgFile} alt="uploaded" style={getImageStyle()} /> && (
-                <CanvasDraw
-                  ref={canvasRef}
-                  canvasHeight={500}
-                  canvasWidth={500}
-                  brushRadius={3}
-                  lazyRadius={0}
-                  imgSrc={imgFile}
+            <div className="uploaded-image">
+              {ToCanvas.url ? (
+                <img
+                  src={ToCanvas.url}
+                  alt="uploaded"
+                  style={getImageStyle()}
                 />
-              )} */}
-              <img
-                src={imgFile}
-                alt="uploaded"
-                style={{ ...getImageStyle(), position: "relative" }}
-              />
+              ) : (
+                <></>
+              )}
               <CanvasDraw
                 ref={canvasRef}
                 canvasHeight={700}
@@ -182,13 +161,7 @@ function Canvas() {
               />
             </div>
             <button onClick={onHtmlToPng}>click!</button>
-            <input
-              className="image-input"
-              type="file"
-              accept="image/*"
-              onChange={saveImgFile}
-            />
-            {/* </label> */}
+
             <div className="sidebar">
               {options.map((option, index) => {
                 return (

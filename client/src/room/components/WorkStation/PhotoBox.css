@@ -57,7 +57,7 @@ img.cloud {
   width: 97px;
   height: 40px;
   flex-grow: 0;
-  font-family: Pretendard;
+  font-family: "Pretendard";
   font-size: 28.4px;
   font-weight: bold;
   font-stretch: normal;
@@ -97,12 +97,14 @@ img.cloud {
   align-self: stretch;
   flex-grow: 1;
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 5px;
+  gap: 10px;
   padding: 10px;
   border: solid 1px #272833;
+  overflow: scroll;
+  flex-wrap: wrap;
 }
 
 .upload_Photos_layout {
@@ -126,7 +128,25 @@ img.cloud {
   justify-content: flex-start;
   align-items: stretch;
   padding: 0;
+  row-gap: 3px;
   border: solid 1px #000;
+  background-color: #d9e8ef;
+}
+.upload_img:hover{
+  transform: scale(1.4);
+}
+
+.select_img {
+  width: 120px;
+  height: 80px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
+  row-gap: 3px;
+  border: solid 5px #e2f01d;
   background-color: #d9e8ef;
 }
 
@@ -148,7 +168,7 @@ img.cloud {
   width: 105px;
   height: 38px;
   flex-grow: 0;
-  display: flex;
+  /* display: flex; */
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -156,6 +176,11 @@ img.cloud {
   padding: 5px 10px;
   border-radius: 10px;
   background-color: #36a06d;
+}
+
+.uploadButton input{
+  opacity: 0;
+  display: none;
 }
 
 .upload_label {
@@ -216,6 +241,9 @@ img.trash {
   padding: 5px 10px;
   border-radius: 10px;
   background-color: #e74733;
+}
+.delete_button input{
+  display: none;
 }
 
 .filterButton {
@@ -360,7 +388,7 @@ img.Icon-Arrow {
   width: 191px;
   height: 40px;
   flex-grow: 0;
-  font-family: Pretendard;
+  font-family: "Pretendard";
   font-size: 28.4px;
   font-weight: bold;
   font-stretch: normal;

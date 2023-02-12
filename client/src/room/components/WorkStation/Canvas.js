@@ -176,6 +176,7 @@ import Slider from "./Sliders";
 import SidebarItem from "./SidebarItem";
 import FrameInterpolation from "./FrameInterpolation";
 import CanvasDraw from "react-canvas-draw";
+import html2canvas from "html2canvas";
 
 const DEFAULT_OPTIONS = [
   {
@@ -292,6 +293,25 @@ function Canvas() {
     return { filter: filters.join(" ") };
   }
 
+  const onHtmlToPng = () => {
+    const onSaveAs = (uri, filename) => {
+      let link = document.createElement("a");
+      document.body.appendChild(link);
+      link.href = uri;
+      link.download = filename;
+      link.click();
+      document.body.removeChild(link);
+    };
+
+    const onCapture = () => {
+      html2canvas(document.getElementById("img_canvas")).then((canvas) => {
+        onSaveAs(canvas.toDataURL("image/png"), "image-download.png");
+      });
+    };
+
+    onCapture();
+  };
+
   const applyInterpolation = () => {};
 
   return (
@@ -306,7 +326,7 @@ function Canvas() {
         <div className="canvas">
           <div className="container">
             {/* <label className="main-image" htmlFor="main-image"> */}
-            <div className="uploaded-image">
+            <div className="uploaded-image" id="img_canvas">
               {/* {<img src={imgFile} alt="uploaded" style={getImageStyle()} /> && (
                 <CanvasDraw
                   ref={canvasRef}
@@ -317,8 +337,23 @@ function Canvas() {
                   imgSrc={imgFile}
                 />
               )} */}
-              <img src={imgFile} alt="uploaded" style={getImageStyle()} />
+              <img
+                src={imgFile}
+                alt="uploaded"
+                style={{ ...getImageStyle(), position: "relative" }}
+              />
+              <CanvasDraw
+                ref={canvasRef}
+                canvasHeight={700}
+                canvasWidth={500}
+                brushRadius={3}
+                lazyRadius={0}
+                hideGrid={true}
+                backgroundColor="none"
+                style={{ position: "absolute", top: 0, left: 0 }}
+              />
             </div>
+            <button onClick={onHtmlToPng}>click!</button>
             <input
               className="image-input"
               type="file"

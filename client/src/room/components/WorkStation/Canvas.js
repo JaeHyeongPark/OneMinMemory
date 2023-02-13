@@ -1,7 +1,6 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import ImageContext from "./Image_Up_Check_Del/ImageContext";
 import axios from "axios";
-import CanvasDraw from "react-canvas-draw";
 
 import "./Canvas.css";
 import Slider from "./Sliders";
@@ -85,6 +84,9 @@ function Canvas() {
   const [options, setOptions] = useState(DEFAULT_OPTIONS);
   const selectedOption = options[selectedOptionIndex];
   const canvasRef = useRef(null);
+  const [PaintMode, setPaintMode] = useState(false);
+  const [Paint, setPaint] = useState(false);
+  const [Ctx, setCtx] = useState(null);
   const ToCanvas = useContext(ImageContext);
 
   function handleSliderChange({ target }) {
@@ -104,34 +106,60 @@ function Canvas() {
     return { filter: filters.join(" ") };
   }
 
-  // const newImageUrl = () => {
-  //   const params = {
-  //     imageUrl: ToCanvas.url[0],
-  //     brightness: Number(options[0].value),
-  //     contrast: Number(options[1].value),
-  //     saturation: Number(options[2].value),
-  //     grayscale: Number(options[3].value),
-  //     blur: Number(options[6].value),
-  //   };
-  //   axios
-  //     .get("http://localhost:5000/canvas/newimage", { params: params })
-  //     .then((res) => {
-  //       // console.log(res)
-  //     });
-  // };
-
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
+    canvas.style = {};
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setOptions(DEFAULT_OPTIONS);
+    setCtx(ctx);
+
+    // const Base64Image = async (url) => {
+    //   try{
+    //     let image = await axios.get(url, {responseType:"arraybuffer"})
+    //     console.log(image)
+    //     let raw = Buffer.from(image.data).toString("base64")
+    //     console.log(raw)
+    //     return "data:" + image.headers["content-type"] + ";base64," + raw
+    //   }catch(err){
+    //     console.log(err)
+    //   }
+    // }
 
     const image = new Image();
-    image.src = ToCanvas.url;
+    image.src = ToCanvas.url
     image.onload = () => {
-      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-      console.log(canvas.width, canvas.height)
+      Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      Ctx.lineJoin = "round";
+      Ctx.lineWidth = 4;
     };
-    console.log(image, canvas, canvasRef);
   }, [ToCanvas.url]);
+  
+  const drawing = (e) => {
+    const x = e.nativeEvent.offsetX;
+    const y = e.nativeEvent.offsetY;
+    if (Paint && PaintMode) {
+      Ctx.lineTo(x, y);
+      Ctx.stroke();
+    } else {
+      Ctx.beginPath();
+      Ctx.moveTo(x, y);
+    }
+  };
+  const ChangePaint = (check) => {
+    if (!PaintMode) return
+    if(check){
+      setPaint(check)
+    }else{
+      setPaint(check)
+    }
+  }
+  
+  const newImage = () => {
+    const imagedata = Ctx.getImageData(0,0,800,750)
+    console.log(imagedata.data)
+  }
+  
 
   return (
     <React.Fragment>
@@ -147,6 +175,10 @@ function Canvas() {
                 width={800}
                 height={750}
                 style={getImageStyle()}
+                onMouseDown={() => ChangePaint(true)}
+                onMouseUp={() => ChangePaint(false)}
+                onMouseMove={(e) => drawing(e)}
+                onMouseLeave={() => ChangePaint(false)}
               />
             </div>
             <div className="sidebar">
@@ -160,7 +192,13 @@ function Canvas() {
                   />
                 );
               })}
-              {/* <button onClick={newImageUrl}>저장하기</button> */}
+              <button
+                className="sidebar-item"
+                onClick={() => setPaintMode(PaintMode ? false : true)}
+              >
+                PaintMode-{PaintMode ? "ON" : "OFF"}
+              </button>
+              <button className="sidebar-item" onClick={newImage}>저장하기</button>
             </div>
             <Slider
               min={selectedOption.range.min}
@@ -176,3 +214,4 @@ function Canvas() {
 }
 
 export default Canvas;
+

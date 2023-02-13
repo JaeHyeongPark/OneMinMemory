@@ -1,5 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import ImageContext from "./Image_Up_Check_Del/ImageContext";
+import axios from "axios";
+import CanvasDraw from "react-canvas-draw";
 
 import "./Canvas.css";
 import Slider from "./Sliders";
@@ -82,6 +84,7 @@ function Canvas() {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
   const [options, setOptions] = useState(DEFAULT_OPTIONS);
   const selectedOption = options[selectedOptionIndex];
+  const canvasRef = useRef(null);
   const ToCanvas = useContext(ImageContext);
 
   function handleSliderChange({ target }) {
@@ -101,6 +104,35 @@ function Canvas() {
     return { filter: filters.join(" ") };
   }
 
+  // const newImageUrl = () => {
+  //   const params = {
+  //     imageUrl: ToCanvas.url[0],
+  //     brightness: Number(options[0].value),
+  //     contrast: Number(options[1].value),
+  //     saturation: Number(options[2].value),
+  //     grayscale: Number(options[3].value),
+  //     blur: Number(options[6].value),
+  //   };
+  //   axios
+  //     .get("http://localhost:5000/canvas/newimage", { params: params })
+  //     .then((res) => {
+  //       // console.log(res)
+  //     });
+  // };
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
+    const image = new Image();
+    image.src = ToCanvas.url;
+    image.onload = () => {
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      console.log(canvas.width, canvas.height)
+    };
+    console.log(image, canvas, canvasRef);
+  }, [ToCanvas.url]);
+
   return (
     <React.Fragment>
       <div className="Username_and_canvas">
@@ -110,7 +142,12 @@ function Canvas() {
         <div className="canvas">
           <div className="container">
             <div className="uploaded-image">
-              {ToCanvas.url ? <img src={ToCanvas.url} alt="uploaded" style={getImageStyle()} /> : <></>}
+              <canvas
+                ref={canvasRef}
+                width={800}
+                height={750}
+                style={getImageStyle()}
+              />
             </div>
             <div className="sidebar">
               {options.map((option, index) => {
@@ -123,6 +160,7 @@ function Canvas() {
                   />
                 );
               })}
+              {/* <button onClick={newImageUrl}>저장하기</button> */}
             </div>
             <Slider
               min={selectedOption.range.min}

@@ -1,5 +1,6 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import ImageContext from "./Image_Up_Check_Del/ImageContext";
+import axios from "axios";
 
 import "./Canvas.css";
 import Slider from "./Sliders";
@@ -86,7 +87,10 @@ function Canvas() {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
   const [options, setOptions] = useState(DEFAULT_OPTIONS);
   const selectedOption = options[selectedOptionIndex];
-  const canvasRef = useRef();
+  const canvasRef = useRef(null);
+  const [PaintMode, setPaintMode] = useState(false);
+  const [Paint, setPaint] = useState(false);
+  const [Ctx, setCtx] = useState(null);
   const ToCanvas = useContext(ImageContext);
 
   // const handleSaveImage = () => {
@@ -111,26 +115,59 @@ function Canvas() {
     return { filter: filters.join(" ") };
   }
 
-  const onSaveAs = (uri, filename) => {
-    let link = document.createElement("a");
-    document.body.appendChild(link);
-    link.href = uri;
-    link.download = filename;
-    link.click();
-    document.body.removeChild(link);
-  };
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    canvas.style = {};
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setOptions(DEFAULT_OPTIONS);
+    setCtx(ctx);
 
-  const onHtmlToPng = () => {
-    const onCapture = () => {
-      html2canvas(document.getElementById("img_canvas")).then((canvas) => {
-        onSaveAs(canvas.toDataURL("image/png"), "image-download.png");
-      });
+    // const Base64Image = async (url) => {
+    //   try{
+    //     let image = await axios.get(url, {responseType:"arraybuffer"})
+    //     console.log(image)
+    //     let raw = Buffer.from(image.data).toString("base64")
+    //     console.log(raw)
+    //     return "data:" + image.headers["content-type"] + ";base64," + raw
+    //   }catch(err){
+    //     console.log(err)
+    //   }
+    // }
+
+    const image = new Image();
+    image.src = ToCanvas.url;
+    image.onload = () => {
+      Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      Ctx.lineJoin = "round";
+      Ctx.lineWidth = 4;
     };
+  }, [ToCanvas.url, Ctx]);
 
-    onCapture();
+  const drawing = (e) => {
+    const x = e.nativeEvent.offsetX;
+    const y = e.nativeEvent.offsetY;
+    if (Paint && PaintMode) {
+      Ctx.lineTo(x, y);
+      Ctx.stroke();
+    } else {
+      Ctx.beginPath();
+      Ctx.moveTo(x, y);
+    }
+  };
+  const ChangePaint = (check) => {
+    if (!PaintMode) return;
+    if (check) {
+      setPaint(check);
+    } else {
+      setPaint(check);
+    }
   };
 
-  const applyInterpolation = () => {};
+  const newImage = () => {
+    const imagedata = Ctx.getImageData(0, 0, 800, 750);
+    console.log(imagedata.data);
+  };
 
   return (
     <React.Fragment>
@@ -140,28 +177,19 @@ function Canvas() {
         </div>
         <div className="canvas">
           <div className="container">
-            <div className="uploaded-image" id="img_canvas">
-              {ToCanvas.url ? (
-                <img
-                  src={ToCanvas.url}
-                  alt="uploaded"
-                  style={getImageStyle()}
-                />
-              ) : (
-                <></>
-              )}
-              <CanvasDraw
+            <div className="uploaded-image">
+              <canvas
                 ref={canvasRef}
-                canvasHeight={700}
-                canvasWidth={500}
-                brushRadius={3}
-                lazyRadius={0}
-                hideGrid={true}
-                backgroundColor="none"
-                style={{ position: "absolute", top: 0, left: 0 }}
+                width={800}
+                height={750}
+                style={getImageStyle()}
+                onMouseDown={() => ChangePaint(true)}
+                onMouseUp={() => ChangePaint(false)}
+                onMouseMove={(e) => drawing(e)}
+                onMouseLeave={() => ChangePaint(false)}
               />
             </div>
-            <button onClick={onHtmlToPng}>Capture!</button>
+            {/* <button onClick={onHtmlToPng}>Capture!</button> */}
 
             <div className="sidebar">
               {options.map((option, index) => {
@@ -174,7 +202,15 @@ function Canvas() {
                   />
                 );
               })}
-              <FrameInterpolation handleClick={() => applyInterpolation} />
+              <button
+                className="sidebar-item"
+                onClick={() => setPaintMode(PaintMode ? false : true)}
+              >
+                PaintMode-{PaintMode ? "ON" : "OFF"}
+              </button>
+              <button className="sidebar-item" onClick={newImage}>
+                저장하기
+              </button>
             </div>
             <Slider
               min={selectedOption.range.min}

@@ -3,6 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const AWS_S3_router = require("./Router_storage/AWS-S3-Router")
+const Canvas_router = require("./Router_storage/Canvas-Router")
 
 // const s3 = new AWS.S3()
 const app = express();
@@ -11,6 +12,8 @@ app.use(cors())
 
 // photoBox 라우터는 다 여기로 슝슝~~
 app.use("/photoBox", AWS_S3_router)
+// canvas 라우터는 여기로~~
+app.use("/canvas", Canvas_router)
 
 // 쓸데없는 URL로 접근시 에러 표시
 app.use((req, res, next) => {

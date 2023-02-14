@@ -1,5 +1,7 @@
 import React from "react";
 
+import Playlist from "./Playlist";
+
 import music from "../../assets/music.svg";
 import polaroid from "../../assets/polaroid.svg";
 import infinity from "../../assets/infinity.svg";
@@ -10,7 +12,7 @@ const Output = () => {
   return (
     <div className="ROOM-FOOTER">
       <div className="ROOM-FOOTER-TEST">
-        <div className="playlist_layout"></div>
+        <Playlist />
       </div>
       <div className="ROOM-FOOTER-BUTTONS">
         <div className="finished_layout">

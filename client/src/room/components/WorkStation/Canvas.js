@@ -3,12 +3,13 @@ import ImageContext from "./Image_Up_Check_Del/ImageContext";
 import axios from "axios";
 
 import "./Canvas.css";
+import ToPlaylistButton from "../Output/ToPlaylistButton";
 import Slider from "./Sliders";
 import SidebarItem from "./SidebarItem";
-import playbutton from "../../assets/playbutton.svg";
 import FrameInterpolation from "./FrameInterpolation";
-import CanvasDraw from "react-canvas-draw";
+// import CanvasDraw from "react-canvas-draw";
 import html2canvas from "html2canvas";
+
 // import domToImage from "dom-to-image";
 
 const DEFAULT_OPTIONS = [
@@ -174,15 +175,13 @@ function Canvas() {
     <React.Fragment>
       <div className="Username_and_canvas">
         <div className="Username">
-          <span className="USER_canvan_span">USER1의 캔버스</span>
+          <span className="USER_canvas_span">USER1의 캔버스</span>
         </div>
         <div className="canvas">
           <div className="container">
             <div className="uploaded-image">
               <canvas
                 ref={canvasRef}
-                width={800}
-                height={750}
                 style={getImageStyle()}
                 onMouseDown={() => ChangePaint(true)}
                 onMouseUp={() => ChangePaint(false)}
@@ -221,12 +220,7 @@ function Canvas() {
             />
           </div>
         </div>
-        <div class="toPlaylist">
-          <div class="play-button-o">
-            <img src={playbutton} alt="playbutton" />
-          </div>
-          <span class="playlist_label">재생목록에 담기</span>
-        </div>
+        <ToPlaylistButton />
       </div>
     </React.Fragment>
   );

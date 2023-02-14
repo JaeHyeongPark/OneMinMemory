@@ -1,10 +1,10 @@
 import React from "react";
 
 import Playlist from "./Playlist";
+import RenderButton from "./RenderButton";
 
 import music from "../../assets/music.svg";
 import polaroid from "../../assets/polaroid.svg";
-import infinity from "../../assets/infinity.svg";
 
 import "./Output.css";
 
@@ -32,16 +32,7 @@ const Output = () => {
               <label className="preview_label">미리보기</label>
             </div>
           </div>
-          <div className="render_button_group">
-            <div className="render_button">
-              <img
-                src={infinity}
-                className="img.infinity"
-                alt="video rendering"
-              />
-              <label className="render_label">렌더링</label>
-            </div>
-          </div>
+          <RenderButton />
         </div>
       </div>
     </div>

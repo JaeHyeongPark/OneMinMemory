@@ -44,23 +44,6 @@ router.post("/newimage", upload.none(), async (req, res, next) => {
   res.send("hi~");
 });
 
-router.post("/addtoplay", upload.none(), async (req, res, next) => {
-  const imageurl = req.body.imagedata.split("base64,")[1];
-  const s3filename = req.body.originurl.split("test/")[1];
-  const imgbuffer = Buffer.from(imageurl, "base64");
-  const image = sharp(imgbuffer);
-  const imgMeta = await image.metadata();
-  const params = {
-    Bucket: process.env.Bucket_Name,
-    Key: "toplay/Effect" + s3filename,
-    ACL: "public-read",
-    Body: imgbuffer,
-    ContentType: "image/" + imgMeta.format,
-  };
-  s3.putObject(params).promise();
-  res.send("ReadyToPlay");
-});
-
 module.exports = router;
 
 // AWS S3 cors 정책

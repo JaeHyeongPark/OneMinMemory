@@ -1,7 +1,7 @@
 // import axios from "axios";
 
 const PlaylistShow = (props) => {
-  const view = props.view;
+  const view = props.playView;
 
   //   const selectimage = async (url) => {
   //     axios

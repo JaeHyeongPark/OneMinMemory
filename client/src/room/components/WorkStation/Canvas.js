@@ -157,34 +157,15 @@ function Canvas() {
 
   const newImage = async (e) => {
     e.preventDefault();
-    const imagedata = canvasRef.current.toDataURL();
+    const imagedata = await canvasRef.current.toDataURL(
+      "image/" + ToCanvas.type
+    );
     console.log(imagedata);
     const formdata = new FormData();
     formdata.append("imagedata", imagedata);
     formdata.append("originurl", ToCanvas.url);
     await axios
       .post("http://localhost:5000/canvas/newimage", formdata, {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const addToPlay = async (e) => {
-    e.preventDefault();
-    const imagedata = canvasRef.current.toDataURL();
-    console.log(imagedata);
-    const formdata = new FormData();
-    formdata.append("imagedata", imagedata);
-    formdata.append("originurl", ToCanvas.url);
-    await axios
-      .post("http://localhost:5000/canvas/addtoplay", formdata, {
         headers: {
           "content-type": "multipart/form-data",
         },
@@ -248,7 +229,7 @@ function Canvas() {
             />
           </div>
         </div>
-        <ToPlaylistButton onClick={addToPlay} />
+        <ToPlaylistButton canvasRef={canvasRef} />
       </div>
     </React.Fragment>
   );

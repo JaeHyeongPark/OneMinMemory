@@ -1,6 +1,6 @@
 import React from "react";
 
-import playbuttono from "../../assets/playbuttono.svg";
+import music from "../../assets/music.svg";
 import polaroid from "../../assets/polaroid.svg";
 import infinity from "../../assets/infinity.svg";
 
@@ -11,15 +11,15 @@ const Output = () => {
     <div className="ROOM-FOOTER">
       <div className="ROOM-FOOTER-TEST">
         <div className="playlist_layout"></div>
-        <div className="insert_music_button">
-          <div className="insert_music_icon">
-            <img src={playbuttono} alt="insert music" />
-          </div>
-          <span className="music_span">음악넣기</span>
-        </div>
       </div>
       <div className="ROOM-FOOTER-BUTTONS">
         <div className="finished_layout">
+          <div className="insert_music_button">
+            <div className="insert_music_icon">
+              <img src={music} alt="insert music" />
+            </div>
+            <span className="music_span">음악넣기</span>
+          </div>
           <div className="preview_button_group">
             <div className="preview_button">
               <img

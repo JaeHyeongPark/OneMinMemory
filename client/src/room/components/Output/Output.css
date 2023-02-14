@@ -16,8 +16,8 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 20px;
-  /* padding: 20px 60px; */
+  /* gap: 20px; */
+  padding: 5px 20px;
   border: solid 1px #272833;
   background-color: #d9e8ef;
 }
@@ -91,7 +91,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 8px;
   padding: 10px;
 }
 

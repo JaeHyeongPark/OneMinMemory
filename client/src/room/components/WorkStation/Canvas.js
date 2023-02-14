@@ -4,6 +4,7 @@ import ImageContext from "./Image_Up_Check_Del/ImageContext";
 import "./Canvas.css";
 import Slider from "./Sliders";
 import SidebarItem from "./SidebarItem";
+import playbutton from "../../assets/playbutton.svg";
 
 const DEFAULT_OPTIONS = [
   {
@@ -110,7 +111,15 @@ function Canvas() {
         <div className="canvas">
           <div className="container">
             <div className="uploaded-image">
-              {ToCanvas.url ? <img src={ToCanvas.url} alt="uploaded" style={getImageStyle()} /> : <></>}
+              {ToCanvas.url ? (
+                <img
+                  src={ToCanvas.url}
+                  alt="uploaded"
+                  style={getImageStyle()}
+                />
+              ) : (
+                <></>
+              )}
             </div>
             <div className="sidebar">
               {options.map((option, index) => {
@@ -131,6 +140,12 @@ function Canvas() {
               handleChange={handleSliderChange}
             />
           </div>
+        </div>
+        <div class="toPlaylist">
+          <div class="play-button-o">
+            <img src={playbutton} alt="playbutton" />
+          </div>
+          <span class="playlist_label">재생목록에 담기</span>
         </div>
       </div>
     </React.Fragment>

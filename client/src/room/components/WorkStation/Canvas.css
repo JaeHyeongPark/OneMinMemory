@@ -43,13 +43,6 @@ body {
   position: relative;
 }
 
-.uploaded-image img {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  border-radius: 15px;
-}
-
 /* .main-image {
   grid-area: image;
   background-image: url("https://source.unsplash.com/EwKXn5CapA4");

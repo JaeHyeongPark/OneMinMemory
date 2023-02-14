@@ -20,7 +20,11 @@ router.post("/imageinfo", async (req, res, next) => {
   image.metadata().then((data) => {
     res.json({width:data.width, height:data.height})
   })
-
 });
+
+router.post("/newimage", (req, res, next) => {
+  console.log(req.body)
+  res.send("hi~")
+})
 
 module.exports = router;

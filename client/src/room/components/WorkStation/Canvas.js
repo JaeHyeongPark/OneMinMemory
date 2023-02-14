@@ -123,26 +123,15 @@ function Canvas() {
     setOptions(DEFAULT_OPTIONS);
     setCtx(ctx);
 
-    // const Base64Image = async (url) => {
-    //   try{
-    //     let image = await axios.get(url, {responseType:"arraybuffer"})
-    //     console.log(image)
-    //     let raw = Buffer.from(image.data).toString("base64")
-    //     console.log(raw)
-    //     return "data:" + image.headers["content-type"] + ";base64," + raw
-    //   }catch(err){
-    //     console.log(err)
-    //   }
-    // }
-
     const image = new Image();
     image.src = ToCanvas.url;
+    image.crossOrigin = "*";
     image.onload = () => {
       Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
       Ctx.lineJoin = "round";
       Ctx.lineWidth = 4;
     };
-  }, [ToCanvas.url, Ctx]);
+  }, [ToCanvas.url]);
 
   const drawing = (e) => {
     const x = e.nativeEvent.offsetX;
@@ -164,9 +153,24 @@ function Canvas() {
     }
   };
 
-  const newImage = () => {
-    const imagedata = Ctx.getImageData(0, 0, 800, 750);
-    console.log(imagedata.data);
+  const newImage = async (e) => {
+    e.preventDefault();
+    const imagedata = await canvasRef.current.toDataURL();
+    console.log(imagedata);
+    const formdata = new FormData();
+    formdata.append("imagedata", imagedata);
+    await axios
+      .post("http://localhost:5000/canvas/newimage", formdata, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

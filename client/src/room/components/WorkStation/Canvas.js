@@ -5,6 +5,10 @@ import axios from "axios";
 import "./Canvas.css";
 import Slider from "./Sliders";
 import SidebarItem from "./SidebarItem";
+import FrameInterpolation from "./FrameInterpolation";
+// import CanvasDraw from "react-canvas-draw";
+// import html2canvas from "html2canvas";
+// import domToImage from "dom-to-image";
 
 const DEFAULT_OPTIONS = [
   {
@@ -89,6 +93,11 @@ function Canvas() {
   const [Ctx, setCtx] = useState(null);
   const ToCanvas = useContext(ImageContext);
 
+  // const handleSaveImage = () => {
+  //   const dataURL = canvasRef.current.canvas.drawing.toDataURL();
+  //   localStorage.setItem("savedImage", dataURL);
+  // };
+
   function handleSliderChange({ target }) {
     setOptions((prevOptions) => {
       return prevOptions.map((option, index) => {
@@ -98,13 +107,13 @@ function Canvas() {
     });
   }
 
-  function getImageStyle() {
-    const filters = options.map((option) => {
-      return `${option.property}(${option.value}${option.unit})`;
-    });
+  // function getImageStyle() {
+  //   const filters = options.map((option) => {
+  //     return `${option.property}(${option.value}${option.unit})`;
+  //   });
 
-    return { filter: filters.join(" ") };
-  }
+  //   return { filter: filters.join(" ") };
+  // }
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -147,10 +156,11 @@ function Canvas() {
   const newImage = async (e) => {
     e.preventDefault();
     const imagedata = canvasRef.current.toDataURL("image/" + ToCanvas.type);
-    console.log(imagedata);
+    //checked
     const formdata = new FormData();
     formdata.append("imagedata", imagedata);
     formdata.append("originurl", ToCanvas.url);
+    //checked
     await axios
       .post("http://localhost:5000/canvas/newimage", formdata, {
         headers: {
@@ -159,10 +169,44 @@ function Canvas() {
       })
       .then((res) => {
         console.log(res);
+        console.log("성공!");
       })
       .catch((err) => {
         console.log(err);
+        console.log("에러!");
       });
+  };
+
+  const selectedOptionApply = async (index) => {
+    const canvas = canvasRef.current;
+    const imageData = canvas.toDataURL("image/" + ToCanvas.type);
+    // checkpoint!
+    const formdata = new FormData();
+    formdata.append("brightenedImageData", imageData);
+    if (index === 0) {
+      await axios
+        .post("http://localhost:5000/canvas/image/brighten", formdata, {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          console.log("this is res", res);
+
+          const brightenedImageData = res.data.brightenedImageData;
+          if (brightenedImageData) {
+            const image = new Image();
+            image.src = brightenedImageData;
+            image.crossOrigin = "*";
+            image.onload = () => {
+              Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+            };
+          }
+        })
+        .catch((err) => {
+          console.log("this is error!!!");
+        });
+    }
   };
 
   return (
@@ -178,13 +222,15 @@ function Canvas() {
                 ref={canvasRef}
                 width={800}
                 height={750}
-                style={getImageStyle()}
+                // style={getImageStyle()}
                 onMouseDown={() => ChangePaint(true)}
                 onMouseUp={() => ChangePaint(false)}
                 onMouseMove={(e) => drawing(e)}
                 onMouseLeave={() => ChangePaint(false)}
               />
             </div>
+            {/* <button onClick={onHtmlToPng}>Capture!</button> */}
+
             <div className="sidebar">
               {options.map((option, index) => {
                 return (
@@ -192,7 +238,8 @@ function Canvas() {
                     key={index}
                     name={option.name}
                     active={index === selectedOptionIndex}
-                    handleClick={() => setSelectedOptionIndex(index)}
+                    // handleClick={() => setSelectedOptionIndex(index)}
+                    handleClick={() => selectedOptionApply(index)}
                   />
                 );
               })}

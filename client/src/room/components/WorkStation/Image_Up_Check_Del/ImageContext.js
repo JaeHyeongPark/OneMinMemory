@@ -23,8 +23,8 @@ export const TocanvasProvider = (props) => {
         setWidth(res.data.width);
         setHeight(res.data.height);
         settype(res.data.type);
+        seturl(url);
       });
-    seturl(url);
   };
 
   const imagetocanvas = {

@@ -16,7 +16,7 @@ const WorkButton = (props) => {
         const selectUrl = Object.keys(view).filter((url) => {
           return view[url] === 1
         })
-        ToCanvas.sendurl(selectUrl)
+        ToCanvas.sendurl(selectUrl[0])
       }
   return (
     <div className="Work_and_arrow">

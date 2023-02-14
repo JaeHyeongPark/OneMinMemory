@@ -17,7 +17,7 @@ export const TocanvasProvider = (props) => {
     const [type, settype] = useState("")
 
     const sendurl = (url) => {
-        axios.post("http://localhost:5000/canvas/imageinfo",{url:url}).then((res) => {
+        axios.post("http://localhost:5000/canvas/imageinfo",{url:url}).then(async (res) => {
             setWidth(res.data.width)
             setHeight(res.data.height)
             settype(res.data.type)

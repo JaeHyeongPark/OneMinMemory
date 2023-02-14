@@ -18,8 +18,8 @@ export const TocanvasProvider = (props) => {
         axios.post("http://localhost:5000/canvas/imageinfo",{url:url}).then((res) => {
             setWidth(res.data.width)
             setHeight(res.data.height)
+            seturl(url)
         })
-        seturl(url)
     }
 
 

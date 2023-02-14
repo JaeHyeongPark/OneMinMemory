@@ -146,7 +146,7 @@ function Canvas() {
 
   const newImage = async (e) => {
     e.preventDefault();
-    const imagedata = canvasRef.current.toDataURL();
+    const imagedata = canvasRef.current.toDataURL("image/"+ToCanvas.type);
     console.log(imagedata);
     const formdata = new FormData();
     formdata.append("imagedata", imagedata);

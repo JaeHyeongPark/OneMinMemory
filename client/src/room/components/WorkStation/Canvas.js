@@ -6,8 +6,8 @@ import "./Canvas.css";
 import Slider from "./Sliders";
 import SidebarItem from "./SidebarItem";
 import FrameInterpolation from "./FrameInterpolation";
-import CanvasDraw from "react-canvas-draw";
-import html2canvas from "html2canvas";
+// import CanvasDraw from "react-canvas-draw";
+// import html2canvas from "html2canvas";
 // import domToImage from "dom-to-image";
 
 const DEFAULT_OPTIONS = [
@@ -131,7 +131,7 @@ function Canvas() {
       Ctx.lineJoin = "round";
       Ctx.lineWidth = 4;
     };
-  }, [ToCanvas.url]);
+  }, [ToCanvas.url, Ctx]);
 
   const drawing = (e) => {
     const x = e.nativeEvent.offsetX;
@@ -156,7 +156,7 @@ function Canvas() {
   const newImage = async (e) => {
     e.preventDefault();
     const imagedata = await canvasRef.current.toDataURL();
-    console.log(imagedata);
+    // checkpoint
     const formdata = new FormData();
     formdata.append("imagedata", imagedata);
     await axios
@@ -167,9 +167,44 @@ function Canvas() {
       })
       .then((res) => {
         console.log(res);
+        console.log("성공!");
       })
       .catch((err) => {
         console.log(err);
+        console.log("에러!");
+      });
+  };
+
+  const selectedOptionApply = async (index) => {
+    if (index !== 1) {
+      return;
+    }
+    const canvas = canvasRef.current;
+    const imageData = canvas.toDataURL("image/" + ToCanvas.type);
+    // checkpoint!
+    const formdata = new FormData();
+    formdata.append("brightenedImageData", imageData);
+    await axios
+      .post("http://localhost:5000/canvas/image/brighten", formdata, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log("this is res", res);
+
+        const brightenedImageData = res.data.brightenedImageData;
+        if (brightenedImageData) {
+          const image = new Image();
+          image.src = brightenedImageData;
+          image.crossOrigin = "*";
+          image.onload = () => {
+            Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+          };
+        }
+      })
+      .catch((err) => {
+        console.log("this is error!!!");
       });
   };
 
@@ -186,7 +221,7 @@ function Canvas() {
                 ref={canvasRef}
                 width={800}
                 height={750}
-                style={getImageStyle()}
+                // style={getImageStyle()}
                 onMouseDown={() => ChangePaint(true)}
                 onMouseUp={() => ChangePaint(false)}
                 onMouseMove={(e) => drawing(e)}
@@ -202,7 +237,8 @@ function Canvas() {
                     key={index}
                     name={option.name}
                     active={index === selectedOptionIndex}
-                    handleClick={() => setSelectedOptionIndex(index)}
+                    // handleClick={() => setSelectedOptionIndex(index)}
+                    handleClick={() => selectedOptionApply(index)}
                   />
                 );
               })}

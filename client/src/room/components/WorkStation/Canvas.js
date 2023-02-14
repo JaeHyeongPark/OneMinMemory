@@ -122,7 +122,7 @@ function Canvas() {
       Ctx.lineJoin = "round";
       Ctx.lineWidth = 4;
     };
-  }, [ToCanvas.url]);
+  }, [ToCanvas.url, Ctx]);
 
   const drawing = (e) => {
     const x = e.nativeEvent.offsetX;
@@ -146,20 +146,24 @@ function Canvas() {
 
   const newImage = async (e) => {
     e.preventDefault();
-    const imagedata = canvasRef.current.toDataURL()
-    console.log(imagedata)
-    const formdata = new FormData()
-    formdata.append("imagedata",imagedata)
-    formdata.append("originurl", ToCanvas.url)
-    await axios.post("http://localhost:5000/canvas/newimage", formdata, {
-      headers: {
-        "content-type": "multipart/form-data"
-    }
-  }).then(res => {
-    console.log(res)
-  }).catch(err => {
-    console.log(err)
-  });}
+    const imagedata = canvasRef.current.toDataURL("image/"+ToCanvas.type);
+    console.log(imagedata);
+    const formdata = new FormData();
+    formdata.append("imagedata", imagedata);
+    formdata.append("originurl", ToCanvas.url);
+    await axios
+      .post("http://localhost:5000/canvas/newimage", formdata, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <React.Fragment>

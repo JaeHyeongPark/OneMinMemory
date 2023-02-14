@@ -50,6 +50,7 @@ router.get("/upload", async (req, res, next) => {
 });
 
 router.get("/sendimages", (req, res, next) => {
+
   res.send(urlList);
 });
 

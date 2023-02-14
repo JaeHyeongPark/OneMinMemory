@@ -21,7 +21,7 @@ router.post("/imageinfo", async (req, res, next) => {
   // const imgMeta = await sharp(imgBuffer).metadata()
   const image = sharp(imgBuffer.data)
   image.metadata().then((data) => {
-    res.json({width:data.width, height:data.height})
+    res.json({width:data.width, height:data.height, type:data.format})
   })
 });
 
@@ -33,13 +33,13 @@ router.post("/newimage", upload.none(), async (req, res, next) => {
   const imgMeta = await image.metadata()
   const params = {
     Bucket: process.env.Bucket_Name,
-    Key: "test/Effect" + s3filename,
+    Key: "test/" + s3filename,
     ACL: "public-read",
     Body: imgbuffer,
     ContentType: "image/" + imgMeta.format,
   };
   s3.putObject(params).promise()
-  res.send("hi~")
+  res.send({data: "hi!"})
 })
 
 module.exports = router;

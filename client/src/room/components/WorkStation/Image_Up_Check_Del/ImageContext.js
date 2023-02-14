@@ -14,15 +14,15 @@ export const TocanvasProvider = (props) => {
   const [url, seturl] = useState("");
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
-  const [type, setType] = useState("");
+  const [type, settype] = useState("");
 
   const sendurl = (url) => {
     axios
       .post("http://localhost:5000/canvas/imageinfo", { url: url })
-      .then((res) => {
+      .then(async (res) => {
         setWidth(res.data.width);
         setHeight(res.data.height);
-        setType(res.data.type);
+        settype(res.data.type);
       });
     seturl(url);
   };

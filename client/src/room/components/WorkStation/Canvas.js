@@ -155,10 +155,11 @@ function Canvas() {
 
   const newImage = async (e) => {
     e.preventDefault();
-    const imagedata = await canvasRef.current.toDataURL();
-    // checkpoint
+    const imagedata = canvasRef.current.toDataURL();
+    console.log(imagedata);
     const formdata = new FormData();
     formdata.append("imagedata", imagedata);
+    formdata.append("originurl", ToCanvas.url);
     await axios
       .post("http://localhost:5000/canvas/newimage", formdata, {
         headers: {

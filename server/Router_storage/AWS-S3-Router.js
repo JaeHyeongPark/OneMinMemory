@@ -37,7 +37,7 @@ router.get("/upload", async (req, res, next) => {
         `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
         info.Key;
       if (url in urlList) {
-        continue;
+        continue
       } else {
         urlList[url] = 0;
       }

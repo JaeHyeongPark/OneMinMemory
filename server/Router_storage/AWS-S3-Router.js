@@ -49,6 +49,33 @@ router.get("/upload", async (req, res, next) => {
   }
 });
 
+const toPlayUrlList = {};
+
+router.get("/playlist", async (req, res, next) => {
+  const params = {
+    Bucket: process.env.Bucket_Name,
+    // Prefix : `${req.body.roomNumber}/`
+    Prefix: "toplay",
+  };
+  try {
+    const data = await s3.listObjectsV2(params).promise();
+    for (const info of data.Contents) {
+      const url =
+        `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
+        info.Key;
+      if (url in toPlayUrlList) {
+        continue;
+      } else {
+        toPlayUrlList[url] = 0;
+      }
+    }
+    res.send(toPlayUrlList);
+  } catch (err) {
+    // 에러 핸들러로 보냄
+    return next(err);
+  }
+});
+
 router.get("/sendimages", (req, res, next) => {
   res.send(urlList);
 });
@@ -77,7 +104,7 @@ router.post("/deleteimage", async (req, res, next) => {
       return next(err);
     }
   }
-  res.send("삭제 완료!")
+  res.send("삭제 완료!");
 });
 
 // 업로드 하려고 받은 이미지 s3에 저장

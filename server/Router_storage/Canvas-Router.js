@@ -3,7 +3,7 @@ const sharp = require("sharp");
 const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const axios = require("axios");
-const multer = require("multer")
+const multer = require("multer");
 
 dotenv.config();
 AWS.config.update({
@@ -12,25 +12,27 @@ AWS.config.update({
   secretAccessKey: process.env.Secret_access_key,
 });
 
-const upload = multer()
+const upload = multer();
 const s3 = new AWS.S3();
 const router = express.Router();
 
 router.post("/imageinfo", async (req, res, next) => {
-  const imgBuffer = await axios.get(req.body.url, { responseType: "arraybuffer" });
+  const imgBuffer = await axios.get(req.body.url, {
+    responseType: "arraybuffer",
+  });
   // const imgMeta = await sharp(imgBuffer).metadata()
-  const image = sharp(imgBuffer.data)
+  const image = sharp(imgBuffer.data);
   image.metadata().then((data) => {
-    res.json({width:data.width, height:data.height})
-  })
+    res.json({ width: data.width, height: data.height });
+  });
 });
 
 router.post("/newimage", upload.none(), async (req, res, next) => {
-  const imageurl = req.body.imagedata.split("base64,")[1]
-  const s3filename = req.body.originurl.split('test/')[1]
-  const imgbuffer = Buffer.from(imageurl ,'base64')
-  const image = sharp(imgbuffer)
-  const imgMeta = await image.metadata()
+  const imageurl = req.body.imagedata.split("base64,")[1];
+  const s3filename = req.body.originurl.split("test/")[1];
+  const imgbuffer = Buffer.from(imageurl, "base64");
+  const image = sharp(imgbuffer);
+  const imgMeta = await image.metadata();
   const params = {
     Bucket: process.env.Bucket_Name,
     Key: "test/Effect" + s3filename,
@@ -38,12 +40,28 @@ router.post("/newimage", upload.none(), async (req, res, next) => {
     Body: imgbuffer,
     ContentType: "image/" + imgMeta.format,
   };
-  s3.putObject(params).promise()
-  res.send("hi~")
-})
+  s3.putObject(params).promise();
+  res.send("hi~");
+});
+
+router.post("/addtoplay", upload.none(), async (req, res, next) => {
+  const imageurl = req.body.imagedata.split("base64,")[1];
+  const s3filename = req.body.originurl.split("test/")[1];
+  const imgbuffer = Buffer.from(imageurl, "base64");
+  const image = sharp(imgbuffer);
+  const imgMeta = await image.metadata();
+  const params = {
+    Bucket: process.env.Bucket_Name,
+    Key: "toplay/Effect" + s3filename,
+    ACL: "public-read",
+    Body: imgbuffer,
+    ContentType: "image/" + imgMeta.format,
+  };
+  s3.putObject(params).promise();
+  res.send("ReadyToPlay");
+});
 
 module.exports = router;
-
 
 // AWS S3 cors 정책
 // [

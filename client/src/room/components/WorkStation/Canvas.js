@@ -176,6 +176,27 @@ function Canvas() {
       });
   };
 
+  const addToPlay = async (e) => {
+    e.preventDefault();
+    const imagedata = canvasRef.current.toDataURL();
+    console.log(imagedata);
+    const formdata = new FormData();
+    formdata.append("imagedata", imagedata);
+    formdata.append("originurl", ToCanvas.url);
+    await axios
+      .post("http://localhost:5000/canvas/addtoplay", formdata, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <React.Fragment>
       <div className="Username_and_canvas">
@@ -227,7 +248,7 @@ function Canvas() {
             />
           </div>
         </div>
-        <ToPlaylistButton />
+        <ToPlaylistButton onClick={addToPlay} />
       </div>
     </React.Fragment>
   );

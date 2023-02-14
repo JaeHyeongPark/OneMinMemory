@@ -107,13 +107,13 @@ function Canvas() {
     });
   }
 
-  function getImageStyle() {
-    const filters = options.map((option) => {
-      return `${option.property}(${option.value}${option.unit})`;
-    });
+  // function getImageStyle() {
+  //   const filters = options.map((option) => {
+  //     return `${option.property}(${option.value}${option.unit})`;
+  //   });
 
-    return { filter: filters.join(" ") };
-  }
+  //   return { filter: filters.join(" ") };
+  // }
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -156,10 +156,17 @@ function Canvas() {
   const newImage = async (e) => {
     e.preventDefault();
     const imagedata = canvasRef.current.toDataURL();
-    console.log(imagedata);
+    //checked
     const formdata = new FormData();
     formdata.append("imagedata", imagedata);
     formdata.append("originurl", ToCanvas.url);
+    for (const key of formdata.keys()) {
+      console.log(key);
+    }
+    for (const value of formdata.values()) {
+      console.log(value);
+    }
+    //checked
     await axios
       .post("http://localhost:5000/canvas/newimage", formdata, {
         headers: {

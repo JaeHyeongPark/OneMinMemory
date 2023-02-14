@@ -7,8 +7,8 @@ const Canvas_router = require("./Router_storage/Canvas-Router")
 
 // const s3 = new AWS.S3()
 const app = express();
-app.use(bodyParser.json())
 app.use(cors())
+app.use(bodyParser.json())
 
 // photoBox 라우터는 다 여기로 슝슝~~
 app.use("/photoBox", AWS_S3_router)

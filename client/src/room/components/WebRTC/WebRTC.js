@@ -21,7 +21,7 @@ let sendingConnection;
 let myStream;
 // let mute = false;
 // let cameraOff = false;
-let roomId = 1;
+let roomId = 3;
 
 // RTC 연결 생성 변수 (추가 설명 필요)
 const RTC_config = {
@@ -59,15 +59,15 @@ async function getMedia(deviceId) {
       facingMode: "user",
     },
   };
-  const cameraConstraints = {
-    audio: true,
-    video: {
-      width: 320,
-      height: 240,
-      frameRate: { max: 14 },
-      deviceId: { exact: deviceId },
-    },
-  };
+  // const cameraConstraints = {
+  //   audio: true,
+  //   video: {
+  //     width: 320,
+  //     height: 240,
+  //     frameRate: { max: 14 },
+  //     deviceId: { exact: deviceId },
+  //   },
+  // };
   try {
     // 유저의 유저미디어의 stream을 주는 api
     myStream = await navigator.mediaDevices.getUserMedia(initialConstrains);
@@ -120,9 +120,15 @@ async function startMedia() {
   await getMedia();
   await makeSendingConection();
 }
-const socket = io("https://23f7-1-223-174-170.jp.ngrok.io");
+
+// const socket = io("https://23f7-1-223-174-170.jp.ngrok.io");
+
+const socket = io("https://23f7-1-223-174-170.jp.ngrok.io", {
+  withCredentials: true,
+});
 // const socket = io.connect("https://23f7-1-223-174-170.jp.ngrok.io", {
 //   transports: ["websocket"],
+//   withCredentials: true,
 // });
 
 // 서버에서 sendingConnection에 대한 answer을 주는 소켓

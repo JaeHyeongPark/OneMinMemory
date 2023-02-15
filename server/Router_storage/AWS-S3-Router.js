@@ -37,7 +37,7 @@ router.get("/upload", async (req, res, next) => {
         `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
         info.Key;
       if (url in urlList) {
-        continue
+        continue;
       } else {
         urlList[url] = 0;
       }
@@ -77,7 +77,7 @@ router.post("/deleteimage", async (req, res, next) => {
       return next(err);
     }
   }
-  res.send("삭제 완료!")
+  res.send("삭제 완료!");
 });
 
 // 업로드 하려고 받은 이미지 s3에 저장

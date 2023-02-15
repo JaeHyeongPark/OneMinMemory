@@ -56,7 +56,7 @@ const PhotoBox = (props) => {
               </div>
             </div>
           </div>
-            <WorkButton view={view}/>
+          <WorkButton view={view} />
         </div>
       </div>
     </React.Fragment>

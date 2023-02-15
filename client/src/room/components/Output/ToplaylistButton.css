@@ -1,0 +1,35 @@
+.toPlaylist {
+  width: 500px;
+  height: 63px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  padding: 5px 0;
+  border-radius: 20px;
+  background-color: #0070d2;
+}
+
+.play-button-o {
+  width: 48px;
+  height: 48px;
+  flex-grow: 0;
+  background-color: transparent;
+}
+
+.playlist_label {
+  width: 239px;
+  height: 53px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 37.9px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+}

@@ -4,13 +4,7 @@ import axios from "axios";
 
 import "./Canvas.css";
 import ToPlaylistButton from "../Output/ToPlaylistButton";
-import Slider from "./Sliders";
 import SidebarItem from "./SidebarItem";
-import FrameInterpolation from "./FrameInterpolation";
-// import CanvasDraw from "react-canvas-draw";
-import html2canvas from "html2canvas";
-
-// import domToImage from "dom-to-image";
 
 const DEFAULT_OPTIONS = [
   {

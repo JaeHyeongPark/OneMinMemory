@@ -15,7 +15,6 @@ const ToPlaylistButton = (props) => {
     const imagedata = await props.canvasRef.current.toDataURL(
       "image/" + ToCanvas.type
     );
-    console.log(imagedata);
     const formdata = new FormData();
     formdata.append("imagedata", imagedata);
     formdata.append("originurl", ToCanvas.url);
@@ -26,8 +25,8 @@ const ToPlaylistButton = (props) => {
         },
       })
       .then((res) => {
-        console.log(res);
-        playlistCtx.addToPlaylist(res);
+        console.log(res.data);
+        playlistCtx.addToPlaylist(res.data);
       })
       .catch((err) => {
         console.log(err);

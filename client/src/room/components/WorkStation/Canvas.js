@@ -89,7 +89,7 @@ function Canvas() {
     if (code === 13) {
       Ctx.textBaseline = "top";
       Ctx.textAlign = "left";
-      Ctx.font = "14px sans-serif";
+      Ctx.font = "25px fantasy";
       Ctx.fillText(e.target.value, x[0], y[0]);
       setinputShow(false);
       setTextMode(false);
@@ -182,6 +182,7 @@ function Canvas() {
                     left: `${x[1]}px`,
                     top: `${y[1]}px`,
                     background: "transparent",
+                    height: "30px"
                   }}
                   onKeyDown={handleEnter}
                 />

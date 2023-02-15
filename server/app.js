@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 
 const AWS_S3_router = require("./Router_storage/AWS-S3-Router")
 const Canvas_router = require("./Router_storage/Canvas-Router")
+let num = 0
 
 // const s3 = new AWS.S3()
 const app = express();

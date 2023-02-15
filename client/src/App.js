@@ -3,7 +3,7 @@ import { Route, BrowserRouter, Routes, Navigate } from "react-router-dom";
 
 import MainPage from "./MainScreen/M-MainPage";
 import Room from "./room/pages/Room";
-import { AuthContext } from "./shared/context/AuthContext";
+import AuthContext from "./shared/context/auth-context";
 
 /* 아이디 연결시, 방 생성시 작업해야 할 부분
 <Route path="/:userId/room" element={<Room/>}/>  */

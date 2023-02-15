@@ -3,8 +3,8 @@ import ImageContext from "./Image_Up_Check_Del/ImageContext";
 import axios from "axios";
 
 import "./Canvas.css";
+import ToPlaylistButton from "../Output/ToPlaylistButton";
 import SidebarItem from "./SidebarItem";
-// import FrameInterpolation from "./FrameInterpolation";
 
 const DEFAULT_OPTIONS = [
   {
@@ -98,8 +98,10 @@ function Canvas() {
 
   const newImage = async (e) => {
     e.preventDefault();
-    const imagedata = canvasRef.current.toDataURL("image/" + ToCanvas.type);
-    //checked
+    const imagedata = await canvasRef.current.toDataURL(
+      "image/" + ToCanvas.type
+    );
+    console.log(imagedata);
     const formdata = new FormData();
     formdata.append("imagedata", imagedata);
     formdata.append("originurl", ToCanvas.url);
@@ -187,7 +189,7 @@ function Canvas() {
     <React.Fragment>
       <div className="Username_and_canvas">
         <div className="Username">
-          <span className="USER_canvan_span">USER1의 캔버스</span>
+          <span className="USER_canvas_span">USER1의 캔버스</span>
         </div>
         <div className="canvas">
           <div className="container">
@@ -195,7 +197,7 @@ function Canvas() {
               <canvas
                 ref={canvasRef}
                 width={800}
-                height={750}
+                height={600}
                 onClick={(e) => addinput(e)}
                 onMouseDown={() => ChangePaint(true)}
                 onMouseUp={() => ChangePaint(false)}
@@ -250,6 +252,7 @@ function Canvas() {
             </div>
           </div>
         </div>
+        <ToPlaylistButton canvasRef={canvasRef} />
       </div>
     </React.Fragment>
   );

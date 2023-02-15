@@ -28,35 +28,35 @@ const PhotoBox = (props) => {
   }, [check2]);
 
   const changecheck1 = () => {
-    setcheck(check ? false : true)
-  }
+    setcheck(check ? false : true);
+  };
 
   const changecheck2 = () => {
-    setcheck2(check2 ? false : true)
-  }
+    setcheck2(check2 ? false : true);
+  };
 
   return (
     <React.Fragment>
       <div className="title_and_photobox">
         <div className="fileupload_title">
           <div className="cloud">
-            <img src={cloud} className="img.cloud" alt="a"/>
+            <img src={cloud} className="img.cloud" alt="" />
           </div>
           <span className="cloud_span">CLOUD</span>
         </div>
         <div className="PhotoBox">
           <div className="Photos_and_Button">
-              <ImageShow view={view} change={changecheck1}/>
+            <ImageShow view={view} change={changecheck1} />
             <div className="PhotoBox-Button">
-              <ImageUpload change={changecheck1}/>
-              <ImageDel change={changecheck2}/>
+              <ImageUpload change={changecheck1} />
+              <ImageDel change={changecheck2} />
               <div className="filterButton">
-                <img src={filters} className="img.filters" alt="a"/>
+                <img src={filters} className="img.filters" alt="a" />
                 <label className="filter_label">초점이 안맞는 사진 선택</label>
               </div>
             </div>
           </div>
-            <WorkButton view={view}/>
+          <WorkButton view={view} />
         </div>
       </div>
     </React.Fragment>

@@ -1,19 +1,21 @@
-import { FcPhotoReel } from "react-icons/fc";
 import css from "./header.module.css";
+import minlogo from "../room/assets/1minlogo_black.svg";
 
 function MainHeader() {
   return (
     <div className={css.MHcontainer}>
       <div className={css.MHInner}>
-        <h1>
-          일분추억
-          <FcPhotoReel size={40} />
-        </h1>
-        <button className={css.MHbutton}>
-          <p>이용 방법</p>
-        </button>
+        <div className={css.Logo_and_Icon}>
+          <span className={css.home_logo_span}>일분추억</span>
+          <div className={css.logoIcon}>
+            <img src={minlogo} className={css.logo_black} alt="a" />
+          </div>
+        </div>
+        <div className={css.feedback_button}>
+          <span className={css.feedback_span}>Feedback</span>
+        </div>
       </div>
-        <hr />
+      <hr />
     </div>
   );
 }

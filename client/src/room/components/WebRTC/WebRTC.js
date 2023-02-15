@@ -34,6 +34,7 @@ const WebRTC = () => {
     <div className="ROOM-BODY-WebRTC">
       <div className="CAMs">
         <div className="CamFrame">
+<<<<<<< HEAD
           {/* <img src={cans} className="img.component-cans" alt="a" /> */}
           <video
             id="peersFace1"
@@ -42,11 +43,15 @@ const WebRTC = () => {
             height="180px"
             width="240px"
           ></video>
+=======
+          <img src={cans} className="img.component-cans" alt="user cam" />
+>>>>>>> feature/roomdev
           <div className="name_layout">
             <span className="name_span">Name</span>
           </div>
         </div>
         <div className="CamFrame">
+<<<<<<< HEAD
           {/* <img src={cans} className="img.component-cans" alt="a" /> */}
           <video
             id="peersFace2"
@@ -55,11 +60,15 @@ const WebRTC = () => {
             height="180px"
             width="240px"
           ></video>
+=======
+          <img src={cans} className="img.component-cans" alt="user cam" />
+>>>>>>> feature/roomdev
           <div className="name_layout">
             <span className="name_span">Name</span>
           </div>
         </div>
         <div className="CamFrame">
+<<<<<<< HEAD
           {/* <img src={cans} className="img.component-cans" alt="a" /> */}
           <video
             id="peersFace3"
@@ -68,11 +77,15 @@ const WebRTC = () => {
             height="180px"
             width="240px"
           ></video>
+=======
+          <img src={cans} className="img.component-cans" alt="user cam" />
+>>>>>>> feature/roomdev
           <div className="name_layout">
             <span className="name_span">Name</span>
           </div>
         </div>
         <div className="CamFrame">
+<<<<<<< HEAD
           {/* <img src={cans} className="img.component-cans" alt="a" /> */}
           <video
             id="peersFace4"
@@ -81,6 +94,9 @@ const WebRTC = () => {
             height="180px"
             width="240px"
           ></video>
+=======
+          <img src={cans} className="img.component-cans" alt="user cam" />
+>>>>>>> feature/roomdev
           <div className="name_layout">
             <span className="name_span">Name</span>
           </div>

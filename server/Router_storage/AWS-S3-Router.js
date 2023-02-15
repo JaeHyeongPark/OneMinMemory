@@ -50,7 +50,6 @@ router.get("/upload", async (req, res, next) => {
 });
 
 router.get("/sendimages", (req, res, next) => {
-
   res.send(urlList);
 });
 
@@ -78,7 +77,7 @@ router.post("/deleteimage", async (req, res, next) => {
       return next(err);
     }
   }
-  res.send("삭제 완료!")
+  res.send("삭제 완료!");
 });
 
 // 업로드 하려고 받은 이미지 s3에 저장

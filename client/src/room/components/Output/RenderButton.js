@@ -1,17 +1,14 @@
-import React from "react";
+import React, {useContext} from "react";
+import PlaylistContext from "../../../shared/context/playlist-context";
 import axios from "axios";
 
 import infinity from "../../assets/infinity.svg";
 
 const RenderButton = () => {
-  //   const getlist = () => {
-  //     axios.get("http://localhost:5000/photoBox/playlist").then((res) => {
-  //       console.log(res.data);
-  //     });
-  //   };
+  const playlistCtx = useContext(PlaylistContext)
 
   const merge = () => {
-    axios.post("http://localhost:5000/output/merge").then((res) => {
+    axios.post("http://localhost:5000/output/merge", {urlList:playlistCtx.playlist}).then((res) => {
       console.log(res);
     });
   };

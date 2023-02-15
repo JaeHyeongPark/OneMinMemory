@@ -74,9 +74,8 @@ router.get("/playlist", async (req, res, next) => {
 });
 
 router.post("/merge", async (req, res, next) => {
-  const images = Object.keys(toPlayUrlList);
-  console.log(images);
-
+  const images = Object.keys(req.body.urlList);
+  console.log("동영상 생성을 시작합니다~~~~!!")
   var videoOptions = {
     loop: 5,
     fps: 25,

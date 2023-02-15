@@ -29,11 +29,7 @@ const Playlist = () => {
   //   setcheck2(check2 ? false : true);
   // };
 
-  return (
-    <div className="playlist_layout">
-      <PlaylistShow playView={playView} change={changePlayCheck} />
-    </div>
-  );
+  return <PlaylistShow playView={playView} change={changePlayCheck} />;
 };
 
 export default Playlist;

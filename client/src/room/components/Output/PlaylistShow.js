@@ -38,6 +38,6 @@ const PlaylistShow = (props) => {
     }
   });
 
-  return <div className="upload_toplays">{context}</div>;
+  return <div className="playlist_layout">{context}</div>;
 };
 export default PlaylistShow;

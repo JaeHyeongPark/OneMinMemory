@@ -70,13 +70,6 @@ router.post("/merge", async (req, res, next) => {
   const images = Object.keys(toPlayUrlList);
   console.log(images);
 
-  //   var images = [
-  //     "https://oneminutememory.s3.ap-northeast-2.amazonaws.com/toplay/Effect1675366929219",
-  //     "./samples/img2.jpg",
-  //     "./samples/img3.jpg",
-  //     "./samples/img4.jpg",
-  //   ];
-
   var videoOptions = {
     loop: 5,
     fps: 25,

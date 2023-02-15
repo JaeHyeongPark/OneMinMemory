@@ -4,6 +4,8 @@ import axios from "axios";
 import ImageContext from "../WorkStation/Image_Up_Check_Del/ImageContext";
 import playbutton from "../../assets/playbutton.svg";
 
+import "./ToplaylistButton.css";
+
 const ToPlaylistButton = (props) => {
   const ToCanvas = useContext(ImageContext);
 

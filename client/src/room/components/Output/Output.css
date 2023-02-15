@@ -13,26 +13,12 @@
   height: 180px;
   flex-grow: 1;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  /* gap: 20px; */
+  align-items: stretch;
   padding: 5px 20px;
   border: solid 1px #272833;
   background-color: #d9e8ef;
-}
-
-.playlist_layout {
-  height: 132px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: stretch;
-  gap: 5px;
-  padding: 20px;
-  border-radius: 15px;
-  border: solid 2px #272833;
 }
 
 .insert_music_button {
@@ -190,4 +176,83 @@ img.infinity {
   letter-spacing: normal;
   text-align: center;
   color: #272833;
+}
+
+.TimeandBar {
+  height: 54px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0 30px;
+}
+
+.TimeBar {
+  height: 20px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0 30px;
+}
+
+.time {
+  height: 34px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0;
+}
+
+.start {
+  width: 55px;
+  height: 34px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 21.3px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: normal;
+  text-align: center;
+  color: #000;
+}
+
+.end {
+  width: 52px;
+  height: 34px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 21.3px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: normal;
+  text-align: center;
+  color: #000;
+}
+
+.LineA {
+  width: 1px;
+  height: 20px;
+  flex-grow: 0;
+  transform: rotate(-90deg);
+  background-color: #272833;
+}
+
+.LineB {
+  width: 1px;
+  height: 10px;
+  flex-grow: 0;
+  transform: rotate(-90deg);
+  background-color: #000;
 }

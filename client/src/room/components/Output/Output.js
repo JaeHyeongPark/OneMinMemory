@@ -5,6 +5,8 @@ import RenderButton from "./RenderButton";
 
 import music from "../../assets/music.svg";
 import polaroid from "../../assets/polaroid.svg";
+import lineA from "../../assets/LineA.svg";
+import lineB from "../../assets/LineB.svg";
 
 import "./Output.css";
 
@@ -12,6 +14,39 @@ const Output = () => {
   return (
     <div className="ROOM-FOOTER">
       <div className="ROOM-FOOTER-TEST">
+        <div className="TimeandBar">
+          <div className="TimeBar">
+            <img src={lineA} />
+            <img src={lineB} />
+            <img src={lineA} />
+            <img src={lineB} />
+            <img src={lineA} />
+            <img src={lineB} />
+            <img src={lineA} />
+            <img src={lineB} />
+            <img src={lineA} />
+            <img src={lineB} />
+            <img src={lineA} />
+            <img src={lineB} />
+            <img src={lineA} />
+            <img src={lineB} />
+            <img src={lineA} />
+            <img src={lineB} />
+            <img src={lineA} />
+            <img src={lineB} />
+            <img src={lineA} />
+            <img src={lineB} />
+            <img src={lineA} />
+            <img src={lineB} />
+            <img src={lineA} />
+            <img src={lineB} />
+            <img src={lineA} />
+          </div>
+          <div className="time">
+            <span className="start">00:00</span>
+            <span className="end">01:00</span>
+          </div>
+        </div>
         <Playlist />
       </div>
       <div className="ROOM-FOOTER-BUTTONS">

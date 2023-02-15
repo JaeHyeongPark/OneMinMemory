@@ -75,15 +75,15 @@ router.get("/playlist", async (req, res, next) => {
 
 router.post("/merge", async (req, res, next) => {
   const images = Object.keys(req.body.urlList);
-  console.log("동영상 생성을 시작합니다~~~~!!")
+  console.log("동영상 생성을 시작합니다~~~~!!");
   var videoOptions = {
     loop: 5,
     fps: 25,
     transition: true,
     transitionDuration: 1, // seconds
-    videoBitrate: 1024,
+    videoBitrate: 3000,
     videoCodec: "libx264",
-    size: "1024x?",
+    size: "1080x?",
     audioBitrate: "128k",
     audioChannels: 2,
     format: "mp4",
@@ -91,6 +91,9 @@ router.post("/merge", async (req, res, next) => {
   };
 
   videoShow(images, videoOptions)
+    .audio(
+      "Hoang - Run Back to You (Official Lyric Video) feat. Alisa_128kbps.mp3"
+    )
     .save("Output.mp4")
     .on("start", function (command) {
       console.log("Conversion started" + command);

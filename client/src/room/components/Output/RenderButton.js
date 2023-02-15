@@ -1,15 +1,22 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import axios from "axios";
+import FileDownload from "js-file-download";
 
 import infinity from "../../assets/infinity.svg";
 
 const RenderButton = () => {
-  const playlistCtx = useContext(PlaylistContext)
+  const playlistCtx = useContext(PlaylistContext);
 
   const merge = () => {
-    axios.post("http://localhost:5000/output/merge", {urlList:playlistCtx.playlist}).then((res) => {
-      console.log(res);
+    console.log("다운로드 버튼 클릭 !");
+    axios({
+      method: "post",
+      url: "http://localhost:5000/output/merge",
+      responseType: "blob",
+      data: { urlList: playlistCtx.playlist },
+    }).then((res) => {
+      FileDownload(res.data, "oneminute.mp4");
     });
   };
 

@@ -26,8 +26,7 @@ const ToPlaylistButton = (props) => {
         },
       })
       .then((res) => {
-        console.log(res);
-        playlistCtx.addToPlaylist(res);
+        playlistCtx.addToPlaylist(res.data);
       })
       .catch((err) => {
         console.log(err);

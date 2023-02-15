@@ -36,8 +36,14 @@ router.post("/addtoplay", upload.none(), async (req, res, next) => {
     Body: imgbuffer,
     ContentType: "image/" + imgMeta.format,
   };
-  s3.putObject(params).promise();
-  res.send("ReadyToPlay");
+  s3.putObject(params)
+    .promise()
+    .then(() => {
+      const addedUrl =
+        `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
+        params.Key;
+      res.send(addedUrl);
+    });
 });
 
 const toPlayUrlList = {};
@@ -50,6 +56,7 @@ router.get("/playlist", async (req, res, next) => {
   try {
     const data = await s3.listObjectsV2(params).promise();
     for (const info of data.Contents) {
+      console.log(info.Key);
       const url =
         `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
         info.Key;

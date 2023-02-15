@@ -19,8 +19,7 @@ export const PlaylistContextProvider = (props) => {
   //   const setChangeHandler = () => {};
 
   const addToPlaylistHandler = (track) => {
-    console.log(track);
-    let temp = { ...playlist };
+    let temp = { ...playlist, track };
     temp[track] = 0;
     setPlaylist(temp);
   };

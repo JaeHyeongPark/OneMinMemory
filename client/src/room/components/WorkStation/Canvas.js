@@ -3,117 +3,32 @@ import ImageContext from "./Image_Up_Check_Del/ImageContext";
 import axios from "axios";
 
 import "./Canvas.css";
-import Slider from "./Sliders";
 import SidebarItem from "./SidebarItem";
-import FrameInterpolation from "./FrameInterpolation";
-// import CanvasDraw from "react-canvas-draw";
-// import html2canvas from "html2canvas";
-// import domToImage from "dom-to-image";
+// import FrameInterpolation from "./FrameInterpolation";
 
 const DEFAULT_OPTIONS = [
   {
-    name: "Brightness",
-    property: "brightness",
-    value: 100,
-    range: {
-      min: 0,
-      max: 200,
-    },
-    unit: "%",
+    name: "Brighten",
   },
   {
-    name: "Contrast",
-    property: "contrast",
-    value: 100,
-    range: {
-      min: 0,
-      max: 200,
-    },
-    unit: "%",
+    name: "Sharpen",
   },
   {
-    name: "Saturation",
-    property: "saturate",
-    value: 100,
-    range: {
-      min: 0,
-      max: 200,
-    },
-    unit: "%",
+    name: "Saturate",
   },
   {
     name: "Grayscale",
-    property: "grayscale",
-    value: 0,
-    range: {
-      min: 0,
-      max: 100,
-    },
-    unit: "%",
-  },
-  {
-    name: "Sepia",
-    property: "sepia",
-    value: 0,
-    range: {
-      min: 0,
-      max: 100,
-    },
-    unit: "%",
-  },
-  {
-    name: "Hue Rotate",
-    property: "hue-rotate",
-    value: 0,
-    range: {
-      min: 0,
-      max: 360,
-    },
-    unit: "deg",
-  },
-  {
-    name: "Blur",
-    property: "blur",
-    value: 0,
-    range: {
-      min: 0,
-      max: 20,
-    },
-    unit: "px",
   },
 ];
 
 function Canvas() {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
   const [options, setOptions] = useState(DEFAULT_OPTIONS);
-  const selectedOption = options[selectedOptionIndex];
   const canvasRef = useRef(null);
   const [PaintMode, setPaintMode] = useState(false);
   const [Paint, setPaint] = useState(false);
   const [Ctx, setCtx] = useState(null);
   const ToCanvas = useContext(ImageContext);
-
-  // const handleSaveImage = () => {
-  //   const dataURL = canvasRef.current.canvas.drawing.toDataURL();
-  //   localStorage.setItem("savedImage", dataURL);
-  // };
-
-  function handleSliderChange({ target }) {
-    setOptions((prevOptions) => {
-      return prevOptions.map((option, index) => {
-        if (index !== selectedOptionIndex) return option;
-        return { ...option, value: target.value };
-      });
-    });
-  }
-
-  // function getImageStyle() {
-  //   const filters = options.map((option) => {
-  //     return `${option.property}(${option.value}${option.unit})`;
-  //   });
-
-  //   return { filter: filters.join(" ") };
-  // }
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -177,36 +92,37 @@ function Canvas() {
       });
   };
 
-  const selectedOptionApply = async (index) => {
+  const selectedOptionApply = async (index, name) => {
+    setSelectedOptionIndex(index);
+    console.log("index:", index);
+    console.log("name:", name);
     const canvas = canvasRef.current;
     const imageData = canvas.toDataURL("image/" + ToCanvas.type);
     // checkpoint!
     const formdata = new FormData();
-    formdata.append("brightenedImageData", imageData);
-    if (index === 0) {
-      await axios
-        .post("http://localhost:5000/canvas/image/brighten", formdata, {
-          headers: {
-            "content-type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          console.log("this is res", res);
+    formdata.append(`${name}ImageData`, imageData);
+    await axios
+      .post(`http://localhost:5000/canvas/image/${name}`, formdata, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log("this is res", res);
 
-          const brightenedImageData = res.data.brightenedImageData;
-          if (brightenedImageData) {
-            const image = new Image();
-            image.src = brightenedImageData;
-            image.crossOrigin = "*";
-            image.onload = () => {
-              Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-            };
-          }
-        })
-        .catch((err) => {
-          console.log("this is error!!!");
-        });
-    }
+        const effectedImageData = res.data.effectedImageData;
+        if (effectedImageData) {
+          const image = new Image();
+          image.src = effectedImageData;
+          image.crossOrigin = "*";
+          image.onload = () => {
+            Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+          };
+        }
+      })
+      .catch((err) => {
+        console.log("this is error!!!");
+      });
   };
 
   return (
@@ -222,14 +138,12 @@ function Canvas() {
                 ref={canvasRef}
                 width={800}
                 height={750}
-                // style={getImageStyle()}
                 onMouseDown={() => ChangePaint(true)}
                 onMouseUp={() => ChangePaint(false)}
                 onMouseMove={(e) => drawing(e)}
                 onMouseLeave={() => ChangePaint(false)}
               />
             </div>
-            {/* <button onClick={onHtmlToPng}>Capture!</button> */}
 
             <div className="sidebar">
               {options.map((option, index) => {
@@ -238,8 +152,7 @@ function Canvas() {
                     key={index}
                     name={option.name}
                     active={index === selectedOptionIndex}
-                    // handleClick={() => setSelectedOptionIndex(index)}
-                    handleClick={() => selectedOptionApply(index)}
+                    handleClick={() => selectedOptionApply(index, option.name)}
                   />
                 );
               })}
@@ -253,12 +166,6 @@ function Canvas() {
                 저장하기
               </button>
             </div>
-            <Slider
-              min={selectedOption.range.min}
-              max={selectedOption.range.max}
-              value={selectedOption.value}
-              handleChange={handleSliderChange}
-            />
           </div>
         </div>
       </div>

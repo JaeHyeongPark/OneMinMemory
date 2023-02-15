@@ -45,6 +45,64 @@ router.post("/newimage", upload.none(), async (req, res) => {
   res.send({ data: "hi!" });
 });
 
+// 이미지 효과 기능들 : 밝게
+router.post("/image/Brighten", upload.none(), async (req, res) => {
+  console.log("밝은 사진!");
+  const imageurl = req.body.BrightenImageData.split("base64,")[1];
+  const imgbuffer = Buffer.from(imageurl, "base64");
+  const imgFormat = (await sharp(imgbuffer).metadata()).format;
+  const BrightenBuffer = await sharp(imgbuffer)
+    .modulate({ brightness: 1.2 })
+    .png()
+    .toBuffer();
+  const effectedImageData = `data:image/${imgFormat};base64,${BrightenBuffer.toString(
+    "base64"
+  )}`;
+
+  res.json({ effectedImageData });
+});
+// 선명하게
+router.post("/image/Sharpen", upload.none(), async (req, res) => {
+  console.log("선명한 사진!");
+  const imageurl = req.body.SharpenImageData.split("base64,")[1];
+  const imgbuffer = Buffer.from(imageurl, "base64");
+  const imgFormat = (await sharp(imgbuffer).metadata()).format;
+  const SharpenBuffer = await sharp(imgbuffer).sharpen({ sigma: 2 }).toBuffer();
+  const effectedImageData = `data:image/${imgFormat};base64,${SharpenBuffer.toString(
+    "base64"
+  )}`;
+
+  res.json({ effectedImageData });
+});
+// 색감 증가
+router.post("/image/Saturate", upload.none(), async (req, res) => {
+  console.log("색감!");
+  const imageurl = req.body.SaturateImageData.split("base64,")[1];
+  const imgbuffer = Buffer.from(imageurl, "base64");
+  const imgFormat = (await sharp(imgbuffer).metadata()).format;
+  const SaturateBuffer = await sharp(imgbuffer)
+    .modulate({ saturation: 1.5 })
+    .toBuffer();
+  const effectedImageData = `data:image/${imgFormat};base64,${SaturateBuffer.toString(
+    "base64"
+  )}`;
+
+  res.json({ effectedImageData });
+});
+// 흑백처리
+router.post("/image/Grayscale", upload.none(), async (req, res) => {
+  console.log("흑백!");
+  const imageurl = req.body.GrayscaleImageData.split("base64,")[1];
+  const imgbuffer = Buffer.from(imageurl, "base64");
+  const imgFormat = (await sharp(imgbuffer).metadata()).format;
+  const GrayscaleBuffer = await sharp(imgbuffer).grayscale().toBuffer();
+  const effectedImageData = `data:image/${imgFormat};base64,${GrayscaleBuffer.toString(
+    "base64"
+  )}`;
+
+  res.json({ effectedImageData });
+});
+
 module.exports = router;
 
 // AWS S3 cors 정책

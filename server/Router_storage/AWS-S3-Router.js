@@ -102,6 +102,7 @@ router.post("/upload", (req, res, next) => {
         ACL: "public-read",
         Body: file.buffer,
         ContentType: file.mimetype,
+        CacheControl:"no-store"
       };
       return s3.upload(params).promise();
     });

@@ -35,6 +35,7 @@ router.post("/addtoplay", upload.none(), async (req, res, next) => {
     ACL: "public-read",
     Body: imgbuffer,
     ContentType: "image/" + imgMeta.format,
+    CacheControl:"no-store"
   };
   s3.putObject(params)
     .promise()
@@ -56,7 +57,6 @@ router.get("/playlist", async (req, res, next) => {
   try {
     const data = await s3.listObjectsV2(params).promise();
     for (const info of data.Contents) {
-      console.log(info.Key);
       const url =
         `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
         info.Key;

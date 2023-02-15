@@ -27,7 +27,6 @@
     <title>React App</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--
       This HTML file is a template.
@@ -40,4 +39,18 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+  <!-- <script src="https://23f7-1-223-174-170.jp.ngrok.io/socket.io/socket.io.js"></script> -->
+  <!-- <script src="https://23f7-1-223-174-170.jp.ngrok.io/public/js/app_sfuServer.js"></script> -->
+  <!-- <script>
+    const socket = io.connect("https://23f7-1-223-174-170.jp.ngrok.io", {
+      cors: { origin: "*" },
+    });
+    console.log(socket.id);
+    // socket.connect();
+    socket.emit("joinRoom", { roomId: 1 });
+    socket.on("connection", () => {
+      console.log(socket.id);
+      socket.emit("joinRoom", { roomId: 1 });
+    });
+  </script> -->
 </html>

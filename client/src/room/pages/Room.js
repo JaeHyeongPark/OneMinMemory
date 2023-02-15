@@ -1,5 +1,5 @@
 import React from "react";
-import { RoomCodeContext } from "../../shared/context/RoomCodeContext";
+import RoomCodeContext from "../../shared/context/roomcode-context";
 
 import RoomHeader from "../components/RoomHeader/RoomHeader";
 import Contents from "./Contents";

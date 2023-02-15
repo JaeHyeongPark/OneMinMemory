@@ -84,9 +84,13 @@ function Canvas() {
   const [options, setOptions] = useState(DEFAULT_OPTIONS);
   const selectedOption = options[selectedOptionIndex];
   const canvasRef = useRef(null);
+  const [TextMode, setTextMode] = useState(false);
+  const [inputShow, setinputShow] = useState(false);
   const [PaintMode, setPaintMode] = useState(false);
   const [Paint, setPaint] = useState(false);
   const [Ctx, setCtx] = useState(null);
+  const [x, setX] = useState([]);
+  const [y, setY] = useState([]);
   const ToCanvas = useContext(ImageContext);
 
   function handleSliderChange({ target }) {
@@ -144,9 +148,35 @@ function Canvas() {
     }
   };
 
+  const addinput = (e) => {
+    if (!TextMode) {
+      return;
+    }
+    const x = e.nativeEvent.offsetX;
+    const y = e.nativeEvent.offsetY;
+    const z = canvasRef.current.getBoundingClientRect();
+    setX([x-4, z.x + x-4])
+    setY([y-4, z.y + y-4])
+    setinputShow(true);
+  };
+
+  const handleEnter = (e) => {
+    const code = e.keyCode
+    if(code === 13){
+      Ctx.textBaseline = "top";
+      Ctx.textAlign = "left";
+      Ctx.font = "14px sans-serif";
+      Ctx.fillText(e.target.value, x[0], y[0]);
+      setinputShow(false)
+      setTextMode(false)
+    }
+  }
+
   const newImage = async (e) => {
     e.preventDefault();
-    const imagedata = canvasRef.current.toDataURL("image/"+ToCanvas.type);
+    const imagedata = await canvasRef.current.toDataURL(
+      "image/" + ToCanvas.type
+    );
     console.log(imagedata);
     const formdata = new FormData();
     formdata.append("imagedata", imagedata);
@@ -179,11 +209,24 @@ function Canvas() {
                 width={800}
                 height={750}
                 style={getImageStyle()}
+                onClick={(e) => addinput(e)}
                 onMouseDown={() => ChangePaint(true)}
                 onMouseUp={() => ChangePaint(false)}
                 onMouseMove={(e) => drawing(e)}
                 onMouseLeave={() => ChangePaint(false)}
               />
+              {inputShow && (
+                <input
+                  type="text"
+                  style={{
+                    position: "fixed",
+                    left: `${x[1]}px`,
+                    top: `${y[1]}px`,
+                    background: "transparent"
+                  }}
+                  onKeyDown={handleEnter}
+                />
+              )}
             </div>
             <div className="sidebar">
               {options.map((option, index) => {
@@ -201,6 +244,11 @@ function Canvas() {
                 onClick={() => setPaintMode(PaintMode ? false : true)}
               >
                 PaintMode-{PaintMode ? "ON" : "OFF"}
+              </button>
+              <button className="sidebar-item" onClick={() => {
+                setTextMode(TextMode ? false : true)
+              }}>
+                Text Mode-{TextMode ? "END" : "Write"}
               </button>
               <button className="sidebar-item" onClick={newImage}>
                 저장하기

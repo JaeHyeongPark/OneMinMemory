@@ -10,7 +10,6 @@ const Playlist = () => {
   const playlistView = playlistCtx.playlist;
 
   const context = Object.keys(playlistView).map((url) => {
-    console.log(url)
     if (playlistView[url] === 0) {
       return (
         <img

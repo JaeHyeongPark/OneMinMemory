@@ -3,7 +3,7 @@ const sharp = require("sharp");
 const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const axios = require("axios");
-const multer = require("multer");;
+const multer = require("multer");
 
 dotenv.config();
 AWS.config.update({
@@ -12,18 +12,16 @@ AWS.config.update({
   secretAccessKey: process.env.Secret_access_key,
 });
 
-const upload = multer();;
+const upload = multer();
 const s3 = new AWS.S3();
 const router = express.Router();
 
 router.post("/imageinfo", async (req, res, next) => {
   const imgBuffer = await axios.get(req.body.url, {
-   
     responseType: "arraybuffer",
- ,
   });
   // const imgMeta = await sharp(imgBuffer).metadata()
-  const image = sharp(imgBuffer.data);;
+  const image = sharp(imgBuffer.data);
   image.metadata().then((data) => {
     res.json({ width: data.width, height: data.height, type: data.format });
   });

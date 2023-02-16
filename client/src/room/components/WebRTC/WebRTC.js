@@ -123,10 +123,11 @@ async function startMedia() {
 
 // const socket = io("https://23f7-1-223-174-170.jp.ngrok.io");
 
-const socket = io("https://23f7-1-223-174-170.jp.ngrok.io/socket.io", {
+const socket = io("https://23f7-1-223-174-170.jp.ngrok.io", {
   withCredentials: true,
+  transports: ["websocket"],
   extraHeaders: {
-    "my-custom-header": "abcd",
+    "my-custom-header": "my-custom-header",
   },
 });
 // const socket = io.connect("https://23f7-1-223-174-170.jp.ngrok.io", {
@@ -288,6 +289,7 @@ async function makeSendingConection() {
     // SendingConnection을 위한 offer 생성 후 서버에 전달
     const sendingOffer = await sendingConnection.createOffer();
     await sendingConnection.setLocalDescription(sendingOffer);
+    console.log("오퍼 보낼께요~");
     socket.emit("joinRoom", {
       roomId,
       sendingOffer: sendingOffer,

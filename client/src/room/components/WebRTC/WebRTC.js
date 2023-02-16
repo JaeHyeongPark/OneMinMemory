@@ -125,6 +125,9 @@ async function startMedia() {
 
 const socket = io("https://23f7-1-223-174-170.jp.ngrok.io/socket.io", {
   withCredentials: true,
+  extraHeaders: {
+    "my-custom-header": "abcd",
+  },
 });
 // const socket = io.connect("https://23f7-1-223-174-170.jp.ngrok.io", {
 //   transports: ["websocket"],

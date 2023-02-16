@@ -123,12 +123,12 @@ async function startMedia() {
 
 // const socket = io("https://23f7-1-223-174-170.jp.ngrok.io");
 
-const socket = io("https://23f7-1-223-174-170.jp.ngrok.io", {
+const socket = io("https://23f7-1-223-174-170.jp.ngrok.io/socket.io", {
   withCredentials: true,
 });
 // const socket = io.connect("https://23f7-1-223-174-170.jp.ngrok.io", {
 //   transports: ["websocket"],
-//   withCredentials: true,
+//   // withCredentials: true,
 // });
 
 // 서버에서 sendingConnection에 대한 answer을 주는 소켓

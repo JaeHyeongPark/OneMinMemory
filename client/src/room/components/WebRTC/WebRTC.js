@@ -4,7 +4,7 @@ import React from "react";
 
 import "./WebRTC.css";
 
-import { io } from "socket.io-client"; // Client Socket
+import io from "socket.io-client"; // Client Socket
 
 console.log(1);
 
@@ -125,9 +125,9 @@ async function startMedia() {
 
 const socket = io("https://23f7-1-223-174-170.jp.ngrok.io", {
   withCredentials: true,
-  transports: ["websocket"],
+  // transports: ["websocket"],
   extraHeaders: {
-    "my-custom-header": "my-custom-header",
+    "my-custom-header": "abcd",
   },
 });
 // const socket = io.connect("https://23f7-1-223-174-170.jp.ngrok.io", {

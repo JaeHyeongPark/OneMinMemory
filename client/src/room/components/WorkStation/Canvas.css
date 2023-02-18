@@ -80,7 +80,12 @@ body {
   margin: 10px;
   position: relative;
 }
-
+.container .transition-modal {
+  width: 800px;
+  height: 764px;
+  margin: 10px;
+  position: relative;
+}
 /* .uploaded-image canvas {
   width: 100%;
   height: 100%;
@@ -144,19 +149,4 @@ body {
   bottom: 0;
   height: 1px;
   background-color: hsl(265, 100%, 46%);
-}
-
-.sidebar-item:last-child::after {
-  display: none;
-}
-
-.slider-container {
-  grid-area: slider;
-  margin-top: 2rem;
-  padding: 2rem;
-}
-
-.slider {
-  width: 100%;
-  cursor: pointer;
 }

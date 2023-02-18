@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const morgan = require("morgan");
 const AWS_S3_router = require("./Router_storage/AWS-S3-Router");
 const Canvas_router = require("./Router_storage/Canvas-Router");
 const Output_router = require("./Router_storage/Output-Router");
@@ -10,7 +9,7 @@ const Output_router = require("./Router_storage/Output-Router");
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
-app.use(morgan("combined"));
+
 // photoBox 라우터는 다 여기로 슝슝~~
 app.use("/photoBox", AWS_S3_router);
 // canvas 라우터는 여기로~~

@@ -130,7 +130,7 @@ body {
   outline: none;
   padding: 1rem;
   position: relative;
-  border-radius: 15px 15px 0px 0px;
+  border-radius: 15px;
   transition: background-color 150ms;
 }
 

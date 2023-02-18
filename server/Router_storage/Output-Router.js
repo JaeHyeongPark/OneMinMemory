@@ -112,31 +112,31 @@ router.post("/merge", async (req, res, next) => {
 // react 재생목록에 보낼 임시정보 Array
 let playlist = [
   {
-    url: "https://awslearner-s3-bucket-test.s3.ap-northeast-2.amazonaws.com/image-public/001.jpeg",
+    url: "",
     duration: 5,
     fadeout: true,
     transition: "effect1",
   },
   {
-    url: "https://awslearner-s3-bucket-test.s3.ap-northeast-2.amazonaws.com/image-public/002.jpeg",
+    url: "",
     duration: 5,
     fadeout: true,
     transition: "effect2",
   },
   {
-    url: "https://awslearner-s3-bucket-test.s3.ap-northeast-2.amazonaws.com/image-public/003.jpeg",
+    url: "",
     duration: 15,
     fadeout: true,
     transition: "effect2",
   },
   {
-    url: "https://awslearner-s3-bucket-test.s3.ap-northeast-2.amazonaws.com/image-public/004.jpeg",
+    url: "",
     duration: 15,
     fadeout: true,
     transition: "effect1",
   },
   {
-    url: "https://awslearner-s3-bucket-test.s3.ap-northeast-2.amazonaws.com/image-public/005.jpeg",
+    url: "",
     duration: 5,
     fadeout: true,
     transition: null,

@@ -123,7 +123,7 @@ async function startMedia() {
 
 // const socket = io("https://23f7-1-223-174-170.jp.ngrok.io");
 
-const socket = io("tcp://0.tcp.jp.ngrok.io:16050", {
+const socket = io("http://0.tcp.jp.ngrok.io:16050", {
   withCredentials: true,
   // transports: ["websocket"],
   extraHeaders: {

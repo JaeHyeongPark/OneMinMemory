@@ -55,6 +55,7 @@ function Canvas() {
   const [Ctx, setCtx] = useState(null);
   const [x, setX] = useState([]);
   const [y, setY] = useState([]);
+  const [transitionClip, setTransitionClip] = useState(false);
   const ToCanvas = useContext(ImageContext);
 
   useEffect(() => {
@@ -178,34 +179,11 @@ function Canvas() {
       });
   };
 
-  const handleSubmit = async () => {
-    const version =
-      "4f88a16a13673a8b589c18866e540556170a5bcb2ccdc12de556e800e9456d3d";
-    const input = {
-      frame1:
-        "https://images.unsplash.com/photo-1503424886307-b090341d25d1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2076&q=80",
-      frame2:
-        "https://images.unsplash.com/uploads/14116941824817ba1f28e/78c8dff1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80",
-    };
-    const data = { version, input };
-    const headers = {
-      Authorization: "Token 219de58e9593d4a8c3556a26ffeb5964650cc0f2",
-      "Content-Type": "application/json",
-    };
-
-    try {
-      const response = await axios.post(
-        "https://api.replicate.com/v1/predictions",
-        data,
-        { headers }
-      );
-      const prediction = response.data;
-      console.log(prediction);
-      return prediction;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
+  const transitionClipUpload = (e) => {
+    setTransitionClip(true);
+    const clipComponent = document.getElementById("transition-clip");
+    clipComponent.src = `/TransitionList/${e.target.className}.mp4`;
+    console.log(e.target);
   };
 
   return (
@@ -244,14 +222,29 @@ function Canvas() {
               </div>
             ) : (
               <div className="transition-modal">
-                {TRANSITION_LIST.map((transition) => {
-                  return (
-                    <Transition
-                      className={transition}
-                      selectTransition={transition} // 이 부분 어떤 함수?
-                    />
-                  );
-                })}
+                <div className="transition-list">
+                  {TRANSITION_LIST.map((transition, index) => {
+                    return (
+                      <Transition
+                        className={transition}
+                        key={index}
+                        // selectTransition={transition} // 이 부분 어떤 함수?
+                        onChange={transitionClipUpload}
+                      />
+                    );
+                  })}
+                </div>
+                <hr></hr>
+                <div className="transition-clip">
+                  {transitionClip && (
+                    <video
+                      id="transition-clip"
+                      width="300"
+                      height="200"
+                      controls
+                    ></video>
+                  )}
+                </div>
               </div>
             )}
 
@@ -290,9 +283,6 @@ function Canvas() {
               </button>
               <button className="sidebar-item" onClick={newImage}>
                 저장하기
-              </button>
-              <button className="sidebar-item" onClick={handleSubmit}>
-                Frame Interpolation
               </button>
             </div>
           </div>

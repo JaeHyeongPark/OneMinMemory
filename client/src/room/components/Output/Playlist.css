@@ -10,6 +10,14 @@
   border: solid 1px #000;
   background-color: #d9e8ef;
 }
+.toplay_img button{
+  position: absolute;
+  background: none;
+  border: none;
+  color: red;
+  font-size: 16px;
+  cursor: pointer;
+}
 
 .toplay_block {
   flex-grow: 0;

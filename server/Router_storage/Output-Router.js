@@ -147,4 +147,19 @@ router.get("/getplaylist", async (req, res, next) => {
   res.json({ results: playlist });
 });
 
+router.post("/postplaylist", (req, res, next) => {
+  const url = req.body.url
+  const idx = req.body.idx
+  playlist[idx].url = url
+  res.send(playlist)
+})
+
+router.post("/deleteplayurl", (req, res, next) => {
+  const idx = req.body.idx
+  playlist[idx].url = ''
+  playlist[idx].fadeout = true
+  playlist[idx].transition = ''
+  res.send(playlist)
+})
+
 module.exports = router;

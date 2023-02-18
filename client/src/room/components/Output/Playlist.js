@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 // import axios from "axios";
 
 import PlaylistContext from "../../../shared/context/playlist-context";
@@ -9,24 +9,25 @@ import PlaylistTrans from "./PlaylistTrans";
 
 const Playlist = () => {
   const playlistCtx = useContext(PlaylistContext);
-  const playlistView = playlistCtx.playlist;
 
   return (
     <div className="playlist_layout">
       <div className="playlist_main">
-        {playlistView.map((data, i) => (
+        {playlistCtx.playlist.map((data, i) => (
           <PlaylistMain
             duration={data.duration}
             url={data.url}
-            i={i}></PlaylistMain>
+            i={i}
+          />
         ))}
       </div>
       <div className="playlist_transition">
-        {playlistView.map((data, i) => (
+        {playlistCtx.playlist.map((data, i) => (
           <PlaylistTrans
             duration={data.duration}
             transition={data.transition}
-            i={i}></PlaylistTrans>
+            i={i}
+          />
         ))}
       </div>
     </div>

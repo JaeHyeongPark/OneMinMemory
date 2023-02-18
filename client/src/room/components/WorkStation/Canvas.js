@@ -6,6 +6,7 @@ import axios from "axios";
 import "./Canvas.css";
 // import ToPlaylistButton from "../Output/ToPlaylistButton";
 import SidebarItem from "./SidebarItem";
+import Transition from "./Transitions/Transition";
 
 const DEFAULT_OPTIONS = [
   {
@@ -21,6 +22,26 @@ const DEFAULT_OPTIONS = [
     name: "Grayscale",
   },
 ];
+const TRANSITION_LIST = [
+  "circlecrop",
+  "diagtl",
+  "dissolve",
+  "distance",
+  "fadeblack",
+  "fadegrays",
+  "fadewhite",
+  "hblur",
+  "hrslice",
+  "pixelize",
+  "radial",
+  "rectcrop",
+  "slidedown",
+  "slideright",
+  "slideup",
+  "vuslice",
+  "wipelife",
+  "wiperight",
+];
 
 function Canvas() {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
@@ -29,9 +50,11 @@ function Canvas() {
   const [inputShow, setinputShow] = useState(false);
   const [PaintMode, setPaintMode] = useState(false);
   const [Paint, setPaint] = useState(false);
+  const [transitionModal, setTransitionModal] = useState(false);
   const [Ctx, setCtx] = useState(null);
   const [x, setX] = useState([]);
   const [y, setY] = useState([]);
+  const [transitionClip, setTransitionClip] = useState(false);
   const ToCanvas = useContext(ImageContext);
   const [{ isover }, drop] = useDrop(() => ({
     accept: ["image"],
@@ -42,7 +65,7 @@ function Canvas() {
   }));
 
   const imageToCanvas = (url) => {
-    ToCanvas.sendurl(url)
+    ToCanvas.sendurl(url);
   };
 
   useEffect(() => {
@@ -168,6 +191,13 @@ function Canvas() {
       });
   };
 
+  const transitionClipUpload = (e) => {
+    setTransitionClip(true);
+    const clipComponent = document.getElementById("transition-clip");
+    clipComponent.src = `/TransitionList/${e.target.className}.mp4`;
+    console.log(e.target);
+  };
+
   return (
     <React.Fragment>
       <div className="Username_and_canvas">
@@ -176,31 +206,59 @@ function Canvas() {
         </div>
         <div className="canvas">
           <div className="container">
-            <div className="uploaded-image" ref={drop}>
-              <canvas
-                ref={canvasRef}
-                width={1080}
-                height={720}
-                onClick={(e) => addinput(e)}
-                onMouseDown={() => ChangePaint(true)}
-                onMouseUp={() => ChangePaint(false)}
-                onMouseMove={(e) => drawing(e)}
-                onMouseLeave={() => ChangePaint(false)}
-              />
-              {inputShow && (
-                <input
-                  type="text"
-                  style={{
-                    position: "fixed",
-                    left: `${x[1]}px`,
-                    top: `${y[1]}px`,
-                    background: "transparent",
-                    height: "30px",
-                  }}
-                  onKeyDown={handleEnter}
+            {!transitionModal ? (
+              <div className="uploaded-image">
+                <canvas
+                  ref={canvasRef}
+                  width={1080}
+                  height={720}
+                  onClick={(e) => addinput(e)}
+                  onMouseDown={() => ChangePaint(true)}
+                  onMouseUp={() => ChangePaint(false)}
+                  onMouseMove={(e) => drawing(e)}
+                  onMouseLeave={() => ChangePaint(false)}
                 />
-              )}
-            </div>
+                {inputShow && (
+                  <input
+                    type="text"
+                    style={{
+                      position: "fixed",
+                      left: `${x[1]}px`,
+                      top: `${y[1]}px`,
+                      background: "transparent",
+                      height: "30px",
+                    }}
+                    onKeyDown={handleEnter}
+                  />
+                )}
+              </div>
+            ) : (
+              <div className="transition-modal">
+                <div className="transition-list">
+                  {TRANSITION_LIST.map((transition, index) => {
+                    return (
+                      <Transition
+                        className={transition}
+                        key={index}
+                        // selectTransition={transition} // 이 부분 어떤 함수?
+                        onChange={transitionClipUpload}
+                      />
+                    );
+                  })}
+                </div>
+                <hr></hr>
+                <div className="transition-clip">
+                  {transitionClip && (
+                    <video
+                      id="transition-clip"
+                      width="300"
+                      height="200"
+                      controls
+                    ></video>
+                  )}
+                </div>
+              </div>
+            )}
 
             <div className="sidebar">
               {DEFAULT_OPTIONS.map((option, index) => {
@@ -226,6 +284,14 @@ function Canvas() {
                 }}
               >
                 Text Mode-{TextMode ? "END" : "Write"}
+              </button>
+              <button
+                className="sidebar-item"
+                onClick={() => {
+                  setTransitionModal(!transitionModal);
+                }}
+              >
+                Transition
               </button>
               <button className="sidebar-item" onClick={newImage}>
                 저장하기

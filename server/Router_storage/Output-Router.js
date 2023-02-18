@@ -25,7 +25,7 @@ dotenv.config();
 
 router.post("/addtoplay", upload.none(), async (req, res, next) => {
   const imageurl = req.body.imagedata.split("base64,")[1];
-  const s3filename = req.body.originurl.split("test/")[1];
+  const s3filename = req.body.originurl.split("testroom/Effect/")[1];
   const imgbuffer = Buffer.from(imageurl, "base64");
   const image = sharp(imgbuffer);
   const imgMeta = await image.metadata();
@@ -107,6 +107,40 @@ router.post("/merge", async (req, res, next) => {
       res.download("Output.mp4");
     });
   console.log("Conversion completed 2222");
+});
+
+// react 재생목록에 보낼 임시정보 Array
+let playlist = [
+  {
+    url: "https://awslearner-s3-bucket-test.s3.ap-northeast-2.amazonaws.com/image-public/001.jpeg",
+    duration: 5,
+    fadeout: true,
+    transition: "effect1",
+  },
+  {
+    url: "https://awslearner-s3-bucket-test.s3.ap-northeast-2.amazonaws.com/image-public/002.jpeg",
+    duration: 5,
+    fadeout: true,
+  },
+  {
+    url: "",
+    duration: 15,
+    fadeout: true,
+  },
+  {
+    url: "",
+    duration: 15,
+    fadeout: true,
+  },
+  {
+    url: "",
+    duration: 5,
+    fadeout: true,
+  },
+];
+// 재생목록 호출 API
+router.get("/getplaylist", async (req, res, next) => {
+  res.json({ results: playlist });
 });
 
 module.exports = router;

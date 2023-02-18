@@ -1,26 +1,23 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 
-const PlaylistContext = createContext({
-  playlist: {},
-  addToPlaylist: () => {},
-});
+const PlaylistContext = createContext();
 
 export const PlaylistContextProvider = (props) => {
   //   const [isChanged, setIsChanged] = useState(false);
-  const [playlist, setPlaylist] = useState({});
+  const [playlist, setPlaylist] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/output/playlist").then((res) => {
-      setPlaylist(res.data);
+    axios.get("http://localhost:5000/output/getplaylist").then((res) => {
+      setPlaylist(res.data.results);
     });
   }, []);
 
   //   const setChangeHandler = () => {};
 
   const addToPlaylistHandler = (track) => {
-    let temp = { ...playlist, track };
-    temp[track] = 0;
+    // console.log(track);
+    let temp = [...playlist, track];
     setPlaylist(temp);
   };
 

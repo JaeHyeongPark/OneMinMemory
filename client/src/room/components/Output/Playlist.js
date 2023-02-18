@@ -4,34 +4,33 @@ import React, { useContext } from "react";
 import PlaylistContext from "../../../shared/context/playlist-context";
 // import PlaylistShow from "./PlaylistShow";
 import "./Playlist.css";
+import PlaylistMain from "./PlaylistMain";
+import PlaylistTrans from "./PlaylistTrans";
 
 const Playlist = () => {
   const playlistCtx = useContext(PlaylistContext);
   const playlistView = playlistCtx.playlist;
 
-  const context = Object.keys(playlistView).map((url) => {
-    if (playlistView[url] === 0) {
-      return (
-        <img
-          className="toplay_img"
-          key={url}
-          src={url}
-          alt="a"
-        />
-      );
-    } else {
-      return (
-        <img
-          className="toplay_select_img"
-          key={url}
-          src={url}
-          alt="a"
-        />
-      );
-    }
-  });
-
-  return <div className="playlist_layout">{context}</div>;
+  return (
+    <div className="playlist_layout">
+      <div className="playlist_main">
+        {playlistView.map((data, i) => (
+          <PlaylistMain
+            duration={data.duration}
+            url={data.url}
+            i={i}></PlaylistMain>
+        ))}
+      </div>
+      <div className="playlist_transition">
+        {playlistView.map((data, i) => (
+          <PlaylistTrans
+            duration={data.duration}
+            transition={data.transition}
+            i={i}></PlaylistTrans>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default Playlist;

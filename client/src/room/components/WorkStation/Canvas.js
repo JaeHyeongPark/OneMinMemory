@@ -1,9 +1,10 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
+import { useDrop } from "react-dnd";
 import ImageContext from "./Image_Up_Check_Del/ImageContext";
 import axios from "axios";
 
 import "./Canvas.css";
-import ToPlaylistButton from "../Output/ToPlaylistButton";
+// import ToPlaylistButton from "../Output/ToPlaylistButton";
 import SidebarItem from "./SidebarItem";
 import Transition from "./Transitions/Transition";
 
@@ -21,7 +22,6 @@ const DEFAULT_OPTIONS = [
     name: "Grayscale",
   },
 ];
-const TRANSITION_PATH = "/Transitions/TransitionList";
 const TRANSITION_LIST = [
   "circlecrop",
   "diagtl",
@@ -45,7 +45,6 @@ const TRANSITION_LIST = [
 
 function Canvas() {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
-  const [options, setOptions] = useState(DEFAULT_OPTIONS);
   const canvasRef = useRef(null);
   const [TextMode, setTextMode] = useState(false);
   const [inputShow, setinputShow] = useState(false);
@@ -57,13 +56,23 @@ function Canvas() {
   const [y, setY] = useState([]);
   const [transitionClip, setTransitionClip] = useState(false);
   const ToCanvas = useContext(ImageContext);
+  const [{ isover }, drop] = useDrop(() => ({
+    accept: ["image"],
+    drop: (item) => imageToCanvas(item.url),
+    collect: (monitor) => ({
+      isover: monitor.isOver(),
+    }),
+  }));
+
+  const imageToCanvas = (url) => {
+    ToCanvas.sendurl(url);
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     canvas.style = {};
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    setOptions(DEFAULT_OPTIONS);
     setCtx(ctx);
 
     const image = new Image();
@@ -125,10 +134,10 @@ function Canvas() {
     const imagedata = await canvasRef.current.toDataURL(
       "image/" + ToCanvas.type
     );
-    console.log(imagedata);
     const formdata = new FormData();
     formdata.append("imagedata", imagedata);
     formdata.append("originurl", ToCanvas.url);
+    console.log(ToCanvas);
     //checked
     await axios
       .post("http://localhost:5000/canvas/newimage", formdata, {
@@ -139,6 +148,9 @@ function Canvas() {
       .then((res) => {
         console.log(res);
         console.log("성공!");
+        const canvas = canvasRef.current;
+        canvas.style = {};
+        Ctx.clearRect(0, 0, canvas.width, canvas.height);
       })
       .catch((err) => {
         console.log(err);
@@ -198,8 +210,8 @@ function Canvas() {
               <div className="uploaded-image">
                 <canvas
                   ref={canvasRef}
-                  width={800}
-                  height={600}
+                  width={1080}
+                  height={720}
                   onClick={(e) => addinput(e)}
                   onMouseDown={() => ChangePaint(true)}
                   onMouseUp={() => ChangePaint(false)}
@@ -249,7 +261,7 @@ function Canvas() {
             )}
 
             <div className="sidebar">
-              {options.map((option, index) => {
+              {DEFAULT_OPTIONS.map((option, index) => {
                 return (
                   <SidebarItem
                     key={index}
@@ -287,7 +299,7 @@ function Canvas() {
             </div>
           </div>
         </div>
-        <ToPlaylistButton canvasRef={canvasRef} />
+        {/* <ToPlaylistButton canvasRef={canvasRef} /> */}
       </div>
     </React.Fragment>
   );

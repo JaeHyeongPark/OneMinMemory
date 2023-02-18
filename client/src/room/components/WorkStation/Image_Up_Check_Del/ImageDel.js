@@ -1,27 +1,33 @@
 import axios from "axios";
 import trash from "../../../assets/trash.svg";
+import { useContext } from "react";
+import ImageContext from "./ImageContext";
+import { useDrop } from "react-dnd";
 
 const ImageDel = (props) => {
-  const deleteImage = async (e) => {
+  const ToCanvas = useContext(ImageContext);
+  const mode = props.mode
+  // const [{ isOver }, drops] = useDrop(() => ({
+  //   accept: "image",
+  //   drop: (item) => deleteImage(item.url),
+  //   collect: (monitor) => ({
+  //     isOver: monitor.isOver(),
+  //   }),
+  // }));
+
+  const deleteImage = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/photoBox/deleteimage")
-      .then((res) => {})
+      .post("http://localhost:5000/photoBox/deleteimage", { mode:mode })
       .then((res) => {
-        props.change()
-      });
+        ToCanvas.setView(res.data)
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
-    <div className="delete_button">
+    <div className="delete_button" onClick={deleteImage}>
       <img src={trash} className="img.trash" alt="a" />
-      <label className="delete_label" htmlFor="delete_btn">지우기</label>
-      <input
-        id="delete_btn"
-        onClick={deleteImage}
-        value="지우기"
-        type="button"
-      />
     </div>
   );
 };

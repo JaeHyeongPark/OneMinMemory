@@ -1,4 +1,6 @@
 import React from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import WorkStation from "../components/WorkStation/WorkStation";
 import WebRTC from "../components/WebRTC/WebRTC";

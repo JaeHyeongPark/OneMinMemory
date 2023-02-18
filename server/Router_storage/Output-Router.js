@@ -35,6 +35,7 @@ router.post("/addtoplay", upload.none(), async (req, res, next) => {
     ACL: "public-read",
     Body: imgbuffer,
     ContentType: "image/" + imgMeta.format,
+    CacheControl: "no-store",
   };
   s3.putObject(params)
     .promise()
@@ -56,7 +57,6 @@ router.get("/playlist", async (req, res, next) => {
   try {
     const data = await s3.listObjectsV2(params).promise();
     for (const info of data.Contents) {
-      console.log(info.Key);
       const url =
         `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
         info.Key;
@@ -74,16 +74,17 @@ router.get("/playlist", async (req, res, next) => {
 });
 
 router.post("/merge", async (req, res, next) => {
+  console.log(req.body);
   const images = Object.keys(req.body.urlList);
-  console.log("동영상 생성을 시작합니다~~~~!!")
+  console.log("동영상 생성을 시작합니다~~~~!!");
   var videoOptions = {
     loop: 5,
     fps: 25,
     transition: true,
     transitionDuration: 1, // seconds
-    videoBitrate: 1024,
+    videoBitrate: 3000,
     videoCodec: "libx264",
-    size: "1024x?",
+    size: "1080x?",
     audioBitrate: "128k",
     audioChannels: 2,
     format: "mp4",
@@ -91,6 +92,9 @@ router.post("/merge", async (req, res, next) => {
   };
 
   videoShow(images, videoOptions)
+    .audio(
+      "Hoang - Run Back to You (Official Lyric Video) feat. Alisa_128kbps.mp3"
+    )
     .save("Output.mp4")
     .on("start", function (command) {
       console.log("Conversion started" + command);
@@ -100,9 +104,9 @@ router.post("/merge", async (req, res, next) => {
     })
     .on("end", function (output) {
       console.log("Conversion completed" + output);
+      res.download("Output.mp4");
     });
-
-  res.send("Redering Success!");
+  console.log("Conversion completed 2222");
 });
 
 module.exports = router;

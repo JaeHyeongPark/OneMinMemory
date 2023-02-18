@@ -5,6 +5,7 @@ import axios from "axios";
 import "./Canvas.css";
 import ToPlaylistButton from "../Output/ToPlaylistButton";
 import SidebarItem from "./SidebarItem";
+import Transition from "./Transitions/Transition";
 
 const DEFAULT_OPTIONS = [
   {
@@ -20,6 +21,27 @@ const DEFAULT_OPTIONS = [
     name: "Grayscale",
   },
 ];
+const TRANSITION_PATH = "/Transitions/TransitionList";
+const TRANSITION_LIST = [
+  "circlecrop",
+  "diagtl",
+  "dissolve",
+  "distance",
+  "fadeblack",
+  "fadegrays",
+  "fadewhite",
+  "hblur",
+  "hrslice",
+  "pixelize",
+  "radial",
+  "rectcrop",
+  "slidedown",
+  "slideright",
+  "slideup",
+  "vuslice",
+  "wipelife",
+  "wiperight",
+];
 
 function Canvas() {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
@@ -29,6 +51,7 @@ function Canvas() {
   const [inputShow, setinputShow] = useState(false);
   const [PaintMode, setPaintMode] = useState(false);
   const [Paint, setPaint] = useState(false);
+  const [transitionModal, setTransitionModal] = useState(false);
   const [Ctx, setCtx] = useState(null);
   const [x, setX] = useState([]);
   const [y, setY] = useState([]);
@@ -89,7 +112,7 @@ function Canvas() {
     if (code === 13) {
       Ctx.textBaseline = "top";
       Ctx.textAlign = "left";
-      Ctx.font = "14px sans-serif";
+      Ctx.font = "25px fantasy";
       Ctx.fillText(e.target.value, x[0], y[0]);
       setinputShow(false);
       setTextMode(false);
@@ -193,30 +216,44 @@ function Canvas() {
         </div>
         <div className="canvas">
           <div className="container">
-            <div className="uploaded-image">
-              <canvas
-                ref={canvasRef}
-                width={800}
-                height={600}
-                onClick={(e) => addinput(e)}
-                onMouseDown={() => ChangePaint(true)}
-                onMouseUp={() => ChangePaint(false)}
-                onMouseMove={(e) => drawing(e)}
-                onMouseLeave={() => ChangePaint(false)}
-              />
-              {inputShow && (
-                <input
-                  type="text"
-                  style={{
-                    position: "fixed",
-                    left: `${x[1]}px`,
-                    top: `${y[1]}px`,
-                    background: "transparent",
-                  }}
-                  onKeyDown={handleEnter}
+            {!transitionModal ? (
+              <div className="uploaded-image">
+                <canvas
+                  ref={canvasRef}
+                  width={800}
+                  height={600}
+                  onClick={(e) => addinput(e)}
+                  onMouseDown={() => ChangePaint(true)}
+                  onMouseUp={() => ChangePaint(false)}
+                  onMouseMove={(e) => drawing(e)}
+                  onMouseLeave={() => ChangePaint(false)}
                 />
-              )}
-            </div>
+                {inputShow && (
+                  <input
+                    type="text"
+                    style={{
+                      position: "fixed",
+                      left: `${x[1]}px`,
+                      top: `${y[1]}px`,
+                      background: "transparent",
+                      height: "30px",
+                    }}
+                    onKeyDown={handleEnter}
+                  />
+                )}
+              </div>
+            ) : (
+              <div className="transition-modal">
+                {TRANSITION_LIST.map((transition) => {
+                  return (
+                    <Transition
+                      className={transition}
+                      selectTransition={transition} // 이 부분 어떤 함수?
+                    />
+                  );
+                })}
+              </div>
+            )}
 
             <div className="sidebar">
               {options.map((option, index) => {
@@ -242,6 +279,14 @@ function Canvas() {
                 }}
               >
                 Text Mode-{TextMode ? "END" : "Write"}
+              </button>
+              <button
+                className="sidebar-item"
+                onClick={() => {
+                  setTransitionModal(!transitionModal);
+                }}
+              >
+                Transition
               </button>
               <button className="sidebar-item" onClick={newImage}>
                 저장하기

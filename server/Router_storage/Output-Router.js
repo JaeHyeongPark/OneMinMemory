@@ -73,41 +73,41 @@ router.get("/playlist", async (req, res, next) => {
   }
 });
 
-router.post("/merge", async (req, res, next) => {
-  console.log(req.body);
-  const images = Object.keys(req.body.urlList);
-  console.log("동영상 생성을 시작합니다~~~~!!");
-  var videoOptions = {
-    loop: 5,
-    fps: 25,
-    transition: true,
-    transitionDuration: 1, // seconds
-    videoBitrate: 3000,
-    videoCodec: "libx264",
-    size: "1080x?",
-    audioBitrate: "128k",
-    audioChannels: 2,
-    format: "mp4",
-    pixelFormat: "yuv420p",
-  };
+// router.post("/merge", async (req, res, next) => {
+//   console.log(req.body);
+//   const images = Object.keys(req.body.urlList);
+//   console.log("동영상 생성을 시작합니다~~~~!!");
+//   var videoOptions = {
+//     loop: 5,
+//     fps: 25,
+//     transition: true,
+//     transitionDuration: 1, // seconds
+//     videoBitrate: 3000,
+//     videoCodec: "libx264",
+//     size: "1080x?",
+//     audioBitrate: "128k",
+//     audioChannels: 2,
+//     format: "mp4",
+//     pixelFormat: "yuv420p",
+//   };
 
-  videoShow(images, videoOptions)
-    .audio(
-      "Hoang - Run Back to You (Official Lyric Video) feat. Alisa_128kbps.mp3"
-    )
-    .save("Output.mp4")
-    .on("start", function (command) {
-      console.log("Conversion started" + command);
-    })
-    .on("error", function (err, stdout, stderr) {
-      console.log("Some error occured" + err);
-    })
-    .on("end", function (output) {
-      console.log("Conversion completed" + output);
-      res.download("Output.mp4");
-    });
-  console.log("Conversion completed 2222");
-});
+//   videoShow(images, videoOptions)
+//     .audio(
+//       "Hoang - Run Back to You (Official Lyric Video) feat. Alisa_128kbps.mp3"
+//     )
+//     .save("Output.mp4")
+//     .on("start", function (command) {
+//       console.log("Conversion started" + command);
+//     })
+//     .on("error", function (err, stdout, stderr) {
+//       console.log("Some error occured" + err);
+//     })
+//     .on("end", function (output) {
+//       console.log("Conversion completed" + output);
+//       res.download("Output.mp4");
+//     });
+//   console.log("Conversion completed 2222");
+// });
 
 // react 재생목록에 보낼 임시정보 Array
 let playlist = [

@@ -51,7 +51,7 @@ const PlaylistMain = (props) => {
       }}
       key={props.url}
     >
-      <button onClick={deleteimg}>X</button>
+      {props.url && <button onClick={deleteimg}>X</button>}
     </div>
   );
 };

@@ -78,7 +78,7 @@ router.post("/merge", async (req, res, next) => {
   const images = Object.keys(req.body.urlList);
   console.log("동영상 생성을 시작합니다~~~~!!");
   var videoOptions = {
-    loop: 5,
+    loop: 3,
     fps: 25,
     transition: true,
     transitionDuration: 1, // seconds

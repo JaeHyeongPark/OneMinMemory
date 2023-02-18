@@ -23,25 +23,26 @@ router.post("/imageinfo", async (req, res, next) => {
   // const imgMeta = await sharp(imgBuffer).metadata()
   const image = sharp(imgBuffer.data);
   image.metadata().then((data) => {
-    res.json({ width: data.width, height: data.height, type: data.format });
+    res.json({ type: data.format });
   });
 });
 
 router.post("/newimage", upload.none(), async (req, res) => {
   console.log("받기 시작함");
   const imageurl = req.body.imagedata.split("base64,")[1];
-  const s3filename = req.body.originurl.split("test/")[1];
+  const s3filename = req.body.originurl.split("testroom/Original/")[1];
   const imgbuffer = Buffer.from(imageurl, "base64");
   const image = sharp(imgbuffer);
   const imgMeta = await image.metadata();
   const params = {
     Bucket: process.env.Bucket_Name,
-    Key: "test/" + s3filename,
+    Key: "testroom/Effect/" + s3filename,
     ACL: "public-read",
     Body: imgbuffer,
     ContentType: "image/" + imgMeta.format,
+    CacheControl:"no-store"
   };
-  s3.putObject(params).promise();
+  s3.putObject(params).promise().then();
   res.send({ data: "hi!" });
 });
 

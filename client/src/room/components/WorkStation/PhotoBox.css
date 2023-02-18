@@ -1,6 +1,6 @@
 /* 230211 수정 css */
 .title_and_photobox {
-  width: 660px;
+  width: 35%;
   height: 900px;
   flex-grow: 0;
   display: flex;
@@ -54,7 +54,6 @@ img.cloud {
 }
 
 .cloud_span {
-  width: 97px;
   height: 40px;
   flex-grow: 0;
   font-family: "Pretendard";
@@ -69,7 +68,7 @@ img.cloud {
 }
 
 .PhotoBox {
-  width: 660px;
+  width: 600px;
   height: 820px;
   flex-grow: 0;
   display: flex;
@@ -81,6 +80,7 @@ img.cloud {
   border-radius: 15px;
   border: solid 2px #272833;
   background-color: #d9e8ef;
+  margin-bottom: 15px;
 }
 
 .Photos_and_Button {
@@ -90,7 +90,8 @@ img.cloud {
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  padding: 0;
+  padding: 15px;
+  gap: 15px;
 }
 
 .upload_Photos {
@@ -103,8 +104,9 @@ img.cloud {
   gap: 10px;
   padding: 10px;
   border: solid 1px #272833;
-  overflow: scroll;
+  overflow-y:auto;
   flex-wrap: wrap;
+  border-radius: 15px
 }
 
 .upload_Photos_layout {
@@ -129,7 +131,6 @@ img.cloud {
   align-items: stretch;
   padding: 0;
   row-gap: 3px;
-  border: solid 1px #000;
   background-color: #d9e8ef;
 }
 .upload_img:hover{
@@ -168,7 +169,7 @@ img.cloud {
   width: 105px;
   height: 38px;
   flex-grow: 0;
-  /* display: flex; */
+  display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -176,27 +177,17 @@ img.cloud {
   padding: 5px 10px;
   border-radius: 10px;
   background-color: #36a06d;
+  cursor: pointer;
+}
+.uploadButton :hover{
+  transform: scale(2);
 }
 
-.uploadButton input{
+.uploadinput{
   opacity: 0;
   display: none;
 }
 
-.upload_label {
-  width: 56px;
-  height: 28px;
-  flex-grow: 0;
-  font-family: "Pretendard";
-  font-size: 20px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.4;
-  letter-spacing: normal;
-  text-align: center;
-  color: #fff;
-}
 
 img.software-upload {
   width: 24px;
@@ -241,9 +232,10 @@ img.trash {
   padding: 5px 10px;
   border-radius: 10px;
   background-color: #e74733;
+  cursor: pointer;
 }
-.delete_button input{
-  display: none;
+.delete_button :hover{
+  transform: scale(2.5);
 }
 
 .filterButton {
@@ -357,6 +349,8 @@ img.Icon-Arrow {
   justify-content: center;
   align-items: center;
   padding: 0 5px;
+  height: 870px;
+  margin-top: 15px;
 }
 
 .Username {

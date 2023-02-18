@@ -121,21 +121,25 @@ let playlist = [
     url: "https://awslearner-s3-bucket-test.s3.ap-northeast-2.amazonaws.com/image-public/002.jpeg",
     duration: 5,
     fadeout: true,
+    transition: "effect2",
   },
   {
-    url: "",
+    url: "https://awslearner-s3-bucket-test.s3.ap-northeast-2.amazonaws.com/image-public/003.jpeg",
     duration: 15,
     fadeout: true,
+    transition: "effect2",
   },
   {
-    url: "",
+    url: "https://awslearner-s3-bucket-test.s3.ap-northeast-2.amazonaws.com/image-public/004.jpeg",
     duration: 15,
     fadeout: true,
+    transition: "effect1",
   },
   {
-    url: "",
+    url: "https://awslearner-s3-bucket-test.s3.ap-northeast-2.amazonaws.com/image-public/005.jpeg",
     duration: 5,
     fadeout: true,
+    transition: null,
   },
 ];
 // 재생목록 호출 API

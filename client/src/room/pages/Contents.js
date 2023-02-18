@@ -8,8 +8,6 @@ import Output from "../components/Output/Output";
 import { PlaylistContextProvider } from "../../shared/context/playlist-context";
 
 import "./Contents.css";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 
 const Contents = () => {
   return (

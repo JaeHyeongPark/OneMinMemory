@@ -125,8 +125,6 @@ body {
 
 .sidebar {
   grid-area: sidebar;
-  background-color: hsl(265, 100%, 86%);
-  /* border-left: 1px solid hsl(265, 100%, 56%); */
   border-left: 1px solid hsl(265, 100%, 56%);
   display: flex;
   flex-direction: column;

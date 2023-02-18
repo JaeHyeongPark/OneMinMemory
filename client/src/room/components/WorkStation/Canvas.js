@@ -50,6 +50,7 @@ function Canvas() {
   const [inputShow, setinputShow] = useState(false);
   const [PaintMode, setPaintMode] = useState(false);
   const [Paint, setPaint] = useState(false);
+  const [modalcheck, setmodalcheck] = useState(true)
   const [transitionModal, setTransitionModal] = useState(false);
   const [Ctx, setCtx] = useState(null);
   const [x, setX] = useState([]);
@@ -63,6 +64,19 @@ function Canvas() {
       isover: monitor.isOver(),
     }),
   }));
+  const [{ isOver }, modal] = useDrop(() => ({
+    accept: ["image"],
+    drop: (item) => changeModalToCanvas(item.url),
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  }));
+
+  const changeModalToCanvas = (url) => {
+    setTransitionModal(false)
+    ToCanvas.sendurl(url)
+    setmodalcheck(!modalcheck)
+  }
 
   const imageToCanvas = (url) => {
     ToCanvas.sendurl(url);
@@ -83,7 +97,7 @@ function Canvas() {
       Ctx.lineJoin = "round";
       Ctx.lineWidth = 4;
     };
-  }, [ToCanvas.url, Ctx]);
+  }, [ToCanvas.url, Ctx, modalcheck]);
 
   const drawing = (e) => {
     const x = e.nativeEvent.offsetX;
@@ -207,7 +221,7 @@ function Canvas() {
         <div className="canvas">
           <div className="container">
             {!transitionModal ? (
-              <div className="uploaded-image">
+              <div className="uploaded-image" ref={drop}>
                 <canvas
                   ref={canvasRef}
                   width={1080}
@@ -233,7 +247,7 @@ function Canvas() {
                 )}
               </div>
             ) : (
-              <div className="transition-modal">
+              <div className="transition-modal" ref={modal}>
                 <div className="transition-list">
                   {TRANSITION_LIST.map((transition, index) => {
                     return (

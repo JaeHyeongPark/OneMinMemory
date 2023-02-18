@@ -20,6 +20,7 @@ export const PlaylistContextProvider = (props) => {
 
   const addToPlaylistHandler = (track) => {
     setPlaylist(track);
+    console.log(playlist);
   };
 
   const context = {

@@ -1,5 +1,4 @@
 .toplay_img {
-  /* width: 120px; */
   height: 100%;
   flex-grow: 0;
   display: flex;
@@ -7,7 +6,7 @@
   justify-content: flex-start;
   align-items: stretch;
   padding: 0;
-  row-gap: 3px;
+  row-gap: 0px;
   border: solid 1px #000;
   background-color: #d9e8ef;
 }
@@ -48,7 +47,7 @@
   justify-content: left;
   align-items: stretch;
   /* gap: 5px; */
-  /* padding: 20px; */
+  padding: 20px;
   /* border-radius: 15px; */
   /* border: solid 2px #272833; */
 }

@@ -179,25 +179,25 @@ img.infinity {
 }
 
 .TimeandBar {
-  height: 54px;
+  height: 90px;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: stretch;
-  padding: 0 30px;
+  padding: 50 0 0 0px;
 }
 
 .TimeBar {
-  height: 20px;
+  height: 40px;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 0 30px;
+  padding: 0 20px;
 }
 
 .time {
@@ -241,9 +241,9 @@ img.infinity {
   color: #000;
 }
 
-.LineA {
+/* .LineA {
   width: 1px;
-  height: 20px;
+  height: 40px;
   flex-grow: 0;
   transform: rotate(-90deg);
   background-color: #272833;
@@ -251,8 +251,16 @@ img.infinity {
 
 .LineB {
   width: 1px;
-  height: 10px;
+  height: 20px;
   flex-grow: 0;
   transform: rotate(-90deg);
   background-color: #000;
 }
+
+.LineC {
+  width: 1px;
+  height: 10px;
+  flex-grow: 0;
+  transform: rotate(-90deg);
+  background-color: #000;
+} */

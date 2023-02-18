@@ -109,4 +109,38 @@ router.post("/merge", async (req, res, next) => {
   console.log("Conversion completed 2222");
 });
 
+// react 재생목록에 보낼 임시정보 Array
+let playlist = [
+  {
+    url: "https://awslearner-s3-bucket-test.s3.ap-northeast-2.amazonaws.com/image-public/001.jpeg",
+    duration: 5,
+    fadeout: true,
+    transition: "effect1",
+  },
+  {
+    url: "https://awslearner-s3-bucket-test.s3.ap-northeast-2.amazonaws.com/image-public/002.jpeg",
+    duration: 5,
+    fadeout: true,
+  },
+  {
+    url: "",
+    duration: 15,
+    fadeout: true,
+  },
+  {
+    url: "",
+    duration: 15,
+    fadeout: true,
+  },
+  {
+    url: "",
+    duration: 5,
+    fadeout: true,
+  },
+];
+// 재생목록 호출 API
+router.get("/getplaylist", async (req, res, next) => {
+  res.json({ results: playlist });
+});
+
 module.exports = router;

@@ -15,15 +15,13 @@ const PlaylistTrans = (props) => {
             id={props.i}
             style={{
               width: String(((props.duration - 0.5) * 100) / 60) + "%",
-            }}
-            key={props.transition}></div>
+            }}></div>
           <div
             className="toplay_trans"
             id={props.i}
             style={{
               width: String((1 * 100) / 60) + "%",
-            }}
-            key={props.transition}></div>
+            }}></div>
         </>
       ) : props.i < playlistView.length - 1 ? (
         <>
@@ -32,15 +30,13 @@ const PlaylistTrans = (props) => {
             id={props.i}
             style={{
               width: String(((props.duration - 1) * 100) / 60) + "%",
-            }}
-            key={props.transition}></div>
+            }}></div>
           <div
             className="toplay_trans"
             id={props.i}
             style={{
               width: String((1 * 100) / 60) + "%",
-            }}
-            key={props.transition}></div>
+            }}></div>
         </>
       ) : (
         <></>

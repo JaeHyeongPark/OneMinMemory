@@ -21,14 +21,16 @@ const storage = multer.memoryStorage({
 });
 const upload = multer({ storage: storage }).array("images");
 
-const urlList = {};
+const Original = {};
+const Effect = {};
 
-// 업로드된 s3 서버에 있는 이미지 전송
-router.get("/upload", async (req, res, next) => {
+// 업로드된 s3 서버에 있는 Original 이미지 전송
+router.post("/sendimage", async (req, res, next) => {
+  const filename = req.body.filename;
   const params = {
     Bucket: process.env.Bucket_Name,
     // Prefix : `${req.body.roomNumber}/`
-    Prefix: "test",
+    Prefix: `testroom/${filename}/`,
   };
   try {
     const data = await s3.listObjectsV2(params).promise();
@@ -36,48 +38,81 @@ router.get("/upload", async (req, res, next) => {
       const url =
         `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
         info.Key;
-      if (url in urlList) {
-        continue;
+      if (filename === "Original") {
+        if (url in Original) {
+          continue;
+        } else {
+          Original[url] = 0;
+        }
       } else {
-        urlList[url] = 0;
+        if (url in Effect) {
+          continue;
+        } else {
+          Effect[url] = 0;
+        }
       }
     }
-    res.send(urlList);
+    if (filename === "Original") {
+      res.send(Original);
+    } else {
+      res.send(Effect);
+    }
   } catch (err) {
     // 에러 핸들러로 보냄
     return next(err);
   }
 });
 
-router.get("/sendimages", (req, res, next) => {
-  res.send(urlList);
-});
-
 // 클릭 이벤트 발생시
 router.post("/clickimage", (req, res, next) => {
   const url = req.body.url;
-  urlList[url] = urlList[url] ? 0 : 1;
-  res.send("변경 완료!");
+  const mode = req.body.mode;
+  if (mode === "Original") {
+    Original[url] = Original[url] ? 0 : 1;
+    res.send(Original);
+  } else {
+    Effect[url] = Effect[url] ? 0 : 1;
+    res.send(Effect);
+  }
 });
 
 // 선택된 이미지 삭제
 router.post("/deleteimage", async (req, res, next) => {
-  const selectimage = Object.keys(urlList).filter((url) => {
-    return urlList[url] === 1;
-  });
+  const mode = req.body.mode;
+  const selectimg = [];
 
-  for (let s3url of selectimage) {
-    delete urlList[s3url];
-    const s3key = s3url.split("com/");
-    try {
-      await s3
-        .deleteObject({ Bucket: process.env.Bucket_Name, Key: s3key[1] })
-        .promise();
-    } catch (err) {
-      return next(err);
-    }
+  if (mode === "Original") {
+    Object.keys(Original).forEach((url) => {
+      if (Original[url] === 1) {
+        selectimg.push(url);
+        delete Original[url];
+      }
+    });
+  } else {
+    Object.keys(Effect).forEach((url) => {
+      if (Effect[url] === 1) {
+        selectimg.push(url);
+        delete Effect[url];
+      }
+    });
   }
-  res.send("삭제 완료!");
+
+  try{
+    for await (let s3url of selectimg) {
+      const s3key = s3url.split("com/");
+      await s3.deleteObject({
+        Bucket: process.env.Bucket_Name,
+        Key: s3key[1],
+      }).promise();
+    }
+    if (mode === "Original") {
+      res.send(Original);
+    } else {
+      res.send(Effect);
+    }
+  }catch(err){
+    return next(err)
+  }
 });
 
 // 업로드 하려고 받은 이미지 s3에 저장
@@ -87,7 +122,7 @@ router.post("/upload", (req, res, next) => {
       res.status(400).send(err);
     }
     // const foldername = "roomNumber"
-    const foldername = "test/";
+    const foldername = "testroom/Original/";
     const promises = req.files.map((file, idx) => {
       let fileKey = "";
       if (typeof req.body.lastModified === "string") {
@@ -102,6 +137,7 @@ router.post("/upload", (req, res, next) => {
         ACL: "public-read",
         Body: file.buffer,
         ContentType: file.mimetype,
+        CacheControl: "no-store",
       };
       return s3.upload(params).promise();
     });

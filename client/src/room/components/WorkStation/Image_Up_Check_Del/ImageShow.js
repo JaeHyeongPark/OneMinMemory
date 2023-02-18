@@ -1,39 +1,18 @@
 import axios from "axios";
+import Picture from "./Picture";
 
 const ImageShow = (props) => {
   const view = props.view;
+  const mode = props.mode
 
-  const selectimage = async (url) => {
-    axios
-      .post("http://localhost:5000/photoBox/clickimage", { url: url })
-      .then((res) => {})
-      .then((res) => {
-        props.change();
-      });
-  };
-
-  const context = Object.keys(view).map((url) => {
+  const context = Object.keys(view).sort().map((url) => {
     if (view[url] === 0) {
       return (
-        <img
-          className="upload_img"
-          key={url}
-          src={url}
-          alt="a"
-          onClick={() => selectimage(url)}
-        />
+        <Picture className="upload_img" url={url} mode={mode}/>
       );
     } else {
       return (
-        <img
-          className="select_img"
-          key={url}
-          src={url}
-          alt="a"
-          onClick={() => {
-            selectimage(url);
-          }}
-        />
+        <Picture className="select_img" url={url} mode={mode}/>
       );
     }
   });

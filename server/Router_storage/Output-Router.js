@@ -25,7 +25,7 @@ dotenv.config();
 
 router.post("/addtoplay", upload.none(), async (req, res, next) => {
   const imageurl = req.body.imagedata.split("base64,")[1];
-  const s3filename = req.body.originurl.split("test/")[1];
+  const s3filename = req.body.originurl.split("testroom/Effect/")[1];
   const imgbuffer = Buffer.from(imageurl, "base64");
   const image = sharp(imgbuffer);
   const imgMeta = await image.metadata();
@@ -35,6 +35,7 @@ router.post("/addtoplay", upload.none(), async (req, res, next) => {
     ACL: "public-read",
     Body: imgbuffer,
     ContentType: "image/" + imgMeta.format,
+    CacheControl: "no-store",
   };
   s3.putObject(params)
     .promise()
@@ -56,7 +57,6 @@ router.get("/playlist", async (req, res, next) => {
   try {
     const data = await s3.listObjectsV2(params).promise();
     for (const info of data.Contents) {
-      console.log(info.Key);
       const url =
         `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
         info.Key;
@@ -74,17 +74,17 @@ router.get("/playlist", async (req, res, next) => {
 });
 
 router.post("/merge", async (req, res, next) => {
-  const images = Object.keys(toPlayUrlList);
-  console.log(images);
-
+  console.log(req.body);
+  const images = Object.keys(req.body.urlList);
+  console.log("동영상 생성을 시작합니다~~~~!!");
   var videoOptions = {
-    loop: 5,
+    loop: 3,
     fps: 25,
     transition: true,
     transitionDuration: 1, // seconds
-    videoBitrate: 1024,
+    videoBitrate: 3000,
     videoCodec: "libx264",
-    size: "1024x?",
+    size: "1080x?",
     audioBitrate: "128k",
     audioChannels: 2,
     format: "mp4",
@@ -92,6 +92,9 @@ router.post("/merge", async (req, res, next) => {
   };
 
   videoShow(images, videoOptions)
+    .audio(
+      "Hoang - Run Back to You (Official Lyric Video) feat. Alisa_128kbps.mp3"
+    )
     .save("Output.mp4")
     .on("start", function (command) {
       console.log("Conversion started" + command);
@@ -101,9 +104,47 @@ router.post("/merge", async (req, res, next) => {
     })
     .on("end", function (output) {
       console.log("Conversion completed" + output);
+      res.download("Output.mp4");
     });
+  console.log("Conversion completed 2222");
+});
 
-  res.send("Redering Success!");
+// react 재생목록에 보낼 임시정보 Array
+let playlist = [
+  {
+    url: "",
+    duration: 5,
+    fadeout: true,
+    transition: "effect1",
+  },
+  {
+    url: "",
+    duration: 5,
+    fadeout: true,
+    transition: "effect2",
+  },
+  {
+    url: "",
+    duration: 15,
+    fadeout: true,
+    transition: "effect2",
+  },
+  {
+    url: "",
+    duration: 15,
+    fadeout: true,
+    transition: "effect1",
+  },
+  {
+    url: "",
+    duration: 5,
+    fadeout: true,
+    transition: null,
+  },
+];
+// 재생목록 호출 API
+router.get("/getplaylist", async (req, res, next) => {
+  res.json({ results: playlist });
 });
 
 module.exports = router;

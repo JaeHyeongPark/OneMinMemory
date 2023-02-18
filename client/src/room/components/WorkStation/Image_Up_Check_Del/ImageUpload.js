@@ -27,13 +27,13 @@ const ImageUpload = (props) => {
   };
 
   return (
-    <div className="uploadButton">
-      <img src={softwareupload} className="img.software-upload" alt="a" />
-      <label className="upload_label" htmlFor="upload">
-        업로드
+    <div >
+      <label className="uploadButton" htmlFor="upload">
+        <img src={softwareupload} className="img.software-upload" alt="a" />
       </label>
       <input
         type="file"
+        className="uploadinput"
         id="upload"
         accept="image/*"
         multiple

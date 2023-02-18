@@ -1,4 +1,6 @@
 import React from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import WorkStation from "../components/WorkStation/WorkStation";
 import WebRTC from "../components/WebRTC/WebRTC";
@@ -10,13 +12,15 @@ import "./Contents.css";
 const Contents = () => {
   return (
     <React.Fragment>
-      <PlaylistContextProvider>
-        <div className="ROOM-BODY">
-          <WorkStation />
-          <WebRTC />
-        </div>
-        <Output />
-      </PlaylistContextProvider>
+      <DndProvider backend={HTML5Backend}>
+        <PlaylistContextProvider>
+          <div className="ROOM-BODY">
+            <WorkStation />
+            <WebRTC />
+          </div>
+          <Output />
+        </PlaylistContextProvider>
+      </DndProvider>
     </React.Fragment>
   );
 };

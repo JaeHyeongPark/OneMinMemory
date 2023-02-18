@@ -4,35 +4,37 @@ import axios from "axios";
 
 const ImageContext = createContext({
   url: "",
-  width: 0,
-  heigth: 0,
   type: "",
+  view:{},
   sendurl: (url) => {},
+  setView: (view) => {}
 });
 
 export const TocanvasProvider = (props) => {
   const [url, seturl] = useState("");
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
   const [type, settype] = useState("");
+  const [view, setView] = useState({})
 
   const sendurl = (url) => {
     axios
       .post("http://localhost:5000/canvas/imageinfo", { url: url })
       .then(async (res) => {
-        setWidth(res.data.width);
-        setHeight(res.data.height);
         settype(res.data.type);
         seturl(url);
       });
   };
 
+
+  const ChangeView =(newView) => {
+    setView(newView)
+  }
+
   const imagetocanvas = {
     url: url,
-    width: width,
-    height: height,
     type: type,
+    view:view,
     sendurl: sendurl,
+    setView:ChangeView
   };
   return (
     <ImageContext.Provider value={imagetocanvas}>

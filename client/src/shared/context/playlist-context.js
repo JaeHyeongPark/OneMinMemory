@@ -1,7 +1,10 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 
-const PlaylistContext = createContext();
+const PlaylistContext = createContext({
+  playlist: [],
+  addToPlaylist: () => {},
+});
 
 export const PlaylistContextProvider = (props) => {
   //   const [isChanged, setIsChanged] = useState(false);
@@ -16,9 +19,7 @@ export const PlaylistContextProvider = (props) => {
   //   const setChangeHandler = () => {};
 
   const addToPlaylistHandler = (track) => {
-    // console.log(track);
-    let temp = [...playlist, track];
-    setPlaylist(temp);
+    setPlaylist(track);
   };
 
   const context = {

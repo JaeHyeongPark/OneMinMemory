@@ -10,6 +10,46 @@
   border: solid 1px #000;
   background-color: #d9e8ef;
 }
+.toplay_img button {
+  position: absolute;
+  background: none;
+  border: none;
+  color: red;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.toplay_block {
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
+  row-gap: 0px;
+  border: solid 0px #000;
+  background-color: #d9e8ef;
+  height: "auto";
+  background-image: "url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEn2ghVyIoZtY3BlVZuQ3t3go3pzU9x01velOwEQwa1vCsS43aDfj4p0hZOMzw3Cj558I&usqp=CAU)";
+  background-size: contain;
+  opacity: 0;
+  background-repeat: no-repeat;
+}
+
+.toplay_trans {
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
+  row-gap: 0px;
+  border: solid 0px #000;
+  background-color: #d9e8ef;
+  background-image: url("https://static.thenounproject.com/png/3330269-200.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
 
 .toplay_select_img {
   width: 120px;
@@ -43,11 +83,33 @@
   height: 100px;
   flex-grow: 1;
   display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: stretch;
+  /* gap: 5px; */
+  padding: 0px 20px 10px 20px;
+  /* border-radius: 15px; */
+  /* border: solid 2px #272833; */
+}
+
+.playlist_main {
+  height: 100px;
+  flex-grow: 1;
+  display: flex;
   flex-direction: row;
   justify-content: left;
   align-items: stretch;
   /* gap: 5px; */
-  padding: 20px;
-  /* border-radius: 15px; */
-  /* border: solid 2px #272833; */
+  padding: 0px;
+}
+
+.playlist_transition {
+  height: 100px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: stretch;
+  /* gap: 5px; */
+  padding: 0px;
 }

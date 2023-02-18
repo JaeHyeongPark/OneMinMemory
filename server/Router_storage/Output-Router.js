@@ -25,7 +25,7 @@ dotenv.config();
 
 router.post("/addtoplay", upload.none(), async (req, res, next) => {
   const imageurl = req.body.imagedata.split("base64,")[1];
-  const s3filename = req.body.originurl.split("testroom/Effect/")[1];
+  const s3filename = req.body.originurl.split("testroom/Effectroom/Effect/")[1];
   const imgbuffer = Buffer.from(imageurl, "base64");
   const image = sharp(imgbuffer);
   const imgMeta = await image.metadata();
@@ -78,7 +78,7 @@ router.get("/playlist", async (req, res, next) => {
 //   const images = Object.keys(req.body.urlList);
 //   console.log("동영상 생성을 시작합니다~~~~!!");
 //   var videoOptions = {
-//     loop: 5,
+//     loop: 3,
 //     fps: 25,
 //     transition: true,
 //     transitionDuration: 1, // seconds
@@ -141,6 +141,59 @@ let playlist = [
 // 재생목록 호출 API
 router.get("/getplaylist", async (req, res, next) => {
   res.json({ results: playlist });
+});
+
+// react 재생목록에 보낼 임시정보 Array
+let playlist = [
+  {
+    url: "",
+    duration: 5,
+    fadeout: true,
+    transition: "effect1",
+  },
+  {
+    url: "",
+    duration: 5,
+    fadeout: true,
+    transition: "effect2",
+  },
+  {
+    url: "",
+    duration: 15,
+    fadeout: true,
+    transition: "effect2",
+  },
+  {
+    url: "",
+    duration: 15,
+    fadeout: true,
+    transition: "effect1",
+  },
+  {
+    url: "",
+    duration: 5,
+    fadeout: true,
+    transition: null,
+  },
+];
+// 재생목록 호출 API
+router.get("/getplaylist", async (req, res, next) => {
+  res.json({ results: playlist });
+});
+
+router.post("/postplaylist", (req, res, next) => {
+  const url = req.body.url;
+  const idx = req.body.idx;
+  playlist[idx].url = url;
+  res.send(playlist);
+});
+
+router.post("/deleteplayurl", (req, res, next) => {
+  const idx = req.body.idx;
+  playlist[idx].url = "";
+  playlist[idx].fadeout = true;
+  playlist[idx].transition = "";
+  res.send(playlist);
 });
 
 module.exports = router;

@@ -1,23 +1,31 @@
 import React from "react";
 import { useDrag } from "react-dnd";
+import "./Transition.css";
 
-const Transition = ({ className, selectTransition }) => {
+const Transition = ({ className, onChange }) => {
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: "transition",
     item: { className },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-    end: (className, monitor) => {},
+    // end: (className, monitor) => {},
   }));
   return (
     <div
       ref={dragRef}
-      key={className}
+      id="transition"
+      onClick={onChange}
       className={className}
       style={{ opacity: isDragging ? "0.3" : "1" }}
     >
-      {className}
+      <img
+        className={className}
+        src="/TransitionList/profile.jpeg"
+        alt="transition"
+        onClick={onChange}
+      />
+      <div className="transition-title">{className}</div>
     </div>
   );
 };

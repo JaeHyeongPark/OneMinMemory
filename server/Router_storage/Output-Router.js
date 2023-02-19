@@ -3,13 +3,12 @@ const multer = require("multer");
 const sharp = require("sharp");
 const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
-const axios = require("axios");
-const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
-const ffprobePath = require("@ffprobe-installer/ffprobe").path;
+const { spawn } = require("child_process");
+// const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
+// const ffprobePath = require("@ffprobe-installer/ffprobe").path;
 const ffmpeg = require("fluent-ffmpeg");
-var videoShow = require("videoshow");
-ffmpeg.setFfmpegPath(ffmpegPath);
-ffmpeg.setFfprobePath(ffprobePath);
+// ffmpeg.setFfmpegPath(ffmpegPath);
+// ffmpeg.setFfprobePath(ffprobePath);
 
 AWS.config.update({
   region: "ap-northeast-2",
@@ -25,7 +24,7 @@ dotenv.config();
 
 router.post("/addtoplay", upload.none(), async (req, res, next) => {
   const imageurl = req.body.imagedata.split("base64,")[1];
-  const s3filename = req.body.originurl.split("testroom/Effect/")[1];
+  const s3filename = req.body.originurl.split("testroom/Effectroom/Effect/")[1];
   const imgbuffer = Buffer.from(imageurl, "base64");
   const image = sharp(imgbuffer);
   const imgMeta = await image.metadata();
@@ -73,78 +72,255 @@ router.get("/playlist", async (req, res, next) => {
   }
 });
 
-router.post("/merge", async (req, res, next) => {
-  console.log(req.body);
-  const images = Object.keys(req.body.urlList);
-  console.log("동영상 생성을 시작합니다~~~~!!");
-  var videoOptions = {
-    loop: 3,
-    fps: 25,
-    transition: true,
-    transitionDuration: 1, // seconds
-    videoBitrate: 3000,
-    videoCodec: "libx264",
-    size: "1080x?",
-    audioBitrate: "128k",
-    audioChannels: 2,
-    format: "mp4",
-    pixelFormat: "yuv420p",
-  };
-
-  videoShow(images, videoOptions)
-    .audio(
-      "Hoang - Run Back to You (Official Lyric Video) feat. Alisa_128kbps.mp3"
-    )
-    .save("Output.mp4")
-    .on("start", function (command) {
-      console.log("Conversion started" + command);
-    })
-    .on("error", function (err, stdout, stderr) {
-      console.log("Some error occured" + err);
-    })
-    .on("end", function (output) {
-      console.log("Conversion completed" + output);
-      res.download("Output.mp4");
-    });
-  console.log("Conversion completed 2222");
-});
-
 // react 재생목록에 보낼 임시정보 Array
+// 이거 여기 있어야하나?? playlist context로 이동예정
 let playlist = [
   {
     url: "",
     duration: 5,
-    fadeout: true,
-    transition: "effect1",
+    select: false,
   },
   {
     url: "",
     duration: 5,
-    fadeout: true,
-    transition: "effect2",
+    select: false,
   },
   {
     url: "",
     duration: 15,
-    fadeout: true,
-    transition: "effect2",
+    select: false,
   },
   {
     url: "",
     duration: 15,
-    fadeout: true,
-    transition: "effect1",
+    select: false,
   },
   {
     url: "",
     duration: 5,
-    fadeout: true,
-    transition: null,
+    select: false,
   },
 ];
+
+function imageToVideos(imagePath, durations) {
+  return new Promise((resolve, reject) => {
+    let videos = [];
+
+    for (let i = 0; i < imagePath.length; i++) {
+      const videoPath = `./Router_storage/input/source${i}.mp4`;
+      ffmpeg(imagePath[i])
+        .loop(durations[i])
+        .on("start", function (commandLine) {
+          console.log("Spawned Ffmpeg with command: " + commandLine);
+        })
+        .on("error", function (err) {
+          console.log("An error occurred: " + err.message);
+          reject(err);
+        })
+        .on("end", function () {
+          console.log(`Processing ${videoPath} finished !`);
+          videos[i] = videoPath;
+          if (
+            videos.filter(
+              (element) =>
+                element !== undefined && element !== null && element !== ""
+            ).length === imagePath.length
+          ) {
+            resolve(videos);
+          }
+        })
+        .save(videoPath);
+    }
+  });
+}
+
+function mergeTransitions(inputPath, transitions) {
+  return new Promise((resolve, reject) => {
+    let transedVideos = [];
+
+    for (let i = 0; i < inputPath.length - 1; i++) {
+      const transedPath = `./Router_storage/input/transed${i}.mp4`;
+      ffmpeg()
+        .addInput(inputPath[i])
+        .addInput(inputPath[i + 1])
+        .outputOptions(transitions[i])
+        .on("start", function (commandLine) {
+          console.log("Spawned Ffmpeg with command: " + commandLine);
+        })
+        .on("error", function (err) {
+          console.log("An error occurred: " + err.message);
+          reject(err);
+        })
+        .on("end", function () {
+          console.log(`Processing ${transedPath} finished !`);
+          transedVideos[i] = transedPath;
+          if (
+            transedVideos.filter(
+              (element) =>
+                element !== undefined && element !== null && element !== ""
+            ).length ===
+            inputPath.length - 1
+          ) {
+            resolve(transedVideos);
+          }
+        })
+        .save(transedPath);
+    }
+  });
+}
+
+function mergeAll(inputPath) {
+  return new Promise((resolve, reject) => {
+    const mergedVideo = "./Router_storage/output/merged.mp4";
+    const mergeVideos = ffmpeg();
+    const transedVideos = inputPath;
+    transedVideos.forEach((effectVideo) => {
+      mergeVideos.addInput(effectVideo);
+    });
+
+    mergeVideos
+      .on("start", function (commandLine) {
+        console.log("Spawned Ffmpeg with command: " + commandLine);
+      })
+      .on("error", function (err) {
+        console.log("An error occurred: " + err.message);
+        reject(err);
+      })
+      .on("end", function () {
+        console.log(`Processing ${mergedVideo} finished !`);
+        resolve(mergedVideo);
+      })
+      .mergeToFile(
+        "./Router_storage/output/merged.mp4",
+        "./Router_storage/temp"
+      );
+  });
+}
+
+function addAudio(inputPath) {
+  return new Promise((resolve, reject) => {
+    // Use ffprobe to get input duration
+    const ffprobe = spawn("ffprobe", [
+      "-v",
+      "error",
+      "-show_entries",
+      "format=duration",
+      "-of",
+      "default=noprint_wrappers=1:nokey=1",
+      inputPath,
+    ]);
+
+    let inputDuration;
+    ffprobe.stdout.on("data", (data) => {
+      inputDuration = parseFloat(data);
+    });
+
+    ffprobe.on("close", (code) => {
+      if (code !== 0) {
+        reject(`ffprobe exited with code ${code}`);
+      } else {
+        console.log(`Input duration: ${inputDuration}`);
+        // Use inputDuration in your ffmpeg command
+        const finishedVideo = `./Router_storage/output/oneminute_${Date.now()}.mp4`;
+        ffmpeg(inputPath)
+          .videoCodec("libx264")
+          .audioCodec("libmp3lame")
+          .size("1080x720")
+          .addInput(
+            "./Hoang - Run Back to You (Official Lyric Video) feat. Alisa_128kbps.mp3"
+          )
+          .duration(inputDuration)
+          .audioFilter(`afade=t=out:st=${inputDuration - 5}:d=5`)
+          .on("start", function (commandLine) {
+            console.log("Spawned Ffmpeg with command: " + commandLine);
+          })
+          .on("error", function (err) {
+            console.log("An error occurred: " + err.message);
+            reject(err);
+          })
+          .on("end", function () {
+            console.log(`Processing ${finishedVideo} finished !`);
+            resolve(finishedVideo);
+          })
+          .save(finishedVideo);
+      }
+    });
+  });
+}
+
+router.post("/merge", async (req, res, next) => {
+  // console.log(req.body.playlist);
+  // console.log(req.body.translist);
+  const images = req.body.playlist.map(({ url }) => url);
+  const durations = req.body.playlist.map(({ duration }) => duration);
+  const transitions = req.body.translist.map(({ transition }) => transition);
+  console.log("동영상 생성을 시작합니다~~~~!!");
+  const videoPaths = await imageToVideos(images, durations);
+  console.log("이미지를 비디오로 변환 완료, 변환된 비디오:", videoPaths);
+  const transedPaths = await mergeTransitions(videoPaths, transitions);
+  console.log("트랜지션 비디오로 변환 완료, 변환된 비디오:", transedPaths);
+  const mergedPath = await mergeAll(transedPaths);
+  console.log("비디오 병합 완료, 변환된 비디오:", mergedPath);
+  const finishedPath = await addAudio(mergedPath);
+  console.log("오디오 삽입 및 최종 렌더링 완료, 완료된 비디오:", finishedPath);
+  res.download(finishedPath);
+});
+
 // 재생목록 호출 API
 router.get("/getplaylist", async (req, res, next) => {
   res.json({ results: playlist });
+});
+
+router.post("/postplaylist", (req, res, next) => {
+  const url = req.body.url;
+  const idx = req.body.idx;
+  playlist[idx].url = url;
+  res.send(playlist);
+});
+
+router.post("/deleteplayurl", (req, res, next) => {
+  const idx = req.body.idx;
+  playlist = playlist.filter((data, i) => {
+    if (idx !== i) {
+      return data;
+    }
+  });
+  res.send(playlist);
+});
+
+router.post("/clickimg", (req, res, next) => {
+  const idx = req.body.idx;
+  const url = playlist[idx].url;
+
+  let check = false;
+  playlist.forEach((data, i) => {
+    if (i !== idx && data.select === true) {
+      check = i;
+      return;
+    }
+  });
+
+  if (check) {
+    playlist[idx].url = playlist[check].url;
+    playlist[check].url = url;
+    playlist[idx].select = false;
+    playlist[check].select = false;
+  } else if (playlist[idx].select) {
+    playlist[idx].select = false;
+  } else {
+    playlist[idx].select = true;
+  }
+  res.send(playlist);
+});
+
+router.post("/inputnewplay", (req, res, next) => {
+  const url = req.body.url;
+  playlist.push({
+    url: url,
+    duration: 5,
+    select: false,
+  });
+  res.send(playlist);
 });
 
 module.exports = router;

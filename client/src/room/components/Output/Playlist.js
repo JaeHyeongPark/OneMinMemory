@@ -1,4 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useDrop } from "react-dnd";
+import axios from "axios";
 // import axios from "axios";
 
 import PlaylistContext from "../../../shared/context/playlist-context";
@@ -9,24 +11,44 @@ import PlaylistTrans from "./PlaylistTrans";
 
 const Playlist = () => {
   const playlistCtx = useContext(PlaylistContext);
-  const playlistView = playlistCtx.playlist;
+  const [{ isover }, newplayimg] = useDrop(() => ({
+    accept: ["image"],
+    drop: (item) => inputnewplay(item.url),
+    collect: (monitor) => ({
+      isover: monitor.isOver(),
+    }),
+  }));
+
+  const inputnewplay = (url) => {
+    axios
+      .post("http://localhost:5000/output/inputnewplay", {
+        url: url,
+      })
+      .then((res) => {
+        playlistCtx.addToPlaylist(res.data);
+      });
+  };
 
   return (
     <div className="playlist_layout">
       <div className="playlist_main">
-        {playlistView.map((data, i) => (
+        {playlistCtx.playlist.map((data, i) => (
           <PlaylistMain
             duration={data.duration}
             url={data.url}
-            i={i}></PlaylistMain>
+            select={data.select}
+            i={i}
+          />
         ))}
+        <div className="playlist_space" ref={newplayimg} />
       </div>
       <div className="playlist_transition">
-        {playlistView.map((data, i) => (
+        {playlistCtx.playlist.map((data, i) => (
           <PlaylistTrans
             duration={data.duration}
             transition={data.transition}
-            i={i}></PlaylistTrans>
+            i={i}
+          />
         ))}
       </div>
     </div>

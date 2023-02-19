@@ -61,7 +61,7 @@ const Tik = (props) => {
 
   if (props.time === playlistCtx.selecttime && playlistCtx.selecttime !== 0) {
     content = (
-      <div ref={nowtime} style={{ height: "40px", backgroundColor:"red"}}>
+      <div ref={nowtime} style={{ height: "40px", backgroundColor:"red", cursor:"col-resize"}}>
         |
       </div>
     );

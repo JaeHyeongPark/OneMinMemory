@@ -33,10 +33,7 @@ const RTC_config = {
     { urls: "stun:stun3.l.google.com:19302" },
     { urls: "stun:stun4.l.google.com:19302" },
     {
-      urls: [
-        "stun:13.125.215.89:3478",
-        "turn:13.125.215.89:3478?transport=udp",
-      ],
+      urls: ["stun:3.36.115.128:3478", "turn:3.36.115.128:3478?transport=udp"],
       username: "choongil",
       credential: "Lee",
     },

@@ -149,41 +149,57 @@ router.post("/postplaylist", (req, res, next) => {
   res.send(playlist);
 });
 
+// 삭제 이벤트 해당 객체 삭제
 router.post("/deleteplayurl", (req, res, next) => {
   const idx = req.body.idx;
-  playlist = playlist.filter((data,i) => {
-    if(idx !== i){
-      return data
+  playlist = playlist.filter((data, i) => {
+    if (idx !== i) {
+      return data;
     }
-  })
+  });
   res.send(playlist);
 });
 
+// 재생목록 click시 이벤트
 router.post("/clickimg", (req, res, next) => {
   const idx = req.body.idx;
   const url = playlist[idx].url;
 
   let check = false;
+  let time = playlist[idx].duration;
+  let totaltime = 0;
   playlist.forEach((data, i) => {
     if (i !== idx && data.select === true) {
-      check = i;
-      return;
+      // 0번째 일때 0과 false가 겹쳐서 의도와 다른 결과가 나옴
+      check = String(i)
     }
+    if (i < idx) {
+      time += playlist[i].duration;
+    }
+    totaltime += data.duration;
   });
 
   if (check) {
+    check = Number(check)
     playlist[idx].url = playlist[check].url;
     playlist[check].url = url;
     playlist[idx].select = false;
     playlist[check].select = false;
+    res.json({ playlist });
   } else if (playlist[idx].select) {
     playlist[idx].select = false;
+    res.json({ playlist });
   } else {
     playlist[idx].select = true;
+    res.json({
+      playlist,
+      time: time,
+      duration: playlist[idx].duration,
+      totaltime: totaltime,
+    });
   }
-  res.send(playlist);
 });
-
+// 새로운 사진을 재생목록에 추가(프리셋 말고)
 router.post("/inputnewplay", (req, res, next) => {
   const url = req.body.url;
   playlist.push({
@@ -191,7 +207,17 @@ router.post("/inputnewplay", (req, res, next) => {
     duration: 5,
     select: false,
   });
-  res.send(playlist)
+  res.send(playlist);
 });
+// 이미지 재생 시간 변경
+router.post("/changetime", (req, res, next) => {
+  const idx = req.body.idx;
+  const time = req.body.time
+  playlist[idx].select = false
+  playlist[idx].duration += time;
+
+  res.json({playlist,DT:playlist[idx].duration});
+});
+
 
 module.exports = router;

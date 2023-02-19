@@ -17,7 +17,7 @@ const PlaylistMain = (props) => {
       isover: monitor.isOver(),
     }),
   }));
-
+  // 이미지 드랍으로 이미지를 재생목록에 추가
   const sendTourl = (url) => {
     axios
       .post("http://localhost:5000/output/postplaylist", {
@@ -28,7 +28,7 @@ const PlaylistMain = (props) => {
         playlistCtx.addToPlaylist(res.data);
       });
   };
-
+  // 클릭후 삭제 버튼
   const deleteimg = (e) => {
     e.preventDefault();
     check = false;
@@ -38,9 +38,11 @@ const PlaylistMain = (props) => {
       })
       .then((res) => {
         playlistCtx.addToPlaylist(res.data);
+        playlistCtx.changetime('')
         check = true;
       });
   };
+  // 재생목록 사진 클릭시 상황에 맞게 이벤트
   const Clickimg = (e) => {
     e.preventDefault();
     if (props.url === "" || !check) return;
@@ -49,7 +51,11 @@ const PlaylistMain = (props) => {
         idx: props.i,
       })
       .then((res) => {
-        playlistCtx.addToPlaylist(res.data);
+        playlistCtx.changeDT(res.data.duration)
+        playlistCtx.changeTT(res.data.totaltime)
+        playlistCtx.changeidx(props.i)
+        playlistCtx.addToPlaylist(res.data.playlist);
+        playlistCtx.changetime(res.data.time)
       });
   };
 
@@ -68,13 +74,7 @@ const PlaylistMain = (props) => {
       key={props.url}
       onClick={Clickimg}
     >
-      {props.url && props.select && (
-        <>
-          {/* <button className="minus" onClick={deleteimg}>-</button> */}
-          <button className="del" onClick={deleteimg}>X</button>
-          {/* <button className="plus" onClick={deleteimg}>+</button> */}
-        </>
-      )}
+      {props.url && props.select && <button className="del" onClick={deleteimg}>X</button>}
     </div>
   );
 };

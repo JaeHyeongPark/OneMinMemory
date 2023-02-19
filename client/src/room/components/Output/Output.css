@@ -199,6 +199,11 @@ img.infinity {
   align-items: flex-start;
   padding: 0 20px;
 }
+/* .TimeBar .timediv{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+} */
 
 .time {
   height: 34px;

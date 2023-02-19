@@ -77,39 +77,28 @@ router.get("/playlist", async (req, res, next) => {
 let playlist = [
   {
     url: "",
-    duration: 4,
-    // fadeout: null,
-    // transition: null,
+    duration: 5,
+    select: false,
   },
   {
     url: "",
-    duration: 4,
-    // fadeout: null,
-    // transition: null,
+    duration: 5,
+    select: false,
   },
   {
     url: "",
-    duration: 4,
-    // fadeout: null,
-    // transition: null,
+    duration: 15,
+    select: false,
   },
   {
     url: "",
-    duration: 4,
-    // fadeout: null,
-    // transition: null,
+    duration: 15,
+    select: false,
   },
   {
     url: "",
-    duration: 4,
-    // fadeout: null,
-    // transition: null,
-  },
-  {
-    url: "",
-    duration: 4,
-    // fadeout: null,
-    // transition: null,
+    duration: 5,
+    select: false,
   },
 ];
 
@@ -291,9 +280,46 @@ router.post("/postplaylist", (req, res, next) => {
 
 router.post("/deleteplayurl", (req, res, next) => {
   const idx = req.body.idx;
-  playlist[idx].url = "";
-  // playlist[idx].fadeout = true;
-  // playlist[idx].transition = "";
+  playlist = playlist.filter((data, i) => {
+    if (idx !== i) {
+      return data;
+    }
+  });
+  res.send(playlist);
+});
+
+router.post("/clickimg", (req, res, next) => {
+  const idx = req.body.idx;
+  const url = playlist[idx].url;
+
+  let check = false;
+  playlist.forEach((data, i) => {
+    if (i !== idx && data.select === true) {
+      check = i;
+      return;
+    }
+  });
+
+  if (check) {
+    playlist[idx].url = playlist[check].url;
+    playlist[check].url = url;
+    playlist[idx].select = false;
+    playlist[check].select = false;
+  } else if (playlist[idx].select) {
+    playlist[idx].select = false;
+  } else {
+    playlist[idx].select = true;
+  }
+  res.send(playlist);
+});
+
+router.post("/inputnewplay", (req, res, next) => {
+  const url = req.body.url;
+  playlist.push({
+    url: url,
+    duration: 5,
+    select: false,
+  });
   res.send(playlist);
 });
 

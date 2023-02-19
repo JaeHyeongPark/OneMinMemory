@@ -8,6 +8,8 @@ import "./Playlist.css";
 
 const PlaylistMain = (props) => {
   const playlistCtx = useContext(PlaylistContext);
+  // 삭제 딜레이 커버 체크(상태) 변수
+  let check = true;
   const [{ isover }, playlist] = useDrop(() => ({
     accept: ["image"],
     drop: (item) => sendTourl(item.url),
@@ -30,18 +32,32 @@ const PlaylistMain = (props) => {
 
   const deleteimg = (e) => {
     e.preventDefault();
+    check = false;
     axios
       .post("http://localhost:5000/output/deleteplayurl", {
         idx: props.i,
       })
       .then((res) => {
         playlistCtx.addToPlaylist(res.data);
+        check = true;
       });
   };
+  const Clickimg = (e) => {
+    e.preventDefault();
+    if (props.url === "" || !check) return;
+    axios
+      .post("http://localhost:5000/output/clickimg", {
+        idx: props.i,
+      })
+      .then((res) => {
+        playlistCtx.addToPlaylist(res.data);
+      });
+  };
+
   return (
     <div
       ref={playlist}
-      className="toplay_img"
+      className={props.select ? "selecttoplay_img" : "toplay_img"}
       id={props.i}
       style={{
         width: String((props.duration * 100) / 60) + "%",
@@ -51,8 +67,17 @@ const PlaylistMain = (props) => {
         backgroundRepeat: "repeat-x",
       }}
       key={props.url}
+      onClick={Clickimg}
     >
-      {props.url && <button onClick={deleteimg}>X</button>}
+      {props.url && props.select && (
+        <>
+          {/* <button className="minus" onClick={deleteimg}>-</button> */}
+          <button className="del" onClick={deleteimg}>
+            X
+          </button>
+          {/* <button className="plus" onClick={deleteimg}>+</button> */}
+        </>
+      )}
     </div>
   );
 };

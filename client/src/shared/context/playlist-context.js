@@ -11,6 +11,7 @@ const PlaylistContext = createContext({
   changeTT: () => {},
   changeDT : () => {},
   changetime: () => {},
+  translist: [],
   addToPlaylist: () => {},
 });
 
@@ -21,6 +22,7 @@ export const PlaylistContextProvider = (props) => {
   const [DT, setDT] = useState('')
   const [TT, setTT] = useState(0)
   const [idx, setidx] = useState('')
+  const [translist, setTranslist] = useState([]);
 
   useEffect(() => {
     axios.get("http://localhost:5000/output/getplaylist").then((res) => {
@@ -28,10 +30,46 @@ export const PlaylistContextProvider = (props) => {
     });
   }, []);
 
+  useEffect(() => {
+    setTranslist([
+      {
+        transition: [
+          "-filter_complex",
+          "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
+        ],
+      },
+      {
+        transition: [
+          "-filter_complex",
+          "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
+        ],
+      },
+      {
+        transition: [
+          "-filter_complex",
+          "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
+        ],
+      },
+      {
+        transition: [
+          "-filter_complex",
+          "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
+        ],
+      },
+      {
+        transition: [
+          "-filter_complex",
+          "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
+        ],
+      },
+    ]);
+  }, []);
+
   //   const setChangeHandler = () => {};
 
   const addToPlaylistHandler = (track) => {
     setPlaylist(track);
+    console.log(playlist);
   };
   const changetime = (time) => {
     settime(time)
@@ -56,6 +94,7 @@ export const PlaylistContextProvider = (props) => {
     changeTT:changeTT,
     changeDT:changeDT,
     changetime:changetime,
+    translist: translist,
     addToPlaylist: addToPlaylistHandler,
   };
 

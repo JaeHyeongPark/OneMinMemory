@@ -23,31 +23,31 @@ export const PlaylistContextProvider = (props) => {
       {
         transition: [
           "-filter_complex",
-          "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
+          "[0:v][1:v]xfade=transition=hrslice:duration=1:offset=3",
         ],
       },
       {
         transition: [
           "-filter_complex",
-          "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
+          "[0:v][1:v]xfade=transition=distance:duration=1:offset=3",
         ],
       },
       {
         transition: [
           "-filter_complex",
-          "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
+          "[0:v][1:v]xfade=transition=rectcrop:duration=1:offset=3",
         ],
       },
       {
         transition: [
           "-filter_complex",
-          "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
+          "[0:v][1:v]xfade=transition=radial:duration=1:offset=3",
         ],
       },
       {
         transition: [
           "-filter_complex",
-          "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
+          "[0:v][1:v]xfade=transition=pixelize:duration=1:offset=3",
         ],
       },
     ]);

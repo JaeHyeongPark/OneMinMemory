@@ -77,37 +77,37 @@ router.get("/playlist", async (req, res, next) => {
 let playlist = [
   {
     url: "",
-    duration: 5,
+    duration: 4,
     // fadeout: null,
     // transition: null,
   },
   {
     url: "",
-    duration: 5,
+    duration: 4,
     // fadeout: null,
     // transition: null,
   },
   {
     url: "",
-    duration: 5,
+    duration: 4,
     // fadeout: null,
     // transition: null,
   },
   {
     url: "",
-    duration: 5,
+    duration: 4,
     // fadeout: null,
     // transition: null,
   },
   {
     url: "",
-    duration: 5,
+    duration: 4,
     // fadeout: null,
     // transition: null,
   },
   {
     url: "",
-    duration: 5,
+    duration: 4,
     // fadeout: null,
     // transition: null,
   },

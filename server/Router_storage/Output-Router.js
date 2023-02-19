@@ -114,32 +114,27 @@ let playlist = [
   {
     url: "",
     duration: 5,
-    fadeout: true,
-    transition: "effect1",
+    select: false,
   },
   {
     url: "",
     duration: 5,
-    fadeout: true,
-    transition: "effect2",
+    select: false,
   },
   {
     url: "",
     duration: 15,
-    fadeout: true,
-    transition: "effect2",
+    select: false,
   },
   {
     url: "",
     duration: 15,
-    fadeout: true,
-    transition: "effect1",
+    select: false,
   },
   {
     url: "",
     duration: 5,
-    fadeout: true,
-    transition: null,
+    select: false,
   },
 ];
 // 재생목록 호출 API
@@ -148,18 +143,55 @@ router.get("/getplaylist", async (req, res, next) => {
 });
 
 router.post("/postplaylist", (req, res, next) => {
-  const url = req.body.url
-  const idx = req.body.idx
-  playlist[idx].url = url
-  res.send(playlist)
-})
+  const url = req.body.url;
+  const idx = req.body.idx;
+  playlist[idx].url = url;
+  res.send(playlist);
+});
 
 router.post("/deleteplayurl", (req, res, next) => {
-  const idx = req.body.idx
-  playlist[idx].url = ''
-  playlist[idx].fadeout = true
-  playlist[idx].transition = ''
+  const idx = req.body.idx;
+  playlist = playlist.filter((data,i) => {
+    if(idx !== i){
+      return data
+    }
+  })
+  res.send(playlist);
+});
+
+router.post("/clickimg", (req, res, next) => {
+  const idx = req.body.idx;
+  const url = playlist[idx].url;
+
+  let check = false;
+  playlist.forEach((data, i) => {
+    if (i !== idx && data.select === true) {
+      check = i;
+      return;
+    }
+  });
+
+  if (check) {
+    playlist[idx].url = playlist[check].url;
+    playlist[check].url = url;
+    playlist[idx].select = false;
+    playlist[check].select = false;
+  } else if (playlist[idx].select) {
+    playlist[idx].select = false;
+  } else {
+    playlist[idx].select = true;
+  }
+  res.send(playlist);
+});
+
+router.post("/inputnewplay", (req, res, next) => {
+  const url = req.body.url;
+  playlist.push({
+    url: url,
+    duration: 5,
+    select: false,
+  });
   res.send(playlist)
-})
+});
 
 module.exports = router;

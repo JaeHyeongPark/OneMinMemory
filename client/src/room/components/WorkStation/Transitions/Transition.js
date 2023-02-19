@@ -9,7 +9,7 @@ const Transition = ({ className, onChange }) => {
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-    end: (className, monitor) => {},
+    // end: (className, monitor) => {},
   }));
   return (
     <div

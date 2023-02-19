@@ -10,11 +10,47 @@
   border: solid 1px #000;
   background-color: #d9e8ef;
 }
-.toplay_img button{
-  position: absolute;
+.playlist_space{
+  display: flex;
+  flex-grow: 1;
+}
+
+.selecttoplay_img {
+  height: 100%;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
+  row-gap: 0px;
+  border: solid 3px #e2e447;
+  background-color: #d9e8ef;
+}
+.selecttoplay_img .del{
+  position: relative;
   background: none;
+  bottom: 30px;
   border: none;
   color: red;
+  font-size: 16px;
+  cursor: pointer;
+}
+.selecttoplay_img .plus{
+  position: relative;
+  background: none;
+  align-self: flex-end;
+  border: none;
+  color: rgb(242, 254, 0);
+  font-size: 16px;
+  cursor: pointer;
+}
+.selecttoplay_img .minus{
+  position: relative;
+  background: none;
+  align-self: flex-start;
+  border: none;
+  color: rgb(242, 254, 0);
   font-size: 16px;
   cursor: pointer;
 }

@@ -5,6 +5,13 @@ import MainPage from "./MainScreen/M-MainPage";
 import Room from "./room/pages/Room";
 import AuthContext from "./shared/context/auth-context";
 
+import { io } from "socket.io-client";
+
+const mainSocket = io("http://localhost:5000", {
+  path: "/socket.io",
+  withCredentials: true,
+});
+
 /* 아이디 연결시, 방 생성시 작업해야 할 부분
 <Route path="/:userId/room" element={<Room/>}/>  */
 
@@ -49,5 +56,7 @@ function App() {
     </AuthContext.Provider>
   );
 }
+
+App.mainSocket = mainSocket;
 
 export default App;

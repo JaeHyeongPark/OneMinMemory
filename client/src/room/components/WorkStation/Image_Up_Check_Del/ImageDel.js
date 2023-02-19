@@ -3,10 +3,11 @@ import trash from "../../../assets/trash.svg";
 import { useContext } from "react";
 import ImageContext from "./ImageContext";
 import { useDrop } from "react-dnd";
+import App from "../../../../App.js";
 
 const ImageDel = (props) => {
   const ToCanvas = useContext(ImageContext);
-  const mode = props.mode
+  const mode = props.mode;
   // const [{ isOver }, drops] = useDrop(() => ({
   //   accept: "image",
   //   drop: (item) => deleteImage(item.url),
@@ -18,9 +19,13 @@ const ImageDel = (props) => {
   const deleteImage = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/photoBox/deleteimage", { mode:mode })
+      .post("http://localhost:5000/photoBox/deleteimage", { mode: mode })
       .then((res) => {
-        ToCanvas.setView(res.data)
+        ToCanvas.setView(res.data);
+        App.mainSocket.emit("pictureDelete", {
+          Id: App.mainSocket.id,
+          roomId: App.roomId,
+        });
       })
       .catch((err) => console.log(err));
   };

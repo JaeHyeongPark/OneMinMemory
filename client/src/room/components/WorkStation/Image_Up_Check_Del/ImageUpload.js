@@ -1,5 +1,6 @@
 import axios from "axios";
 import softwareupload from "../../../assets/software-upload.svg";
+import App from "../../../../App.js";
 
 const ImageUpload = (props) => {
   const uploadimage = async (e) => {
@@ -20,6 +21,11 @@ const ImageUpload = (props) => {
       })
       .then((res) => {
         props.change();
+        // 누군가 사진을 업로드 했음을 서버에 알림
+        App.mainSocket.emit("pictureUpload", {
+          Id: App.mainSocket.id,
+          roomId: App.roomId,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -27,7 +33,7 @@ const ImageUpload = (props) => {
   };
 
   return (
-    <div >
+    <div>
       <label className="uploadButton" htmlFor="upload">
         <img src={softwareupload} className="img.software-upload" alt="a" />
       </label>

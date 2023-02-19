@@ -8,6 +8,8 @@ import "./Canvas.css";
 import SidebarItem from "./SidebarItem";
 import Transition from "./Transitions/Transition";
 
+import App from "../../../App.js";
+
 const DEFAULT_OPTIONS = [
   {
     name: "Brighten",
@@ -50,7 +52,7 @@ function Canvas() {
   const [inputShow, setinputShow] = useState(false);
   const [PaintMode, setPaintMode] = useState(false);
   const [Paint, setPaint] = useState(false);
-  const [modalcheck, setmodalcheck] = useState(true)
+  const [modalcheck, setmodalcheck] = useState(true);
   const [transitionModal, setTransitionModal] = useState(false);
   const [Ctx, setCtx] = useState(null);
   const [x, setX] = useState([]);
@@ -73,10 +75,10 @@ function Canvas() {
   }));
 
   const changeModalToCanvas = (url) => {
-    setTransitionModal(false)
-    ToCanvas.sendurl(url)
-    setmodalcheck(!modalcheck)
-  }
+    setTransitionModal(false);
+    ToCanvas.sendurl(url);
+    setmodalcheck(!modalcheck);
+  };
 
   const imageToCanvas = (url) => {
     ToCanvas.sendurl(url);
@@ -165,6 +167,10 @@ function Canvas() {
         const canvas = canvasRef.current;
         canvas.style = {};
         Ctx.clearRect(0, 0, canvas.width, canvas.height);
+        App.mainSocket.emit("pictureEdited", {
+          Id: App.mainSocket.id,
+          roomId: App.roomId,
+        });
       })
       .catch((err) => {
         console.log(err);

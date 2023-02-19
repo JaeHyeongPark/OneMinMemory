@@ -1,14 +1,35 @@
 const express = require("express");
 const cors = require("cors");
+
 const bodyParser = require("body-parser");
 const AWS_S3_router = require("./Router_storage/AWS-S3-Router");
 const Canvas_router = require("./Router_storage/Canvas-Router");
 const Output_router = require("./Router_storage/Output-Router");
 
+// router 추가 by 충일
+const Socket_router = require("./Router_storage/Socket-Router");
+
 // const s3 = new AWS.S3()
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+
+// socket IO용 모듈 import by 충일
+const socketio = require("socket.io");
+const http = require("http");
+// express 기반 http server 생성과 socket 연결 by 충일
+const httpServer = http.createServer(app);
+const io = new socketio.Server(httpServer, {
+  path: "/socket.io",
+  cors: {
+    origin: "http://localhost:3000",
+    credentials: true,
+    methods: ["GET", "POST", "OPTIONS"],
+  },
+});
+
+// socket 라우터는 여기로~ by 충일
+app.use("/socket.io", Socket_router(io));
 
 // photoBox 라우터는 다 여기로 슝슝~~
 app.use("/photoBox", AWS_S3_router);
@@ -34,4 +55,5 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || "알 수 없는 오류입니다." });
 });
 
-app.listen(5000, () => console.log("서버 연결 성공!"));
+// app.listen에서 httpServer.listen으로 수정 by 충일
+httpServer.listen(5000, () => console.log("서버 연결 성공!"));

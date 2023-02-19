@@ -1,4 +1,3 @@
-import axios from "axios";
 import Picture from "./Picture";
 
 const ImageShow = (props) => {

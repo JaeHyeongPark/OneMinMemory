@@ -25,7 +25,6 @@ const PlaylistMain = (props) => {
         idx: props.i,
       })
       .then((res) => {
-        console.log(res.data);
         playlistCtx.addToPlaylist(res.data);
       });
   };
@@ -46,7 +45,7 @@ const PlaylistMain = (props) => {
   // 재생목록 사진 클릭시 상황에 맞게 이벤트
   const Clickimg = (e) => {
     e.preventDefault();
-    if (props.url === "" || !check) return;
+    if (!check) return;
     axios
       .post("http://localhost:5000/output/clickimg", {
         idx: props.i,

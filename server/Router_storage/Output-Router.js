@@ -79,26 +79,31 @@ let playlist = [
     url: "",
     duration: 5,
     select: false,
+    transition: ""
   },
   {
     url: "",
     duration: 5,
     select: false,
+    transition: ""
   },
   {
     url: "",
     duration: 15,
     select: false,
+    transition: ""
   },
   {
     url: "",
     duration: 15,
     select: false,
+    transition: ""
   },
   {
     url: "",
     duration: 5,
     select: false,
+    transition: ""
   },
 ];
 
@@ -249,8 +254,6 @@ function addAudio(inputPath) {
 }
 
 router.post("/merge", async (req, res, next) => {
-  // console.log(req.body.playlist);
-  // console.log(req.body.translist);
   const images = req.body.playlist.map(({ url }) => url);
   const durations = req.body.playlist.map(({ duration }) => duration);
   const transitions = req.body.translist.map(({ transition }) => transition);
@@ -265,6 +268,21 @@ router.post("/merge", async (req, res, next) => {
   console.log("오디오 삽입 및 최종 렌더링 완료, 완료된 비디오:", finishedPath);
   res.download(finishedPath);
 });
+
+
+// transition효과 playlist에 넣기
+router.post("/transition", (req, res, next) => {
+  const transition = req.body.transition
+  const idx = req.body.idx
+  playlist[idx].transition = transition
+  res.send(playlist)
+})
+// 클릭으로 transition 지우기(해당 인덱스만)
+router.post("/deltransition", (req, res, next) => {
+  const idx = req.body.idx
+  playlist[idx].transition = ''
+  res.send(playlist)
+})
 
 // 재생목록 호출 API
 router.get("/getplaylist", async (req, res, next) => {

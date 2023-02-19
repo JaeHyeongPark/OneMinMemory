@@ -23,6 +23,7 @@ const PlaylistMain = (props) => {
         idx: props.i,
       })
       .then((res) => {
+        console.log(res.data);
         playlistCtx.addToPlaylist(res.data);
       });
   };
@@ -34,7 +35,7 @@ const PlaylistMain = (props) => {
         idx: props.i,
       })
       .then((res) => {
-        playlistCtx.addToPlaylist(res.data)
+        playlistCtx.addToPlaylist(res.data);
       });
   };
   return (

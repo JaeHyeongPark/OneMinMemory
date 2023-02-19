@@ -16,27 +16,24 @@ const ERRORS = {
   INPUT: "Please add input videos to the input folder",
 };
 
-const images = [
-  "./images/test0.jpg",
-  "./images/test1.jpg",
-  "./images/test2.jpg",
-  "./images/test3.jpg",
-  "./images/test4.jpg",
-  "./images/test5.jpg",
-];
-
 const videos = [
-  "./input/source0.mp4",
-  "./input/source1.mp4",
-  "./input/source2.mp4",
-  "./input/source3.mp4",
-  "./input/source4.mp4",
-  "./input/source5.mp4",
+  "../Router_storage/input/source0.mp4",
+  "../Router_storage/input/source1.mp4",
+  "../Router_storage/input/source2.mp4",
+  "../Router_storage/input/source3.mp4",
+  "../Router_storage/input/source4.mp4",
+  "../Router_storage/input/source5.mp4",
 ];
 
-const duration = [8, 7, 5, 5, 5, 5];
+const effectVideos = [
+  "../Router_storage/input/effect0.mp4",
+  "../Router_storage/input/effect1.mp4",
+  "../Router_storage/input/effect2.mp4",
+  "../Router_storage/input/effect3.mp4",
+  "../Router_storage/input/effect4.mp4",
+];
 
-const preset = [
+const transitions = [
   ["-filter_complex", "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4"],
   ["-filter_complex", "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4"],
   ["-filter_complex", "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4"],
@@ -63,29 +60,13 @@ function imageToVideos(imagePath, duration) {
 // imageToVideos(images, duration);
 
 //hrslice;
-function mergeEffect(preset, inputPath) {
-  // ffmpeg()
-  //   .addInput(inputPath[0])
-  //   .addInput(inputPath[1])
-  //   .outputOptions(preset[0])
-  //   //   .size("1920x1080")
-  //   .on("start", function (commandLine) {
-  //     console.log("Spawned Ffmpeg with command: " + commandLine);
-  //   })
-  //   .on("error", function (err) {
-  //     console.log("An error occurred: " + err.message);
-  //   })
-  //   .on("end", function () {
-  //     console.log("Processing finished !");
-  //   })
-  //   .save("./output/tempOutput.mp4");
-
+function mergeTransitions(inputPath, transitions) {
+  console.log(transitions);
   for (let i = 0; i < inputPath.length - 1; i++) {
     ffmpeg()
       .addInput(inputPath[i])
       .addInput(inputPath[i + 1])
-      .outputOptions(preset[i])
-      //   .size("1920x1080")
+      .outputOptions(transitions[i])
       .on("start", function (commandLine) {
         console.log("Spawned Ffmpeg with command: " + commandLine);
       })
@@ -95,55 +76,157 @@ function mergeEffect(preset, inputPath) {
       .on("end", function () {
         console.log("Processing finished !");
       })
-      .save("./output/" + i + ".mp4");
+      .save(`../Router_storage/input/transed${i}.mp4`);
   }
-
-  // ffmpeg()
-  //   .addInput("./output/tempOutput.mp4")
-  //   .addInput("./output/tempOutput2.mp4")
-  //   .outputOptions([
-  //     "-filter_complex",
-  //     "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
-  //   ])
-  //   //   .size("1920x1080")
-  //   .on("start", function (commandLine) {
-  //     console.log("Spawned Ffmpeg with command: " + commandLine);
-  //   })
-  //   .on("error", function (err) {
-  //     console.log("An error occurred: " + err.message);
-  //   })
-  //   .on("end", function () {
-  //     console.log("Processing finished !");
-  //   })
-  //   .save("./output/tempOutput3.mp4");
 }
-// mergeEffect(preset, videos);
+mergeTransitions(videos, transitions);
 
-function mergeAll() {
-  ffmpeg("./output/0.mp4")
-    .input("./output/1.mp4")
-    .input("./output/2.mp4")
-    .input("./output/3.mp4")
-    .input("./output/4.mp4")
-    //   .size("1920x1080")
+function mergeAll(inputPath) {
+  const mergeVideos = ffmpeg();
+  const effectVideos = inputPath;
+  effectVideos.forEach((effectVideo) => {
+    mergeVideos.addInput(effectVideo);
+  });
+
+  mergeVideos
     .on("error", function (err) {
       console.log("An error occurred: " + err.message);
     })
     .on("end", function () {
       console.log("Processing finished !");
     })
-    .mergeToFile("./output/mergeAll.mp4", "./temp");
+    .mergeToFile(
+      "../Router_storage/output/merged.mp4",
+      "../Router_storage/temp"
+    );
 }
-// mergeAll();
+// mergeAll(effectVideos);
 
 function addAudio() {
-  ffmpeg("./output/mergeAll.mp4")
+  ffmpeg("../Router_storage/output/merged.mp4")
     // .noAudio()
+    .videoCodec("libx264")
+    .audioCodec("libmp3lame")
+    .size("1080x720")
     .addInput(
       "../Hoang - Run Back to You (Official Lyric Video) feat. Alisa_128kbps.mp3"
     )
-    .videoCodec("libx264")
-    .audioCodec("libmp3lame")
-    .save("./output/finished.mp4");
+    .on("error", function (err) {
+      console.log("An error occurred: " + err.message);
+    })
+    .on("end", function () {
+      console.log("Processing finished !");
+    })
+    .save(`../Router_storage/output/oneminute_${Date.now()}.mp4`);
 }
-addAudio();
+// addAudio();
+
+// var videoOptions = {
+//   loop: 3,
+//   fps: 25,
+//   transition: true,
+//   transitionDuration: 1, // seconds
+//   videoBitrate: 3000,
+//   videoCodec: "libx264",
+//   size: "1080x?",
+//   audioBitrate: "128k",
+//   audioChannels: 2,
+//   format: "mp4",
+//   pixelFormat: "yuv420p",
+// };
+
+// videoShow(images, videoOptions)
+//   .audio(
+//     "Hoang - Run Back to You (Official Lyric Video) feat. Alisa_128kbps.mp3"
+//   )
+//   .save("Output.mp4")
+//   .on("start", function (command) {
+//     console.log("Conversion started" + command);
+//   })
+//   .on("error", function (err, stdout, stderr) {
+//     console.log("Some error occured" + err);
+//   })
+//   .on("end", function (output) {
+//     console.log("Conversion completed" + output);
+//     res.download("Output.mp4");
+//   });
+// console.log("Conversion completed 2222");
+
+//원본
+// function imageToVideos(imagePath, durations) {
+//   for (let i = 0; i < imagePath.length; i++) {
+//     ffmpeg(imagePath[i])
+//       .loop(durations[i])
+//       .on("start", function (commandLine) {
+//         console.log("Spawned Ffmpeg with command: " + commandLine);
+//       })
+//       .on("error", function (err) {
+//         console.log("An error occurred: " + err.message);
+//       })
+//       .on("end", function () {
+//         console.log("Processing finished !");
+//       })
+//       .save(`./Router_storage/input/source${i}.mp4`);
+//   }
+// }
+
+//원본
+// function mergeTransitions(inputPath, transitions) {
+//   for (let i = 0; i < inputPath.length - 1; i++) {
+//     ffmpeg()
+//       .addInput(inputPath[i])
+//       .addInput(inputPath[i + 1])
+//       .outputOptions(transitions[i])
+//       .on("start", function (commandLine) {
+//         console.log("Spawned Ffmpeg with command: " + commandLine);
+//       })
+//       .on("error", function (err) {
+//         console.log("An error occurred: " + err.message);
+//       })
+//       .on("end", function () {
+//         console.log("Processing finished !");
+//       })
+//       .save(`./Router_storage/input/transed${i}.mp4`);
+//   }
+// }
+
+//원본
+// router.post("/merge", async (req, res, next) => {
+//   console.log(req.body.playlist);
+//   console.log(req.body.translist);
+//   const images = req.body.playlist.map(({ url }) => url);
+//   const durations = req.body.playlist.map(({ duration }) => duration);
+//   console.log(images);
+//   const transitions = req.body.translist.map(({ transition }) => transition);
+//   console.log("동영상 생성을 시작합니다~~~~!!");
+//   const videos = await imageToVideos(images, durations);
+//   mergeTransitions(videos, transitions);
+// });
+
+//inputDuration 삽입 전
+// function addAudio(inputPath) {
+//   return new Promise((resolve, reject) => {
+//     const finishedVideo = `./Router_storage/output/oneminute_${Date.now()}.mp4`;
+//     ffmpeg(inputPath)
+//       .videoCodec("libx264")
+//       .audioCodec("libmp3lame")
+//       .size("1080x720")
+//       .addInput(
+//         "./Hoang - Run Back to You (Official Lyric Video) feat. Alisa_128kbps.mp3"
+//       )
+//       // .inputOptions("-t " + inputDuration) // Get input video duration and set it as an input option
+//       // .audioFilters("atrim=0:" + inputDuration, "adelay=0|" + audioDelay) // Cut audio and add delay
+//       .on("start", function (commandLine) {
+//         console.log("Spawned Ffmpeg with command: " + commandLine);
+//       })
+//       .on("error", function (err) {
+//         console.log("An error occurred: " + err.message);
+//         reject(err);
+//       })
+//       .on("end", function () {
+//         console.log(`Processing ${finishedVideo} finished !`);
+//         resolve(finishedVideo);
+//       })
+//       .save(finishedVideo);
+//   });
+// }

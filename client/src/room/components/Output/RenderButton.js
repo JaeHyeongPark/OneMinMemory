@@ -10,13 +10,17 @@ const RenderButton = () => {
 
   const merge = () => {
     console.log("다운로드 버튼 클릭 !");
+    console.log(playlistCtx.playlist);
     axios({
       method: "post",
       url: "http://localhost:5000/output/merge",
       responseType: "blob",
-      data: { urlList: playlistCtx.playlist },
+      data: {
+        playlist: playlistCtx.playlist,
+        translist: playlistCtx.translist,
+      },
     }).then((res) => {
-      FileDownload(res.data, "oneminute.mp4");
+      FileDownload(res.data, `oneminute_${Date.now()}.mp4`);
     });
   };
 

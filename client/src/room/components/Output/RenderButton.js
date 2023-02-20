@@ -17,7 +17,6 @@ const RenderButton = () => {
       responseType: "blob",
       data: {
         playlist: playlistCtx.playlist,
-        translist: playlistCtx.translist,
       },
     }).then((res) => {
       FileDownload(res.data, `oneminute_${Date.now()}.mp4`);

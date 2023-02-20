@@ -73,7 +73,6 @@ router.get("/playlist", async (req, res, next) => {
 });
 
 // react 재생목록에 보낼 임시정보 Array
-// 이거 여기 있어야하나?? playlist context로 이동예정
 let playlist = [
   {
     url: "",
@@ -89,19 +88,19 @@ let playlist = [
   },
   {
     url: "",
-    duration: 15,
+    duration: 4,
     select: false,
     transition: "",
   },
   {
     url: "",
-    duration: 15,
+    duration: 4,
     select: false,
     transition: "",
   },
   {
     url: "",
-    duration: 5,
+    duration: 7,
     select: false,
     transition: "",
   },
@@ -148,7 +147,10 @@ function mergeTransitions(inputPath, transitions) {
       ffmpeg()
         .addInput(inputPath[i])
         .addInput(inputPath[i + 1])
-        .outputOptions(transitions[i])
+        .outputOptions([
+          "-filter_complex",
+          `[0:v][1:v]xfade=transition=${transitions[i]}:duration=1:offset=3`,
+        ])
         .on("start", function (commandLine) {
           console.log("Spawned Ffmpeg with command: " + commandLine);
         })
@@ -256,7 +258,7 @@ function addAudio(inputPath) {
 router.post("/merge", async (req, res, next) => {
   const images = req.body.playlist.map(({ url }) => url);
   const durations = req.body.playlist.map(({ duration }) => duration);
-  const transitions = req.body.translist.map(({ transition }) => transition);
+  const transitions = req.body.playlist.map(({ transition }) => transition);
   console.log("동영상 생성을 시작합니다~~~~!!");
   const videoPaths = await imageToVideos(images, durations);
   console.log("이미지를 비디오로 변환 완료, 변환된 비디오:", videoPaths);

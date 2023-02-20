@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { useDrop } from "react-dnd";
 import axios from "axios";
-// import axios from "axios";
+
 
 import PlaylistContext from "../../../shared/context/playlist-context";
-// import PlaylistShow from "./PlaylistShow";
 import "./Playlist.css";
 import PlaylistMain from "./PlaylistMain";
 import PlaylistTrans from "./PlaylistTrans";

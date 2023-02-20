@@ -6,7 +6,6 @@ import Cloud from "../../assets/cloud.svg";
 import ImageShow from "./Image_Up_Check_Del/ImageShow";
 import ImageUpload from "./Image_Up_Check_Del/ImageUpload";
 import ImageDel from "./Image_Up_Check_Del/ImageDel";
-import WorkButton from "./Image_Up_Check_Del/WorkButton";
 import ImageContext from "./Image_Up_Check_Del/ImageContext";
 import "./PhotoBox.css";
 import App from "../../../App.js";
@@ -81,7 +80,6 @@ const PhotoBox = (props) => {
               />
             </div>
           </div>
-          {/* <WorkButton view={view} /> */}
         </div>
       </div>
     </React.Fragment>

@@ -1,12 +1,10 @@
 import React from "react";
-
 import Playlist from "./Playlist";
 import RenderButton from "./RenderButton";
 import Scale from "./Scale";
 
 import music from "../../assets/music.svg";
 import polaroid from "../../assets/polaroid.svg";
-
 import "./Output.css";
 
 const Output = () => {

@@ -353,6 +353,7 @@ router.post("/inputnewplay", (req, res, next) => {
     url: url,
     duration: 5,
     select: false,
+    transition: ""
   });
   res.send(playlist);
 });

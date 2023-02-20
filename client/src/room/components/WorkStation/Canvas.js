@@ -4,7 +4,6 @@ import ImageContext from "./Image_Up_Check_Del/ImageContext";
 import axios from "axios";
 
 import "./Canvas.css";
-// import ToPlaylistButton from "../Output/ToPlaylistButton";
 import SidebarItem from "./SidebarItem";
 import Transition from "./Transitions/Transition";
 
@@ -313,7 +312,6 @@ function Canvas() {
             </div>
           </div>
         </div>
-        {/* <ToPlaylistButton canvasRef={canvasRef} /> */}
       </div>
     </React.Fragment>
   );

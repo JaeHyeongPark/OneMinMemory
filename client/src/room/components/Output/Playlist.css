@@ -39,18 +39,18 @@
 .selecttoplay_img .plus {
   position: relative;
   background: none;
-  align-self: flex-end;
+  bottom: 30px;
   border: none;
-  color: rgb(242, 254, 0);
+  color: red;
   font-size: 16px;
   cursor: pointer;
 }
 .selecttoplay_img .minus {
   position: relative;
   background: none;
-  align-self: flex-start;
+  bottom: 30px;
   border: none;
-  color: rgb(242, 254, 0);
+  color: red;
   font-size: 16px;
   cursor: pointer;
 }

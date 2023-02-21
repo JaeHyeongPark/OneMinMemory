@@ -10,16 +10,30 @@ const ImageDel = (props) => {
 
   const deleteImage = (e) => {
     e.preventDefault();
-    axios
-      .post("https://chjungle.shop/photoBox/deleteimage", { mode: mode })
-      .then((res) => {
-        ToCanvas.setView(res.data);
-        App.mainSocket.emit("pictureDelete", {
-          Id: App.mainSocket.id,
-          roomId: App.roomId,
-        });
-      })
-      .catch((err) => console.log(err));
+    // axios
+    //   .post("http://localhost:5000/photoBox/deleteimage", { mode:mode })
+    //   .then((res) => {
+    //     ToCanvas.setView(res.data)
+    //   })
+    //   .catch((err) => console.log(err));
+    if (mode === "Original") {
+      const origin = {};
+      Object.keys(ToCanvas.origin).filter((url) => {
+        if (ToCanvas.origin[url] === 0) {
+          origin[url] = 0;
+        }
+      });
+      ToCanvas.setorigin(origin);
+    } else {
+      const effect = {};
+      console.log(ToCanvas.effect);
+      Object.keys(ToCanvas.effect).filter((url) => {
+        if (ToCanvas.effect[url] === 0) {
+          effect[url] = 0;
+        }
+      });
+      ToCanvas.seteffect(effect);
+    }
   };
 
   return (

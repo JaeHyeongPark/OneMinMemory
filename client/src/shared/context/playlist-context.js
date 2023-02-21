@@ -25,8 +25,8 @@ export const PlaylistContextProvider = (props) => {
   const [translist, setTranslist] = useState([]);
 
   useEffect(() => {
-    axios.get("https://chjungle.shop/output/getplaylist").then((res) => {
-      setPlaylist(res.data.results);
+    axios.get("http://localhost:5000/output/getplaylist").then((res) => {
+      setPlaylist(res.data);
     });
   }, []);
 
@@ -69,7 +69,6 @@ export const PlaylistContextProvider = (props) => {
 
   const addToPlaylistHandler = (track) => {
     setPlaylist(track);
-    console.log(playlist);
   };
   const changetime = (time) => {
     settime(time);

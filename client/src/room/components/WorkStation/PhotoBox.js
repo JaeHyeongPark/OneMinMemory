@@ -12,21 +12,22 @@ import App from "../../../App.js";
 
 const PhotoBox = (props) => {
   const [cloud, setcloud] = useState(true);
-  const [check, setcheck] = useState(true);
   const [view, setview] = useState({});
-  const [upload, setupload] = useState(true);
   const ToCanvas = useContext(ImageContext);
 
   useEffect(() => {
     const filename = cloud ? "Original" : "Effect";
     axios
-      .post("https://chjungle.shop/photoBox/sendimage", {
-        filename: filename,
-      })
+      .post("http://localhost:5000/photoBox/sendimage", { filename: filename })
       .then((res) => {
-        setview(res.data);
+        const origin = { ...ToCanvas.origin };
+        const effect = { ...ToCanvas.effect };
+        res.data.origin.forEach((url) => (origin[url] = 0));
+        res.data.effect.forEach((url) => (effect[url] = 0));
+        ToCanvas.setorigin(origin);
+        ToCanvas.seteffect(effect);
       });
-  }, [cloud, check, upload]);
+  }, []);
 
   const updatePicture = (isOriginal) => {
     console.log(cloud, isOriginal);
@@ -48,12 +49,12 @@ const PhotoBox = (props) => {
   }, []);
 
   useEffect(() => {
-    setview(ToCanvas.view);
-  }, [ToCanvas.view]);
-
-  const changecheck = () => {
-    setcheck(check ? false : true);
-  };
+    if (cloud) {
+      setview(ToCanvas.origin);
+    } else {
+      setview(ToCanvas.effect);
+    }
+  }, [ToCanvas.origin, cloud, ToCanvas.effect]);
 
   const CloudChange = () => {
     console.log("클라우드 변환 확인");
@@ -75,11 +76,8 @@ const PhotoBox = (props) => {
           <div className="Photos_and_Button">
             <ImageShow view={view} mode={cloud ? "Original" : "Effect"} />
             <div className="PhotoBox-Button">
-              <ImageUpload change={changecheck} />
-              <ImageDel
-                change={changecheck}
-                mode={cloud ? "Original" : "Effect"}
-              />
+              <ImageUpload />
+              <ImageDel mode={cloud ? "Original" : "Effect"} />
             </div>
           </div>
         </div>

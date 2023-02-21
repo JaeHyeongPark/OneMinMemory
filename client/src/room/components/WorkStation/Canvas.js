@@ -152,7 +152,7 @@ function Canvas() {
     const formdata = new FormData();
     formdata.append("imagedata", imagedata);
     formdata.append("originurl", ToCanvas.url);
-    console.log(ToCanvas);
+
     //checked
     await axios
       .post("https://chjungle.shop/canvas/newimage", formdata, {
@@ -161,8 +161,10 @@ function Canvas() {
         },
       })
       .then((res) => {
-        console.log(res);
-        console.log("성공!");
+        const effect = {...ToCanvas.effect}
+        effect[res.data] = 0
+        ToCanvas.seteffect(effect)
+        // 수정한 사진 저장하면 새로운 캔버스를 깔아준다.
         const canvas = canvasRef.current;
         canvas.style = {};
         Ctx.clearRect(0, 0, canvas.width, canvas.height);

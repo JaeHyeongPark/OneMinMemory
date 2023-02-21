@@ -1,8 +1,12 @@
 import axios from "axios";
+import { useContext } from "react";
+import ImageContext from "./ImageContext";
 import softwareupload from "../../../assets/software-upload.svg";
 import App from "../../../../App.js";
 
 const ImageUpload = (props) => {
+  const ToCanvas = useContext(ImageContext);
+
   const uploadimage = async (e) => {
     e.preventDefault();
     const images = e.target.files;
@@ -20,12 +24,10 @@ const ImageUpload = (props) => {
         },
       })
       .then((res) => {
-        props.change();
-        // 누군가 사진을 업로드 했음을 서버에 알림
-        App.mainSocket.emit("pictureUpload", {
-          Id: App.mainSocket.id,
-          roomId: App.roomId,
-        });
+        const neworigin = { ...ToCanvas.origin };
+        res.data.forEach((url) => (neworigin[url] = 0));
+        ToCanvas.setorigin(neworigin);
+        // props.change();
       })
       .catch((err) => {
         console.log(err);

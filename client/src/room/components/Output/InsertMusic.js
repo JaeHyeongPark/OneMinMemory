@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -7,6 +7,7 @@ import Modal from "@mui/material/Modal";
 
 import music from "../../assets/music.svg";
 import Music from "./Sound/Music";
+import PlaylistContext from "../../../shared/context/playlist-context";
 
 const style = {
   position: "absolute",
@@ -26,17 +27,23 @@ const musicItemStyle = {
   flexDirection: "column",
   justifyContent: "center",
 };
-const musicItemTitleStyle = {};
-const musicItemArtistStyle = {};
 
 export default function InsertMusic() {
   const [open, setOpen] = useState(false);
+  const [selectedMusicSrc, setSelectedMusicSrc] = useState("");
+  const [selectMusicId, setSelectMusicId] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [selectedMusicSrc, setSelectedMusicSrc] = useState(null);
-  const selectMusic = (src) => {
-    setSelectedMusicSrc(src);
+  const playlistCtx = useContext(PlaylistContext);
+
+  useEffect(() => {
+    setSelectedMusicSrc(selectedMusicSrc);
+  }, [selectedMusicSrc]);
+
+  const sendSelectedMusicInfo = (id) => {
+    playlistCtx.changemusicidx(id);
   };
+
   return (
     <div>
       <Button className="insert_music_button" onClick={handleOpen}>
@@ -62,7 +69,10 @@ export default function InsertMusic() {
             className="music-item"
             index={1}
             style={musicItemStyle}
-            onClick={() => selectMusic("./music/abc.mp3")}
+            onClick={() => {
+              setSelectedMusicSrc("./music/abc.mp3");
+              setSelectMusicId("1");
+            }}
           >
             <div className="music-item-title">Run Back to You (feat.Alisa)</div>
             <div className="music-item-artist">Hoang</div>
@@ -71,7 +81,10 @@ export default function InsertMusic() {
             className="music-item"
             index={2}
             style={musicItemStyle}
-            onClick={() => selectMusic("./music/뉴진스.mp3")}
+            onClick={() => {
+              setSelectedMusicSrc("./music/뉴진스.mp3");
+              setSelectMusicId("2");
+            }}
           >
             <div className="music-item-title">뉴진스 (feat.Alisa)</div>
             <div className="music-item-artist">hype boy</div>
@@ -80,7 +93,7 @@ export default function InsertMusic() {
             <Button
               variant="contained"
               onClick={() => {
-                //
+                sendSelectedMusicInfo(selectMusicId);
                 handleClose();
               }}
             >

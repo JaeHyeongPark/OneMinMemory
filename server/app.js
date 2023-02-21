@@ -33,11 +33,11 @@ const io = new socketio.Server(httpServer, {
 app.use("/mainsocket", Socket_router(io));
 
 // photoBox 라우터는 다 여기로 슝슝~~
-app.use("/api/photoBox", AWS_S3_router);
+app.use("/photoBox", AWS_S3_router);
 // canvas 라우터는 여기로~~
-app.use("/api/canvas", Canvas_router);
+app.use("/canvas", Canvas_router);
 // output 라우터는 일루~
-app.use("/api/output", Output_router);
+app.use("/output", Output_router);
 
 // 쓸데없는 URL로 접근시 에러 표시
 app.use((req, res, next) => {

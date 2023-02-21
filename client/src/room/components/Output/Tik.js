@@ -6,6 +6,7 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import lineA from "../../assets/LineA.svg";
 import lineB from "../../assets/LineB.svg";
 import lineC from "../../assets/LineC.svg";
+import App from "../../../App";
 
 const Tik = (props) => {
   const playlistCtx = useContext(PlaylistContext);
@@ -44,24 +45,34 @@ const Tik = (props) => {
     if (props.time < time - DT + 1 || TT + (props.time - time) > 60) {
       return;
     }
+    console.log(time, idx, DT, TT);
 
-    axios
-      .post("http://localhost:5000/output/changetime", {
-        time: props.time - time,
-        idx: idx,
-      })
-      .then((res) => {
-        playlistCtx.addToPlaylist(res.data.playlist);
-        playlistCtx.changetime("");
-        playlistCtx.changeDT(res.data.DT);
-      });
+    // axios
+    //   .post("http://localhost:5000/output/changetime", {
+    //     time: props.time - time,
+    //     idx: idx,
+    //   })
+    //   .then((res) => {
+    //     playlistCtx.addToPlaylist(res.data.playlist);
+    //     playlistCtx.changetime("");
+    //     playlistCtx.changeDT(res.data.DT);
+    //   });
+    App.mainSocket.emit("changetime", {
+      time: props.time - time,
+      idx: idx,
+      roomId: App.roomId,
+      Id: App.mainSocket.id,
+    });
   };
 
   let content = "";
 
   if (props.time === playlistCtx.selecttime && playlistCtx.selecttime !== 0) {
     content = (
-      <div ref={nowtime} style={{ height: "40px", backgroundColor:"red", cursor:"col-resize"}}>
+      <div
+        ref={nowtime}
+        style={{ height: "40px", backgroundColor: "red", cursor: "col-resize" }}
+      >
         |
       </div>
     );

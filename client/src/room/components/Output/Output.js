@@ -7,6 +7,8 @@ import music from "../../assets/music.svg";
 import polaroid from "../../assets/polaroid.svg";
 import "./Output.css";
 
+import EditPermissionButton from "./EditPermissionButton";
+
 const Output = () => {
   return (
     <div className="ROOM-FOOTER">
@@ -26,9 +28,9 @@ const Output = () => {
         <div className="finished_layout">
           <div className="insert_music_button">
             <div className="insert_music_icon">
-              <img src={music} alt="insert music" />
+              <img className="insert_music" src={music} alt="insert music" />
+              <label className="music_span">음악넣기</label>
             </div>
-            <span className="music_span">음악넣기</span>
           </div>
           <div className="preview_button_group">
             <div className="preview_button">
@@ -41,6 +43,7 @@ const Output = () => {
             </div>
           </div>
           <RenderButton />
+          <EditPermissionButton />
         </div>
       </div>
     </div>

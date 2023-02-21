@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useDrop } from "react-dnd";
 import axios from "axios";
-
+import App from "../../../App";
 
 import PlaylistContext from "../../../shared/context/playlist-context";
 import "./Playlist.css";
@@ -19,6 +19,9 @@ const Playlist = () => {
   }));
 
   const inputnewplay = (url) => {
+    if (App.playlistPermissionState != 1) {
+      return;
+    }
     axios
       .post("http://localhost:5000/output/inputnewplay", {
         url: url,

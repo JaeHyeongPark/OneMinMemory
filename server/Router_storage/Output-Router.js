@@ -269,101 +269,106 @@ router.post("/merge", async (req, res, next) => {
   res.download(finishedPath);
 });
 
-// transition효과 playlist에 넣기
-router.post("/transition", (req, res, next) => {
-  const transition = req.body.transition;
-  const idx = req.body.idx;
-  playlist[idx].transition = transition;
-  res.send(playlist);
-});
-// 클릭으로 transition 지우기(해당 인덱스만)
-router.post("/deltransition", (req, res, next) => {
-  const idx = req.body.idx;
-  playlist[idx].transition = "";
-  res.send(playlist);
-});
+// transition효과 playlist에 넣기 --------> 소캣으로 대체
+// router.post("/transition", (req, res, next) => {
+//   const transition = req.body.transition;
+//   const idx = req.body.idx;
+//   playlist[idx].transition = transition;
+//   res.send(playlist);
+// });
+
+// 클릭으로 transition 지우기(해당 인덱스만) --------> 소캣으로 대체
+// router.post("/deltransition", (req, res, next) => {
+//   const idx = req.body.idx;
+//   playlist[idx].transition = "";
+//   res.send(playlist);
+// });
 
 // 재생목록 호출 API
 router.get("/getplaylist", async (req, res, next) => {
   res.json({ results: playlist });
 });
 
-router.post("/postplaylist", (req, res, next) => {
-  const url = req.body.url;
-  const idx = req.body.idx;
-  playlist[idx].url = url;
-  res.send(playlist);
-});
+// 재생목록 사진 삭제 API -----------> 소캣으로 대체
+// router.post("/postplaylist", (req, res, next) => {
+//   const url = req.body.url;
+//   const idx = req.body.idx;
+//   playlist[idx].url = url;
+//   res.send(playlist);
+// });
 
-// 삭제 이벤트 해당 객체 삭제
-router.post("/deleteplayurl", (req, res, next) => {
-  const idx = req.body.idx;
-  playlist = playlist.filter((data, i) => {
-    if (idx !== i) {
-      return data;
-    }
-  });
-  res.send(playlist);
-});
+// 삭제 이벤트 해당 객체 삭제 -----------> 소캣으로 대체
+// router.post("/deleteplayurl", (req, res, next) => {
+//   const idx = req.body.idx;
+//   playlist = playlist.filter((data, i) => {
+//     if (idx !== i) {
+//       return data;
+//     }
+//   });
+//   res.send(playlist);
+// });
 
-// 재생목록 click시 이벤트
-router.post("/clickimg", (req, res, next) => {
-  const idx = req.body.idx;
-  const url = playlist[idx].url;
+// 재생목록 click시 이벤트 ------------> 소캣으로 대체
+// router.post("/clickimg", (req, res, next) => {
+//   const idx = req.body.idx;
+//   const url = playlist[idx].url;
 
-  let check = false;
-  let time = playlist[idx].duration;
-  let totaltime = 0;
-  playlist.forEach((data, i) => {
-    if (i !== idx && data.select === true) {
-      // 0번째 일때 0과 false가 겹쳐서 의도와 다른 결과가 나옴
-      check = String(i);
-    }
-    if (i < idx) {
-      time += playlist[i].duration;
-    }
-    totaltime += data.duration;
-  });
+//   let check = false;
+//   let time = playlist[idx].duration;
+//   let totaltime = 0;
+//   playlist.forEach((data, i) => {
+//     if (i !== idx && data.select === true) {
+//       // 0번째 일때 0과 false가 겹쳐서 의도와 다른 결과가 나옴
+//       check = String(i);
+//     }
+//     if (i < idx) {
+//       time += playlist[i].duration;
+//     }
+//     totaltime += data.duration;
+//   });
 
-  if (check) {
-    check = Number(check);
-    playlist[idx].url = playlist[check].url;
-    playlist[check].url = url;
-    playlist[idx].select = false;
-    playlist[check].select = false;
-    res.json({ playlist });
-  } else if (playlist[idx].select) {
-    playlist[idx].select = false;
-    res.json({ playlist });
-  } else {
-    playlist[idx].select = true;
-    res.json({
-      playlist,
-      time: time,
-      duration: playlist[idx].duration,
-      totaltime: totaltime,
-    });
-  }
-});
-// 새로운 사진을 재생목록에 추가(프리셋 말고)
-router.post("/inputnewplay", (req, res, next) => {
-  const url = req.body.url;
-  playlist.push({
-    url: url,
-    duration: 5,
-    select: false,
-    transition: "",
-  });
-  res.send(playlist);
-});
-// 이미지 재생 시간 변경
-router.post("/changetime", (req, res, next) => {
-  const idx = req.body.idx;
-  const time = req.body.time;
-  playlist[idx].select = false;
-  playlist[idx].duration += time;
+//   if (check) {
+//     check = Number(check);
+//     playlist[idx].url = playlist[check].url;
+//     playlist[check].url = url;
+//     playlist[idx].select = false;
+//     playlist[check].select = false;
+//     res.json({ playlist });
+//   } else if (playlist[idx].select) {
+//     playlist[idx].select = false;
+//     res.json({ playlist });
+//   } else {
+//     playlist[idx].select = true;
+//     res.json({
+//       playlist,
+//       time: time,
+//       duration: playlist[idx].duration,
+//       totaltime: totaltime,
+//     });
+//   }
+// });
+// 새로운 사진을 재생목록에 추가(프리셋 말고)---------> 소캣으로 대체
+// router.post("/inputnewplay", (req, res, next) => {
+//   const url = req.body.url;
+//   playlist.push({
+//     url: url,
+//     duration: 5,
+//     select: false,
+//     transition: "",
+//   });
+//   res.send(playlist);
+// });
 
-  res.json({ playlist, DT: playlist[idx].duration });
-});
+// 이미지 재생 시간 변경 ---> socket으로 변경
+// router.post("/changetime", (req, res, next) => {
+//   const idx = req.body.idx;
+//   const time = req.body.time;
+//   playlist[idx].select = false;
+//   playlist[idx].duration += time;
+
+//   res.json({ playlist, DT: playlist[idx].duration });
+// });
+
+router.playlist = playlist;
 
 module.exports = router;

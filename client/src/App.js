@@ -57,6 +57,9 @@ function App() {
   );
 }
 
+// 소캣 객체
 App.mainSocket = mainSocket;
+// playlist의 상태 0:사용 가능 1:내가 사용중, 2: 누가 사용중
+App.playlistPermissionState = 0;
 
 export default App;

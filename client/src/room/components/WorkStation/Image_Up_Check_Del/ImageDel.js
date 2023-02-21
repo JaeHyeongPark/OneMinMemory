@@ -2,6 +2,7 @@ import axios from "axios";
 import trash from "../../../assets/trash.svg";
 import { useContext } from "react";
 import ImageContext from "./ImageContext";
+import App from "../../../../App.js";
 
 const ImageDel = (props) => {
   const ToCanvas = useContext(ImageContext);

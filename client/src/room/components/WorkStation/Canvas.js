@@ -155,7 +155,7 @@ function Canvas() {
     console.log(ToCanvas);
     //checked
     await axios
-      .post("https://chjungle.shop/api/canvas/newimage", formdata, {
+      .post("https://chjungle.shop/canvas/newimage", formdata, {
         headers: {
           "content-type": "multipart/form-data",
         },
@@ -187,7 +187,7 @@ function Canvas() {
     const formdata = new FormData();
     formdata.append(`${name}ImageData`, imageData);
     await axios
-      .post(`https://chjungle.shop/api/canvas/image/${name}`, formdata, {
+      .post(`https://chjungle.shop/canvas/image/${name}`, formdata, {
         headers: {
           "content-type": "multipart/form-data",
         },

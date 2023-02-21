@@ -24,12 +24,10 @@ export const PlaylistContextProvider = (props) => {
   const [idx, setidx] = useState("");
   const [translist, setTranslist] = useState([]);
 
-  useEffect(async () => {
-    await axios
-      .get("https://chjungle.shop/api/output/getplaylist")
-      .then((res) => {
-        setPlaylist(res.data.results);
-      });
+  useEffect(() => {
+    axios.get("https://chjungle.shop/output/getplaylist").then((res) => {
+      setPlaylist(res.data.results);
+    });
   }, []);
 
   useEffect(() => {

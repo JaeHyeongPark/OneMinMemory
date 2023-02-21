@@ -26,6 +26,7 @@ const Effect = {};
 
 // 업로드된 s3 서버에 있는 Original 이미지 전송
 router.post("/sendimage", async (req, res, next) => {
+  console.log("요청 왔습니다~");
   const filename = req.body.filename;
   const params = {
     Bucket: process.env.Bucket_Name,
@@ -97,21 +98,23 @@ router.post("/deleteimage", async (req, res, next) => {
     });
   }
 
-  try{
+  try {
     for await (let s3url of selectimg) {
       const s3key = s3url.split("com/");
-      await s3.deleteObject({
-        Bucket: process.env.Bucket_Name,
-        Key: s3key[1],
-      }).promise();
+      await s3
+        .deleteObject({
+          Bucket: process.env.Bucket_Name,
+          Key: s3key[1],
+        })
+        .promise();
     }
     if (mode === "Original") {
       res.send(Original);
     } else {
       res.send(Effect);
     }
-  }catch(err){
-    return next(err)
+  } catch (err) {
+    return next(err);
   }
 });
 

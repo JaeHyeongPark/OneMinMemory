@@ -72,36 +72,71 @@ router.get("/playlist", async (req, res, next) => {
   }
 });
 
+// 중앙 줌인
+const filter8 = [
+  "-filter_complex",
+  "scale=12800x7200,zoompan=z=pzoom+0.001:x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1280x720:fps=30",
+];
+
+// left top zoompan
+const filter9 = [
+  "-filter_complex",
+  "scale=12800x7200,zoompan=z=pzoom+0.001:d=1:s=1280x720:fps=30",
+];
+
+// right top zoompan
+const filter10 = [
+  "-filter_complex",
+  "scale=12800x7200,zoompan=z=pzoom+0.001:x='iw/2+iw/zoom/2':y=y:d=1:s=1280x720:fps=30",
+];
+
+// left bottom zoompan
+const filter11 = [
+  "-filter_complex",
+  "scale=12800x7200,zoompan=z=pzoom+0.001:y=7200:d=1:s=1280x720:fps=30",
+];
+
+// right bottom zoompan
+const filter12 = [
+  "-filter_complex",
+  "scale=12800x7200,zoompan=z=pzoom+0.001:x='iw/2+iw/zoom/2':y=7200:d=1:s=1280x720:fps=30",
+];
+
 // react 재생목록에 보낼 임시정보 Array
 let playlist = [
   {
-    url: "",
+    url: "./Router_storage/input/test1.jpg",
     duration: 5,
     select: false,
+    effect: filter8,
     transition: "",
   },
   {
-    url: "",
+    url: "./Router_storage/input/test2.jpg",
     duration: 5,
     select: false,
+    effect: filter9,
     transition: "",
   },
   {
-    url: "",
+    url: "./Router_storage/input/test5.jpg",
     duration: 4,
     select: false,
+    effect: filter10,
     transition: "",
   },
   {
-    url: "",
+    url: "./Router_storage/input/test8.jpg",
     duration: 4,
     select: false,
+    effect: filter11,
     transition: "",
   },
   {
-    url: "",
+    url: "./Router_storage/input/test1.jpg",
     duration: 7,
     select: false,
+    effect: filter12,
     transition: "",
   },
 ];
@@ -113,7 +148,6 @@ function imageToVideos(imagePath, durations) {
     for (let i = 0; i < imagePath.length; i++) {
       const videoPath = `./Router_storage/input/source${i}.mp4`;
       ffmpeg(imagePath[i])
-        .size("1280x720")
         .loop(durations[i])
         .on("start", function (commandLine) {
           console.log("Spawned Ffmpeg with command: " + commandLine);
@@ -131,6 +165,35 @@ function imageToVideos(imagePath, durations) {
           }
         })
         .save(videoPath);
+    }
+  });
+}
+
+function addEffects(inputPath, effects) {
+  return new Promise((resolve, reject) => {
+    let effectedVideos = [];
+    let cnt = 0;
+
+    for (let i = 0; i < inputPath.length; i++) {
+      const effectedPath = `./Router_storage/input/effects${i}.mp4`;
+      ffmpeg(inputPath[i])
+        .outputOptions(effects[i])
+        .on("start", function (commandLine) {
+          console.log("Spawned Ffmpeg with command: " + commandLine);
+        })
+        .on("error", function (err) {
+          console.log("An error occurred: " + err.message);
+          reject(err);
+        })
+        .on("end", function () {
+          console.log(`Processing ${effectedPath} finished !`);
+          effectedVideos[i] = effectedPath;
+          cnt += 1;
+          if (cnt === inputPath.length) {
+            resolve(effectedVideos);
+          }
+        })
+        .save(effectedPath);
     }
   });
 }
@@ -227,33 +290,33 @@ function mergeTransitions(inputPath, durations, transitions) {
   });
 }
 
-function mergeAll(inputPath) {
-  return new Promise((resolve, reject) => {
-    const mergedVideo = "./Router_storage/output/merged.mp4";
-    const mergeVideos = ffmpeg();
-    const transedVideos = inputPath;
-    transedVideos.forEach((effectVideo) => {
-      mergeVideos.addInput(effectVideo);
-    });
+// function mergeAll(inputPath) {
+//   return new Promise((resolve, reject) => {
+//     const mergedVideo = "./Router_storage/output/merged.mp4";
+//     const mergeVideos = ffmpeg();
+//     const transedVideos = inputPath;
+//     transedVideos.forEach((effectVideo) => {
+//       mergeVideos.addInput(effectVideo);
+//     });
 
-    mergeVideos
-      .on("start", function (commandLine) {
-        console.log("Spawned Ffmpeg with command: " + commandLine);
-      })
-      .on("error", function (err) {
-        console.log("An error occurred: " + err.message);
-        reject(err);
-      })
-      .on("end", function () {
-        console.log(`Processing ${mergedVideo} finished !`);
-        resolve(mergedVideo);
-      })
-      .mergeToFile(
-        "./Router_storage/output/merged.mp4",
-        "./Router_storage/temp"
-      );
-  });
-}
+//     mergeVideos
+//       .on("start", function (commandLine) {
+//         console.log("Spawned Ffmpeg with command: " + commandLine);
+//       })
+//       .on("error", function (err) {
+//         console.log("An error occurred: " + err.message);
+//         reject(err);
+//       })
+//       .on("end", function () {
+//         console.log(`Processing ${mergedVideo} finished !`);
+//         resolve(mergedVideo);
+//       })
+//       .mergeToFile(
+//         "./Router_storage/output/merged.mp4",
+//         "./Router_storage/temp"
+//       );
+//   });
+// }
 
 function addAudio(inputPath) {
   return new Promise((resolve, reject) => {
@@ -309,23 +372,27 @@ function addAudio(inputPath) {
 router.post("/merge", async (req, res, next) => {
   const images = req.body.playlist.map(({ url }) => url);
   const durations = req.body.playlist.map(({ duration }) => duration);
+  const effects = playlist.map(({ effect }) => effect);
   const transitions = req.body.playlist.map(({ transition }) => transition);
   console.log("durations", durations);
   console.log("URL", images);
+  console.log("effects", effects);
   console.log("transitions", transitions);
   console.log("이미지 >>>> 동영상(with duration) Rendering...");
   const videoPaths = await imageToVideos(images, durations);
   console.log("이미지를 비디오로 변환 완료, 변환된 비디오:", videoPaths);
+  const effectedPaths = await addEffects(videoPaths, effects);
+  console.log("이펙트 비디오로 변환 완료, 변환된 비디오:", effectedPaths);
   const transedPath = await mergeTransitions(
-    videoPaths,
+    effectedPaths,
     durations,
     transitions
   );
   console.log("비디오 트랜지션 완료, 오디오 삽입 시작");
   const finishedPath = await addAudio(transedPath);
   console.log("오디오 삽입 및 최종 렌더링 완료, 완료된 비디오:", finishedPath);
-  // res.download(finishedPath);
-  res.json({ message: "success" });
+  res.download(finishedPath);
+  // res.json({ message: "success" });
 });
 
 // transition효과 playlist에 넣기

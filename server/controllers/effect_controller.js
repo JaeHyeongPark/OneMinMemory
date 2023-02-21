@@ -12,41 +12,6 @@ const ffmpeg = require("fluent-ffmpeg");
 //   ["-filter_complex", "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4"],
 // ];
 
-let playlist = [
-  {
-    url: "../Router_storage/input/test8.jpg",
-    duration: 10,
-    select: false,
-    effect: "",
-    transition: "",
-  },
-  // {
-  //   url: "../Router_storage/input/test2.jpg",
-  //   duration: 10,
-  //   select: false,
-  //   effect: "",
-  //   transition: "",
-  // },
-  // {
-  //   url: "",
-  //   duration: 4,
-  //   select: false,
-  //   transition: "",
-  // },
-  // {
-  //   url: "",
-  //   duration: 4,
-  //   select: false,
-  //   transition: "",
-  // },
-  // {
-  //   url: "",
-  //   duration: 7,
-  //   select: false,
-  //   transition: "",
-  // },
-];
-
 const filter1 = [
   "scale=1280:720[rescaled]",
   {
@@ -113,34 +78,72 @@ const filter6 = [
   "[v]",
 ];
 
-// 중앙 줌 and jitter
+// 중앙 줌인
 const filter8 = [
   "-filter_complex",
-  "zoompan=z=pzoom+0.001:x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1280x720:fps=30",
+  "scale=12800x7200,zoompan=z=pzoom+0.001:x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1280x720:fps=30",
 ];
 
 // left top zoompan
 const filter9 = [
   "-filter_complex",
-  "scale=12800x7200,zoompan=z=pzoom+0.003:d=1:s=1280x720:fps=30",
+  "scale=12800x7200,zoompan=z=pzoom+0.001:d=1:s=1280x720:fps=30",
 ];
 
 // right top zoompan
 const filter10 = [
   "-filter_complex",
-  "scale=12800x7200,zoompan=z=pzoom+0.005:x='iw/2+iw/zoom/2':y=y:d=1:s=1280x720:fps=30",
+  "scale=12800x7200,zoompan=z=pzoom+0.001:x='iw/2+iw/zoom/2':y=y:d=1:s=1280x720:fps=30",
 ];
 
 // left bottom zoompan
 const filter11 = [
   "-filter_complex",
-  "scale=12800x7200,zoompan=z=pzoom+0.003:y=7200:d=1:s=1280x720:fps=30",
+  "scale=12800x7200,zoompan=z=pzoom+0.001:y=7200:d=1:s=1280x720:fps=30",
 ];
 
 // right bottom zoompan
 const filter12 = [
   "-filter_complex",
-  "scale=12800x7200,zoompan=z=pzoom+0.003:x='iw/2+iw/zoom/2':y=7200:d=1:s=1280x720:fps=30",
+  "scale=12800x7200,zoompan=z=pzoom+0.001:x='iw/2+iw/zoom/2':y=7200:d=1:s=1280x720:fps=30",
+];
+
+let playlist = [
+  {
+    url: "../Router_storage/input/test1.jpg",
+    duration: 5,
+    select: false,
+    effect: filter8,
+    transition: "",
+  },
+  {
+    url: "../Router_storage/input/test2.jpg",
+    duration: 5,
+    select: false,
+    effect: filter9,
+    transition: "",
+  },
+  {
+    url: "../Router_storage/input/test3.jpg",
+    duration: 4,
+    select: false,
+    effect: filter10,
+    transition: "",
+  },
+  {
+    url: "../Router_storage/input/test7.jpg",
+    duration: 4,
+    select: false,
+    effect: filter11,
+    transition: "",
+  },
+  {
+    url: "../Router_storage/input/test8.jpg",
+    duration: 7,
+    select: false,
+    effect: filter12,
+    transition: "",
+  },
 ];
 
 function imageToVideos(imagePath, durations) {
@@ -151,7 +154,6 @@ function imageToVideos(imagePath, durations) {
     for (let i = 0; i < imagePath.length; i++) {
       const videoPath = `../Router_storage/input/source${i}.mp4`;
       ffmpeg(imagePath[i])
-        .size("1280x720")
         .loop(durations[i])
         .on("start", function (commandLine) {
           console.log("Spawned Ffmpeg with command: " + commandLine);
@@ -173,7 +175,7 @@ function imageToVideos(imagePath, durations) {
   });
 }
 
-function addEffects(inputPath) {
+function addEffects(inputPath, effects) {
   return new Promise((resolve, reject) => {
     let effectedVideos = [];
     let cnt = 0;
@@ -181,7 +183,7 @@ function addEffects(inputPath) {
     for (let i = 0; i < inputPath.length; i++) {
       const effectedPath = `../Router_storage/input/effects${i}.mp4`;
       ffmpeg(inputPath[i])
-        .outputOptions(filter3)
+        .outputOptions(effects[i])
         .on("start", function (commandLine) {
           console.log("Spawned Ffmpeg with command: " + commandLine);
         })
@@ -318,11 +320,12 @@ function addAudio(inputPath) {
 async function mergeprocess(playlist) {
   const images = playlist.map(({ url }) => url);
   const durations = playlist.map(({ duration }) => duration);
+  const effects = playlist.map(({ effect }) => effect);
   const transitions = playlist.map(({ transition }) => transition);
   console.log("동영상 생성을 시작합니다~~~~!!");
   const videoPaths = await imageToVideos(images, durations);
   console.log("이미지를 비디오로 변환 완료, 변환된 비디오:", videoPaths);
-  const effectedPaths = await addEffects(videoPaths);
+  const effectedPaths = await addEffects(videoPaths, effects);
   console.log("이펙트 비디오로 변환 완료, 변환된 비디오:", effectedPaths);
   // const transedPaths = await mergeTransitions(effectedPaths, transitions);
   // console.log("트랜지션 비디오로 변환 완료, 변환된 비디오:", transedPaths);

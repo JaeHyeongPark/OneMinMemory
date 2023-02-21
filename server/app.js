@@ -12,7 +12,12 @@ const Socket_router = require("./Router_storage/Socket-Router");
 
 // const s3 = new AWS.S3()
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://chjungle.shop",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  })
+);
 app.use(bodyParser.json());
 
 // socket IO용 모듈 import by 충일

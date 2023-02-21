@@ -20,7 +20,7 @@ const PhotoBox = (props) => {
   useEffect(() => {
     const filename = cloud ? "Original" : "Effect";
     axios
-      .post("http://chjungle.shop/api/photoBox/sendimage", {
+      .post("https://chjungle.shop/api/photoBox/sendimage", {
         filename: filename,
       })
       .then((res) => {

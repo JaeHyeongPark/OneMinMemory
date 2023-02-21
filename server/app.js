@@ -23,7 +23,7 @@ const httpServer = http.createServer(app);
 const io = new socketio.Server(httpServer, {
   path: "/mainsocket",
   cors: {
-    origin: "http://chjungle.shop",
+    origin: "https://chjungle.shop",
     credentials: true,
     methods: ["GET", "POST", "OPTIONS"],
   },

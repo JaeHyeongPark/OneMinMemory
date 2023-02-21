@@ -25,7 +25,7 @@ export const PlaylistContextProvider = (props) => {
   const [translist, setTranslist] = useState([]);
 
   useEffect(() => {
-    axios.get("http://chjungle.shop/api/output/getplaylist").then((res) => {
+    axios.get("https://chjungle.shop/api/output/getplaylist").then((res) => {
       setPlaylist(res.data.results);
     });
   }, []);

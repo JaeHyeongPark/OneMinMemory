@@ -97,21 +97,23 @@ router.post("/deleteimage", async (req, res, next) => {
     });
   }
 
-  try{
+  try {
     for await (let s3url of selectimg) {
       const s3key = s3url.split("com/");
-      await s3.deleteObject({
-        Bucket: process.env.Bucket_Name,
-        Key: s3key[1],
-      }).promise();
+      await s3
+        .deleteObject({
+          Bucket: process.env.Bucket_Name,
+          Key: s3key[1],
+        })
+        .promise();
     }
     if (mode === "Original") {
       res.send(Original);
     } else {
       res.send(Effect);
     }
-  }catch(err){
-    return next(err)
+  } catch (err) {
+    return next(err);
   }
 });
 

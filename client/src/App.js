@@ -7,7 +7,7 @@ import AuthContext from "./shared/context/auth-context";
 
 import { io } from "socket.io-client";
 
-const mainSocket = io("chjungle.shop", {
+const mainSocket = io("http://localhost:5000", {
   path: "/mainsocket",
   withCredentials: true,
 });

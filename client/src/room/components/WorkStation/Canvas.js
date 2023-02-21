@@ -155,15 +155,15 @@ function Canvas() {
 
     //checked
     await axios
-      .post("https://chjungle.shop/canvas/newimage", formdata, {
+      .post("http://localhost:5000/canvas/newimage", formdata, {
         headers: {
           "content-type": "multipart/form-data",
         },
       })
       .then((res) => {
-        const effect = {...ToCanvas.effect}
-        effect[res.data] = 0
-        ToCanvas.seteffect(effect)
+        const effect = { ...ToCanvas.effect };
+        effect[res.data] = 0;
+        ToCanvas.seteffect(effect);
         // 수정한 사진 저장하면 새로운 캔버스를 깔아준다.
         const canvas = canvasRef.current;
         canvas.style = {};
@@ -171,6 +171,7 @@ function Canvas() {
         App.mainSocket.emit("pictureEdited", {
           Id: App.mainSocket.id,
           roomId: App.roomId,
+          editedUrl: res.data,
         });
       })
       .catch((err) => {
@@ -189,7 +190,7 @@ function Canvas() {
     const formdata = new FormData();
     formdata.append(`${name}ImageData`, imageData);
     await axios
-      .post(`https://chjungle.shop/canvas/image/${name}`, formdata, {
+      .post(`http://localhost:5000/canvas/image/${name}`, formdata, {
         headers: {
           "content-type": "multipart/form-data",
         },

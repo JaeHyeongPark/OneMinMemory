@@ -13,7 +13,7 @@ const RenderButton = () => {
     console.log(playlistCtx.playlist);
     axios({
       method: "post",
-      url: "https://chjungle.shop/output/merge",
+      url: "http://localhost:5000/output/merge",
       responseType: "blob",
       data: {
         playlist: playlistCtx.playlist,

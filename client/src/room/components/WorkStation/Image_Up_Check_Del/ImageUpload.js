@@ -18,7 +18,7 @@ const ImageUpload = (props) => {
     }
 
     axios
-      .post("https://chjungle.shop/photoBox/upload", formdata, {
+      .post("http://localhost:5000/photoBox/upload", formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -28,6 +28,12 @@ const ImageUpload = (props) => {
         res.data.forEach((url) => (neworigin[url] = 0));
         ToCanvas.setorigin(neworigin);
         // props.change();
+        // 누군가 사진을 업로드 했음을 서버에 알림
+        App.mainSocket.emit("pictureUpload", {
+          Id: App.mainSocket.id,
+          roomId: App.roomId,
+          upimg: res.data,
+        });
       })
       .catch((err) => {
         console.log(err);

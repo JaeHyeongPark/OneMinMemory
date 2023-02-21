@@ -24,7 +24,7 @@ export const TocanvasProvider = (props) => {
 
   const sendurl = (url) => {
     axios
-      .post("https://chjungle.shop/canvas/imageinfo", { url: url })
+      .post("http://localhost:5000/canvas/imageinfo", { url: url })
       .then(async (res) => {
         settype(res.data.type);
         seturl(url);

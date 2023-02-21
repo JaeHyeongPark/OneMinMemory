@@ -19,7 +19,7 @@ const ToPlaylistButton = (props) => {
     formdata.append("imagedata", imagedata);
     formdata.append("originurl", ToCanvas.url);
     await axios
-      .post("https://chjungle.shop/output/addtoplay", formdata, {
+      .post("http://localhost:5000/output/addtoplay", formdata, {
         headers: {
           "content-type": "multipart/form-data",
         },

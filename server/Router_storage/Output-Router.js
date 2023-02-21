@@ -23,6 +23,7 @@ const router = express.Router();
 const upload = multer();
 dotenv.config();
 
+// ------------------ 안씀-------------------
 router.post("/addtoplay", upload.none(), async (req, res, next) => {
   const imageurl = req.body.imagedata.split("base64,")[1];
   const s3filename = req.body.originurl.split("testroom/Effectroom/Effect/")[1];
@@ -47,6 +48,7 @@ router.post("/addtoplay", upload.none(), async (req, res, next) => {
     });
 });
 
+// --------------------- 안씀-------------------------
 const toPlayUrlList = {};
 router.get("/playlist", async (req, res, next) => {
   const params = {
@@ -269,37 +271,7 @@ router.post("/merge", async (req, res, next) => {
   console.log("오디오 삽입 및 최종 렌더링 완료, 완료된 비디오:", finishedPath);
   res.download(finishedPath);
 });
-
-// transition효과 playlist에 넣기 --------> 소캣으로 대체
-// router.post("/transition", (req, res, next) => {
-//   const transition = req.body.transition;
-//   const idx = req.body.idx;
-//   playlist[idx].transition = transition;
-//   res.send(playlist);
-// });
-
-// transition효과 playlist에 넣기
-router.post("/transition", async (req, res, next) => {
-  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
-
-  const transition = req.body.transition;
-  const idx = req.body.idx;
-  playlist[idx].transition = transition;
-
-  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
-  res.send(playlist);
-});
-// 클릭으로 transition 지우기(해당 인덱스만)
-router.post("/deltransition", async (req, res, next) => {
-  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
-
-  const idx = req.body.idx;
-  playlist[idx].transition = "";
-
-  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
-  res.send(playlist);
-});
-
+// ---------------------------------- playlist 관리 API들 ------------------------------------------
 // 재생목록 호출 API
 router.get("/getplaylist", async (req, res, next) => {
   let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
@@ -309,107 +281,138 @@ router.get("/getplaylist", async (req, res, next) => {
   res.send(playlist);
 });
 
-router.post("/postplaylist", async (req, res, next) => {
-  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+// transition효과 playlist에 넣기 --------> 소캣으로 대체
+// router.post("/transition", (req, res, next) => {
+//   const transition = req.body.transition;
+//   const idx = req.body.idx;
+//   playlist[idx].transition = transition;
+//   res.send(playlist);
+// });
 
-  const url = req.body.url;
-  const idx = req.body.idx;
-  playlist[idx].url = url;
+// // transition효과 playlist에 넣기 -------------소캣화
+// router.post("/transition", async (req, res, next) => {
+//   let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
 
-  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
-  res.send(playlist);
-});
+//   const transition = req.body.transition;
+//   const idx = req.body.idx;
+//   playlist[idx].transition = transition;
 
-// 삭제 이벤트 해당 객체 삭제
-router.post("/deleteplayurl", async (req, res, next) => {
-  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
-  const idx = req.body.idx;
+//   await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
+//   res.send(playlist);
+// });
+// // 클릭으로 transition 지우기(해당 인덱스만)-------------소캣화
+// router.post("/deltransition", async (req, res, next) => {
+//   let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
 
-  playlist = playlist.filter((data, i) => {
-    if (idx !== i) {
-      return data;
-    }
-  });
+//   const idx = req.body.idx;
+//   playlist[idx].transition = "";
 
-  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
-  res.send(playlist);
-});
+//   await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
+//   res.send(playlist);
+// });
 
-// 재생목록 click시 이벤트
-router.post("/clickimg", async (req, res, next) => {
-  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+// // 재생목록 사진 추가---------------------------------------소캣화
+// router.post("/postplaylist", async (req, res, next) => {
+//   let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
 
-  const idx = req.body.idx;
-  const url = playlist[idx].url;
+//   const url = req.body.url;
+//   const idx = req.body.idx;
+//   playlist[idx].url = url;
 
-  let check = false;
-  let time = playlist[idx].duration;
-  let totaltime = 0;
-  playlist.forEach((data, i) => {
-    if (i !== idx && data.select === true) {
-      // 0번째 일때 0과 false가 겹쳐서 의도와 다른 결과가 나옴
-      check = String(i);
-    }
-    if (i < idx) {
-      time += playlist[i].duration;
-    }
-    totaltime += data.duration;
-  });
+//   await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
+//   res.send(playlist);
+// });
 
-  if (check) {
-    check = Number(check);
-    playlist[idx].url = playlist[check].url;
-    playlist[check].url = url;
-    playlist[idx].select = false;
-    playlist[check].select = false;
-    await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
-    res.json({ playlist });
-  } else if (playlist[idx].select) {
-    playlist[idx].select = false;
-    await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
-    res.json({ playlist });
-  } else {
-    playlist[idx].select = true;
-    await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
-    res.json({
-      playlist,
-      time: time,
-      duration: playlist[idx].duration,
-      totaltime: totaltime,
-    });
-  }
-});
-// 새로운 사진을 재생목록에 추가(프리셋 말고)
-router.post("/inputnewplay", async (req, res, next) => {
-  const url = req.body.url;
+// // 삭제 이벤트 해당 객체 삭제-------------소캣화
+// router.post("/deleteplayurl", async (req, res, next) => {
+//   let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+//   const idx = req.body.idx;
 
-  const newimage = {
-    url: url,
-    duration: 5,
-    select: false,
-    transition: "",
-  };
+//   playlist = playlist.filter((data, i) => {
+//     if (idx !== i) {
+//       return data;
+//     }
+//   });
 
-  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
-  if (playlist === null) {
-    playlist = [];
-  }
-  playlist.push(newimage);
+//   await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
+//   res.send(playlist);
+// });
 
-  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
-  res.send(playlist);
-});
-// 이미지 재생 시간 변경
-router.post("/changetime", async (req, res, next) => {
-  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
-  const idx = req.body.idx;
-  const time = req.body.time;
+// // 재생목록 click시 이벤트-------------소캣화
+// router.post("/clickimg", async (req, res, next) => {
+//   let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
 
-  playlist[idx].select = false;
-  playlist[idx].duration += time;
+//   const idx = req.body.idx;
+//   const url = playlist[idx].url;
 
-  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
-  res.json({ playlist, DT: playlist[idx].duration });
-});
+//   let check = false;
+//   let time = playlist[idx].duration;
+//   let totaltime = 0;
+//   playlist.forEach((data, i) => {
+//     if (i !== idx && data.select === true) {
+//       // 0번째 일때 0과 false가 겹쳐서 의도와 다른 결과가 나옴
+//       check = String(i);
+//     }
+//     if (i < idx) {
+//       time += playlist[i].duration;
+//     }
+//     totaltime += data.duration;
+//   });
+
+//   if (check) {
+//     check = Number(check);
+//     playlist[idx].url = playlist[check].url;
+//     playlist[check].url = url;
+//     playlist[idx].select = false;
+//     playlist[check].select = false;
+//     await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
+//     res.json({ playlist });
+//   } else if (playlist[idx].select) {
+//     playlist[idx].select = false;
+//     await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
+//     res.json({ playlist });
+//   } else {
+//     playlist[idx].select = true;
+//     await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
+//     res.json({
+//       playlist,
+//       time: time,
+//       duration: playlist[idx].duration,
+//       totaltime: totaltime,
+//     });
+//   }
+// });
+// // 새로운 사진을 재생목록에 추가(프리셋 말고)------------소캣화
+// router.post("/inputnewplay", async (req, res, next) => {
+//   const url = req.body.url;
+
+//   const newimage = {
+//     url: url,
+//     duration: 5,
+//     select: false,
+//     transition: "",
+//   };
+
+//   let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+//   if (playlist === null) {
+//     playlist = [];
+//   }
+//   playlist.push(newimage);
+
+//   await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
+//   res.send(playlist);
+// });
+// // 이미지 재생 시간 변경------------소캣화
+// router.post("/changetime", async (req, res, next) => {
+//   let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+//   const idx = req.body.idx;
+//   const time = req.body.time;
+
+//   playlist[idx].select = false;
+//   playlist[idx].duration += time;
+
+//   await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
+//   res.json({ playlist, DT: playlist[idx].duration });
+// });
 
 module.exports = router;

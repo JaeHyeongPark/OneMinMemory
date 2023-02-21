@@ -28,25 +28,18 @@ const PhotoBox = (props) => {
         ToCanvas.seteffect(effect);
       });
   }, []);
-
-  const updatePicture = (isOriginal) => {
-    console.log(cloud, isOriginal);
-    setupload(cloud === isOriginal ? !upload : upload);
-  };
-
-  useEffect(() => {
-    App.mainSocket.on("upload", (data) => {
-      updatePicture(true);
-    });
-
-    App.mainSocket.on("delete", (data) => {
-      updatePicture(true);
-    });
-
-    App.mainSocket.on("edit", (data) => {
-      updatePicture(true);
-    });
-  }, []);
+  App.mainSocket.removeAllListeners("upload");
+  App.mainSocket.on("upload", (data) => {
+    const neworigin = { ...ToCanvas.origin };
+    data.upimg.forEach((url) => (neworigin[url] = 0));
+    ToCanvas.setorigin(neworigin);
+  });
+  App.mainSocket.removeAllListeners("edit");
+  App.mainSocket.on("edit", (data) => {
+    const neweffect = { ...ToCanvas.effect };
+    neweffect[data.editedUrl] = 0;
+    ToCanvas.seteffect(neweffect);
+  });
 
   useEffect(() => {
     if (cloud) {
@@ -57,7 +50,6 @@ const PhotoBox = (props) => {
   }, [ToCanvas.origin, cloud, ToCanvas.effect]);
 
   const CloudChange = () => {
-    console.log("클라우드 변환 확인");
     setcloud(cloud ? false : true);
   };
 

@@ -11,24 +11,28 @@ import "./PhotoBox.css";
 
 const PhotoBox = (props) => {
   const [cloud, setcloud] = useState(true)
-  const [check, setcheck] = useState(true)
   const [view, setview] = useState({})
   const ToCanvas = useContext(ImageContext)
 
   useEffect(() => {
     const filename = cloud ? "Original" : "Effect"
       axios.post("http://localhost:5000/photoBox/sendimage", {filename : filename}).then((res) => {
-        setview(res.data);
+        const origin = {...ToCanvas.origin}
+        const effect = {...ToCanvas.effect}
+        res.data.origin.forEach((url) => origin[url] = 0)
+        res.data.effect.forEach((url) => effect[url] = 0)
+        ToCanvas.setorigin(origin)
+        ToCanvas.seteffect(effect)
       });
-  }, [cloud, check]);
+  }, []);
 
   useEffect(() => {
-    setview(ToCanvas.view)
-  }, [ToCanvas.view])
-
-  const changecheck = () => {
-    setcheck(check ? false : true)
-  }
+    if (cloud){
+      setview(ToCanvas.origin)
+    }else{
+      setview(ToCanvas.effect)
+    }
+  }, [ToCanvas.origin, cloud, ToCanvas.effect])
 
   const CloudChange = () => {
     setcloud(cloud ? false : true)
@@ -47,8 +51,8 @@ const PhotoBox = (props) => {
           <div className="Photos_and_Button">
             <ImageShow view={view} mode={cloud ? "Original" : "Effect"}/>
             <div className="PhotoBox-Button">
-              <ImageUpload change={changecheck}/>
-              <ImageDel change={changecheck} mode={cloud ? "Original" : "Effect"}/>
+              <ImageUpload/>
+              <ImageDel mode={cloud ? "Original" : "Effect"}/>
             </div>
           </div>
         </div>

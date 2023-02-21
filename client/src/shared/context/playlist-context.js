@@ -26,7 +26,7 @@ export const PlaylistContextProvider = (props) => {
 
   useEffect(() => {
     axios.get("http://localhost:5000/output/getplaylist").then((res) => {
-      setPlaylist(res.data.results);
+      setPlaylist(res.data);
     });
   }, []);
 
@@ -69,7 +69,6 @@ export const PlaylistContextProvider = (props) => {
 
   const addToPlaylistHandler = (track) => {
     setPlaylist(track);
-    console.log(playlist);
   };
   const changetime = (time) => {
     settime(time)

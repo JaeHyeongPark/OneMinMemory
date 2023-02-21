@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { useDrop } from "react-dnd";
 import axios from "axios";
 
-
 import PlaylistContext from "../../../shared/context/playlist-context";
 import "./Playlist.css";
 import PlaylistMain from "./PlaylistMain";
@@ -18,7 +17,7 @@ const Playlist = () => {
     }),
   }));
 
-  const inputnewplay = (url => {
+  const inputnewplay = (url) => {
     axios
       .post("http://localhost:5000/output/inputnewplay", {
         url: url,
@@ -26,11 +25,11 @@ const Playlist = () => {
       .then((res) => {
         playlistCtx.addToPlaylist(res.data);
       });
-  })
+  };
 
   return (
     <div className="playlist_layout">
-      <div className="playlist_main" >
+      <div className="playlist_main">
         {playlistCtx.playlist.map((data, i) => (
           <PlaylistMain
             duration={data.duration}
@@ -39,7 +38,7 @@ const Playlist = () => {
             i={i}
           />
         ))}
-      <div className="playlist_space" ref={newplayimg}/>
+        <div className="playlist_space" ref={newplayimg} />
       </div>
       <div className="playlist_transition">
         {playlistCtx.playlist.map((data, i) => (

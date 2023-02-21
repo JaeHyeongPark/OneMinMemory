@@ -109,10 +109,12 @@ let playlist = [
 function imageToVideos(imagePath, durations) {
   return new Promise((resolve, reject) => {
     let videos = [];
+    let cnt = 0;
 
     for (let i = 0; i < imagePath.length; i++) {
       const videoPath = `./Router_storage/input/source${i}.mp4`;
       ffmpeg(imagePath[i])
+        .size("1280x720")
         .loop(durations[i])
         .on("start", function (commandLine) {
           console.log("Spawned Ffmpeg with command: " + commandLine);
@@ -124,12 +126,8 @@ function imageToVideos(imagePath, durations) {
         .on("end", function () {
           console.log(`Processing ${videoPath} finished !`);
           videos[i] = videoPath;
-          if (
-            videos.filter(
-              (element) =>
-                element !== undefined && element !== null && element !== ""
-            ).length === imagePath.length
-          ) {
+          cnt += 1;
+          if (cnt === imagePath.length) {
             resolve(videos);
           }
         })
@@ -141,16 +139,17 @@ function imageToVideos(imagePath, durations) {
 function mergeTransitions(inputPath, transitions) {
   return new Promise((resolve, reject) => {
     let transedVideos = [];
+    let cnt = 0;
 
     for (let i = 0; i < inputPath.length - 1; i++) {
       const transedPath = `./Router_storage/input/transed${i}.mp4`;
       ffmpeg()
         .addInput(inputPath[i])
         .addInput(inputPath[i + 1])
-        .outputOptions([
+        .outputOptions(
           "-filter_complex",
-          `[0:v][1:v]xfade=transition=${transitions[i]}:duration=1:offset=3`,
-        ])
+          `[0:v][1:v]xfade=transition=${transitions[i]}:duration=1:offset=3`
+        )
         .on("start", function (commandLine) {
           console.log("Spawned Ffmpeg with command: " + commandLine);
         })
@@ -161,13 +160,8 @@ function mergeTransitions(inputPath, transitions) {
         .on("end", function () {
           console.log(`Processing ${transedPath} finished !`);
           transedVideos[i] = transedPath;
-          if (
-            transedVideos.filter(
-              (element) =>
-                element !== undefined && element !== null && element !== ""
-            ).length ===
-            inputPath.length - 1
-          ) {
+          cnt += 1;
+          if (cnt === inputPath.length - 1) {
             resolve(transedVideos);
           }
         })
@@ -232,7 +226,7 @@ function addAudio(inputPath) {
         ffmpeg(inputPath)
           .videoCodec("libx264")
           .audioCodec("libmp3lame")
-          .size("1080x720")
+          .size("1280x720")
           .addInput(
             "./Hoang - Run Back to You (Official Lyric Video) feat. Alisa_128kbps.mp3"
           )

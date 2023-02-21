@@ -110,7 +110,6 @@ function imageToVideos(imagePath, durations) {
   return new Promise((resolve, reject) => {
     let videos = [];
     let cnt = 0;
-
     for (let i = 0; i < imagePath.length; i++) {
       const videoPath = `./Router_storage/input/source${i}.mp4`;
       ffmpeg(imagePath[i])
@@ -136,37 +135,95 @@ function imageToVideos(imagePath, durations) {
   });
 }
 
-function mergeTransitions(inputPath, transitions) {
+function ffmpegSyncTrans(
+  prev_video,
+  input,
+  transition,
+  prev_duration,
+  transedPath
+) {
+  console.log("ffmpegSyncTrans 함수 호출");
   return new Promise((resolve, reject) => {
-    let transedVideos = [];
-    let cnt = 0;
+    ffmpeg()
+      .addInput(prev_video)
+      .addInput(input)
+      .outputOption(
+        "-filter_complex",
+        `[0:v][1:v]xfade=transition=${transition}:duration=1:offset=${
+          prev_duration - 1
+        }`
+      )
+      .on("start", function (commandLine) {
+        console.log("Spawned Ffmpeg with command: " + commandLine);
+      })
+      .on("error", function (err) {
+        console.log("An error occurred: " + err.message);
+        reject(err);
+      })
+      .save(transedPath)
+      .on("end", function () {
+        console.log(`Processing transed finished !`);
+        resolve();
+      });
+  });
+}
 
-    for (let i = 0; i < inputPath.length - 1; i++) {
-      const transedPath = `./Router_storage/input/transed${i}.mp4`;
-      ffmpeg()
-        .addInput(inputPath[i])
-        .addInput(inputPath[i + 1])
-        .outputOptions(
-          "-filter_complex",
-          `[0:v][1:v]xfade=transition=${transitions[i]}:duration=1:offset=3`
-        )
-        .on("start", function (commandLine) {
-          console.log("Spawned Ffmpeg with command: " + commandLine);
-        })
-        .on("error", function (err) {
-          console.log("An error occurred: " + err.message);
-          reject(err);
-        })
-        .on("end", function () {
-          console.log(`Processing ${transedPath} finished !`);
-          transedVideos[i] = transedPath;
-          cnt += 1;
-          if (cnt === inputPath.length - 1) {
-            resolve(transedVideos);
+function ffmpegSyncMerge(prev_video, input, transedPath) {
+  console.log("ffmpegSyncMerge 함수 호출");
+  return new Promise((resolve, reject) => {
+    ffmpeg()
+      .addInput(prev_video)
+      .addInput(input)
+      .on("start", function (commandLine) {
+        console.log("Spawned Ffmpeg with command: " + commandLine);
+      })
+      .on("error", function (err) {
+        console.log("An error occurred: " + err.message);
+        reject(err);
+      })
+      .mergeToFile(transedPath)
+      .on("end", function () {
+        console.log(`Processing transed finished !`);
+        resolve();
+      });
+  });
+}
+
+function mergeTransitions(inputPath, durations, transitions) {
+  console.log("mergeTransitions 함수 호출");
+  return new Promise(async (resolve, reject) => {
+    let prev_duration = durations[0];
+    let prev_video = inputPath[0];
+    let flag = true;
+    for (let i = 1; i < inputPath.length; i++) {
+      let transedPath;
+      if (flag) {
+        transedPath = `./Router_storage/input/transed_A.mp4`;
+      } else {
+        transedPath = `./Router_storage/input/transed_B.mp4`;
+      }
+      flag = !flag;
+      if (transitions[i - 1]) {
+        await ffmpegSyncTrans(
+          prev_video,
+          inputPath[i],
+          transitions[i - 1],
+          prev_duration,
+          transedPath
+        ).then(() => {
+          prev_video = transedPath;
+          prev_duration = prev_duration + durations[i] - 1;
+        });
+      } else {
+        await ffmpegSyncMerge(prev_video, inputPath[i], transedPath).then(
+          () => {
+            prev_video = transedPath;
+            prev_duration = prev_duration + durations[i];
           }
-        })
-        .save(transedPath);
+        );
+      }
     }
+    resolve(prev_video);
   });
 }
 
@@ -253,16 +310,22 @@ router.post("/merge", async (req, res, next) => {
   const images = req.body.playlist.map(({ url }) => url);
   const durations = req.body.playlist.map(({ duration }) => duration);
   const transitions = req.body.playlist.map(({ transition }) => transition);
-  console.log("동영상 생성을 시작합니다~~~~!!");
+  console.log("durations", durations);
+  console.log("URL", images);
+  console.log("transitions", transitions);
+  console.log("이미지 >>>> 동영상(with duration) Rendering...");
   const videoPaths = await imageToVideos(images, durations);
   console.log("이미지를 비디오로 변환 완료, 변환된 비디오:", videoPaths);
-  const transedPaths = await mergeTransitions(videoPaths, transitions);
-  console.log("트랜지션 비디오로 변환 완료, 변환된 비디오:", transedPaths);
-  const mergedPath = await mergeAll(transedPaths);
-  console.log("비디오 병합 완료, 변환된 비디오:", mergedPath);
-  const finishedPath = await addAudio(mergedPath);
+  const transedPath = await mergeTransitions(
+    videoPaths,
+    durations,
+    transitions
+  );
+  console.log("비디오 트랜지션 완료, 오디오 삽입 시작");
+  const finishedPath = await addAudio(transedPath);
   console.log("오디오 삽입 및 최종 렌더링 완료, 완료된 비디오:", finishedPath);
-  res.download(finishedPath);
+  // res.download(finishedPath);
+  res.json({ message: "success" });
 });
 
 // transition효과 playlist에 넣기

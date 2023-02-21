@@ -18,7 +18,7 @@ const Picture = (props) => {
 
   const selectimage = async (url) => {
     axios
-      .post("http://localhost:5000/photoBox/clickimage", {
+      .post("http://chjungle.shop/api/photoBox/clickimage", {
         url: props.url,
         mode: props.mode,
       })

@@ -23,7 +23,7 @@ const Playlist = () => {
       return;
     }
     axios
-      .post("http://localhost:5000/output/inputnewplay", {
+      .post("http://chjungle.shop/api/output/inputnewplay", {
         url: url,
       })
       .then((res) => {

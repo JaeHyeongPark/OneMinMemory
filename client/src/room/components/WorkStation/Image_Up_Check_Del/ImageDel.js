@@ -11,7 +11,7 @@ const ImageDel = (props) => {
   const deleteImage = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/photoBox/deleteimage", { mode: mode })
+      .post("http://chjungle.shop/api/photoBox/deleteimage", { mode: mode })
       .then((res) => {
         ToCanvas.setView(res.data);
         App.mainSocket.emit("pictureDelete", {

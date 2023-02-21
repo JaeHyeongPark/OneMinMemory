@@ -3,13 +3,13 @@ import { createContext, useEffect, useState } from "react";
 
 const PlaylistContext = createContext({
   playlist: [],
-  selecttime: '',
-  selectDT : '',
+  selecttime: "",
+  selectDT: "",
   totaltime: 0,
-  selectidx:'',
+  selectidx: "",
   changeidx: () => {},
   changeTT: () => {},
-  changeDT : () => {},
+  changeDT: () => {},
   changetime: () => {},
   translist: [],
   addToPlaylist: () => {},
@@ -18,14 +18,14 @@ const PlaylistContext = createContext({
 export const PlaylistContextProvider = (props) => {
   //   const [isChanged, setIsChanged] = useState(false);
   const [playlist, setPlaylist] = useState([]);
-  const [time, settime] = useState('')
-  const [DT, setDT] = useState('')
-  const [TT, setTT] = useState(0)
-  const [idx, setidx] = useState('')
+  const [time, settime] = useState("");
+  const [DT, setDT] = useState("");
+  const [TT, setTT] = useState(0);
+  const [idx, setidx] = useState("");
   const [translist, setTranslist] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/output/getplaylist").then((res) => {
+    axios.get("http://chjungle.shop/api/output/getplaylist").then((res) => {
       setPlaylist(res.data.results);
     });
   }, []);
@@ -72,28 +72,28 @@ export const PlaylistContextProvider = (props) => {
     console.log(playlist);
   };
   const changetime = (time) => {
-    settime(time)
-  }
+    settime(time);
+  };
   const changeDT = (DT) => {
-    setDT(DT)
-  }
+    setDT(DT);
+  };
   const changeTT = (TT) => {
-    setTT(TT)
-  }
+    setTT(TT);
+  };
   const changeidx = (idx) => {
-    setidx(idx)
-  }
+    setidx(idx);
+  };
 
   const context = {
     playlist: playlist,
-    selecttime:time,
-    selectDT:DT,
-    totaltime:TT,
-    selectidx:idx,
-    changeidx:changeidx,
-    changeTT:changeTT,
-    changeDT:changeDT,
-    changetime:changetime,
+    selecttime: time,
+    selectDT: DT,
+    totaltime: TT,
+    selectidx: idx,
+    changeidx: changeidx,
+    changeTT: changeTT,
+    changeDT: changeDT,
+    changetime: changetime,
     translist: translist,
     addToPlaylist: addToPlaylistHandler,
   };

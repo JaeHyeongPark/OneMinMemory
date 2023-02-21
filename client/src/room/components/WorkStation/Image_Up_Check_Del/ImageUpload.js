@@ -14,7 +14,7 @@ const ImageUpload = (props) => {
     }
 
     axios
-      .post("http://localhost:5000/photoBox/upload", formdata, {
+      .post("http://chjungle.shop/api/photoBox/upload", formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

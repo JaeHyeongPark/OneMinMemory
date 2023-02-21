@@ -21,23 +21,23 @@ const http = require("http");
 // express 기반 http server 생성과 socket 연결 by 충일
 const httpServer = http.createServer(app);
 const io = new socketio.Server(httpServer, {
-  path: "/socket.io",
+  path: "/mainsocket",
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://chjungle.shop",
     credentials: true,
     methods: ["GET", "POST", "OPTIONS"],
   },
 });
 
 // socket 라우터는 여기로~ by 충일
-app.use("/socket.io", Socket_router(io));
+app.use("/mainsocket", Socket_router(io));
 
 // photoBox 라우터는 다 여기로 슝슝~~
-app.use("/photoBox", AWS_S3_router);
+app.use("/api/photoBox", AWS_S3_router);
 // canvas 라우터는 여기로~~
-app.use("/canvas", Canvas_router);
+app.use("/api/canvas", Canvas_router);
 // output 라우터는 일루~
-app.use("/output", Output_router);
+app.use("/api/output", Output_router);
 
 // 쓸데없는 URL로 접근시 에러 표시
 app.use((req, res, next) => {

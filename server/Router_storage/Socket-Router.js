@@ -19,6 +19,7 @@ module.exports = function (io) {
   router.io = io;
   router.io.on("connection", (socket) => {
     socket.on("joinRoom", (data) => {
+      console.log("누가 왔어요~");
       socket.join(data.roomId);
       if (!roomIdToUser.hasOwnProperty(data.roomId)) {
         roomIdToUser[data.roomId] = [data.id];

@@ -22,13 +22,18 @@ const Playlist = () => {
     if (App.playlistPermissionState != 1) {
       return;
     }
-    axios
-      .post("https://chjungle.shop/output/inputnewplay", {
-        url: url,
-      })
-      .then((res) => {
-        playlistCtx.addToPlaylist(res.data);
-      });
+    // axios
+    //   .post("https://chjungle.shop/output/inputnewplay", {
+    //     url: url,
+    //   })
+    //   .then((res) => {
+    //     playlistCtx.addToPlaylist(res.data);
+    //   });
+    App.mainSocket.emit("inputnewplay", {
+      url,
+      Id: App.mainSocket.id,
+      roomId: App.roomId,
+    });
   };
 
   return (

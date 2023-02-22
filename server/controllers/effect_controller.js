@@ -537,3 +537,60 @@ mergeprocess(playlist);
 //       .save(finishedVideo);
 //   });
 // }
+
+// function imageToVideos(imagePath, durations) {
+//   return new Promise((resolve, reject) => {
+//     let videos = [];
+//     let cnt = 0;
+//     for (let i = 0; i < imagePath.length; i++) {
+//       const videoPath = `./Router_storage/input/source${i}.mp4`;
+//       ffmpeg(imagePath[i])
+//         // .size("1280x720")
+//         .loop(durations[i])
+//         .on("start", function (commandLine) {
+//           console.log("Spawned Ffmpeg with command: " + commandLine);
+//         })
+//         .on("error", function (err) {
+//           console.log("An error occurred: " + err.message);
+//           reject(err);
+//         })
+//         .on("end", function () {
+//           console.log(`Processing ${videoPath} finished !`);
+//           videos[i] = videoPath;
+//           cnt += 1;
+//           if (cnt === imagePath.length) {
+//             resolve(videos);
+//           }
+//         })
+//         .save(videoPath);
+//     }
+//   });
+// }
+
+// function mergeAll(inputPath) {
+//   return new Promise((resolve, reject) => {
+//     const mergedVideo = "./Router_storage/output/merged.mp4";
+//     const mergeVideos = ffmpeg();
+//     const transedVideos = inputPath;
+//     transedVideos.forEach((effectVideo) => {
+//       mergeVideos.addInput(effectVideo);
+//     });
+
+//     mergeVideos
+//       .on("start", function (commandLine) {
+//         console.log("Spawned Ffmpeg with command: " + commandLine);
+//       })
+//       .on("error", function (err) {
+//         console.log("An error occurred: " + err.message);
+//         reject(err);
+//       })
+//       .on("end", function () {
+//         console.log(`Processing ${mergedVideo} finished !`);
+//         resolve(mergedVideo);
+//       })
+//       .mergeToFile(
+//         "./Router_storage/output/merged.mp4",
+//         "./Router_storage/temp"
+//       );
+//   });
+// }

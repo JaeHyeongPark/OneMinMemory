@@ -9,21 +9,25 @@ const http = require("http");
 const httpServer = http.createServer(app);
 const redis = require("./RedisClient");
 
-let roomIdToUser = {};
-
-// playlist false:편집가능 true:누가사용중
-let playlistPermissionState = false;
-
 module.exports = function (io) {
   router.io = io;
   router.io.on("connection", (socket) => {
-    socket.on("joinRoom", (data) => {
-      console.log("누가 왔어요~");
-      socket.join(data.roomId);
-      if (!roomIdToUser.hasOwnProperty(data.roomId)) {
-        roomIdToUser[data.roomId] = [data.id];
-      } else {
-        roomIdToUser[data.roomId].push(data.id);
+    socket.on("joinRoom", async (data) => {
+      try {
+        console.log("누가 왔어요~");
+        socket.join(data.roomId);
+        await redis.v4.rPush(data.roomId + "/user", url);
+        const AmIFirst = await redis.v4.setnx(
+          data.roomId + "playlistPermissionState",
+          "true"
+        );
+        if (AmIFirst) {
+          console.log("첫번쨰 사람 입장!");
+        } else {
+          console.log("사람하나 추가요~");
+        }
+      } catch (e) {
+        console.log(e);
       }
     });
     socket.on("pictureUpload", (data) => {
@@ -40,21 +44,32 @@ module.exports = function (io) {
         .to(data.roomId)
         .emit("edit", { editorId: data.Id, editedUrl: data.editedUrl });
     });
-    socket.on("playlistEditRequest", (data) => {
-      console.log("요청왔어요~");
-      if (playlistPermissionState === false) {
-        playlistPermissionState = true;
-        socket.to(data.roomId).emit("playlistEditResponse", { state: 2 });
-        io.to(data.Id).emit("playlistEditResponse", { state: 1 });
-      } else {
-        io.to(data.Id).emit("playlistEditResponse", { state: 2 });
+    socket.on("playlistEditRequest", async (data) => {
+      try {
+        const oldplaylistPermissionState = await redis.v4.getset(
+          data.roomId + "playlistPermissionState",
+          "false"
+        );
+        console.log("요청왔어요~");
+        if (oldplaylistPermissionState === "true") {
+          socket.to(data.roomId).emit("playlistEditResponse", { state: 2 });
+          io.to(data.Id).emit("playlistEditResponse", { state: 1 });
+        } else {
+          io.to(data.Id).emit("playlistEditResponse", { state: 2 });
+        }
+      } catch (e) {
+        console.log(e);
       }
     });
-    socket.on("playlistEditFinished", (data) => {
-      console.log("편집끝났데요~");
-      playlistPermissionState = false;
-      socket.to(data.roomId).emit("playlistEditResponse", { state: 0 });
-      io.to(data.Id).emit("playlistEditResponse", { state: 0 });
+    socket.on("playlistEditFinished", async (data) => {
+      try {
+        console.log("편집끝났데요~");
+        await redis.v4.setnx(data.roomId + "playlistPermissionState", "true");
+        socket.to(data.roomId).emit("playlistEditResponse", { state: 0 });
+        io.to(data.Id).emit("playlistEditResponse", { state: 0 });
+      } catch (e) {
+        console.log(e);
+      }
     });
     //==================================playlist 조작 메서드=====================
     // 재생목록에 효과 추가------------수정완

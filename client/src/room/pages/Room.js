@@ -8,6 +8,7 @@ import { useState, useEffect, useContext } from "react";
 
 const Room = () => {
   useEffect(() => {
+    // roomid여기
     const roomId = 1;
     App.mainSocket.emit("joinRoom", { id: App.mainSocket.id, roomId: roomId });
     App.roomId = roomId;

@@ -304,9 +304,11 @@ function addAudio(inputPath) {
 
 router.post("/merge", async (req, res, next) => {
   const roomid = req.body.roomid;
+  console.log(roomid);
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
-  const imageUrls = req.body.playlist.map(({ url }) => url);
-  const durations = req.body.playlist.map(({ duration }) => duration);
+  console.log(playlist);
+  const imageUrls = playlist.map(({ url }) => url);
+  const durations = playlist.map(({ duration }) => duration);
   const effects = playlist.map(({ effect }) => effect);
   const transitions = playlist.map(({ transition }) => transition);
   // console.log("durations", durations);

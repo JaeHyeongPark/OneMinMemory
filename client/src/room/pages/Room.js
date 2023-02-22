@@ -11,13 +11,13 @@ const Room = () => {
   const navigate = useNavigate()
   const AuthCtx = useContext(AuthContext);
 
-  useEffect(() => {
-    axios.post("http://localhost:5000/home/check", {id:AuthCtx.rooomId}).then((res) => {
-      if (res.data === "No"){
-        navigate("/")
-      }
-    })
-  },[])
+  // useEffect(() => {
+  //   axios.post("http://localhost:5000/home/check", {id:AuthCtx.rooomId}).then((res) => {
+  //     if (res.data === "No"){
+  //       navigate("/")
+  //     }
+  //   })
+  // },[])
 
   return (
     <RoomCodeContext.Provider value={Math.floor(Math.random() * 1000)}>

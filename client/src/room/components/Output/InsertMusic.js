@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import PlaylistContext from "../../../shared/context/playlist-context";
+import { AuthContext } from "../../../shared/context/auth-context";
 
 import music from "../../assets/music.svg";
 import Music from "./Sound/Music";
@@ -31,6 +32,7 @@ const musicItemStyle = {
 
 export default function InsertMusic() {
   const playlistCtx = useContext(PlaylistContext);
+  const AuthCtx = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -42,7 +44,7 @@ export default function InsertMusic() {
       return;
     }
     playlistCtx.changemusicidx(selectedMusicIdx);
-    axios.get(`http://localhost:5000/output/getplaylist/${idx}`).then((res) => {
+    axios.post(`http://localhost:5000/output/playlistpreset`, {idx:idx, roomid:AuthCtx.rooomId}).then((res) => {
       playlistCtx.addToPlaylist(res.data.results);
     });
   };
@@ -74,7 +76,6 @@ export default function InsertMusic() {
             onClick={() => {
               setSelectedMusicSrc("./music/abc.mp3");
               setSelectedMusicIdx("1");
-              // console.log(selectedMusicSrc);
             }}
           >
             <div className="music-item-title">Run Back to You (feat.Alisa)</div>
@@ -87,7 +88,6 @@ export default function InsertMusic() {
             onClick={() => {
               setSelectedMusicSrc("./music/뉴진스.mp3");
               setSelectedMusicIdx("2");
-              // console.log(selectedMusicSrc);
             }}
           >
             <div className="music-item-title">뉴진스 (feat.Alisa)</div>
@@ -100,6 +100,7 @@ export default function InsertMusic() {
                 getPresetbyIndex(selectedMusicIdx);
                 playlistCtx.selectmusicsrc(selectedMusicSrc);
                 handleClose();
+                console.log(playlistCtx.musicsrc);
               }}
             >
               선택

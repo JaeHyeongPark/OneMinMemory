@@ -36,6 +36,7 @@ router.post("/sendimage", async (req, res, next) => {
   // let roomorigin = JSON.parse(await redis.v4.hGet("testroom", "origin"))
   // let roomeffect = JSON.parse(await redis.v4.hGet("testroom", "effect"))
   const roomid = req.body.roomid
+  console.log(roomid)
   const roomorigin = await redis.v4.lRange(`${roomid}/origin`, 0, -1);
   const roomeffect = await redis.v4.lRange(`${roomid}/effect`, 0, -1);
   res.json({ origin: roomorigin, effect: roomeffect });

@@ -139,6 +139,7 @@ function addEffects(inputPath, durations, effects) {
       const effectedPath = `./Router_storage/input/effects${i}.mp4`;
       effects[i] = effectFilters[effects[i]];
       ffmpeg(inputPath[i])
+      .size('1280x720')
         .loop(durations[i])
         .outputOptions(effects[i])
         .on("start", function (commandLine) {

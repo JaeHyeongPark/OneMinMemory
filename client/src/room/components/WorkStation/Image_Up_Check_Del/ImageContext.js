@@ -7,21 +7,21 @@ import axios from "axios";
 const ImageContext = createContext({
   url: "",
   type: "",
-  view:{},
-  origin:{},
-  effect:{},
+  view: {},
+  origin: {},
+  effect: {},
   setorigin: (urllist) => {},
   seteffect: (urllist) => {},
   sendurl: (url) => {},
-  setView: (view) => {}
+  setView: (view) => {},
 });
 
 export const TocanvasProvider = (props) => {
   const [url, seturl] = useState("");
   const [type, settype] = useState("");
-  const [view, setView] = useState({})
-  const [origin, setorigin] = useState({})
-  const [effect, seteffect] = useState({})
+  const [view, setView] = useState({});
+  const [origin, setorigin] = useState({});
+  const [effect, seteffect] = useState({});
 
   const sendurl = (url) => {
     axios
@@ -32,26 +32,27 @@ export const TocanvasProvider = (props) => {
       });
   };
 
-  const ChangeView =(newView) => {
-    setView(newView)
-  }
-  const Changeorigin =(newView) => {
-    setorigin(newView)
-  }
-  const Changeeffect =(newView) => {
-    seteffect(newView)
-  }
+  const ChangeView = (newView) => {
+    setView(newView);
+  };
+  const Changeorigin = (newView) => {
+    setorigin(newView);
+  };
+  const Changeeffect = (newView) => {
+    seteffect(newView);
+  };
 
   const imagetocanvas = {
     url: url,
     type: type,
-    view:view,
-    origin:origin,
-    effect:effect,
-    setorigin,Changeorigin,
-    seteffect:Changeeffect,
+    view: view,
+    origin: origin,
+    effect: effect,
+    setorigin,
+    Changeorigin,
+    seteffect: Changeeffect,
     sendurl: sendurl,
-    setView:ChangeView
+    setView: ChangeView,
   };
   return (
     <ImageContext.Provider value={imagetocanvas}>

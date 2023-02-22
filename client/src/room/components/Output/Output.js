@@ -8,6 +8,8 @@ import SoundTrack from "./SoundTrack";
 import polaroid from "../../assets/polaroid.svg";
 import "./Output.css";
 
+import EditPermissionButton from "./EditPermissionButton";
+
 const Output = () => {
   return (
     <div className="ROOM-FOOTER">
@@ -38,6 +40,7 @@ const Output = () => {
             </div>
           </div>
           <RenderButton />
+          <EditPermissionButton />
         </div>
       </div>
     </div>

@@ -24,6 +24,7 @@ const router = express.Router();
 const upload = multer();
 dotenv.config();
 
+// ------------------ 안씀-------------------
 router.post("/addtoplay", upload.none(), async (req, res, next) => {
   const imageurl = req.body.imagedata.split("base64,")[1];
   const s3filename = req.body.originurl.split("testroom/Effectroom/Effect/")[1];
@@ -48,6 +49,7 @@ router.post("/addtoplay", upload.none(), async (req, res, next) => {
     });
 });
 
+// --------------------- 안씀-------------------------
 const toPlayUrlList = {};
 router.get("/playlist", async (req, res, next) => {
   const params = {
@@ -532,22 +534,22 @@ router.post("/clickimg", async (req, res, next) => {
   const roomid = req.body.roomid;
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
 
-  const idx = req.body.idx;
-  const url = playlist[idx].url;
+  //   const idx = req.body.idx;
+  //   const url = playlist[idx].url;
 
-  let check = false;
-  let time = playlist[idx].duration;
-  let totaltime = 0;
-  playlist.forEach((data, i) => {
-    if (i !== idx && data.select === true) {
-      // 0번째 일때 0과 false가 겹쳐서 의도와 다른 결과가 나옴
-      check = String(i);
-    }
-    if (i < idx) {
-      time += playlist[i].duration;
-    }
-    totaltime += data.duration;
-  });
+  //   let check = false;
+  //   let time = playlist[idx].duration;
+  //   let totaltime = 0;
+  //   playlist.forEach((data, i) => {
+  //     if (i !== idx && data.select === true) {
+  //       // 0번째 일때 0과 false가 겹쳐서 의도와 다른 결과가 나옴
+  //       check = String(i);
+  //     }
+  //     if (i < idx) {
+  //       time += playlist[i].duration;
+  //     }
+  //     totaltime += data.duration;
+  //   });
 
   if (check) {
     check = Number(check);
@@ -602,8 +604,8 @@ router.post("/changetime", async (req, res, next) => {
   const idx = req.body.idx;
   const time = req.body.time;
 
-  playlist[idx].select = false;
-  playlist[idx].duration += time;
+  //   playlist[idx].select = false;
+  //   playlist[idx].duration += time;
 
   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
   res.json({ playlist, DT: playlist[idx].duration });

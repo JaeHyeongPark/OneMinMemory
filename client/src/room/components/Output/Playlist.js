@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useDrop } from "react-dnd";
 import axios from "axios";
+import App from "../../../App";
 
 import PlaylistContext from "../../../shared/context/playlist-context";
 import { AuthContext } from "../../../shared/context/auth-context";
@@ -20,14 +21,21 @@ const Playlist = () => {
   }));
 
   const inputnewplay = (url) => {
-    axios
-      .post("http://localhost:5000/output/inputnewplay", {
-        url: url,
-        roomid:AuthCtx.rooomId
-      })
-      .then((res) => {
-        playlistCtx.addToPlaylist(res.data);
-      });
+    if (App.playlistPermissionState != 1) {
+      return;
+    }
+    // axios
+    //   .post("https://chjungle.shop/output/inputnewplay", {
+    //     url: url,
+    //   })
+    //   .then((res) => {
+    //     playlistCtx.addToPlaylist(res.data);
+    //   });
+    App.mainSocket.emit("inputnewplay", {
+      url,
+      Id: App.mainSocket.id,
+      roomId: App.roomId,
+    });
   };
 
   return (

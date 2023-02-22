@@ -5,6 +5,8 @@ import RoomCodeContext from "../../shared/context/roomcode-context";
 
 import RoomHeader from "../components/RoomHeader/RoomHeader";
 import Contents from "./Contents";
+import App from "../../App.js";
+import { useState, useEffect, useContext } from "react";
 
 const Room = () => {
   const navigate = useNavigate();
@@ -18,6 +20,9 @@ const Room = () => {
           navigate("/");
         }
       });
+    // roomid여기
+    App.mainSocket.emit("joinRoom", { Id: App.mainSocket.id, roomId: roomId });
+    App.roomId = roomId;
   }, []);
 
   return (

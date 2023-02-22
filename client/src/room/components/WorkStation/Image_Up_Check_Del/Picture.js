@@ -25,14 +25,14 @@ const Picture = (props) => {
     //   .then((res) => {
     //     ToCanvas.setView(res.data);
     //   });
-    if (props.mode === "Original"){
-      const origin = {...ToCanvas.origin}
-      origin[url] = origin[url] ? 0 : 1
-      ToCanvas.setorigin(origin)
-    }else{
-      const effect = {...ToCanvas.effect}
-      effect[url] = effect[url] ? 0 : 1
-      ToCanvas.seteffect(effect)
+    if (props.mode === "Original") {
+      const origin = { ...ToCanvas.origin };
+      origin[url] = origin[url] ? 0 : 1;
+      ToCanvas.setorigin(origin);
+    } else {
+      const effect = { ...ToCanvas.effect };
+      effect[url] = effect[url] ? 0 : 1;
+      ToCanvas.seteffect(effect);
     }
   };
 

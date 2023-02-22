@@ -6,10 +6,14 @@ const PlaylistContext = createContext({
   playlist: [],
   selecttime: "",
   selectDT: "",
+  selecttime: "",
+  selectDT: "",
   totaltime: 0,
+  selectidx: "",
   selectidx: "",
   changeidx: () => {},
   changeTT: () => {},
+  changeDT: () => {},
   changeDT: () => {},
   changetime: () => {},
   addToPlaylist: () => {},
@@ -45,10 +49,16 @@ export const PlaylistContextProvider = (props) => {
   const changetime = (time) => {
     settime(time);
   };
+    settime(time);
+  };
   const changeDT = (DT) => {
     setDT(DT);
   };
+    setDT(DT);
+  };
   const changeTT = (TT) => {
+    setTT(TT);
+  };
     setTT(TT);
   };
   const changeidx = (idx) => {

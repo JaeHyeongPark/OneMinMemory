@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, useContext} from "react";
+import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../../shared/context/auth-context";
 import axios from "axios";
 
@@ -9,36 +9,54 @@ import ImageUpload from "./Image_Up_Check_Del/ImageUpload";
 import ImageDel from "./Image_Up_Check_Del/ImageDel";
 import ImageContext from "./Image_Up_Check_Del/ImageContext";
 import "./PhotoBox.css";
+import App from "../../../App.js";
 
 const PhotoBox = (props) => {
-  const [cloud, setcloud] = useState(true)
-  const [view, setview] = useState({})
-  const ToCanvas = useContext(ImageContext)
+  const [cloud, setcloud] = useState(true);
+  const [view, setview] = useState({});
+  const ToCanvas = useContext(ImageContext);
   const AuthCtx = useContext(AuthContext);
 
   useEffect(() => {
-    const filename = cloud ? "Original" : "Effect"
-      axios.post("http://localhost:5000/photoBox/sendimage", {filename : filename, roomid:AuthCtx.rooomId}).then((res) => {
-        const origin = {...ToCanvas.origin}
-        const effect = {...ToCanvas.effect}
-        res.data.origin.forEach((url) => origin[url] = 0)
-        res.data.effect.forEach((url) => effect[url] = 0)
-        ToCanvas.setorigin(origin)
-        ToCanvas.seteffect(effect)
+    const filename = cloud ? "Original" : "Effect";
+    axios
+      .post("http://localhost:5000/photoBox/sendimage", {
+        filename: filename,
+        roomid: AuthCtx.rooomId,
+      })
+      .then((res) => {
+        const origin = { ...ToCanvas.origin };
+        const effect = { ...ToCanvas.effect };
+        res.data.origin.forEach((url) => (origin[url] = 0));
+        res.data.effect.forEach((url) => (effect[url] = 0));
+        ToCanvas.setorigin(origin);
+        ToCanvas.seteffect(effect);
       });
   }, []);
+  App.mainSocket.removeAllListeners("upload");
+  App.mainSocket.on("upload", (data) => {
+    const neworigin = { ...ToCanvas.origin };
+    data.upimg.forEach((url) => (neworigin[url] = 0));
+    ToCanvas.setorigin(neworigin);
+  });
+  App.mainSocket.removeAllListeners("edit");
+  App.mainSocket.on("edit", (data) => {
+    const neweffect = { ...ToCanvas.effect };
+    neweffect[data.editedUrl] = 0;
+    ToCanvas.seteffect(neweffect);
+  });
 
   useEffect(() => {
-    if (cloud){
-      setview(ToCanvas.origin)
-    }else{
-      setview(ToCanvas.effect)
+    if (cloud) {
+      setview(ToCanvas.origin);
+    } else {
+      setview(ToCanvas.effect);
     }
-  }, [ToCanvas.origin, cloud, ToCanvas.effect])
+  }, [ToCanvas.origin, cloud, ToCanvas.effect]);
 
   const CloudChange = () => {
-    setcloud(cloud ? false : true)
-  }
+    setcloud(cloud ? false : true);
+  };
 
   return (
     <React.Fragment>
@@ -47,14 +65,16 @@ const PhotoBox = (props) => {
           <div className="cloud">
             <img src={Cloud} className="img.cloud" alt="" />
           </div>
-          <span className="cloud_span" onClick={CloudChange}>{cloud ? "CLOUD - Original" : "CLOUD - Effect"}</span>
+          <span className="cloud_span" onClick={CloudChange}>
+            {cloud ? "CLOUD - Original" : "CLOUD - Effect"}
+          </span>
         </div>
         <div className="PhotoBox">
           <div className="Photos_and_Button">
-            <ImageShow view={view} mode={cloud ? "Original" : "Effect"}/>
+            <ImageShow view={view} mode={cloud ? "Original" : "Effect"} />
             <div className="PhotoBox-Button">
-              <ImageUpload/>
-              <ImageDel mode={cloud ? "Original" : "Effect"}/>
+              <ImageUpload />
+              <ImageDel mode={cloud ? "Original" : "Effect"} />
             </div>
           </div>
         </div>

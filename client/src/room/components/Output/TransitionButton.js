@@ -3,6 +3,7 @@ import { useDrop } from "react-dnd";
 import { useContext } from "react";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import { AuthContext } from "../../../shared/context/auth-context";
+import App from "../../../App";
 
 const TransitionButton = (props) => {
   const playlistCtx = useContext(PlaylistContext);
@@ -15,30 +16,41 @@ const TransitionButton = (props) => {
     }),
   }));
 
-  const transition = playlistCtx.playlist[props.idx].transition
+  const transition = playlistCtx.playlist[props.idx].transition;
 
   const sendTotransition = (transition) => {
-    axios
-      .post("http://localhost:5000/output/transition", {
-        transition,
-        idx: props.idx,
-        roomid:AuthCtx.rooomId
-      })
-      .then((res) => playlistCtx.addToPlaylist(res.data));
+    if (App.playlistPermissionState != 1) {
+      return;
+    }
+    // axios
+    //   .post("http://localhost:5000/output/transition", {
+    //     transition,
+    //     idx: props.idx,
+    //   })
+    //   .then((res) => playlistCtx.addToPlaylist(res.data));
+    App.mainSocket.emit("transition", {
+      Id: App.mainSocket.id,
+      roomId: App.roomId,
+      transition,
+      idx: props.idx,
+    });
   };
   const deltransition = (e) => {
-    e.preventDefault()
-    axios
-      .post("http://localhost:5000/output/deltransition", {
-        idx: props.idx,
-        roomid:AuthCtx.rooomId
-      })
-      .then((res) => playlistCtx.addToPlaylist(res.data));
-  }
+    e.preventDefault();
+    // axios
+    //   .post("http://localhost:5000/output/deltransition", {
+    //     idx: props.idx,
+    //   })
+    //   .then((res) => playlistCtx.addToPlaylist(res.data));
+    App.mainSocket.emit("delTransition", {
+      Id: App.mainSocket.id,
+      roomId: App.roomId,
+      idx: props.idx,
+    });
+  };
 
-
-  let content
-  if (transition === '') {
+  let content;
+  if (transition === "") {
     content = (
       <div
         ref={playlist}
@@ -56,12 +68,12 @@ const TransitionButton = (props) => {
         style={{
           width: String((1 * 100) / 60) + "%",
           border: "solid 5px #e2f01d",
-          cursor:"pointer"
+          cursor: "pointer",
         }}
         onClick={deltransition}
       />
     );
   }
-  return content ;
+  return content;
 };
 export default TransitionButton;

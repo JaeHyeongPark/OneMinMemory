@@ -9,6 +9,8 @@ import SidebarItem from "./SidebarItem";
 import Effect from "./Effects/Effect";
 import Transition from "./Transitions/Transition";
 
+import App from "../../../App.js";
+
 const DEFAULT_OPTIONS = [
   {
     name: "Brighten",
@@ -165,7 +167,7 @@ function Canvas() {
     const formdata = new FormData();
     formdata.append("imagedata", imagedata);
     formdata.append("originurl", ToCanvas.url);
-    formdata.append("roomid", AuthCtx.rooomId)
+    formdata.append("roomid", AuthCtx.rooomId);
 
     //checked
     await axios
@@ -182,6 +184,11 @@ function Canvas() {
         const canvas = canvasRef.current;
         canvas.style = {};
         Ctx.clearRect(0, 0, canvas.width, canvas.height);
+        App.mainSocket.emit("pictureEdited", {
+          Id: App.mainSocket.id,
+          roomId: App.roomId,
+          editedUrl: res.data,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -198,7 +205,7 @@ function Canvas() {
     // checkpoint!
     const formdata = new FormData();
     formdata.append(`${name}ImageData`, imageData);
-    formdata.append("roomid", AuthCtx.rooomId)
+    formdata.append("roomid", AuthCtx.rooomId);
     await axios
       .post(`http://localhost:5000/canvas/image/${name}`, formdata, {
         headers: {

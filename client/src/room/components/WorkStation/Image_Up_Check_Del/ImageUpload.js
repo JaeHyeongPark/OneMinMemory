@@ -3,9 +3,10 @@ import { useContext } from "react";
 import ImageContext from "./ImageContext";
 import { AuthContext } from "../../../../shared/context/auth-context";
 import softwareupload from "../../../assets/software-upload.svg";
+import App from "../../../../App.js";
 
 const ImageUpload = (props) => {
-  const ToCanvas = useContext(ImageContext)
+  const ToCanvas = useContext(ImageContext);
   const AuthCtx = useContext(AuthContext);
 
   const uploadimage = async (e) => {
@@ -17,7 +18,7 @@ const ImageUpload = (props) => {
       formdata.append("images", images[i]);
       formdata.append("lastModified", images[i].lastModified);
     }
-    formdata.append("roomid", AuthCtx.rooomId)
+    formdata.append("roomid", AuthCtx.rooomId);
 
     axios
       .post("http://localhost:5000/photoBox/upload", formdata, {
@@ -26,10 +27,16 @@ const ImageUpload = (props) => {
         },
       })
       .then((res) => {
-        const neworigin = {...ToCanvas.origin}
-        res.data.forEach((url) => neworigin[url] = 0)
-        ToCanvas.setorigin(neworigin)
+        const neworigin = { ...ToCanvas.origin };
+        res.data.forEach((url) => (neworigin[url] = 0));
+        ToCanvas.setorigin(neworigin);
         // props.change();
+        // 누군가 사진을 업로드 했음을 서버에 알림
+        App.mainSocket.emit("pictureUpload", {
+          Id: App.mainSocket.id,
+          roomId: App.roomId,
+          upimg: res.data,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -37,7 +44,7 @@ const ImageUpload = (props) => {
   };
 
   return (
-    <div >
+    <div>
       <label className="uploadButton" htmlFor="upload">
         <img src={softwareupload} className="img.software-upload" alt="a" />
       </label>

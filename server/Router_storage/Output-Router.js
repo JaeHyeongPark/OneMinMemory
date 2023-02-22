@@ -267,8 +267,6 @@ router.get("/getplaylist", async (req, res, next) => {
 })
 
 router.get("/getplaylist/:id", async (req, res, next) => {
-  console.log(req.params.id);
-  console.log("출력");
   let presets = [
     [
       {
@@ -276,30 +274,35 @@ router.get("/getplaylist/:id", async (req, res, next) => {
         duration: 5,
         select: false,
         transition: "",
+        effect:""
       },
       {
         url: "",
         duration: 5,
         select: false,
         transition: "",
+        effect:""
       },
       {
         url: "",
         duration: 15,
         select: false,
         transition: "",
+        effect:""
       },
       {
         url: "",
         duration: 15,
         select: false,
         transition: "",
+        effect:""
       },
       {
         url: "",
         duration: 5,
         select: false,
         transition: "",
+        effect:""
       },
     ],
     [
@@ -308,34 +311,43 @@ router.get("/getplaylist/:id", async (req, res, next) => {
         duration: 15,
         select: false,
         transition: "",
+        effect:""
       },
       {
         url: "",
         duration: 5,
         select: false,
         transition: "",
+        effect:""
       },
       {
         url: "",
         duration: 5,
         select: false,
         transition: "",
+        effect:""
       },
       {
         url: "",
         duration: 5,
         select: false,
         transition: "",
+        effect:""
       },
       {
         url: "",
         duration: 20,
         select: false,
         transition: "",
+        effect:""
       },
     ],
   ];
+
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"))
   playlist = JSON.parse(JSON.stringify(presets[req.params.id]));
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist))
+
   res.json({ results: playlist });
 });
 
@@ -418,6 +430,7 @@ router.post("/inputnewplay", async (req, res, next) => {
     duration: 5,
     select: false,
     transition: "",
+    effect:""
   };
 
   let playlist = JSON.parse(await redis.v4.get("testroom/playlist"))

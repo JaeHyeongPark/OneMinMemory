@@ -820,7 +820,7 @@ const SoundTrack = () => {
   const peaksData = jsondata.peaks;
   const jsondatalength = jsondata.peaks.length;
   const speed = jsondatalength / jsondata.duration;
-  console.log(jsondatalength, jsondata.duration, speed); // 1초에 12.4개
+  // console.log(jsondatalength, jsondata.duration, speed); // 1초에 12.4개
 
   const canvasRef = useRef(null);
 

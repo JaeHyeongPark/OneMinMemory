@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const multer = require("multer");
 const AWS = require("aws-sdk");
-const redis = require("./RedisClient")
+const redis = require("./RedisClient");
 
 const router = express.Router();
 
@@ -35,9 +35,9 @@ router.post("/sendimage", async (req, res, next) => {
   // };
   // let roomorigin = JSON.parse(await redis.v4.hGet("testroom", "origin"))
   // let roomeffect = JSON.parse(await redis.v4.hGet("testroom", "effect"))
-  const roomorigin = await redis.v4.lRange("testroom/origin", 0, -1)
-  const roomeffect = await redis.v4.lRange("testroom/effect", 0, -1)
-  res.json({origin:roomorigin, effect:roomeffect})
+  const roomorigin = await redis.v4.lRange("testroom/origin", 0, -1);
+  const roomeffect = await redis.v4.lRange("testroom/effect", 0, -1);
+  res.json({ origin: roomorigin, effect: roomeffect });
 
   // roomorigin = roomorigin.map((url) => `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/`+ url)
   // roomeffect = roomeffect.map((url) => `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/`+ url)
@@ -128,7 +128,7 @@ router.post("/sendimage", async (req, res, next) => {
 
 // 업로드 하려고 받은 이미지 s3에 저장
 router.post("/upload", async (req, res, next) => {
-  const upimg = []
+  const upimg = [];
 
   upload(req, res, (err) => {
     if (err) {
@@ -144,7 +144,7 @@ router.post("/upload", async (req, res, next) => {
       } else {
         fileKey = req.body.lastModified[idx];
       }
-      const key = foldername + fileKey
+      const key = foldername + fileKey;
       const params = {
         Bucket: process.env.Bucket_Name,
         Key: key,
@@ -153,15 +153,18 @@ router.post("/upload", async (req, res, next) => {
         ContentType: file.mimetype,
         CacheControl: "no-store",
       };
-      upimg.push(`https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` + key)
+      upimg.push(
+        `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
+          key
+      );
       return s3.upload(params).promise();
     });
     // promise 작업이 끝나면 이후 작업 처리
     Promise.all(promises)
       .then(async () => {
         upimg.forEach(async (url) => {
-          await redis.v4.rPush("testroom/origin", url)
-        })
+          await redis.v4.rPush("testroom/origin", url);
+        });
         res.status(200).send(upimg);
       })
       .catch((err) => {

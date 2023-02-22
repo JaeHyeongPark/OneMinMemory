@@ -12,7 +12,7 @@ const PlaylistContext = createContext({
   changeTT: () => {},
   changeDT: () => {},
   changetime: () => {},
-  translist: [],
+  // translist: [],
   addToPlaylist: () => {},
   musicidx: "",
   changemusicidx: () => {},
@@ -36,6 +36,43 @@ export const PlaylistContextProvider = (props) => {
       setPlaylist(res.data);
     });
   }, []);
+
+  // useEffect(() => {
+  //   setTranslist([
+  //     {
+  //       transition: [
+  //         "-filter_complex",
+  //         "[0:v][1:v]xfade=transition=hrslice:duration=1:offset=3",
+  //       ],
+  //     },
+  //     {
+  //       transition: [
+  //         "-filter_complex",
+  //         "[0:v][1:v]xfade=transition=distance:duration=1:offset=3",
+  //       ],
+  //     },
+  //     {
+  //       transition: [
+  //         "-filter_complex",
+  //         "[0:v][1:v]xfade=transition=rectcrop:duration=1:offset=3",
+  //       ],
+  //     },
+  //     {
+  //       transition: [
+  //         "-filter_complex",
+  //         "[0:v][1:v]xfade=transition=radial:duration=1:offset=3",
+  //       ],
+  //     },
+  //     {
+  //       transition: [
+  //         "-filter_complex",
+  //         "[0:v][1:v]xfade=transition=pixelize:duration=1:offset=3",
+  //       ],
+  //     },
+  //   ]);
+  // }, []);
+
+  //   const setChangeHandler = () => {};
 
   const addToPlaylistHandler = (track) => {
     setPlaylist(track);

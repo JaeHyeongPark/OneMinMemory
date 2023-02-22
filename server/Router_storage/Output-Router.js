@@ -76,7 +76,7 @@ router.post("/addtoplay", upload.none(), async (req, res, next) => {
 function imageToVideos(imagePath, durations) {
   return new Promise((resolve, reject) => {
     let videos = [];
-
+    let cnt = 0;
     for (let i = 0; i < imagePath.length; i++) {
       const videoPath = `./Router_storage/input/source${i}.mp4`;
       ffmpeg(imagePath[i])
@@ -91,12 +91,8 @@ function imageToVideos(imagePath, durations) {
         .on("end", function () {
           console.log(`Processing ${videoPath} finished !`);
           videos[i] = videoPath;
-          if (
-            videos.filter(
-              (element) =>
-                element !== undefined && element !== null && element !== ""
-            ).length === imagePath.length
-          ) {
+          cnt += 1;
+          if (cnt === imagePath.length) {
             resolve(videos);
           }
         })
@@ -105,16 +101,16 @@ function imageToVideos(imagePath, durations) {
   });
 }
 
-function mergeTransitions(inputPath, transitions) {
+function addEffects(inputPath, effects) {
   return new Promise((resolve, reject) => {
-    let transedVideos = [];
+    let effectedVideos = [];
+    let cnt = 0;
 
-    for (let i = 0; i < inputPath.length - 1; i++) {
-      const transedPath = `./Router_storage/input/transed${i}.mp4`;
-      ffmpeg()
-        .addInput(inputPath[i])
-        .addInput(inputPath[i + 1])
-        .outputOptions(transitions[i])
+    for (let i = 0; i < inputPath.length; i++) {
+      const effectedPath = `./Router_storage/input/effects${i}.mp4`;
+      effects[i] = effectFilters[effects[i]];
+      ffmpeg(inputPath[i])
+        .outputOptions(effects[i])
         .on("start", function (commandLine) {
           console.log("Spawned Ffmpeg with command: " + commandLine);
         })
@@ -123,33 +119,36 @@ function mergeTransitions(inputPath, transitions) {
           reject(err);
         })
         .on("end", function () {
-          console.log(`Processing ${transedPath} finished !`);
-          transedVideos[i] = transedPath;
-          if (
-            transedVideos.filter(
-              (element) =>
-                element !== undefined && element !== null && element !== ""
-            ).length ===
-            inputPath.length - 1
-          ) {
-            resolve(transedVideos);
+          console.log(`Processing ${effectedPath} finished !`);
+          effectedVideos[i] = effectedPath;
+          cnt += 1;
+          if (cnt === inputPath.length) {
+            resolve(effectedVideos);
           }
         })
-        .save(transedPath);
+        .save(effectedPath);
     }
   });
 }
 
-function mergeAll(inputPath) {
+function ffmpegSyncTrans(
+  prev_video,
+  input,
+  transition,
+  prev_duration,
+  transedPath
+) {
+  console.log("ffmpegSyncTrans 함수 호출");
   return new Promise((resolve, reject) => {
-    const mergedVideo = "./Router_storage/output/merged.mp4";
-    const mergeVideos = ffmpeg();
-    const transedVideos = inputPath;
-    transedVideos.forEach((effectVideo) => {
-      mergeVideos.addInput(effectVideo);
-    });
-
-    mergeVideos
+    ffmpeg()
+      .addInput(prev_video)
+      .addInput(input)
+      .outputOption(
+        "-filter_complex",
+        `[0:v][1:v]xfade=transition=${transition}:duration=1:offset=${
+          prev_duration - 1
+        }`
+      )
       .on("start", function (commandLine) {
         console.log("Spawned Ffmpeg with command: " + commandLine);
       })
@@ -157,16 +156,100 @@ function mergeAll(inputPath) {
         console.log("An error occurred: " + err.message);
         reject(err);
       })
+      .save(transedPath)
       .on("end", function () {
-        console.log(`Processing ${mergedVideo} finished !`);
-        resolve(mergedVideo);
-      })
-      .mergeToFile(
-        "./Router_storage/output/merged.mp4",
-        "./Router_storage/temp"
-      );
+        console.log(`Processing transed finished !`);
+        resolve();
+      });
   });
 }
+
+function ffmpegSyncMerge(prev_video, input, transedPath) {
+  console.log("ffmpegSyncMerge 함수 호출");
+  return new Promise((resolve, reject) => {
+    ffmpeg()
+      .addInput(prev_video)
+      .addInput(input)
+      .on("start", function (commandLine) {
+        console.log("Spawned Ffmpeg with command: " + commandLine);
+      })
+      .on("error", function (err) {
+        console.log("An error occurred: " + err.message);
+        reject(err);
+      })
+      .mergeToFile(transedPath)
+      .on("end", function () {
+        console.log(`Processing transed finished !`);
+        resolve();
+      });
+  });
+}
+
+function mergeTransitions(inputPath, durations, transitions) {
+  console.log("mergeTransitions 함수 호출");
+  return new Promise(async (resolve, reject) => {
+    let prev_duration = durations[0];
+    let prev_video = inputPath[0];
+    let flag = true;
+    for (let i = 1; i < inputPath.length; i++) {
+      let transedPath;
+      if (flag) {
+        transedPath = `./Router_storage/input/transed_A.mp4`;
+      } else {
+        transedPath = `./Router_storage/input/transed_B.mp4`;
+      }
+      flag = !flag;
+      if (transitions[i - 1]) {
+        await ffmpegSyncTrans(
+          prev_video,
+          inputPath[i],
+          transitions[i - 1],
+          prev_duration,
+          transedPath
+        ).then(() => {
+          prev_video = transedPath;
+          prev_duration = prev_duration + durations[i] - 1;
+        });
+      } else {
+        await ffmpegSyncMerge(prev_video, inputPath[i], transedPath).then(
+          () => {
+            prev_video = transedPath;
+            prev_duration = prev_duration + durations[i];
+          }
+        );
+      }
+    }
+    resolve(prev_video);
+  });
+}
+
+// function mergeAll(inputPath) {
+//   return new Promise((resolve, reject) => {
+//     const mergedVideo = "./Router_storage/output/merged.mp4";
+//     const mergeVideos = ffmpeg();
+//     const transedVideos = inputPath;
+//     transedVideos.forEach((effectVideo) => {
+//       mergeVideos.addInput(effectVideo);
+//     });
+
+//     mergeVideos
+//       .on("start", function (commandLine) {
+//         console.log("Spawned Ffmpeg with command: " + commandLine);
+//       })
+//       .on("error", function (err) {
+//         console.log("An error occurred: " + err.message);
+//         reject(err);
+//       })
+//       .on("end", function () {
+//         console.log(`Processing ${mergedVideo} finished !`);
+//         resolve(mergedVideo);
+//       })
+//       .mergeToFile(
+//         "./Router_storage/output/merged.mp4",
+//         "./Router_storage/temp"
+//       );
+//   });
+// }
 
 function addAudio(inputPath) {
   return new Promise((resolve, reject) => {
@@ -196,7 +279,7 @@ function addAudio(inputPath) {
         ffmpeg(inputPath)
           .videoCodec("libx264")
           .audioCodec("libmp3lame")
-          .size("1080x720")
+          .size("1280x720")
           .addInput(
             "./Hoang - Run Back to You (Official Lyric Video) feat. Alisa_128kbps.mp3"
           )
@@ -220,48 +303,77 @@ function addAudio(inputPath) {
 }
 
 router.post("/merge", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
   const images = req.body.playlist.map(({ url }) => url);
   const durations = req.body.playlist.map(({ duration }) => duration);
-  const transitions = req.body.translist.map(({ transition }) => transition);
-  console.log("동영상 생성을 시작합니다~~~~!!");
+  const effects = playlist.map(({ effect }) => effect);
+  const transitions = req.body.playlist.map(({ transition }) => transition);
+  console.log("durations", durations);
+  console.log("URL", images);
+  console.log("effects", effects);
+  console.log("transitions", transitions);
+  console.log("이미지 >>>> 동영상(with duration) Rendering...");
   const videoPaths = await imageToVideos(images, durations);
   console.log("이미지를 비디오로 변환 완료, 변환된 비디오:", videoPaths);
-  const transedPaths = await mergeTransitions(videoPaths, transitions);
-  console.log("트랜지션 비디오로 변환 완료, 변환된 비디오:", transedPaths);
-  const mergedPath = await mergeAll(transedPaths);
-  console.log("비디오 병합 완료, 변환된 비디오:", mergedPath);
-  const finishedPath = await addAudio(mergedPath);
+  const effectedPaths = await addEffects(videoPaths, effects);
+  console.log("이펙트 비디오로 변환 완료, 변환된 비디오:", effectedPaths);
+  const transedPath = await mergeTransitions(
+    effectedPaths,
+    durations,
+    transitions
+  );
+  console.log("비디오 트랜지션 완료, 오디오 삽입 시작");
+  const finishedPath = await addAudio(transedPath);
   console.log("오디오 삽입 및 최종 렌더링 완료, 완료된 비디오:", finishedPath);
   res.download(finishedPath);
+  // res.json({ message: "success" });
+});
+
+// effect효과 playlist에 넣기
+router.post("/effect", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+  const effect = req.body.effect;
+  const idx = req.body.idx;
+  playlist[idx].effect = effect;
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
+  res.send(playlist);
+});
+// 클릭으로 effect 지우기(해당 인덱스만) 클릭말고 컴포넌트 추가해야함
+router.post("/deleffect", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+  const idx = req.body.idx;
+  playlist[idx].effect = "";
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
+  res.send(playlist);
 });
 
 // transition효과 playlist에 넣기
 router.post("/transition", async (req, res, next) => {
-  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"))
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
 
   const transition = req.body.transition;
   const idx = req.body.idx;
   playlist[idx].transition = transition;
 
-  await redis.v4.set("testroom/playlist", JSON.stringify(playlist))
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 // 클릭으로 transition 지우기(해당 인덱스만)
 router.post("/deltransition", async (req, res, next) => {
-  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"))
-  
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+
   const idx = req.body.idx;
   playlist[idx].transition = "";
 
-  await redis.v4.set("testroom/playlist", JSON.stringify(playlist))
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 
 // 재생목록 호출 API
 router.get("/getplaylist", async (req, res, next) => {
-  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"))
-  if (playlist === null){
-    playlist = []
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+  if (playlist === null) {
+    playlist = [];
   }
   res.send(playlist)
 })
@@ -352,19 +464,19 @@ router.get("/getplaylist/:id", async (req, res, next) => {
 });
 
 router.post("/postplaylist", async (req, res, next) => {
-  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"))
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
 
   const url = req.body.url;
   const idx = req.body.idx;
   playlist[idx].url = url;
 
-  await redis.v4.set("testroom/playlist", JSON.stringify(playlist))
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 
 // 삭제 이벤트 해당 객체 삭제
 router.post("/deleteplayurl", async (req, res, next) => {
-  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"))
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
   const idx = req.body.idx;
 
   playlist = playlist.filter((data, i) => {
@@ -373,13 +485,13 @@ router.post("/deleteplayurl", async (req, res, next) => {
     }
   });
 
-  await redis.v4.set("testroom/playlist", JSON.stringify(playlist))
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 
 // 재생목록 click시 이벤트
 router.post("/clickimg", async (req, res, next) => {
-  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"))
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
 
   const idx = req.body.idx;
   const url = playlist[idx].url;
@@ -404,15 +516,15 @@ router.post("/clickimg", async (req, res, next) => {
     playlist[check].url = url;
     playlist[idx].select = false;
     playlist[check].select = false;
-    await redis.v4.set("testroom/playlist", JSON.stringify(playlist))
+    await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
     res.json({ playlist });
   } else if (playlist[idx].select) {
     playlist[idx].select = false;
-    await redis.v4.set("testroom/playlist", JSON.stringify(playlist))
+    await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
     res.json({ playlist });
   } else {
     playlist[idx].select = true;
-    await redis.v4.set("testroom/playlist", JSON.stringify(playlist))
+    await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
     res.json({
       playlist,
       time: time,
@@ -429,29 +541,30 @@ router.post("/inputnewplay", async (req, res, next) => {
     url: url,
     duration: 5,
     select: false,
+    effect: "",
     transition: "",
     effect:""
   };
 
-  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"))
-  if (playlist === null){
-    playlist = []
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+  if (playlist === null) {
+    playlist = [];
   }
-  playlist.push(newimage)
+  playlist.push(newimage);
 
-  await redis.v4.set("testroom/playlist", JSON.stringify(playlist))
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 // 이미지 재생 시간 변경
 router.post("/changetime", async (req, res, next) => {
-  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"))
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
   const idx = req.body.idx;
   const time = req.body.time;
 
   playlist[idx].select = false;
   playlist[idx].duration += time;
 
-  await redis.v4.set("testroom/playlist", JSON.stringify(playlist))
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.json({ playlist, DT: playlist[idx].duration });
 });
 

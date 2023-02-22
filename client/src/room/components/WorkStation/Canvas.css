@@ -90,6 +90,21 @@ body {
   height: auto;
   margin: auto;
 }
+.container .effect-modal {
+  /* overflow: auto y; */
+  width: auto;
+  height: auto;
+  margin: 10px;
+  position: relative;
+}
+.container .effect-list {
+  overflow: auto;
+  width: auto;
+  height: 100%;
+  margin: 10px;
+  position: relative;
+}
+
 .container .transition-modal {
   /* overflow: auto y; */
   width: auto;
@@ -110,7 +125,7 @@ body {
 } */
 .container .transition-clip {
   width: auto;
-  height: 60%;
+  /* height: 60%; */
   margin: 10px;
   position: relative;
 }

@@ -32,6 +32,7 @@ const Playlist = () => {
       <div className="playlist_main">
         {playlistCtx.playlist.map((data, i) => (
           <PlaylistMain
+            effect={data.effect}
             duration={data.duration}
             url={data.url}
             select={data.select}

@@ -86,6 +86,7 @@ export default function InsertMusic() {
             index={10002}
             style={musicItemStyle}
             onClick={() => {
+              console.log(1)
               setSelectedMusicSrc("./music/뉴진스.mp3");
               setSelectedMusicIdx("2");
             }}

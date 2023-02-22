@@ -1,13 +1,14 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import PlaylistContext from "../../../shared/context/playlist-context";
 
 import music from "../../assets/music.svg";
 import Music from "./Sound/Music";
-import PlaylistContext from "../../../shared/context/playlist-context";
+import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -29,22 +30,21 @@ const musicItemStyle = {
 };
 
 export default function InsertMusic() {
+  const playlistCtx = useContext(PlaylistContext);
   const [open, setOpen] = useState(false);
-  const [selectedMusicSrc, setSelectedMusicSrc] = useState("");
-  const [selectMusicId, setSelectMusicId] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const playlistCtx = useContext(PlaylistContext);
+  const [selectedMusicSrc, setSelectedMusicSrc] = useState(null);
+  const [selectedMusicIdx, setSelectedMusicIdx] = useState(null);
 
-  useEffect(() => {
-    setSelectedMusicSrc(selectedMusicSrc);
-  }, [selectedMusicSrc]);
-
-  const sendSelectedMusicInfo = (id, src) => {
-    playlistCtx.changemusicidx(id);
-    playlistCtx.selectmusicsrc(src);
+  const getPresetbyIndex = (idx) => {
+    if (!selectedMusicIdx) {
+      return;
+    }
+    axios.get(`http://localhost:5000/output/getplaylist/${idx}`).then((res) => {
+      playlistCtx.addToPlaylist(res.data.results);
+    });
   };
-
   return (
     <div>
       <Button className="insert_music_button" onClick={handleOpen}>
@@ -68,11 +68,11 @@ export default function InsertMusic() {
           </Typography>
           <Button
             className="music-item"
-            index={1}
+            index={10001}
             style={musicItemStyle}
             onClick={() => {
               setSelectedMusicSrc("./music/abc.mp3");
-              setSelectMusicId("1");
+              setSelectedMusicIdx("0");
             }}
           >
             <div className="music-item-title">Run Back to You (feat.Alisa)</div>
@@ -84,7 +84,7 @@ export default function InsertMusic() {
             style={musicItemStyle}
             onClick={() => {
               setSelectedMusicSrc("./music/뉴진스.mp3");
-              setSelectMusicId("2");
+              setSelectedMusicIdx("1");
             }}
           >
             <div className="music-item-title">뉴진스 (feat.Alisa)</div>
@@ -94,7 +94,7 @@ export default function InsertMusic() {
             <Button
               variant="contained"
               onClick={() => {
-                sendSelectedMusicInfo(selectMusicId, selectedMusicSrc);
+                getPresetbyIndex(selectedMusicIdx);
                 handleClose();
               }}
             >

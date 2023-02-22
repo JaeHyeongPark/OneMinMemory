@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 
 const PlaylistContext = createContext({
@@ -36,42 +36,40 @@ export const PlaylistContextProvider = (props) => {
   //   });
   // }, []);
 
-  useEffect(() => {
-    setTranslist([
-      {
-        transition: [
-          "-filter_complex",
-          "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
-        ],
-      },
-      {
-        transition: [
-          "-filter_complex",
-          "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
-        ],
-      },
-      {
-        transition: [
-          "-filter_complex",
-          "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
-        ],
-      },
-      {
-        transition: [
-          "-filter_complex",
-          "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
-        ],
-      },
-      {
-        transition: [
-          "-filter_complex",
-          "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
-        ],
-      },
-    ]);
-  }, []);
-
-  //   const setChangeHandler = () => {};
+  // useEffect(() => {
+  //   setTranslist([
+  //     {
+  //       transition: [
+  //         "-filter_complex",
+  //         "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
+  //       ],
+  //     },
+  //     {
+  //       transition: [
+  //         "-filter_complex",
+  //         "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
+  //       ],
+  //     },
+  //     {
+  //       transition: [
+  //         "-filter_complex",
+  //         "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
+  //       ],
+  //     },
+  //     {
+  //       transition: [
+  //         "-filter_complex",
+  //         "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
+  //       ],
+  //     },
+  //     {
+  //       transition: [
+  //         "-filter_complex",
+  //         "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
+  //       ],
+  //     },
+  //   ]);
+  // }, []);
 
   const addToPlaylistHandler = (track) => {
     setPlaylist(track);

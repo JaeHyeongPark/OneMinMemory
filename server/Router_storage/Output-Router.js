@@ -74,7 +74,6 @@ router.get("/playlist", async (req, res, next) => {
 
 // react 재생목록에 보낼 임시정보 Array
 // 이거 여기 있어야하나?? playlist context로 이동예정
-let playlist = [];
 // let playlist = [
 //   {
 //     url: "",
@@ -107,6 +106,8 @@ let playlist = [];
 //     transition: ""
 //   },
 // ];
+
+let playlist = [];
 
 function imageToVideos(imagePath, durations) {
   return new Promise((resolve, reject) => {
@@ -286,8 +287,75 @@ router.post("/deltransition", (req, res, next) => {
 
 // 재생목록 호출 API
 router.get("/getplaylist/:id", async (req, res, next) => {
-  let idx = req.params.id;
-  res.json({ results: playlist });
+  console.log(req.params.id);
+  console.log("출력");
+  let presets = [
+    [
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 15,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 15,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+    ],
+    [
+      {
+        url: "",
+        duration: 15,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 20,
+        select: false,
+        transition: "",
+      },
+    ],
+  ];
+  res.json({ results: presets[req.params.id] });
 });
 
 router.post("/postplaylist", (req, res, next) => {

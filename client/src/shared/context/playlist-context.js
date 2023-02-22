@@ -12,7 +12,6 @@ const PlaylistContext = createContext({
   changeTT: () => {},
   changeDT: () => {},
   changetime: () => {},
-  // translist: [],
   addToPlaylist: () => {},
   musicidx: "",
   changemusicidx: () => {},
@@ -21,13 +20,11 @@ const PlaylistContext = createContext({
 });
 
 export const PlaylistContextProvider = (props) => {
-  //   const [isChanged, setIsChanged] = useState(false);
   const [playlist, setPlaylist] = useState([]);
   const [time, settime] = useState("");
   const [DT, setDT] = useState("");
   const [TT, setTT] = useState(0);
   const [idx, setidx] = useState("");
-  const [translist, setTranslist] = useState([]);
   const [musicIdx, setMusicIdx] = useState("0");
   const [musicSrc, setMusicSrc] = useState("");
 
@@ -36,43 +33,6 @@ export const PlaylistContextProvider = (props) => {
       setPlaylist(res.data);
     });
   }, []);
-
-  // useEffect(() => {
-  //   setTranslist([
-  //     {
-  //       transition: [
-  //         "-filter_complex",
-  //         "[0:v][1:v]xfade=transition=hrslice:duration=1:offset=3",
-  //       ],
-  //     },
-  //     {
-  //       transition: [
-  //         "-filter_complex",
-  //         "[0:v][1:v]xfade=transition=distance:duration=1:offset=3",
-  //       ],
-  //     },
-  //     {
-  //       transition: [
-  //         "-filter_complex",
-  //         "[0:v][1:v]xfade=transition=rectcrop:duration=1:offset=3",
-  //       ],
-  //     },
-  //     {
-  //       transition: [
-  //         "-filter_complex",
-  //         "[0:v][1:v]xfade=transition=radial:duration=1:offset=3",
-  //       ],
-  //     },
-  //     {
-  //       transition: [
-  //         "-filter_complex",
-  //         "[0:v][1:v]xfade=transition=pixelize:duration=1:offset=3",
-  //       ],
-  //     },
-  //   ]);
-  // }, []);
-
-  //   const setChangeHandler = () => {};
 
   const addToPlaylistHandler = (track) => {
     setPlaylist(track);
@@ -90,7 +50,6 @@ export const PlaylistContextProvider = (props) => {
     setidx(idx);
   };
   const changemusicidx = (idx) => {
-    console.log("찍!");
     setMusicIdx(idx);
   };
 
@@ -108,7 +67,6 @@ export const PlaylistContextProvider = (props) => {
     changeTT: changeTT,
     changeDT: changeDT,
     changetime: changetime,
-    translist: translist,
     addToPlaylist: addToPlaylistHandler,
     musicidx: musicIdx,
     changemusicidx: changemusicidx,

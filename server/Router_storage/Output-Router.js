@@ -468,6 +468,7 @@ router.get("/getplaylist/:id", async (req, res, next) => {
   ];
   playlist = JSON.parse(JSON.stringify(presets[req.params.id]));
   res.json({ results: playlist });
+});
 
 router.get("/getplaylist", async (req, res, next) => {
   let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));

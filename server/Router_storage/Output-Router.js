@@ -78,10 +78,10 @@ const effectFilters = {
     "-filter_complex",
     "scale=12800x7200,zoompan=z=pzoom+0.0025:x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1280x720:fps=30",
   ],
-  zoom_out: [
-    "-filter_complex",
-    "zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0023))':x='max(1,iw/2-(iw/zoom/2))':y='max(1,ih/2-(ih/zoom/2))':d=300:s=hd1080",
-  ],
+  // zoom_out: [
+  //   "-filter_complex",
+  //   "zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0023))':x='max(1,iw/2-(iw/zoom/2))':y='max(1,ih/2-(ih/zoom/2))':d=300:s=hd1080",
+  // ],
   zoom_top_left: [
     "-filter_complex",
     "scale=12800x7200,zoompan=z=pzoom+0.0015:d=1:s=1280x720:fps=30",

@@ -101,43 +101,50 @@ const effectFilters = {
 };
 
 // react 재생목록에 보낼 임시정보 Array
-// let playlist = [
-//   {
-//     url: "./Router_storage/input/test1.jpg",
-//     duration: 5,
-//     select: false,
-//     effect: "",
-//     transition: "",
-//   },
-//   {
-//     url: "./Router_storage/input/test2.jpg",
-//     duration: 5,
-//     select: false,
-//     effect: "",
-//     transition: "",
-//   },
-//   {
-//     url: "./Router_storage/input/test5.jpg",
-//     duration: 5,
-//     select: false,
-//     effect: "",
-//     transition: "",
-//   },
-//   {
-//     url: "./Router_storage/input/test8.jpg",
-//     duration: 5,
-//     select: false,
-//     effect: "",
-//     transition: "",
-//   },
-//   {
-//     url: "./Router_storage/input/test1.jpg",
-//     duration: 5,
-//     select: false,
-//     effect: "",
-//     transition: "",
-//   },
-// ];
+let testplaylist = [
+  {
+    url: "./Router_storage/input/test6.jpg",
+    duration: 5,
+    select: false,
+    effect: "",
+    transition: "",
+  },
+  {
+    url: "./Router_storage/input/test5.jpg",
+    duration: 5,
+    select: false,
+    effect: "",
+    transition: "",
+  },
+  {
+    url: "./Router_storage/input/test4.jpg",
+    duration: 5,
+    select: false,
+    effect: "",
+    transition: "",
+  },
+  {
+    url: "./Router_storage/input/test3.jpg",
+    duration: 5,
+    select: false,
+    effect: "",
+    transition: "",
+  },
+  {
+    url: "./Router_storage/input/test2.jpg",
+    duration: 5,
+    select: false,
+    effect: "",
+    transition: "",
+  },
+  {
+    url: "./Router_storage/input/test1.jpg",
+    duration: 5,
+    select: false,
+    effect: "",
+    transition: "",
+  },
+];
 
 function imageToVideos(imagePath, durations) {
   return new Promise((resolve, reject) => {
@@ -146,7 +153,7 @@ function imageToVideos(imagePath, durations) {
     for (let i = 0; i < imagePath.length; i++) {
       const videoPath = `./Router_storage/input/source${i}.mp4`;
       ffmpeg(imagePath[i])
-        .size("1280x720")
+        // .size("1280x720")
         .loop(durations[i])
         .on("start", function (commandLine) {
           console.log("Spawned Ffmpeg with command: " + commandLine);
@@ -168,7 +175,7 @@ function imageToVideos(imagePath, durations) {
   });
 }
 
-function addEffects(inputPath, effects) {
+function addEffects(inputPath, durations, effects) {
   return new Promise((resolve, reject) => {
     let effectedVideos = [];
     let cnt = 0;
@@ -177,6 +184,7 @@ function addEffects(inputPath, effects) {
       const effectedPath = `./Router_storage/input/effects${i}.mp4`;
       effects[i] = effectFilters[effects[i]];
       ffmpeg(inputPath[i])
+        .loop(durations[i])
         .outputOptions(effects[i])
         .on("start", function (commandLine) {
           console.log("Spawned Ffmpeg with command: " + commandLine);
@@ -371,7 +379,8 @@ function addAudio(inputPath) {
 
 router.post("/merge", async (req, res, next) => {
   let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
-  const images = playlist.map(({ url }) => url);
+  // const images = playlist.map(({ url }) => url);
+  const images = testplaylist.map(({ url }) => url);
   const durations = playlist.map(({ duration }) => duration);
   const effects = playlist.map(({ effect }) => effect);
   const transitions = playlist.map(({ transition }) => transition);
@@ -380,9 +389,9 @@ router.post("/merge", async (req, res, next) => {
   console.log("effects", effects);
   console.log("transitions", transitions);
   console.log("이미지 >>>> 동영상(with duration) Rendering...");
-  const videoPaths = await imageToVideos(images, durations);
-  console.log("이미지를 비디오로 변환 완료, 변환된 비디오:", videoPaths);
-  const effectedPaths = await addEffects(videoPaths, effects);
+  // const videoPaths = await imageToVideos(images, durations);
+  // console.log("이미지를 비디오로 변환 완료, 변환된 비디오:", videoPaths);
+  const effectedPaths = await addEffects(images, durations, effects);
   console.log("이펙트 비디오로 변환 완료, 변환된 비디오:", effectedPaths);
   const transedPath = await mergeTransitions(
     effectedPaths,

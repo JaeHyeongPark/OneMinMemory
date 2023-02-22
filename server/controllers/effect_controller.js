@@ -186,7 +186,7 @@ function imageToVideos(imagePath, durations) {
   });
 }
 
-function addEffects(inputPath, effects) {
+function addEffects(inputPath, durations, effects) {
   return new Promise((resolve, reject) => {
     let effectedVideos = [];
     let cnt = 0;
@@ -194,7 +194,8 @@ function addEffects(inputPath, effects) {
     for (let i = 0; i < inputPath.length; i++) {
       const effectedPath = `../Router_storage/input/effects${i}.mp4`;
       ffmpeg(inputPath[i])
-        .outputOptions(filter14)
+        .loop(durations[i])
+        .outputOptions(filter8)
         .on("start", function (commandLine) {
           console.log("Spawned Ffmpeg with command: " + commandLine);
         })
@@ -334,9 +335,9 @@ async function mergeprocess(playlist) {
   const effects = playlist.map(({ effect }) => effect);
   const transitions = playlist.map(({ transition }) => transition);
   console.log("동영상 생성을 시작합니다~~~~!!");
-  const videoPaths = await imageToVideos(images, durations);
-  console.log("이미지를 비디오로 변환 완료, 변환된 비디오:", videoPaths);
-  const effectedPaths = await addEffects(videoPaths, effects);
+  // const videoPaths = await imageToVideos(images, durations);
+  // console.log("이미지를 비디오로 변환 완료, 변환된 비디오:", videoPaths);
+  const effectedPaths = await addEffects(images, durations, effects);
   console.log("이펙트 비디오로 변환 완료, 변환된 비디오:", effectedPaths);
   // const transedPaths = await mergeTransitions(effectedPaths, transitions);
   // console.log("트랜지션 비디오로 변환 완료, 변환된 비디오:", transedPaths);

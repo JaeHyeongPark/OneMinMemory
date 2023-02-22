@@ -395,17 +395,21 @@ router.post("/merge", async (req, res, next) => {
 });
 
 // effect효과 playlist에 넣기
-router.post("/effect", (req, res, next) => {
+router.post("/effect", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
   const effect = req.body.effect;
   const idx = req.body.idx;
   playlist[idx].effect = effect;
   console.log(playlist[idx]);
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 // 클릭으로 effect 지우기(해당 인덱스만) 클릭말고 컴포넌트 추가해야함
-router.post("/deleffect", (req, res, next) => {
+router.post("/deleffect", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
   const idx = req.body.idx;
   playlist[idx].effect = "";
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 
@@ -518,6 +522,7 @@ router.post("/inputnewplay", async (req, res, next) => {
     url: url,
     duration: 5,
     select: false,
+    effect: "",
     transition: "",
   };
 

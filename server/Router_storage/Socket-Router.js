@@ -14,13 +14,15 @@ module.exports = function (io) {
   router.io.on("connection", (socket) => {
     socket.on("joinRoom", async (data) => {
       try {
-        console.log("누가 왔어요~");
         socket.join(data.roomId);
-        await redis.v4.rPush(data.roomId + "/user", url);
-        const AmIFirst = await redis.v4.setnx(
-          data.roomId + "playlistPermissionState",
-          "true"
+        console.log("누가 왔어요~", data.roomId, data.Id);
+        await redis.v4.rPush(data.roomId + "/user", data.Id);
+        let AmIFirst = await redis.v4.set(
+          data.roomId + "/playlistPermissionState",
+          "true",
+          "NX"
         );
+        console.log("1");
         if (AmIFirst) {
           console.log("첫번쨰 사람 입장!");
         } else {
@@ -46,10 +48,22 @@ module.exports = function (io) {
     });
     socket.on("playlistEditRequest", async (data) => {
       try {
-        const oldplaylistPermissionState = await redis.v4.getset(
-          data.roomId + "playlistPermissionState",
-          "false"
+        const oldplaylistPermissionState = await new Promise(
+          (resolve, reject) => {
+            redis.getset(
+              data.roomId + "/playlistPermissionState",
+              "false",
+              (err, result) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  resolve(result);
+                }
+              }
+            );
+          }
         );
+        console.log(oldplaylistPermissionState);
         console.log("요청왔어요~");
         if (oldplaylistPermissionState === "true") {
           socket.to(data.roomId).emit("playlistEditResponse", { state: 2 });
@@ -64,14 +78,14 @@ module.exports = function (io) {
     socket.on("playlistEditFinished", async (data) => {
       try {
         console.log("편집끝났데요~");
-        await redis.v4.setnx(data.roomId + "playlistPermissionState", "true");
+        await redis.v4.set(data.roomId + "/playlistPermissionState", "true");
         socket.to(data.roomId).emit("playlistEditResponse", { state: 0 });
         io.to(data.Id).emit("playlistEditResponse", { state: 0 });
       } catch (e) {
         console.log(e);
       }
     });
-    //==================================playlist 조작 메서드=====================
+    //==================================playlist 조작 메서드=============================
     // 재생목록에 효과 추가------------수정완
     socket.on("transition", async (data) => {
       try {

@@ -50,7 +50,7 @@ const SoundTrack = () => {
       const rect = canvas.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const proportion = x / width;
-      console.log(proportion);
+      // console.log(proportion);
       const myAudio = audioRef.current;
       myAudio.currentTime = Wavedata[newidx].duration * proportion;
       myAudio.play();
@@ -61,9 +61,7 @@ const SoundTrack = () => {
     function handleKeyDown(event) {
       if (event.keyCode === 32) {
         const myAudio = audioRef.current;
-        if (myAudio.paused) {
-          myAudio.play();
-        } else {
+        if (!myAudio.paused) {
           myAudio.pause();
         }
       }

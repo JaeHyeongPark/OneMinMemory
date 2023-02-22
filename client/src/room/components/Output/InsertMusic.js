@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import PlaylistContext from "../../../shared/context/playlist-context";
 
 import music from "../../assets/music.svg";
 import Music from "./Sound/Music";
+import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -30,12 +32,22 @@ const musicItemTitleStyle = {};
 const musicItemArtistStyle = {};
 
 export default function InsertMusic() {
+  const playlistCtx = useContext(PlaylistContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [selectedMusicSrc, setSelectedMusicSrc] = useState(null);
+  const [selectedMusicIdx, setSelectedMusicIdx] = useState(null);
   const selectMusic = (src) => {
     setSelectedMusicSrc(src);
+  };
+  const getPresetbyIndex = (idx) => {
+    if (!selectedMusicIdx) {
+      return;
+    }
+    axios.get(`http://localhost:5000/output/getplaylist/${idx}`).then((res) => {
+      playlistCtx.addToPlaylist(res.data.results);
+    });
   };
   return (
     <div>
@@ -49,8 +61,7 @@ export default function InsertMusic() {
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             추천 음원 리스트
@@ -60,10 +71,12 @@ export default function InsertMusic() {
           </Typography>
           <Button
             className="music-item"
-            index={1}
+            index={10001}
             style={musicItemStyle}
-            onClick={() => selectMusic("./music/abc.mp3")}
-          >
+            onClick={(e) => {
+              selectMusic("./music/abc.mp3");
+              setSelectedMusicIdx("0");
+            }}>
             <div className="music-item-title">Run Back to You (feat.Alisa)</div>
             <div className="music-item-artist">Hoang</div>
           </Button>
@@ -71,8 +84,10 @@ export default function InsertMusic() {
             className="music-item"
             index={2}
             style={musicItemStyle}
-            onClick={() => selectMusic("./music/뉴진스.mp3")}
-          >
+            onClick={() => {
+              selectMusic("./music/뉴진스.mp3");
+              setSelectedMusicIdx("1");
+            }}>
             <div className="music-item-title">뉴진스 (feat.Alisa)</div>
             <div className="music-item-artist">hype boy</div>
           </Button>
@@ -80,10 +95,9 @@ export default function InsertMusic() {
             <Button
               variant="contained"
               onClick={() => {
-                //
+                getPresetbyIndex(selectedMusicIdx);
                 handleClose();
-              }}
-            >
+              }}>
               선택
             </Button>
           </div>

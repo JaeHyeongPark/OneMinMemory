@@ -74,38 +74,40 @@ router.get("/playlist", async (req, res, next) => {
 
 // react 재생목록에 보낼 임시정보 Array
 // 이거 여기 있어야하나?? playlist context로 이동예정
-let playlist = [
-  {
-    url: "",
-    duration: 5,
-    select: false,
-    transition: ""
-  },
-  {
-    url: "",
-    duration: 5,
-    select: false,
-    transition: ""
-  },
-  {
-    url: "",
-    duration: 15,
-    select: false,
-    transition: ""
-  },
-  {
-    url: "",
-    duration: 15,
-    select: false,
-    transition: ""
-  },
-  {
-    url: "",
-    duration: 5,
-    select: false,
-    transition: ""
-  },
-];
+// let playlist = [
+//   {
+//     url: "",
+//     duration: 5,
+//     select: false,
+//     transition: ""
+//   },
+//   {
+//     url: "",
+//     duration: 5,
+//     select: false,
+//     transition: ""
+//   },
+//   {
+//     url: "",
+//     duration: 15,
+//     select: false,
+//     transition: ""
+//   },
+//   {
+//     url: "",
+//     duration: 15,
+//     select: false,
+//     transition: ""
+//   },
+//   {
+//     url: "",
+//     duration: 5,
+//     select: false,
+//     transition: ""
+//   },
+// ];
+
+let playlist = [];
 
 function imageToVideos(imagePath, durations) {
   return new Promise((resolve, reject) => {
@@ -269,24 +271,91 @@ router.post("/merge", async (req, res, next) => {
   res.download(finishedPath);
 });
 
-
 // transition효과 playlist에 넣기
 router.post("/transition", (req, res, next) => {
-  const transition = req.body.transition
-  const idx = req.body.idx
-  playlist[idx].transition = transition
-  res.send(playlist)
-})
+  const transition = req.body.transition;
+  const idx = req.body.idx;
+  playlist[idx].transition = transition;
+  res.send(playlist);
+});
 // 클릭으로 transition 지우기(해당 인덱스만)
 router.post("/deltransition", (req, res, next) => {
-  const idx = req.body.idx
-  playlist[idx].transition = ''
-  res.send(playlist)
-})
+  const idx = req.body.idx;
+  playlist[idx].transition = "";
+  res.send(playlist);
+});
 
 // 재생목록 호출 API
-router.get("/getplaylist", async (req, res, next) => {
-  res.json({ results: playlist });
+router.get("/getplaylist/:id", async (req, res, next) => {
+  console.log(req.params.id);
+  console.log("출력");
+  let presets = [
+    [
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 15,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 15,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+    ],
+    [
+      {
+        url: "",
+        duration: 15,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 20,
+        select: false,
+        transition: "",
+      },
+    ],
+  ];
+  res.json({ results: presets[req.params.id] });
 });
 
 router.post("/postplaylist", (req, res, next) => {
@@ -318,7 +387,7 @@ router.post("/clickimg", (req, res, next) => {
   playlist.forEach((data, i) => {
     if (i !== idx && data.select === true) {
       // 0번째 일때 0과 false가 겹쳐서 의도와 다른 결과가 나옴
-      check = String(i)
+      check = String(i);
     }
     if (i < idx) {
       time += playlist[i].duration;
@@ -327,7 +396,7 @@ router.post("/clickimg", (req, res, next) => {
   });
 
   if (check) {
-    check = Number(check)
+    check = Number(check);
     playlist[idx].url = playlist[check].url;
     playlist[check].url = url;
     playlist[idx].select = false;
@@ -359,12 +428,11 @@ router.post("/inputnewplay", (req, res, next) => {
 // 이미지 재생 시간 변경
 router.post("/changetime", (req, res, next) => {
   const idx = req.body.idx;
-  const time = req.body.time
-  playlist[idx].select = false
+  const time = req.body.time;
+  playlist[idx].select = false;
   playlist[idx].duration += time;
 
-  res.json({playlist,DT:playlist[idx].duration});
+  res.json({ playlist, DT: playlist[idx].duration });
 });
-
 
 module.exports = router;

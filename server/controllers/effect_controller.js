@@ -108,6 +108,17 @@ const filter12 = [
   "scale=12800x7200,zoompan=z=pzoom+0.001:x='iw/2+iw/zoom/2':y=7200:d=1:s=1280x720:fps=30",
 ];
 
+// zoom out
+const filter13 = [
+  "-filter_complex",
+  "scale=1280x720,zoompan=z='min(max(zoom,pzoom)-0.005,1.5)':d=1:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1280x720",
+];
+
+const filter14 = [
+  "-filter_complex",
+  "scale=1280x720,zoompan=z='min(max(zoom,pzoom)-0.005,1.5)':d=125:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1280x720",
+];
+
 let playlist = [
   {
     url: "../Router_storage/input/test1.jpg",
@@ -123,27 +134,27 @@ let playlist = [
     effect: filter9,
     transition: "",
   },
-  {
-    url: "../Router_storage/input/test3.jpg",
-    duration: 4,
-    select: false,
-    effect: filter10,
-    transition: "",
-  },
-  {
-    url: "../Router_storage/input/test7.jpg",
-    duration: 4,
-    select: false,
-    effect: filter11,
-    transition: "",
-  },
-  {
-    url: "../Router_storage/input/test8.jpg",
-    duration: 7,
-    select: false,
-    effect: filter12,
-    transition: "",
-  },
+  // {
+  //   url: "../Router_storage/input/test3.jpg",
+  //   duration: 5,
+  //   select: false,
+  //   effect: filter10,
+  //   transition: "",
+  // },
+  // {
+  //   url: "../Router_storage/input/test7.jpg",
+  //   duration: 5,
+  //   select: false,
+  //   effect: filter11,
+  //   transition: "",
+  // },
+  // {
+  //   url: "../Router_storage/input/test8.jpg",
+  //   duration: 5,
+  //   select: false,
+  //   effect: filter12,
+  //   transition: "",
+  // },
 ];
 
 function imageToVideos(imagePath, durations) {
@@ -183,7 +194,7 @@ function addEffects(inputPath, effects) {
     for (let i = 0; i < inputPath.length; i++) {
       const effectedPath = `../Router_storage/input/effects${i}.mp4`;
       ffmpeg(inputPath[i])
-        .outputOptions(effects[i])
+        .outputOptions(filter14)
         .on("start", function (commandLine) {
           console.log("Spawned Ffmpeg with command: " + commandLine);
         })

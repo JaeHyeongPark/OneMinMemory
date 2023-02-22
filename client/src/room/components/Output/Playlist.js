@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { useDrop } from "react-dnd";
 import axios from "axios";
 
-
 import PlaylistContext from "../../../shared/context/playlist-context";
 import "./Playlist.css";
 import PlaylistMain from "./PlaylistMain";
@@ -33,6 +32,7 @@ const Playlist = () => {
       <div className="playlist_main">
         {playlistCtx.playlist.map((data, i) => (
           <PlaylistMain
+            effect={data.effect}
             duration={data.duration}
             url={data.url}
             select={data.select}

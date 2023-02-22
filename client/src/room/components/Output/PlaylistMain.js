@@ -8,11 +8,19 @@ import "./Playlist.css";
 
 const PlaylistMain = (props) => {
   const playlistCtx = useContext(PlaylistContext);
+  // const effect = playlistCtx.playlist[props.idx].effect;
+
   // 삭제 딜레이 커버 체크(상태) 변수
   let check = true;
   const [{ isover }, playlist] = useDrop(() => ({
-    accept: ["image"],
-    drop: (item) => sendTourl(item.url),
+    accept: ["image", "effect"],
+    drop: (item) => {
+      if (item.type === "image") {
+        sendTourl(item.url);
+      } else {
+        sendToeffect(item.className);
+      }
+    },
     collect: (monitor) => ({
       isover: monitor.isOver(),
     }),
@@ -58,6 +66,24 @@ const PlaylistMain = (props) => {
         playlistCtx.changetime(res.data.time);
       });
   };
+
+  const sendToeffect = (effect) => {
+    axios
+      .post("http://localhost:5000/output/effect", {
+        effect,
+        idx: props.i,
+      })
+      .then((res) => playlistCtx.addToPlaylist(res.data));
+  };
+
+  // const deleffect = (e) => {
+  //   e.preventDefault();
+  //   axios
+  //     .post("http://localhost:5000/output/deleffect", {
+  //       idx: props.idx,
+  //     })
+  //     .then((res) => playlistCtx.addToPlaylist(res.data));
+  // };
 
   return (
     <div

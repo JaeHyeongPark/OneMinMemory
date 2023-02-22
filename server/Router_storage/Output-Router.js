@@ -72,35 +72,32 @@ router.get("/playlist", async (req, res, next) => {
   }
 });
 
-// 중앙 줌인
-const filter8 = [
-  "-filter_complex",
-  "scale=12800x7200,zoompan=z=pzoom+0.001:x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1280x720:fps=30",
-];
-
-// left top zoompan
-const filter9 = [
-  "-filter_complex",
-  "scale=12800x7200,zoompan=z=pzoom+0.001:d=1:s=1280x720:fps=30",
-];
-
-// right top zoompan
-const filter10 = [
-  "-filter_complex",
-  "scale=12800x7200,zoompan=z=pzoom+0.001:x='iw/2+iw/zoom/2':y=y:d=1:s=1280x720:fps=30",
-];
-
-// left bottom zoompan
-const filter11 = [
-  "-filter_complex",
-  "scale=12800x7200,zoompan=z=pzoom+0.001:y=7200:d=1:s=1280x720:fps=30",
-];
-
-// right bottom zoompan
-const filter12 = [
-  "-filter_complex",
-  "scale=12800x7200,zoompan=z=pzoom+0.001:x='iw/2+iw/zoom/2':y=7200:d=1:s=1280x720:fps=30",
-];
+const effectFilters = {
+  zoom_in: [
+    "-filter_complex",
+    "scale=12800x7200,zoompan=z=pzoom+0.0025:x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1280x720:fps=30",
+  ],
+  zoom_out: [
+    "-filter_complex",
+    "zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0023))':x='max(1,iw/2-(iw/zoom/2))':y='max(1,ih/2-(ih/zoom/2))':d=300:s=hd1080",
+  ],
+  zoom_top_left: [
+    "-filter_complex",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:d=1:s=1280x720:fps=30",
+  ],
+  zoom_top_right: [
+    "-filter_complex",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:x='iw/2+iw/zoom/2':y=y:d=1:s=1280x720:fps=30",
+  ],
+  zoom_bottom_left: [
+    "-filter_complex",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:y=7200:d=1:s=1280x720:fps=30",
+  ],
+  zoom_bottom_right: [
+    "-filter_complex",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:x='iw/2+iw/zoom/2':y=7200:d=1:s=1280x720:fps=30",
+  ],
+};
 
 // react 재생목록에 보낼 임시정보 Array
 let playlist = [
@@ -108,35 +105,35 @@ let playlist = [
     url: "./Router_storage/input/test1.jpg",
     duration: 5,
     select: false,
-    effect: filter8,
+    effect: "",
     transition: "",
   },
   {
     url: "./Router_storage/input/test2.jpg",
     duration: 5,
     select: false,
-    effect: filter9,
+    effect: "",
     transition: "",
   },
   {
     url: "./Router_storage/input/test5.jpg",
-    duration: 4,
+    duration: 5,
     select: false,
-    effect: filter10,
+    effect: "",
     transition: "",
   },
   {
     url: "./Router_storage/input/test8.jpg",
-    duration: 4,
+    duration: 5,
     select: false,
-    effect: filter11,
+    effect: "",
     transition: "",
   },
   {
     url: "./Router_storage/input/test1.jpg",
-    duration: 7,
+    duration: 5,
     select: false,
-    effect: filter12,
+    effect: "",
     transition: "",
   },
 ];
@@ -176,6 +173,7 @@ function addEffects(inputPath, effects) {
 
     for (let i = 0; i < inputPath.length; i++) {
       const effectedPath = `./Router_storage/input/effects${i}.mp4`;
+      effects[i] = effectFilters[effects[i]];
       ffmpeg(inputPath[i])
         .outputOptions(effects[i])
         .on("start", function (commandLine) {
@@ -393,6 +391,21 @@ router.post("/merge", async (req, res, next) => {
   console.log("오디오 삽입 및 최종 렌더링 완료, 완료된 비디오:", finishedPath);
   res.download(finishedPath);
   // res.json({ message: "success" });
+});
+
+// effect효과 playlist에 넣기
+router.post("/effect", (req, res, next) => {
+  const effect = req.body.effect;
+  const idx = req.body.idx;
+  playlist[idx].effect = effect;
+  console.log(playlist[idx]);
+  res.send(playlist);
+});
+// 클릭으로 effect 지우기(해당 인덱스만) 클릭말고 컴포넌트 추가해야함
+router.post("/deleffect", (req, res, next) => {
+  const idx = req.body.idx;
+  playlist[idx].effect = "";
+  res.send(playlist);
 });
 
 // transition효과 playlist에 넣기

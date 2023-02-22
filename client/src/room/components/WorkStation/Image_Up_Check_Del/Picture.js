@@ -8,7 +8,7 @@ const Picture = (props) => {
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: "image",
-      item: { url: props.url },
+      item: { url: props.url, type: "image" },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),

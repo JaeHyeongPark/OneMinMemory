@@ -9,13 +9,11 @@ const Effect = ({ className }) => {
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-    // end: (className, monitor) => {},
   }));
   return (
     <div
       ref={dragRef}
       id="effect"
-      // onClick={onChange}
       className={className}
       style={{ opacity: isDragging ? "0.3" : "1" }}
     >
@@ -23,7 +21,6 @@ const Effect = ({ className }) => {
         className={className}
         src="/EffectList/Effect.jpg"
         alt="effect"
-        // onClick={onChange}
       />
       <div className="effect-title">{className}</div>
     </div>

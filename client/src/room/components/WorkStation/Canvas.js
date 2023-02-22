@@ -234,60 +234,6 @@ function Canvas() {
         </div>
         <div className="canvas">
           <div className="container">
-            {!effectModal ? (
-              <div className="uploaded-image" ref={drop}>
-                <canvas
-                  ref={canvasRef}
-                  width={1280}
-                  height={720}
-                  onClick={(e) => addinput(e)}
-                  onMouseDown={() => ChangePaint(true)}
-                  onMouseUp={() => ChangePaint(false)}
-                  onMouseMove={(e) => drawing(e)}
-                  onMouseLeave={() => ChangePaint(false)}
-                />
-                {inputShow && (
-                  <input
-                    type="text"
-                    style={{
-                      position: "fixed",
-                      left: `${x[1]}px`,
-                      top: `${y[1]}px`,
-                      background: "transparent",
-                      height: "30px",
-                    }}
-                    onKeyDown={handleEnter}
-                  />
-                )}
-              </div>
-            ) : (
-              <div className="effect-modal" ref={modal}>
-                <div className="effect-list">
-                  {EFFECT_LIST.map((effect, index) => {
-                    return (
-                      <Effect
-                        className={effect}
-                        key={index}
-                        // selectTransition={transition} // 이 부분 어떤 함수?
-                        // onChange={transitionClipUpload}
-                      />
-                    );
-                  })}
-                </div>
-                <hr></hr>
-                {/* <div className="transition-clip">
-                  {transitionClip && (
-                    <video
-                      id="transition-clip"
-                      width="300"
-                      height="200"
-                      controls
-                    ></video>
-                  )}
-                </div> */}
-              </div>
-            )}
-
             {!transitionModal ? (
               <div className="uploaded-image" ref={drop}>
                 <canvas
@@ -316,13 +262,20 @@ function Canvas() {
               </div>
             ) : (
               <div className="transition-modal" ref={modal}>
+                <div className="effect-modal" ref={modal}>
+                  <div className="effect-list">
+                    {EFFECT_LIST.map((effect, index) => {
+                      return <Effect className={effect} key={index} />;
+                    })}
+                  </div>
+                  <hr></hr>
+                </div>
                 <div className="transition-list">
                   {TRANSITION_LIST.map((transition, index) => {
                     return (
                       <Transition
                         className={transition}
                         key={index}
-                        // selectTransition={transition} // 이 부분 어떤 함수?
                         onChange={transitionClipUpload}
                       />
                     );
@@ -370,18 +323,10 @@ function Canvas() {
               <button
                 className="sidebar-item"
                 onClick={() => {
-                  setEffectModal(!effectModal);
-                }}
-              >
-                Effect
-              </button>
-              <button
-                className="sidebar-item"
-                onClick={() => {
                   setTransitionModal(!transitionModal);
                 }}
               >
-                Transition
+                Transition / Effect
               </button>
               <button className="sidebar-item" onClick={newImage}>
                 저장하기

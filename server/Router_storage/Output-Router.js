@@ -379,8 +379,8 @@ function addAudio(inputPath) {
 
 router.post("/merge", async (req, res, next) => {
   let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
-  // const images = playlist.map(({ url }) => url);
-  const images = testplaylist.map(({ url }) => url);
+  const images = playlist.map(({ url }) => url);
+  // const images = testplaylist.map(({ url }) => url);
   const durations = playlist.map(({ duration }) => duration);
   const effects = playlist.map(({ effect }) => effect);
   const transitions = playlist.map(({ transition }) => transition);

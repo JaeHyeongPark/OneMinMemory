@@ -9,6 +9,7 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import music from "../../assets/music.svg";
 import Music from "./Sound/Music";
 import axios from "axios";
+import { AuthContext } from "../../../shared/context/auth-context";
 
 const style = {
   position: "absolute",
@@ -36,15 +37,21 @@ export default function InsertMusic() {
   const handleClose = () => setOpen(false);
   const [selectedMusicSrc, setSelectedMusicSrc] = useState(null);
   const [selectedMusicIdx, setSelectedMusicIdx] = useState("0");
+  const AuthCtx = useContext(AuthContext);
 
   const getPresetbyIndex = (idx) => {
-    if (!selectedMusicIdx) {
-      return;
-    }
+    // if (!selectedMusicIdx) {
+    //   return;
+    // }
     playlistCtx.changemusicidx(selectedMusicIdx);
-    axios.get(`http://localhost:5000/output/getplaylist/${idx}`).then((res) => {
-      playlistCtx.addToPlaylist(res.data.results);
-    });
+    axios
+      .post(`http://localhost:5000/output/playlistpreset`, {
+        idx: idx,
+        roomid: AuthCtx.rooomId,
+      })
+      .then((res) => {
+        playlistCtx.addToPlaylist(res.data.results);
+      });
   };
   return (
     <div>
@@ -72,9 +79,9 @@ export default function InsertMusic() {
             index={10001}
             style={musicItemStyle}
             onClick={() => {
-              setSelectedMusicSrc("./music/abc.mp3");
+              setSelectedMusicSrc("../music/abc.mp3");
               setSelectedMusicIdx("1");
-              // console.log(selectedMusicSrc);
+              console.log(selectedMusicSrc);
             }}
           >
             <div className="music-item-title">Run Back to You (feat.Alisa)</div>
@@ -85,9 +92,9 @@ export default function InsertMusic() {
             index={10002}
             style={musicItemStyle}
             onClick={() => {
-              setSelectedMusicSrc("./music/뉴진스.mp3");
+              setSelectedMusicSrc("../music/뉴진스.mp3");
               setSelectedMusicIdx("2");
-              // console.log(selectedMusicSrc);
+              console.log(selectedMusicSrc);
             }}
           >
             <div className="music-item-title">뉴진스 (feat.Alisa)</div>
@@ -97,6 +104,8 @@ export default function InsertMusic() {
             <Button
               variant="contained"
               onClick={() => {
+                console.log("최종 idx", selectedMusicIdx);
+                console.log("최종 src", selectedMusicSrc);
                 getPresetbyIndex(selectedMusicIdx);
                 playlistCtx.selectmusicsrc(selectedMusicSrc);
                 handleClose();

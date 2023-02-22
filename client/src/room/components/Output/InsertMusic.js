@@ -74,6 +74,7 @@ export default function InsertMusic() {
             onClick={() => {
               setSelectedMusicSrc("./music/abc.mp3");
               setSelectedMusicIdx("1");
+              // console.log(selectedMusicSrc);
             }}
           >
             <div className="music-item-title">Run Back to You (feat.Alisa)</div>
@@ -86,6 +87,7 @@ export default function InsertMusic() {
             onClick={() => {
               setSelectedMusicSrc("./music/뉴진스.mp3");
               setSelectedMusicIdx("2");
+              // console.log(selectedMusicSrc);
             }}
           >
             <div className="music-item-title">뉴진스 (feat.Alisa)</div>
@@ -96,6 +98,7 @@ export default function InsertMusic() {
               variant="contained"
               onClick={() => {
                 getPresetbyIndex(selectedMusicIdx);
+                playlistCtx.selectmusicsrc(selectedMusicSrc);
                 handleClose();
               }}
             >

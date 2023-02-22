@@ -28,7 +28,7 @@ router.post("/imageinfo", async (req, res, next) => {
 });
 
 router.post("/newimage", upload.none(), async (req, res) => {
-  console.log("받기 시작함");
+  // console.log("받기 시작함");
   const imageurl = req.body.imagedata.split("base64,")[1];
   const s3filename = req.body.originurl.split("testroom/Original/")[1];
   const imgbuffer = Buffer.from(imageurl, "base64");
@@ -40,7 +40,7 @@ router.post("/newimage", upload.none(), async (req, res) => {
     ACL: "public-read",
     Body: imgbuffer,
     ContentType: "image/" + imgMeta.format,
-    CacheControl:"no-store"
+    CacheControl: "no-store",
   };
   s3.putObject(params).promise().then();
   res.send({ data: "hi!" });
@@ -48,7 +48,7 @@ router.post("/newimage", upload.none(), async (req, res) => {
 
 // 이미지 효과 기능들 : 밝게
 router.post("/image/Brighten", upload.none(), async (req, res) => {
-  console.log("밝은 사진!");
+  // console.log("밝은 사진!");
   const imageurl = req.body.BrightenImageData.split("base64,")[1];
   const imgbuffer = Buffer.from(imageurl, "base64");
   const imgFormat = (await sharp(imgbuffer).metadata()).format;
@@ -64,7 +64,7 @@ router.post("/image/Brighten", upload.none(), async (req, res) => {
 });
 // 선명하게
 router.post("/image/Sharpen", upload.none(), async (req, res) => {
-  console.log("선명한 사진!");
+  // console.log("선명한 사진!");
   const imageurl = req.body.SharpenImageData.split("base64,")[1];
   const imgbuffer = Buffer.from(imageurl, "base64");
   const imgFormat = (await sharp(imgbuffer).metadata()).format;
@@ -77,7 +77,7 @@ router.post("/image/Sharpen", upload.none(), async (req, res) => {
 });
 // 색감 증가
 router.post("/image/Saturate", upload.none(), async (req, res) => {
-  console.log("색감!");
+  // console.log("색감!");
   const imageurl = req.body.SaturateImageData.split("base64,")[1];
   const imgbuffer = Buffer.from(imageurl, "base64");
   const imgFormat = (await sharp(imgbuffer).metadata()).format;
@@ -92,7 +92,7 @@ router.post("/image/Saturate", upload.none(), async (req, res) => {
 });
 // 흑백처리
 router.post("/image/Grayscale", upload.none(), async (req, res) => {
-  console.log("흑백!");
+  // console.log("흑백!");
   const imageurl = req.body.GrayscaleImageData.split("base64,")[1];
   const imgbuffer = Buffer.from(imageurl, "base64");
   const imgFormat = (await sharp(imgbuffer).metadata()).format;

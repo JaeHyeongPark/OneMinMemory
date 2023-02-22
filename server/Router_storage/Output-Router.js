@@ -288,7 +288,7 @@ router.post("/deltransition", (req, res, next) => {
 // 재생목록 호출 API
 router.get("/getplaylist/:id", async (req, res, next) => {
   console.log(req.params.id);
-  console.log("출력");
+  // console.log("출력");
   let presets = [
     [],
     [

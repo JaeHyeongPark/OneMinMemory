@@ -30,47 +30,6 @@ export const PlaylistContextProvider = (props) => {
   const [musicIdx, setMusicIdx] = useState("0");
   const [musicSrc, setMusicSrc] = useState("");
 
-  // useEffect(() => {
-  //   axios.get("http://localhost:5000/output/getplaylist").then((res) => {
-  //     setPlaylist(res.data.results);
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   setTranslist([
-  //     {
-  //       transition: [
-  //         "-filter_complex",
-  //         "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
-  //       ],
-  //     },
-  //     {
-  //       transition: [
-  //         "-filter_complex",
-  //         "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
-  //       ],
-  //     },
-  //     {
-  //       transition: [
-  //         "-filter_complex",
-  //         "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
-  //       ],
-  //     },
-  //     {
-  //       transition: [
-  //         "-filter_complex",
-  //         "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
-  //       ],
-  //     },
-  //     {
-  //       transition: [
-  //         "-filter_complex",
-  //         "[0:v][1:v]xfade=transition=hrslice:duration=2:offset=4",
-  //       ],
-  //     },
-  //   ]);
-  // }, []);
-
   const addToPlaylistHandler = (track) => {
     setPlaylist(track);
     console.log(playlist);
@@ -88,7 +47,6 @@ export const PlaylistContextProvider = (props) => {
     setidx(idx);
   };
   const changemusicidx = (idx) => {
-    console.log("찍!");
     setMusicIdx(idx);
   };
 

@@ -822,17 +822,6 @@ const SoundTrack = () => {
   const speed = jsondatalength / jsondata.duration;
   console.log(jsondatalength, jsondata.duration, speed); // 1초에 12.4개
 
-  // const loadData = () => {
-  //   fetch("./music/abc.json")
-  //     .then((response) => response.json())
-  //     .then((data) => data.peaks);
-  // };
-  // if (idx === "1") {
-  //   loadData().then((peak)=>
-  //     {}
-  //   )
-  // }
-
   const canvasRef = useRef(null);
 
   useEffect(() => {

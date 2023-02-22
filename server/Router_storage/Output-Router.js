@@ -290,6 +290,7 @@ router.get("/getplaylist/:id", async (req, res, next) => {
   console.log(req.params.id);
   console.log("출력");
   let presets = [
+    [],
     [
       {
         url: "",
@@ -355,7 +356,8 @@ router.get("/getplaylist/:id", async (req, res, next) => {
       },
     ],
   ];
-  res.json({ results: presets[req.params.id] });
+  playlist = JSON.parse(JSON.stringify(presets[req.params.id]));
+  res.json({ results: playlist });
 });
 
 router.post("/postplaylist", (req, res, next) => {

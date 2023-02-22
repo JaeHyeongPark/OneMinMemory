@@ -9,7 +9,7 @@ const Room = () => {
     <RoomCodeContext.Provider value={Math.floor(Math.random() * 1000)}>
       <React.Fragment>
         <RoomHeader />
-        <main>
+        <main width="100%">
           <Contents />
         </main>
       </React.Fragment>

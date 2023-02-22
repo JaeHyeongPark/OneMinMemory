@@ -10,7 +10,7 @@
   border: solid 1px #000;
   background-color: #d9e8ef;
 }
-.playlist_space{
+.playlist_space {
   display: flex;
   flex-grow: 1;
 }
@@ -27,7 +27,7 @@
   border: solid 3px #e2e447;
   background-color: #d9e8ef;
 }
-.selecttoplay_img .del{
+.selecttoplay_img .del {
   position: relative;
   background: none;
   bottom: 30px;
@@ -36,7 +36,7 @@
   font-size: 16px;
   cursor: pointer;
 }
-.selecttoplay_img .plus{
+.selecttoplay_img .plus {
   position: relative;
   background: none;
   bottom: 30px;
@@ -45,7 +45,7 @@
   font-size: 16px;
   cursor: pointer;
 }
-.selecttoplay_img .minus{
+.selecttoplay_img .minus {
   position: relative;
   background: none;
   bottom: 30px;

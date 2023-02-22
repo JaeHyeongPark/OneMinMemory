@@ -6,8 +6,6 @@ const PlaylistContext = createContext({
   selecttime: "",
   selectDT: "",
   totaltime: 0,
-  musicidx: "",
-  changemusicidx: () => {},
   selectidx: "",
   changeidx: () => {},
   changeTT: () => {},
@@ -15,6 +13,10 @@ const PlaylistContext = createContext({
   changetime: () => {},
   translist: [],
   addToPlaylist: () => {},
+  musicidx: "",
+  changemusicidx: () => {},
+  musicsrc: "",
+  selectmusicsrc: () => {},
 });
 
 export const PlaylistContextProvider = (props) => {
@@ -24,8 +26,9 @@ export const PlaylistContextProvider = (props) => {
   const [DT, setDT] = useState("");
   const [TT, setTT] = useState(0);
   const [idx, setidx] = useState("");
-  const [musicIdx, setMusicIdx] = useState("0");
   const [translist, setTranslist] = useState([]);
+  const [musicIdx, setMusicIdx] = useState("0");
+  const [musicSrc, setMusicSrc] = useState("");
 
   // useEffect(() => {
   //   axios.get("http://localhost:5000/output/getplaylist").then((res) => {
@@ -91,13 +94,15 @@ export const PlaylistContextProvider = (props) => {
     setMusicIdx(idx);
   };
 
+  const selectmusicsrc = (src) => {
+    setMusicSrc(src);
+  };
+
   const context = {
     playlist: playlist,
     selecttime: time,
     selectDT: DT,
     totaltime: TT,
-    musicidx: musicIdx,
-    changemusicidx: changemusicidx,
     selectidx: idx,
     changeidx: changeidx,
     changeTT: changeTT,
@@ -105,6 +110,10 @@ export const PlaylistContextProvider = (props) => {
     changetime: changetime,
     translist: translist,
     addToPlaylist: addToPlaylistHandler,
+    musicidx: musicIdx,
+    changemusicidx: changemusicidx,
+    musicsrc: musicSrc,
+    selectmusicsrc: selectmusicsrc,
   };
 
   return (

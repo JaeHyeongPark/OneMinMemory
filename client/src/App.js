@@ -44,7 +44,7 @@ function App() {
   return (
     <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
       <BrowserRouter>
-        <main>{routes}</main>
+        <main width="100%">{routes}</main>
       </BrowserRouter>
     </AuthContext.Provider>
   );

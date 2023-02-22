@@ -1,4 +1,13 @@
 .soundtrack_layout {
   border-color: azure;
-  width: 1px;
+  position: relative;
+  overflow-x: scroll;
+  width: 100%;
+}
+.soundtrack_layout::-webkit-scrollbar {
+  display: none;
+}
+
+.soundtrack_canvas {
+  padding-left: 20px;
 }

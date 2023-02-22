@@ -40,8 +40,9 @@ export default function InsertMusic() {
     setSelectedMusicSrc(selectedMusicSrc);
   }, [selectedMusicSrc]);
 
-  const sendSelectedMusicInfo = (id) => {
+  const sendSelectedMusicInfo = (id, src) => {
     playlistCtx.changemusicidx(id);
+    playlistCtx.selectmusicsrc(src);
   };
 
   return (
@@ -93,7 +94,7 @@ export default function InsertMusic() {
             <Button
               variant="contained"
               onClick={() => {
-                sendSelectedMusicInfo(selectMusicId);
+                sendSelectedMusicInfo(selectMusicId, selectedMusicSrc);
                 handleClose();
               }}
             >

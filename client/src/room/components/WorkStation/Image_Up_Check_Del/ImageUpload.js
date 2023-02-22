@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useContext } from "react";
 import ImageContext from "./ImageContext";
+import { AuthContext } from "../../../../shared/context/auth-context";
 import softwareupload from "../../../assets/software-upload.svg";
 
 const ImageUpload = (props) => {
   const ToCanvas = useContext(ImageContext)
+  const AuthCtx = useContext(AuthContext);
 
   const uploadimage = async (e) => {
     e.preventDefault();
@@ -15,6 +17,7 @@ const ImageUpload = (props) => {
       formdata.append("images", images[i]);
       formdata.append("lastModified", images[i].lastModified);
     }
+    formdata.append("roomid", AuthCtx.rooomId)
 
     axios
       .post("http://localhost:5000/photoBox/upload", formdata, {

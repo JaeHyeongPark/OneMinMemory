@@ -29,14 +29,15 @@ router.post("/imageinfo", async (req, res, next) => {
 
 router.post("/newimage", upload.none(), async (req, res) => {
   console.log("받기 시작함");
+  const roomid = req.body.roomid
   const imageurl = req.body.imagedata.split("base64,")[1];
-  const s3filename = req.body.originurl.split("testroom/Original/")[1];
+  const s3filename = req.body.originurl.split(`${roomid}/Original/`)[1];
 
   const imgbuffer = Buffer.from(imageurl, "base64");
   const image = sharp(imgbuffer);
   const imgMeta = await image.metadata();
 
-  const url = "testroom/Effect/" + s3filename
+  const url = `${roomid}/Effect/` + s3filename
   const params = {
     Bucket: process.env.Bucket_Name,
     Key: url,
@@ -46,7 +47,7 @@ router.post("/newimage", upload.none(), async (req, res) => {
     CacheControl: "no-store",
   };
 
-  await redis.v4.rPush("testroom/effect", `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/`+url)
+  await redis.v4.rPush(`${roomid}/effect`, `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/`+url)
 
   s3.putObject(params).promise().then();
   res.send(`https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/`+url);

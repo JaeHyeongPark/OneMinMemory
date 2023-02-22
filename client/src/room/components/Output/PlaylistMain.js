@@ -2,12 +2,14 @@ import React from "react";
 import axios from "axios";
 import { useDrop } from "react-dnd";
 import { useContext } from "react";
+import { AuthContext } from "../../../shared/context/auth-context";
 import PlaylistContext from "../../../shared/context/playlist-context";
 
 import "./Playlist.css";
 
 const PlaylistMain = (props) => {
   const playlistCtx = useContext(PlaylistContext);
+  const AuthCtx = useContext(AuthContext);
   // const effect = playlistCtx.playlist[props.idx].effect;
 
   // 삭제 딜레이 커버 체크(상태) 변수
@@ -31,6 +33,7 @@ const PlaylistMain = (props) => {
       .post("http://localhost:5000/output/postplaylist", {
         url: url,
         idx: props.i,
+        roomid:AuthCtx.rooomId
       })
       .then((res) => {
         playlistCtx.addToPlaylist(res.data);
@@ -43,6 +46,7 @@ const PlaylistMain = (props) => {
     axios
       .post("http://localhost:5000/output/deleteplayurl", {
         idx: props.i,
+        roomid:AuthCtx.rooomId
       })
       .then((res) => {
         playlistCtx.addToPlaylist(res.data);
@@ -57,6 +61,7 @@ const PlaylistMain = (props) => {
     axios
       .post("http://localhost:5000/output/clickimg", {
         idx: props.i,
+        roomid:AuthCtx.rooomId
       })
       .then((res) => {
         playlistCtx.changeDT(res.data.duration);
@@ -72,6 +77,7 @@ const PlaylistMain = (props) => {
       .post("http://localhost:5000/output/effect", {
         effect,
         idx: props.i,
+        roomid:AuthCtx.rooomId
       })
       .then((res) => playlistCtx.addToPlaylist(res.data));
   };

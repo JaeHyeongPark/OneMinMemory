@@ -35,8 +35,9 @@ router.post("/sendimage", async (req, res, next) => {
   // };
   // let roomorigin = JSON.parse(await redis.v4.hGet("testroom", "origin"))
   // let roomeffect = JSON.parse(await redis.v4.hGet("testroom", "effect"))
-  const roomorigin = await redis.v4.lRange("testroom/origin", 0, -1);
-  const roomeffect = await redis.v4.lRange("testroom/effect", 0, -1);
+  const roomid = req.body.roomid
+  const roomorigin = await redis.v4.lRange(`${roomid}/origin`, 0, -1);
+  const roomeffect = await redis.v4.lRange(`${roomid}/effect`, 0, -1);
   res.json({ origin: roomorigin, effect: roomeffect });
 
   // roomorigin = roomorigin.map((url) => `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/`+ url)
@@ -129,14 +130,15 @@ router.post("/sendimage", async (req, res, next) => {
 // 업로드 하려고 받은 이미지 s3에 저장
 router.post("/upload", async (req, res, next) => {
   const upimg = [];
-
   upload(req, res, (err) => {
     if (err) {
       res.status(400).send(err);
     }
-
+    const roomid = req.body.roomid
+    console.log(roomid)
+    
     // const foldername = "roomNumber"
-    const foldername = "testroom/Original/";
+    const foldername = `${roomid}/Original/`;
     const promises = req.files.map((file, idx) => {
       let fileKey = "";
       if (typeof req.body.lastModified === "string") {
@@ -163,7 +165,7 @@ router.post("/upload", async (req, res, next) => {
     Promise.all(promises)
       .then(async () => {
         upimg.forEach(async (url) => {
-          await redis.v4.rPush("testroom/origin", url);
+          await redis.v4.rPush(`${roomid}/origin`, url);
         });
         res.status(200).send(upimg);
       })

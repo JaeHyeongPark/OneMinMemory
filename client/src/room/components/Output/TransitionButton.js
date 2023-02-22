@@ -2,9 +2,11 @@ import axios from "axios";
 import { useDrop } from "react-dnd";
 import { useContext } from "react";
 import PlaylistContext from "../../../shared/context/playlist-context";
+import { AuthContext } from "../../../shared/context/auth-context";
 
 const TransitionButton = (props) => {
   const playlistCtx = useContext(PlaylistContext);
+  const AuthCtx = useContext(AuthContext);
   const [{ isover }, playlist] = useDrop(() => ({
     accept: ["transition"],
     drop: (item) => sendTotransition(item.className),
@@ -20,6 +22,7 @@ const TransitionButton = (props) => {
       .post("http://localhost:5000/output/transition", {
         transition,
         idx: props.idx,
+        roomid:AuthCtx.rooomId
       })
       .then((res) => playlistCtx.addToPlaylist(res.data));
   };
@@ -28,6 +31,7 @@ const TransitionButton = (props) => {
     axios
       .post("http://localhost:5000/output/deltransition", {
         idx: props.idx,
+        roomid:AuthCtx.rooomId
       })
       .then((res) => playlistCtx.addToPlaylist(res.data));
   }

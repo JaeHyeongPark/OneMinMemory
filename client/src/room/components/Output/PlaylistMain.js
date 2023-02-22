@@ -91,6 +91,58 @@ const PlaylistMain = (props) => {
   //     .then((res) => playlistCtx.addToPlaylist(res.data));
   // };
 
+  // let content;
+  // if (effect === "") {
+  //   content = (
+  //     <div
+  //       ref={playlist}
+  //       className={props.select ? "selecttoplay_img" : "toplay_img"}
+  //       id={props.i}
+  //       style={{
+  //         width: String((props.duration * 100) / 60) + "%",
+  //         height: "auto",
+  //         backgroundImage: `url(${props.url})`,
+  //         backgroundSize: "contain",
+  //         backgroundRepeat: "repeat-x",
+  //       }}
+  //       key={props.url}
+  //       onClick={Clickimg}
+  //     >
+  //       {props.url && props.select && (
+  //         <button className="del" onClick={deleteimg}>
+  //           X
+  //         </button>
+  //       )}
+  //     </div>
+  //   );
+  // } else {
+  //   content = (
+  //     <div
+  //       ref={playlist}
+  //       className={props.select ? "selecttoplay_img" : "toplay_img"}
+  //       id={props.i}
+  //       style={{
+  //         width: String((props.duration * 100) / 60) + "%",
+  //         height: "auto",
+  //         backgroundImage: `url(${props.url})`,
+  //         backgroundSize: "contain",
+  //         backgroundRepeat: "repeat-x",
+  //         border: "solid 5px #272833",
+  //         cursor: "pointer",
+  //       }}
+  //       key={props.url}
+  //       onClick={Clickimg}
+  //     >
+  //       {props.url && props.select && (
+  //         <button className="del" onClick={deleteimg}>
+  //           X
+  //         </button>
+  //       )}
+  //     </div>
+  //   );
+  // }
+  // return content;
+
   return (
     <div
       ref={playlist}

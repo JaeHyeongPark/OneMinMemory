@@ -35,12 +35,13 @@ export default function InsertMusic() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [selectedMusicSrc, setSelectedMusicSrc] = useState(null);
-  const [selectedMusicIdx, setSelectedMusicIdx] = useState(null);
+  const [selectedMusicIdx, setSelectedMusicIdx] = useState("0");
 
   const getPresetbyIndex = (idx) => {
     if (!selectedMusicIdx) {
       return;
     }
+    playlistCtx.changemusicidx(selectedMusicIdx);
     axios.get(`http://localhost:5000/output/getplaylist/${idx}`).then((res) => {
       playlistCtx.addToPlaylist(res.data.results);
     });
@@ -72,7 +73,8 @@ export default function InsertMusic() {
             style={musicItemStyle}
             onClick={() => {
               setSelectedMusicSrc("./music/abc.mp3");
-              setSelectedMusicIdx("0");
+              setSelectedMusicIdx("1");
+              // console.log(selectedMusicSrc);
             }}
           >
             <div className="music-item-title">Run Back to You (feat.Alisa)</div>
@@ -80,11 +82,12 @@ export default function InsertMusic() {
           </Button>
           <Button
             className="music-item"
-            index={2}
+            index={10002}
             style={musicItemStyle}
             onClick={() => {
               setSelectedMusicSrc("./music/뉴진스.mp3");
-              setSelectedMusicIdx("1");
+              setSelectedMusicIdx("2");
+              // console.log(selectedMusicSrc);
             }}
           >
             <div className="music-item-title">뉴진스 (feat.Alisa)</div>
@@ -95,6 +98,7 @@ export default function InsertMusic() {
               variant="contained"
               onClick={() => {
                 getPresetbyIndex(selectedMusicIdx);
+                playlistCtx.selectmusicsrc(selectedMusicSrc);
                 handleClose();
               }}
             >

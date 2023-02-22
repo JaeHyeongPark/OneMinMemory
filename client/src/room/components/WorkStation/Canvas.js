@@ -26,7 +26,7 @@ const DEFAULT_OPTIONS = [
 
 const EFFECT_LIST = [
   "zoom_in",
-  "zoom_out",
+  // "zoom_out",
   "zoom_top_left",
   "zoom_top_right",
   "zoom_bottom_left",

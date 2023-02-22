@@ -10,6 +10,7 @@ const { spawn } = require("child_process");
 const ffmpeg = require("fluent-ffmpeg");
 // ffmpeg.setFfmpegPath(ffmpegPath);
 // ffmpeg.setFfprobePath(ffprobePath);
+const fs = require("fs");
 
 AWS.config.update({
   region: "ap-northeast-2",
@@ -47,6 +48,8 @@ router.post("/addtoplay", upload.none(), async (req, res, next) => {
     });
 });
 
+
+// function imageToVideos(imagePath, durations) {
 // const toPlayUrlList = {};
 // router.get("/playlist", async (req, res, next) => {
 //   const params = {
@@ -73,35 +76,61 @@ router.post("/addtoplay", upload.none(), async (req, res, next) => {
 //   }
 // });
 
-function imageToVideos(imagePath, durations) {
+const effectFilters = {
+  zoom_in: [
+    "-filter_complex",
+    "scale=12800x7200,zoompan=z=pzoom+0.0025:x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1280x720:fps=30",
+  ],
+  // zoom_out: [
+  //   "-filter_complex",
+  //   "zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0023))':x='max(1,iw/2-(iw/zoom/2))':y='max(1,ih/2-(ih/zoom/2))':d=300:s=hd1080",
+  // ],
+  zoom_top_left: [
+    "-filter_complex",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:d=1:s=1280x720:fps=30",
+  ],
+  zoom_top_right: [
+    "-filter_complex",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:x='iw/2+iw/zoom/2':y=y:d=1:s=1280x720:fps=30",
+  ],
+  zoom_bottom_left: [
+    "-filter_complex",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:y=7200:d=1:s=1280x720:fps=30",
+  ],
+  zoom_bottom_right: [
+    "-filter_complex",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:x='iw/2+iw/zoom/2':y=7200:d=1:s=1280x720:fps=30",
+  ],
+};
+
+function getImages(inputPath) {
   return new Promise((resolve, reject) => {
-    let videos = [];
-    let cnt = 0;
-    for (let i = 0; i < imagePath.length; i++) {
-      const videoPath = `./Router_storage/input/source${i}.mp4`;
-      ffmpeg(imagePath[i])
-        .loop(durations[i])
-        .on("start", function (commandLine) {
-          console.log("Spawned Ffmpeg with command: " + commandLine);
-        })
-        .on("error", function (err) {
-          console.log("An error occurred: " + err.message);
-          reject(err);
-        })
-        .on("end", function () {
-          console.log(`Processing ${videoPath} finished !`);
-          videos[i] = videoPath;
-          cnt += 1;
-          if (cnt === imagePath.length) {
-            resolve(videos);
-          }
-        })
-        .save(videoPath);
+    const promises = [];
+
+    for (let i = 0; i < inputPath.length; i++) {
+      const imageKey = inputPath[i].split("com/")[1];
+
+      const s3Params = {
+        Bucket: process.env.Bucket_Name,
+        Key: imageKey,
+      };
+      const imageStream = s3.getObject(s3Params).createReadStream();
+      const localFilePath = `./Router_storage/input/image${i}.jpg`;
+      const localFileStream = fs.createWriteStream(localFilePath);
+      const promise = new Promise((resolve, reject) => {
+        localFileStream.on("finish", () => resolve(localFilePath));
+      });
+      promises.push(promise);
+      imageStream.pipe(localFileStream);
     }
+
+    Promise.all(promises)
+      .then((images) => resolve(images))
+      .catch((err) => reject(err));
   });
 }
 
-function addEffects(inputPath, effects) {
+function addEffects(inputPath, durations, effects) {
   return new Promise((resolve, reject) => {
     let effectedVideos = [];
     let cnt = 0;
@@ -110,6 +139,7 @@ function addEffects(inputPath, effects) {
       const effectedPath = `./Router_storage/input/effects${i}.mp4`;
       effects[i] = effectFilters[effects[i]];
       ffmpeg(inputPath[i])
+        .loop(durations[i])
         .outputOptions(effects[i])
         .on("start", function (commandLine) {
           console.log("Spawned Ffmpeg with command: " + commandLine);
@@ -223,34 +253,6 @@ function mergeTransitions(inputPath, durations, transitions) {
   });
 }
 
-// function mergeAll(inputPath) {
-//   return new Promise((resolve, reject) => {
-//     const mergedVideo = "./Router_storage/output/merged.mp4";
-//     const mergeVideos = ffmpeg();
-//     const transedVideos = inputPath;
-//     transedVideos.forEach((effectVideo) => {
-//       mergeVideos.addInput(effectVideo);
-//     });
-
-//     mergeVideos
-//       .on("start", function (commandLine) {
-//         console.log("Spawned Ffmpeg with command: " + commandLine);
-//       })
-//       .on("error", function (err) {
-//         console.log("An error occurred: " + err.message);
-//         reject(err);
-//       })
-//       .on("end", function () {
-//         console.log(`Processing ${mergedVideo} finished !`);
-//         resolve(mergedVideo);
-//       })
-//       .mergeToFile(
-//         "./Router_storage/output/merged.mp4",
-//         "./Router_storage/temp"
-//       );
-//   });
-// }
-
 function addAudio(inputPath) {
   return new Promise((resolve, reject) => {
     // Use ffprobe to get input duration
@@ -305,27 +307,51 @@ function addAudio(inputPath) {
 router.post("/merge", async (req, res, next) => {
   const roomid = req.body.roomid
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
-  const images = req.body.playlist.map(({ url }) => url);
+  const imageUrls = req.body.playlist.map(({ url }) => url);
   const durations = req.body.playlist.map(({ duration }) => duration);
   const effects = playlist.map(({ effect }) => effect);
-  const transitions = req.body.playlist.map(({ transition }) => transition);
-  console.log("durations", durations);
-  console.log("URL", images);
-  console.log("effects", effects);
-  console.log("transitions", transitions);
+  const transitions = playlist.map(({ transition }) => transition);
+  // console.log("durations", durations);
+  // console.log("URL", images);
+  // console.log("effects", effects);
+  // console.log("transitions", transitions);
   console.log("이미지 >>>> 동영상(with duration) Rendering...");
-  const videoPaths = await imageToVideos(images, durations);
-  console.log("이미지를 비디오로 변환 완료, 변환된 비디오:", videoPaths);
-  const effectedPaths = await addEffects(videoPaths, effects);
+  let start = new Date();
+
+  const images = await getImages(imageUrls);
+  let end1 = new Date();
+  console.log("이미지 다운 완료:", images);
+  let result = end1.getTime() - start.getTime();
+  console.log("소요시간", result);
+
+  // const videoPaths = await imageToVideos(images, durations);
+  // let end1 = new Date();
+  // console.log("이미지를 비디오로 변환 완료, 변환된 비디오:", videoPaths);
+  // let result = end1.getTime() - start.getTime();
+  // console.log("소요시간", result);
+
+  const effectedPaths = await addEffects(images, durations, effects);
+  let end2 = new Date();
   console.log("이펙트 비디오로 변환 완료, 변환된 비디오:", effectedPaths);
+  result = end2.getTime() - start.getTime();
+  console.log("소요시간", result);
+
   const transedPath = await mergeTransitions(
     effectedPaths,
     durations,
     transitions
   );
+  let end3 = new Date();
   console.log("비디오 트랜지션 완료, 오디오 삽입 시작");
+  result = end3.getTime() - start.getTime();
+  console.log("소요시간", result);
+
   const finishedPath = await addAudio(transedPath);
+  let end4 = new Date();
   console.log("오디오 삽입 및 최종 렌더링 완료, 완료된 비디오:", finishedPath);
+  result = end4.getTime() - start.getTime();
+  console.log("소요시간", result);
+
   res.download(finishedPath);
   // res.json({ message: "success" });
 });
@@ -340,7 +366,7 @@ router.post("/effect", async (req, res, next) => {
   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
   res.send(playlist);
 });
-// 클릭으로 effect 지우기(해당 인덱스만) 클릭말고 컴포넌트 추가해야함
+// effect 지우기(해당 인덱스만) 아직 미구현 / 컴포넌트 추가예정
 router.post("/deleffect", async (req, res, next) => {
   const roomid = req.body.roomid
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
@@ -386,6 +412,7 @@ router.post("/getplaylist", async (req, res, next) => {
 
 router.post("/playlistpreset", async (req, res, next) => {
   let presets = [
+    [],
     [
       {
         url: "",

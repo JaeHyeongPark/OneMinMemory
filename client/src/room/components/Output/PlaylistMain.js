@@ -8,11 +8,19 @@ import "./Playlist.css";
 
 const PlaylistMain = (props) => {
   const playlistCtx = useContext(PlaylistContext);
+  // const effect = playlistCtx.playlist[props.i].effect;
+
   // 삭제 딜레이 커버 체크(상태) 변수
   let check = true;
   const [{ isover }, playlist] = useDrop(() => ({
-    accept: ["image"],
-    drop: (item) => sendTourl(item.url),
+    accept: ["image", "effect"],
+    drop: (item) => {
+      if (item.type === "image") {
+        sendTourl(item.url);
+      } else {
+        sendToeffect(item.className);
+      }
+    },
     collect: (monitor) => ({
       isover: monitor.isOver(),
     }),
@@ -38,7 +46,7 @@ const PlaylistMain = (props) => {
       })
       .then((res) => {
         playlistCtx.addToPlaylist(res.data);
-        playlistCtx.changetime('')
+        playlistCtx.changetime("");
         check = true;
       });
   };
@@ -51,13 +59,83 @@ const PlaylistMain = (props) => {
         idx: props.i,
       })
       .then((res) => {
-        playlistCtx.changeDT(res.data.duration)
-        playlistCtx.changeTT(res.data.totaltime)
-        playlistCtx.changeidx(props.i)
+        playlistCtx.changeDT(res.data.duration);
+        playlistCtx.changeTT(res.data.totaltime);
+        playlistCtx.changeidx(props.i);
         playlistCtx.addToPlaylist(res.data.playlist);
-        playlistCtx.changetime(res.data.time)
+        playlistCtx.changetime(res.data.time);
       });
   };
+
+  const sendToeffect = (effect) => {
+    axios
+      .post("http://localhost:5000/output/effect", {
+        effect,
+        idx: props.i,
+      })
+      .then((res) => playlistCtx.addToPlaylist(res.data));
+  };
+
+  // const deleffect = (e) => {
+  //   e.preventDefault();
+  //   axios
+  //     .post("http://localhost:5000/output/deleffect", {
+  //       idx: props.idx,
+  //     })
+  //     .then((res) => playlistCtx.addToPlaylist(res.data));
+  // };
+
+  // let content;
+  // if (effect === "") {
+  //   content = (
+  //     <div
+  //       ref={playlist}
+  //       className={props.select ? "selecttoplay_img" : "toplay_img"}
+  //       id={props.i}
+  //       style={{
+  //         width: String((props.duration * 100) / 60) + "%",
+  //         height: "auto",
+  //         backgroundImage: `url(${props.url})`,
+  //         backgroundSize: "contain",
+  //         backgroundRepeat: "repeat-x",
+  //       }}
+  //       key={props.url}
+  //       onClick={Clickimg}
+  //     >
+  //       {props.url && props.select && (
+  //         <button className="del" onClick={deleteimg}>
+  //           X
+  //         </button>
+  //       )}
+  //     </div>
+  //   );
+  // } else {
+  //   content = (
+  //     <div
+  //       ref={playlist}
+  //       className={props.select ? "selecttoplay_img" : "toplay_img"}
+  //       id={props.i}
+  //       style={{
+  //         width: String((props.duration * 100) / 60) + "%",
+  //         height: "auto",
+  //         backgroundImage: `url(${props.url})`,
+  //         backgroundSize: "contain",
+  //         backgroundRepeat: "repeat-x",
+  //         border: "solid 5px #272833",
+  //         cursor: "pointer",
+  //       }}
+  //       key={props.url}
+  //       onClick={Clickimg}
+  //     >
+  //       {props.url && props.select && (
+  //         <button className="del" onClick={deleteimg}>
+  //           X
+  //         </button>
+  //       )}
+  //     </div>
+  //   );
+  // }
+  // return content;
 
   return (
     <div
@@ -74,7 +152,11 @@ const PlaylistMain = (props) => {
       key={props.url}
       onClick={Clickimg}
     >
-      {props.url && props.select && <button className="del" onClick={deleteimg}>X</button>}
+      {props.url && props.select && (
+        <button className="del" onClick={deleteimg}>
+          X
+        </button>
+      )}
     </div>
   );
 };

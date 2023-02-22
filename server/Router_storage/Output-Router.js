@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const sharp = require("sharp");
+const redis = require("./RedisClient");
 const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const { spawn } = require("child_process");
@@ -9,6 +10,7 @@ const { spawn } = require("child_process");
 const ffmpeg = require("fluent-ffmpeg");
 // ffmpeg.setFfmpegPath(ffmpegPath);
 // ffmpeg.setFfprobePath(ffprobePath);
+const fs = require("fs");
 
 AWS.config.update({
   region: "ap-northeast-2",
@@ -72,51 +74,71 @@ router.get("/playlist", async (req, res, next) => {
   }
 });
 
-// react 재생목록에 보낼 임시정보 Array
-// 이거 여기 있어야하나?? playlist context로 이동예정
-// let playlist = [
-//   {
-//     url: "",
-//     duration: 5,
-//     select: false,
-//     transition: ""
-//   },
-//   {
-//     url: "",
-//     duration: 5,
-//     select: false,
-//     transition: ""
-//   },
-//   {
-//     url: "",
-//     duration: 15,
-//     select: false,
-//     transition: ""
-//   },
-//   {
-//     url: "",
-//     duration: 15,
-//     select: false,
-//     transition: ""
-//   },
-//   {
-//     url: "",
-//     duration: 5,
-//     select: false,
-//     transition: ""
-//   },
-// ];
+const effectFilters = {
+  zoom_in: [
+    "-filter_complex",
+    "scale=12800x7200,zoompan=z=pzoom+0.0025:x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1280x720:fps=30",
+  ],
+  // zoom_out: [
+  //   "-filter_complex",
+  //   "zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0023))':x='max(1,iw/2-(iw/zoom/2))':y='max(1,ih/2-(ih/zoom/2))':d=300:s=hd1080",
+  // ],
+  zoom_top_left: [
+    "-filter_complex",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:d=1:s=1280x720:fps=30",
+  ],
+  zoom_top_right: [
+    "-filter_complex",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:x='iw/2+iw/zoom/2':y=y:d=1:s=1280x720:fps=30",
+  ],
+  zoom_bottom_left: [
+    "-filter_complex",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:y=7200:d=1:s=1280x720:fps=30",
+  ],
+  zoom_bottom_right: [
+    "-filter_complex",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:x='iw/2+iw/zoom/2':y=7200:d=1:s=1280x720:fps=30",
+  ],
+};
 
-let playlist = [];
-
-function imageToVideos(imagePath, durations) {
+function getImages(inputPath) {
   return new Promise((resolve, reject) => {
-    let videos = [];
+    const promises = [];
 
-    for (let i = 0; i < imagePath.length; i++) {
-      const videoPath = `./Router_storage/input/source${i}.mp4`;
-      ffmpeg(imagePath[i])
+    for (let i = 0; i < inputPath.length; i++) {
+      const imageKey = inputPath[i].split("com/")[1];
+
+      const s3Params = {
+        Bucket: process.env.Bucket_Name,
+        Key: imageKey,
+      };
+      const imageStream = s3.getObject(s3Params).createReadStream();
+      const localFilePath = `./Router_storage/input/image${i}.jpg`;
+      const localFileStream = fs.createWriteStream(localFilePath);
+      const promise = new Promise((resolve, reject) => {
+        localFileStream.on("finish", () => resolve(localFilePath));
+      });
+      promises.push(promise);
+      imageStream.pipe(localFileStream);
+    }
+
+    Promise.all(promises)
+      .then((images) => resolve(images))
+      .catch((err) => reject(err));
+  });
+}
+
+function addEffects(inputPath, durations, effects) {
+  return new Promise((resolve, reject) => {
+    let effectedVideos = [];
+    let cnt = 0;
+
+    for (let i = 0; i < inputPath.length; i++) {
+      const effectedPath = `./Router_storage/input/effects${i}.mp4`;
+      effects[i] = effectFilters[effects[i]];
+      ffmpeg(inputPath[i])
         .loop(durations[i])
+        .outputOptions(effects[i])
         .on("start", function (commandLine) {
           console.log("Spawned Ffmpeg with command: " + commandLine);
         })
@@ -125,67 +147,36 @@ function imageToVideos(imagePath, durations) {
           reject(err);
         })
         .on("end", function () {
-          console.log(`Processing ${videoPath} finished !`);
-          videos[i] = videoPath;
-          if (
-            videos.filter(
-              (element) =>
-                element !== undefined && element !== null && element !== ""
-            ).length === imagePath.length
-          ) {
-            resolve(videos);
+          console.log(`Processing ${effectedPath} finished !`);
+          effectedVideos[i] = effectedPath;
+          cnt += 1;
+          if (cnt === inputPath.length) {
+            resolve(effectedVideos);
           }
         })
-        .save(videoPath);
+        .save(effectedPath);
     }
   });
 }
 
-function mergeTransitions(inputPath, transitions) {
+function ffmpegSyncTrans(
+  prev_video,
+  input,
+  transition,
+  prev_duration,
+  transedPath
+) {
+  console.log("ffmpegSyncTrans 함수 호출");
   return new Promise((resolve, reject) => {
-    let transedVideos = [];
-
-    for (let i = 0; i < inputPath.length - 1; i++) {
-      const transedPath = `./Router_storage/input/transed${i}.mp4`;
-      ffmpeg()
-        .addInput(inputPath[i])
-        .addInput(inputPath[i + 1])
-        .outputOptions(transitions[i])
-        .on("start", function (commandLine) {
-          console.log("Spawned Ffmpeg with command: " + commandLine);
-        })
-        .on("error", function (err) {
-          console.log("An error occurred: " + err.message);
-          reject(err);
-        })
-        .on("end", function () {
-          console.log(`Processing ${transedPath} finished !`);
-          transedVideos[i] = transedPath;
-          if (
-            transedVideos.filter(
-              (element) =>
-                element !== undefined && element !== null && element !== ""
-            ).length ===
-            inputPath.length - 1
-          ) {
-            resolve(transedVideos);
-          }
-        })
-        .save(transedPath);
-    }
-  });
-}
-
-function mergeAll(inputPath) {
-  return new Promise((resolve, reject) => {
-    const mergedVideo = "./Router_storage/output/merged.mp4";
-    const mergeVideos = ffmpeg();
-    const transedVideos = inputPath;
-    transedVideos.forEach((effectVideo) => {
-      mergeVideos.addInput(effectVideo);
-    });
-
-    mergeVideos
+    ffmpeg()
+      .addInput(prev_video)
+      .addInput(input)
+      .outputOption(
+        "-filter_complex",
+        `[0:v][1:v]xfade=transition=${transition}:duration=1:offset=${
+          prev_duration - 1
+        }`
+      )
       .on("start", function (commandLine) {
         console.log("Spawned Ffmpeg with command: " + commandLine);
       })
@@ -193,14 +184,70 @@ function mergeAll(inputPath) {
         console.log("An error occurred: " + err.message);
         reject(err);
       })
+      .save(transedPath)
       .on("end", function () {
-        console.log(`Processing ${mergedVideo} finished !`);
-        resolve(mergedVideo);
+        console.log(`Processing transed finished !`);
+        resolve();
+      });
+  });
+}
+
+function ffmpegSyncMerge(prev_video, input, transedPath) {
+  console.log("ffmpegSyncMerge 함수 호출");
+  return new Promise((resolve, reject) => {
+    ffmpeg()
+      .addInput(prev_video)
+      .addInput(input)
+      .on("start", function (commandLine) {
+        console.log("Spawned Ffmpeg with command: " + commandLine);
       })
-      .mergeToFile(
-        "./Router_storage/output/merged.mp4",
-        "./Router_storage/temp"
-      );
+      .on("error", function (err) {
+        console.log("An error occurred: " + err.message);
+        reject(err);
+      })
+      .mergeToFile(transedPath)
+      .on("end", function () {
+        console.log(`Processing transed finished !`);
+        resolve();
+      });
+  });
+}
+
+function mergeTransitions(inputPath, durations, transitions) {
+  console.log("mergeTransitions 함수 호출");
+  return new Promise(async (resolve, reject) => {
+    let prev_duration = durations[0];
+    let prev_video = inputPath[0];
+    let flag = true;
+    for (let i = 1; i < inputPath.length; i++) {
+      let transedPath;
+      if (flag) {
+        transedPath = `./Router_storage/input/transed_A.mp4`;
+      } else {
+        transedPath = `./Router_storage/input/transed_B.mp4`;
+      }
+      flag = !flag;
+      if (transitions[i - 1]) {
+        await ffmpegSyncTrans(
+          prev_video,
+          inputPath[i],
+          transitions[i - 1],
+          prev_duration,
+          transedPath
+        ).then(() => {
+          prev_video = transedPath;
+          prev_duration = prev_duration + durations[i] - 1;
+        });
+      } else {
+        await ffmpegSyncMerge(prev_video, inputPath[i], transedPath).then(
+          () => {
+            prev_video = transedPath;
+            prev_duration = prev_duration + durations[i];
+          }
+        );
+      }
+    }
+    resolve(prev_video);
   });
 }
 
@@ -232,7 +279,7 @@ function addAudio(inputPath) {
         ffmpeg(inputPath)
           .videoCodec("libx264")
           .audioCodec("libmp3lame")
-          .size("1080x720")
+          .size("1280x720")
           .addInput(
             "./Hoang - Run Back to You (Official Lyric Video) feat. Alisa_128kbps.mp3"
           )
@@ -256,32 +303,95 @@ function addAudio(inputPath) {
 }
 
 router.post("/merge", async (req, res, next) => {
-  const images = req.body.playlist.map(({ url }) => url);
-  const durations = req.body.playlist.map(({ duration }) => duration);
-  const transitions = req.body.translist.map(({ transition }) => transition);
-  console.log("동영상 생성을 시작합니다~~~~!!");
-  const videoPaths = await imageToVideos(images, durations);
-  console.log("이미지를 비디오로 변환 완료, 변환된 비디오:", videoPaths);
-  const transedPaths = await mergeTransitions(videoPaths, transitions);
-  console.log("트랜지션 비디오로 변환 완료, 변환된 비디오:", transedPaths);
-  const mergedPath = await mergeAll(transedPaths);
-  console.log("비디오 병합 완료, 변환된 비디오:", mergedPath);
-  const finishedPath = await addAudio(mergedPath);
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+
+  const imageUrls = playlist.map(({ url }) => url);
+  const durations = playlist.map(({ duration }) => duration);
+  const effects = playlist.map(({ effect }) => effect);
+  const transitions = playlist.map(({ transition }) => transition);
+  // console.log("durations", durations);
+  // console.log("URL", images);
+  // console.log("effects", effects);
+  // console.log("transitions", transitions);
+  console.log("이미지 >>>> 동영상(with duration) Rendering...");
+  let start = new Date();
+
+  const images = await getImages(imageUrls);
+  let end1 = new Date();
+  console.log("이미지 다운 완료:", images);
+  let result = end1.getTime() - start.getTime();
+  console.log("소요시간", result);
+
+  // const videoPaths = await imageToVideos(images, durations);
+  // let end1 = new Date();
+  // console.log("이미지를 비디오로 변환 완료, 변환된 비디오:", videoPaths);
+  // let result = end1.getTime() - start.getTime();
+  // console.log("소요시간", result);
+
+  const effectedPaths = await addEffects(images, durations, effects);
+  let end2 = new Date();
+  console.log("이펙트 비디오로 변환 완료, 변환된 비디오:", effectedPaths);
+  result = end2.getTime() - start.getTime();
+  console.log("소요시간", result);
+
+  const transedPath = await mergeTransitions(
+    effectedPaths,
+    durations,
+    transitions
+  );
+  let end3 = new Date();
+  console.log("비디오 트랜지션 완료, 오디오 삽입 시작");
+  result = end3.getTime() - start.getTime();
+  console.log("소요시간", result);
+
+  const finishedPath = await addAudio(transedPath);
+  let end4 = new Date();
   console.log("오디오 삽입 및 최종 렌더링 완료, 완료된 비디오:", finishedPath);
+  result = end4.getTime() - start.getTime();
+  console.log("소요시간", result);
+
   res.download(finishedPath);
+  // res.json({ message: "success" });
+});
+
+// effect효과 playlist에 넣기
+router.post("/effect", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+  const effect = req.body.effect;
+  const idx = req.body.idx;
+  playlist[idx].effect = effect;
+  console.log(playlist[idx]);
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
+  res.send(playlist);
+});
+// effect 지우기(해당 인덱스만) 아직 미구현 / 컴포넌트 추가예정
+router.post("/deleffect", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+  const idx = req.body.idx;
+  playlist[idx].effect = "";
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
+  res.send(playlist);
 });
 
 // transition효과 playlist에 넣기
-router.post("/transition", (req, res, next) => {
+router.post("/transition", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+
   const transition = req.body.transition;
   const idx = req.body.idx;
   playlist[idx].transition = transition;
+
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 // 클릭으로 transition 지우기(해당 인덱스만)
-router.post("/deltransition", (req, res, next) => {
+router.post("/deltransition", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+
   const idx = req.body.idx;
   playlist[idx].transition = "";
+
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 
@@ -358,28 +468,45 @@ router.get("/getplaylist/:id", async (req, res, next) => {
   ];
   playlist = JSON.parse(JSON.stringify(presets[req.params.id]));
   res.json({ results: playlist });
+
+router.get("/getplaylist", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+  if (playlist === null) {
+    playlist = [];
+  }
+  res.send(playlist);
 });
 
-router.post("/postplaylist", (req, res, next) => {
+router.post("/postplaylist", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+
   const url = req.body.url;
   const idx = req.body.idx;
   playlist[idx].url = url;
+
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 
 // 삭제 이벤트 해당 객체 삭제
-router.post("/deleteplayurl", (req, res, next) => {
+router.post("/deleteplayurl", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
   const idx = req.body.idx;
+
   playlist = playlist.filter((data, i) => {
     if (idx !== i) {
       return data;
     }
   });
+
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 
 // 재생목록 click시 이벤트
-router.post("/clickimg", (req, res, next) => {
+router.post("/clickimg", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+
   const idx = req.body.idx;
   const url = playlist[idx].url;
 
@@ -403,12 +530,15 @@ router.post("/clickimg", (req, res, next) => {
     playlist[check].url = url;
     playlist[idx].select = false;
     playlist[check].select = false;
+    await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
     res.json({ playlist });
   } else if (playlist[idx].select) {
     playlist[idx].select = false;
+    await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
     res.json({ playlist });
   } else {
     playlist[idx].select = true;
+    await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
     res.json({
       playlist,
       time: time,
@@ -418,22 +548,36 @@ router.post("/clickimg", (req, res, next) => {
   }
 });
 // 새로운 사진을 재생목록에 추가(프리셋 말고)
-router.post("/inputnewplay", (req, res, next) => {
+router.post("/inputnewplay", async (req, res, next) => {
   const url = req.body.url;
-  playlist.push({
+
+  const newimage = {
     url: url,
     duration: 5,
     select: false,
-  });
+    effect: "",
+    transition: "",
+  };
+
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+  if (playlist === null) {
+    playlist = [];
+  }
+  playlist.push(newimage);
+
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 // 이미지 재생 시간 변경
-router.post("/changetime", (req, res, next) => {
+router.post("/changetime", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
   const idx = req.body.idx;
   const time = req.body.time;
+
   playlist[idx].select = false;
   playlist[idx].duration += time;
 
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.json({ playlist, DT: playlist[idx].duration });
 });
 

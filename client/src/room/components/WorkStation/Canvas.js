@@ -5,6 +5,7 @@ import axios from "axios";
 
 import "./Canvas.css";
 import SidebarItem from "./SidebarItem";
+import Effect from "./Effects/Effect";
 import Transition from "./Transitions/Transition";
 
 const DEFAULT_OPTIONS = [
@@ -21,6 +22,16 @@ const DEFAULT_OPTIONS = [
     name: "Grayscale",
   },
 ];
+
+const EFFECT_LIST = [
+  "zoom_in",
+  // "zoom_out",
+  "zoom_top_left",
+  "zoom_top_right",
+  "zoom_bottom_left",
+  "zoom_bottom_right",
+];
+
 const TRANSITION_LIST = [
   "circlecrop",
   "diagtl",
@@ -49,7 +60,8 @@ function Canvas() {
   const [inputShow, setinputShow] = useState(false);
   const [PaintMode, setPaintMode] = useState(false);
   const [Paint, setPaint] = useState(false);
-  const [modalcheck, setmodalcheck] = useState(true)
+  const [modalcheck, setmodalcheck] = useState(true);
+  const [effectModal, setEffectModal] = useState(false);
   const [transitionModal, setTransitionModal] = useState(false);
   const [Ctx, setCtx] = useState(null);
   const [x, setX] = useState([]);
@@ -72,10 +84,11 @@ function Canvas() {
   }));
 
   const changeModalToCanvas = (url) => {
-    setTransitionModal(false)
-    ToCanvas.sendurl(url)
-    setmodalcheck(!modalcheck)
-  }
+    setEffectModal(false);
+    setTransitionModal(false);
+    ToCanvas.sendurl(url);
+    setmodalcheck(!modalcheck);
+  };
 
   const imageToCanvas = (url) => {
     ToCanvas.sendurl(url);
@@ -150,7 +163,7 @@ function Canvas() {
     const formdata = new FormData();
     formdata.append("imagedata", imagedata);
     formdata.append("originurl", ToCanvas.url);
-    console.log(ToCanvas);
+
     //checked
     await axios
       .post("http://localhost:5000/canvas/newimage", formdata, {
@@ -159,8 +172,10 @@ function Canvas() {
         },
       })
       .then((res) => {
-        console.log(res);
-        console.log("성공!");
+        const effect = { ...ToCanvas.effect };
+        effect[res.data] = 0;
+        ToCanvas.seteffect(effect);
+        // 수정한 사진 저장하면 새로운 캔버스를 깔아준다.
         const canvas = canvasRef.current;
         canvas.style = {};
         Ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -223,7 +238,7 @@ function Canvas() {
               <div className="uploaded-image" ref={drop}>
                 <canvas
                   ref={canvasRef}
-                  width={1080}
+                  width={1280}
                   height={720}
                   onClick={(e) => addinput(e)}
                   onMouseDown={() => ChangePaint(true)}
@@ -247,13 +262,20 @@ function Canvas() {
               </div>
             ) : (
               <div className="transition-modal" ref={modal}>
+                <div className="effect-modal" ref={modal}>
+                  <div className="effect-list">
+                    {EFFECT_LIST.map((effect, index) => {
+                      return <Effect className={effect} key={index} />;
+                    })}
+                  </div>
+                  <hr></hr>
+                </div>
                 <div className="transition-list">
                   {TRANSITION_LIST.map((transition, index) => {
                     return (
                       <Transition
                         className={transition}
                         key={index}
-                        // selectTransition={transition} // 이 부분 어떤 함수?
                         onChange={transitionClipUpload}
                       />
                     );
@@ -304,7 +326,7 @@ function Canvas() {
                   setTransitionModal(!transitionModal);
                 }}
               >
-                Transition
+                Transition / Effect
               </button>
               <button className="sidebar-item" onClick={newImage}>
                 저장하기

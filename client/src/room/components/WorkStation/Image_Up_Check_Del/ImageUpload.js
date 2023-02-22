@@ -1,7 +1,11 @@
 import axios from "axios";
+import { useContext } from "react";
+import ImageContext from "./ImageContext";
 import softwareupload from "../../../assets/software-upload.svg";
 
 const ImageUpload = (props) => {
+  const ToCanvas = useContext(ImageContext)
+
   const uploadimage = async (e) => {
     e.preventDefault();
     const images = e.target.files;
@@ -19,7 +23,10 @@ const ImageUpload = (props) => {
         },
       })
       .then((res) => {
-        props.change();
+        const neworigin = {...ToCanvas.origin}
+        res.data.forEach((url) => neworigin[url] = 0)
+        ToCanvas.setorigin(neworigin)
+        // props.change();
       })
       .catch((err) => {
         console.log(err);

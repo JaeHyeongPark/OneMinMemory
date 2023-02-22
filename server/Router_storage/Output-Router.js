@@ -101,43 +101,43 @@ const effectFilters = {
 };
 
 // react 재생목록에 보낼 임시정보 Array
-let playlist = [
-  {
-    url: "./Router_storage/input/test1.jpg",
-    duration: 5,
-    select: false,
-    effect: "",
-    transition: "",
-  },
-  {
-    url: "./Router_storage/input/test2.jpg",
-    duration: 5,
-    select: false,
-    effect: "",
-    transition: "",
-  },
-  {
-    url: "./Router_storage/input/test5.jpg",
-    duration: 5,
-    select: false,
-    effect: "",
-    transition: "",
-  },
-  {
-    url: "./Router_storage/input/test8.jpg",
-    duration: 5,
-    select: false,
-    effect: "",
-    transition: "",
-  },
-  {
-    url: "./Router_storage/input/test1.jpg",
-    duration: 5,
-    select: false,
-    effect: "",
-    transition: "",
-  },
-];
+// let playlist = [
+//   {
+//     url: "./Router_storage/input/test1.jpg",
+//     duration: 5,
+//     select: false,
+//     effect: "",
+//     transition: "",
+//   },
+//   {
+//     url: "./Router_storage/input/test2.jpg",
+//     duration: 5,
+//     select: false,
+//     effect: "",
+//     transition: "",
+//   },
+//   {
+//     url: "./Router_storage/input/test5.jpg",
+//     duration: 5,
+//     select: false,
+//     effect: "",
+//     transition: "",
+//   },
+//   {
+//     url: "./Router_storage/input/test8.jpg",
+//     duration: 5,
+//     select: false,
+//     effect: "",
+//     transition: "",
+//   },
+//   {
+//     url: "./Router_storage/input/test1.jpg",
+//     duration: 5,
+//     select: false,
+//     effect: "",
+//     transition: "",
+//   },
+// ];
 
 function imageToVideos(imagePath, durations) {
   return new Promise((resolve, reject) => {
@@ -369,6 +369,7 @@ function addAudio(inputPath) {
 }
 
 router.post("/merge", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
   const images = req.body.playlist.map(({ url }) => url);
   const durations = req.body.playlist.map(({ duration }) => duration);
   const effects = playlist.map(({ effect }) => effect);
@@ -400,7 +401,6 @@ router.post("/effect", async (req, res, next) => {
   const effect = req.body.effect;
   const idx = req.body.idx;
   playlist[idx].effect = effect;
-  console.log(playlist[idx]);
   await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });

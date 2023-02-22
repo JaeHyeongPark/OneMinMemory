@@ -47,66 +47,31 @@ router.post("/addtoplay", upload.none(), async (req, res, next) => {
     });
 });
 
-const toPlayUrlList = {};
-router.get("/playlist", async (req, res, next) => {
-  const params = {
-    Bucket: process.env.Bucket_Name,
-    // Prefix : `${req.body.roomNumber}/`
-    Prefix: "toplay",
-  };
-  try {
-    const data = await s3.listObjectsV2(params).promise();
-    for (const info of data.Contents) {
-      const url =
-        `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
-        info.Key;
-      if (url in toPlayUrlList) {
-        continue;
-      } else {
-        toPlayUrlList[url] = 0;
-      }
-    }
-    res.send(toPlayUrlList);
-  } catch (err) {
-    // 에러 핸들러로 보냄
-    return next(err);
-  }
-});
-
-// react 재생목록에 보낼 임시정보 Array
-// 이거 여기 있어야하나?? playlist context로 이동예정
-// let playlist = [
-//   {
-//     url: "",
-//     duration: 5,
-//     select: false,
-//     transition: "",
-//   },
-//   {
-//     url: "",
-//     duration: 5,
-//     select: false,
-//     transition: "",
-//   },
-//   {
-//     url: "",
-//     duration: 15,
-//     select: false,
-//     transition: "",
-//   },
-//   {
-//     url: "",
-//     duration: 15,
-//     select: false,
-//     transition: "",
-//   },
-//   {
-//     url: "",
-//     duration: 5,
-//     select: false,
-//     transition: "",
-//   },
-// ];
+// const toPlayUrlList = {};
+// router.get("/playlist", async (req, res, next) => {
+//   const params = {
+//     Bucket: process.env.Bucket_Name,
+//     // Prefix : `${req.body.roomNumber}/`
+//     Prefix: "toplay",
+//   };
+//   try {
+//     const data = await s3.listObjectsV2(params).promise();
+//     for (const info of data.Contents) {
+//       const url =
+//         `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
+//         info.Key;
+//       if (url in toPlayUrlList) {
+//         continue;
+//       } else {
+//         toPlayUrlList[url] = 0;
+//       }
+//     }
+//     res.send(toPlayUrlList);
+//   } catch (err) {
+//     // 에러 핸들러로 보냄
+//     return next(err);
+//   }
+// });
 
 function imageToVideos(imagePath, durations) {
   return new Promise((resolve, reject) => {

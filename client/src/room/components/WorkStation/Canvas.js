@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { useDrop } from "react-dnd";
 import ImageContext from "./Image_Up_Check_Del/ImageContext";
+import { AuthContext } from "../../../shared/context/auth-context";
 import axios from "axios";
 
 import "./Canvas.css";
@@ -67,6 +68,7 @@ function Canvas() {
   const [x, setX] = useState([]);
   const [y, setY] = useState([]);
   const [transitionClip, setTransitionClip] = useState(false);
+  const AuthCtx = useContext(AuthContext);
   const ToCanvas = useContext(ImageContext);
   const [{ isover }, drop] = useDrop(() => ({
     accept: ["image"],
@@ -163,6 +165,7 @@ function Canvas() {
     const formdata = new FormData();
     formdata.append("imagedata", imagedata);
     formdata.append("originurl", ToCanvas.url);
+    formdata.append("roomid", AuthCtx.rooomId)
 
     //checked
     await axios
@@ -195,6 +198,7 @@ function Canvas() {
     // checkpoint!
     const formdata = new FormData();
     formdata.append(`${name}ImageData`, imageData);
+    formdata.append("roomid", AuthCtx.rooomId)
     await axios
       .post(`http://localhost:5000/canvas/image/${name}`, formdata, {
         headers: {

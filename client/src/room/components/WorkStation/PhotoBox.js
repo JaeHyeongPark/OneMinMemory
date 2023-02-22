@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect, useContext} from "react";
+import { AuthContext } from "../../../shared/context/auth-context";
 import axios from "axios";
 
 import Cloud from "../../assets/cloud.svg";
@@ -13,10 +14,11 @@ const PhotoBox = (props) => {
   const [cloud, setcloud] = useState(true)
   const [view, setview] = useState({})
   const ToCanvas = useContext(ImageContext)
+  const AuthCtx = useContext(AuthContext);
 
   useEffect(() => {
     const filename = cloud ? "Original" : "Effect"
-      axios.post("http://localhost:5000/photoBox/sendimage", {filename : filename}).then((res) => {
+      axios.post("http://localhost:5000/photoBox/sendimage", {filename : filename, roomid:AuthCtx.rooomId}).then((res) => {
         const origin = {...ToCanvas.origin}
         const effect = {...ToCanvas.effect}
         res.data.origin.forEach((url) => origin[url] = 0)

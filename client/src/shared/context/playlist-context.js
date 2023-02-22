@@ -1,5 +1,6 @@
+import { createContext, useEffect, useState, useContext } from "react";
+import { AuthContext } from "./auth-context";
 import axios from "axios";
-import { createContext, useEffect, useState } from "react";
 
 const PlaylistContext = createContext({
   playlist: [],
@@ -19,6 +20,7 @@ const PlaylistContext = createContext({
 });
 
 export const PlaylistContextProvider = (props) => {
+  const AuthCtx = useContext(AuthContext);
   const [playlist, setPlaylist] = useState([]);
   const [time, settime] = useState("");
   const [DT, setDT] = useState("");
@@ -28,9 +30,13 @@ export const PlaylistContextProvider = (props) => {
   const [musicSrc, setMusicSrc] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:5000/output/getplaylist").then((res) => {
-      setPlaylist(res.data);
-    });
+    axios
+      .post("http://localhost:5000/output/getplaylist", {
+        roomid: AuthCtx.rooomId,
+      })
+      .then((res) => {
+        setPlaylist(res.data);
+      });
   }, []);
 
   const addToPlaylistHandler = (track) => {

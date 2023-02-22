@@ -264,6 +264,79 @@ router.get("/getplaylist", async (req, res, next) => {
     playlist = []
   }
   res.send(playlist)
+})
+
+router.get("/getplaylist/:id", async (req, res, next) => {
+  console.log(req.params.id);
+  console.log("출력");
+  let presets = [
+    [
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 15,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 15,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+    ],
+    [
+      {
+        url: "",
+        duration: 15,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 5,
+        select: false,
+        transition: "",
+      },
+      {
+        url: "",
+        duration: 20,
+        select: false,
+        transition: "",
+      },
+    ],
+  ];
+  playlist = JSON.parse(JSON.stringify(presets[req.params.id]));
+  res.json({ results: playlist });
 });
 
 router.post("/postplaylist", async (req, res, next) => {

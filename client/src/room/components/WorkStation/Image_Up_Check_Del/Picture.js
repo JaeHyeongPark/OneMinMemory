@@ -17,14 +17,23 @@ const Picture = (props) => {
   );
 
   const selectimage = async (url) => {
-    axios
-      .post("http://localhost:5000/photoBox/clickimage", {
-        url: props.url,
-        mode: props.mode,
-      })
-      .then((res) => {
-        ToCanvas.setView(res.data);
-      });
+    // axios
+    //   .post("http://localhost:5000/photoBox/clickimage", {
+    //     url: props.url,
+    //     mode: props.mode,
+    //   })
+    //   .then((res) => {
+    //     ToCanvas.setView(res.data);
+    //   });
+    if (props.mode === "Original"){
+      const origin = {...ToCanvas.origin}
+      origin[url] = origin[url] ? 0 : 1
+      ToCanvas.setorigin(origin)
+    }else{
+      const effect = {...ToCanvas.effect}
+      effect[url] = effect[url] ? 0 : 1
+      ToCanvas.seteffect(effect)
+    }
   };
 
   return (

@@ -4,6 +4,7 @@ const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const axios = require("axios");
 const multer = require("multer");
+const redis = require("./RedisClient")
 
 dotenv.config();
 AWS.config.update({
@@ -20,7 +21,6 @@ router.post("/imageinfo", async (req, res, next) => {
   const imgBuffer = await axios.get(req.body.url, {
     responseType: "arraybuffer",
   });
-  // const imgMeta = await sharp(imgBuffer).metadata()
   const image = sharp(imgBuffer.data);
   image.metadata().then((data) => {
     res.json({ type: data.format });
@@ -31,19 +31,25 @@ router.post("/newimage", upload.none(), async (req, res) => {
   console.log("받기 시작함");
   const imageurl = req.body.imagedata.split("base64,")[1];
   const s3filename = req.body.originurl.split("testroom/Original/")[1];
+
   const imgbuffer = Buffer.from(imageurl, "base64");
   const image = sharp(imgbuffer);
   const imgMeta = await image.metadata();
+
+  const url = "testroom/Effect/" + s3filename
   const params = {
     Bucket: process.env.Bucket_Name,
-    Key: "testroom/Effect/" + s3filename,
+    Key: url,
     ACL: "public-read",
     Body: imgbuffer,
     ContentType: "image/" + imgMeta.format,
-    CacheControl:"no-store"
+    CacheControl: "no-store",
   };
+
+  await redis.v4.rPush("testroom/effect", `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/`+url)
+
   s3.putObject(params).promise().then();
-  res.send({ data: "hi!" });
+  res.send(`https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/`+url);
 });
 
 // 이미지 효과 기능들 : 밝게

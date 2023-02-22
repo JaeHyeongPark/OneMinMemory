@@ -9,12 +9,30 @@ const ImageDel = (props) => {
 
   const deleteImage = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:5000/photoBox/deleteimage", { mode:mode })
-      .then((res) => {
-        ToCanvas.setView(res.data)
+    // axios
+    //   .post("http://localhost:5000/photoBox/deleteimage", { mode:mode })
+    //   .then((res) => {
+    //     ToCanvas.setView(res.data)
+    //   })
+    //   .catch((err) => console.log(err));
+    if (mode === "Original"){
+      const origin = {}
+      Object.keys(ToCanvas.origin).filter((url) => {
+        if (ToCanvas.origin[url] === 0){
+          origin[url] = 0
+        }
       })
-      .catch((err) => console.log(err));
+      ToCanvas.setorigin(origin)
+    }else{
+      const effect = {}
+      console.log(ToCanvas.effect)
+      Object.keys(ToCanvas.effect).filter((url) => {
+        if (ToCanvas.effect[url] === 0){
+          effect[url] = 0
+        }
+      })
+      ToCanvas.seteffect(effect)
+    }
   };
 
   return (

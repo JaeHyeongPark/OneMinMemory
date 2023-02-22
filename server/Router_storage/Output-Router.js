@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const sharp = require("sharp");
+const redis = require("./RedisClient");
 const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const { spawn } = require("child_process");
@@ -409,44 +410,66 @@ router.post("/deleffect", (req, res, next) => {
 });
 
 // transition효과 playlist에 넣기
-router.post("/transition", (req, res, next) => {
+router.post("/transition", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+
   const transition = req.body.transition;
   const idx = req.body.idx;
   playlist[idx].transition = transition;
+
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 // 클릭으로 transition 지우기(해당 인덱스만)
-router.post("/deltransition", (req, res, next) => {
+router.post("/deltransition", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+
   const idx = req.body.idx;
   playlist[idx].transition = "";
+
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 
 // 재생목록 호출 API
 router.get("/getplaylist", async (req, res, next) => {
-  res.json({ results: playlist });
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+  if (playlist === null) {
+    playlist = [];
+  }
+  res.send(playlist);
 });
 
-router.post("/postplaylist", (req, res, next) => {
+router.post("/postplaylist", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+
   const url = req.body.url;
   const idx = req.body.idx;
   playlist[idx].url = url;
+
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 
 // 삭제 이벤트 해당 객체 삭제
-router.post("/deleteplayurl", (req, res, next) => {
+router.post("/deleteplayurl", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
   const idx = req.body.idx;
+
   playlist = playlist.filter((data, i) => {
     if (idx !== i) {
       return data;
     }
   });
+
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 
 // 재생목록 click시 이벤트
-router.post("/clickimg", (req, res, next) => {
+router.post("/clickimg", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+
   const idx = req.body.idx;
   const url = playlist[idx].url;
 
@@ -470,12 +493,15 @@ router.post("/clickimg", (req, res, next) => {
     playlist[check].url = url;
     playlist[idx].select = false;
     playlist[check].select = false;
+    await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
     res.json({ playlist });
   } else if (playlist[idx].select) {
     playlist[idx].select = false;
+    await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
     res.json({ playlist });
   } else {
     playlist[idx].select = true;
+    await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
     res.json({
       playlist,
       time: time,
@@ -485,23 +511,35 @@ router.post("/clickimg", (req, res, next) => {
   }
 });
 // 새로운 사진을 재생목록에 추가(프리셋 말고)
-router.post("/inputnewplay", (req, res, next) => {
+router.post("/inputnewplay", async (req, res, next) => {
   const url = req.body.url;
-  playlist.push({
+
+  const newimage = {
     url: url,
     duration: 5,
     select: false,
     transition: "",
-  });
+  };
+
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+  if (playlist === null) {
+    playlist = [];
+  }
+  playlist.push(newimage);
+
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 // 이미지 재생 시간 변경
-router.post("/changetime", (req, res, next) => {
+router.post("/changetime", async (req, res, next) => {
+  let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
   const idx = req.body.idx;
   const time = req.body.time;
+
   playlist[idx].select = false;
   playlist[idx].duration += time;
 
+  await redis.v4.set("testroom/playlist", JSON.stringify(playlist));
   res.json({ playlist, DT: playlist[idx].duration });
 });
 

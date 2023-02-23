@@ -1,5 +1,5 @@
 .ROOM-BODY-WorkStation {
-  height: 900px;
+  width: 80%;
   align-self: stretch;
   flex-grow: 1;
   display: flex;

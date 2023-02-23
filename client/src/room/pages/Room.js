@@ -9,7 +9,7 @@ import Contents from "./Contents";
 
 const Room = () => {
   const navigate = useNavigate();
-  const AuthCtx = useContext(AuthContext)
+  // const AuthCtx = useContext(AuthContext)
   const roomId = useParams().roomId;
 
   useEffect(() => {
@@ -18,9 +18,10 @@ const Room = () => {
       .then((res) => {
         if (res.data === "No") {
           navigate("/");
-        }else{
-          AuthCtx.changeid(roomId)
         }
+        // else{
+        //   AuthCtx.changeid(roomId)
+        // }
       });
   }, []);
 

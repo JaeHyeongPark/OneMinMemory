@@ -48,7 +48,6 @@ router.post("/addtoplay", upload.none(), async (req, res, next) => {
     });
 });
 
-
 // function imageToVideos(imagePath, durations) {
 // const toPlayUrlList = {};
 // router.get("/playlist", async (req, res, next) => {
@@ -79,7 +78,7 @@ router.post("/addtoplay", upload.none(), async (req, res, next) => {
 const effectFilters = {
   zoom_in: [
     "-filter_complex",
-    "scale=12800x7200,zoompan=z=pzoom+0.0025:x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1280x720:fps=30",
+    "scale=12800x7200,zoompan=z=pzoom+0.0025:x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1280x720:fps=25",
   ],
   // zoom_out: [
   //   "-filter_complex",
@@ -87,29 +86,27 @@ const effectFilters = {
   // ],
   zoom_top_left: [
     "-filter_complex",
-    "scale=12800x7200,zoompan=z=pzoom+0.0015:d=1:s=1280x720:fps=30",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:d=1:s=1280x720:fps=25",
   ],
   zoom_top_right: [
     "-filter_complex",
-    "scale=12800x7200,zoompan=z=pzoom+0.0015:x='iw/2+iw/zoom/2':y=y:d=1:s=1280x720:fps=30",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:x='iw/2+iw/zoom/2':y=y:d=1:s=1280x720:fps=25",
   ],
   zoom_bottom_left: [
     "-filter_complex",
-    "scale=12800x7200,zoompan=z=pzoom+0.0015:y=7200:d=1:s=1280x720:fps=30",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:y=7200:d=1:s=1280x720:fps=25",
   ],
   zoom_bottom_right: [
     "-filter_complex",
-    "scale=12800x7200,zoompan=z=pzoom+0.0015:x='iw/2+iw/zoom/2':y=7200:d=1:s=1280x720:fps=30",
+    "scale=12800x7200,zoompan=z=pzoom+0.0015:x='iw/2+iw/zoom/2':y=7200:d=1:s=1280x720:fps=25",
   ],
 };
 
-function getImages(inputPath) {
+function getImages(inputPath, width, height) {
   return new Promise((resolve, reject) => {
     const promises = [];
-
     for (let i = 0; i < inputPath.length; i++) {
       const imageKey = inputPath[i].split("com/")[1];
-
       const s3Params = {
         Bucket: process.env.Bucket_Name,
         Key: imageKey,
@@ -118,12 +115,25 @@ function getImages(inputPath) {
       const localFilePath = `./Router_storage/input/image${i}.jpg`;
       const localFileStream = fs.createWriteStream(localFilePath);
       const promise = new Promise((resolve, reject) => {
-        localFileStream.on("finish", () => resolve(localFilePath));
+        localFileStream.on("finish", () => {
+          sharp(localFilePath)
+            .resize(width, height)
+            .toBuffer()
+            .then((buffer) => {
+              fs.writeFile(localFilePath, buffer, (err) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  resolve(localFilePath);
+                }
+              });
+            })
+            .catch((err) => reject(err));
+        });
       });
       promises.push(promise);
       imageStream.pipe(localFileStream);
     }
-
     Promise.all(promises)
       .then((images) => resolve(images))
       .catch((err) => reject(err));
@@ -137,11 +147,32 @@ function addEffects(inputPath, durations, effects) {
 
     for (let i = 0; i < inputPath.length; i++) {
       const effectedPath = `./Router_storage/input/effects${i}.mp4`;
-      effects[i] = effectFilters[effects[i]];
-      ffmpeg(inputPath[i])
-      .size('1280x720')
+      if (effects[i]){
+        effects[i] = effectFilters[effects[i]];
+        ffmpeg(inputPath[i])
+          // .size("1280x720")
+          .loop(durations[i])
+          .outputOptions(effects[i])
+          .on("start", function (commandLine) {
+            console.log("Spawned Ffmpeg with command: " + commandLine);
+          })
+          .on("error", function (err) {
+            console.log("An error occurred: " + err.message);
+            reject(err);
+          })
+          .on("end", function () {
+            console.log(`Processing ${effectedPath} finished !`);
+            effectedVideos[i] = effectedPath;
+            cnt += 1;
+            if (cnt === inputPath.length) {
+              resolve(effectedVideos);
+            }
+          })
+          .save(effectedPath);
+      }else{
+        ffmpeg(inputPath[i])
+        // .size("1280x720")
         .loop(durations[i])
-        .outputOptions(effects[i])
         .on("start", function (commandLine) {
           console.log("Spawned Ffmpeg with command: " + commandLine);
         })
@@ -158,6 +189,7 @@ function addEffects(inputPath, durations, effects) {
           }
         })
         .save(effectedPath);
+      }
     }
   });
 }
@@ -306,10 +338,10 @@ function addAudio(inputPath) {
 }
 
 router.post("/merge", async (req, res, next) => {
-  const roomid = req.body.roomid
+  const roomid = req.body.roomid;
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
-  const imageUrls = req.body.playlist.map(({ url }) => url);
-  const durations = req.body.playlist.map(({ duration }) => duration);
+  const imageUrls = playlist.map(({ url }) => url);
+  const durations = playlist.map(({ duration }) => duration);
   const effects = playlist.map(({ effect }) => effect);
   const transitions = playlist.map(({ transition }) => transition);
   // console.log("durations", durations);
@@ -319,7 +351,7 @@ router.post("/merge", async (req, res, next) => {
   console.log("이미지 >>>> 동영상(with duration) Rendering...");
   let start = new Date();
 
-  const images = await getImages(imageUrls);
+  const images = await getImages(imageUrls, 1280, 720);
   let end1 = new Date();
   console.log("이미지 다운 완료:", images);
   let result = end1.getTime() - start.getTime();
@@ -359,7 +391,7 @@ router.post("/merge", async (req, res, next) => {
 
 // effect효과 playlist에 넣기
 router.post("/effect", async (req, res, next) => {
-  const roomid = req.body.roomid
+  const roomid = req.body.roomid;
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
   const effect = req.body.effect;
   const idx = req.body.idx;
@@ -369,7 +401,7 @@ router.post("/effect", async (req, res, next) => {
 });
 // effect 지우기(해당 인덱스만) 아직 미구현 / 컴포넌트 추가예정
 router.post("/deleffect", async (req, res, next) => {
-  const roomid = req.body.roomid
+  const roomid = req.body.roomid;
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
   const idx = req.body.idx;
   playlist[idx].effect = "";
@@ -379,7 +411,7 @@ router.post("/deleffect", async (req, res, next) => {
 
 // transition효과 playlist에 넣기
 router.post("/transition", async (req, res, next) => {
-  const roomid = req.body.roomid
+  const roomid = req.body.roomid;
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
 
   const transition = req.body.transition;
@@ -391,7 +423,7 @@ router.post("/transition", async (req, res, next) => {
 });
 // 클릭으로 transition 지우기(해당 인덱스만)
 router.post("/deltransition", async (req, res, next) => {
-  const roomid = req.body.roomid
+  const roomid = req.body.roomid;
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
 
   const idx = req.body.idx;
@@ -403,13 +435,13 @@ router.post("/deltransition", async (req, res, next) => {
 
 // 재생목록 호출 API
 router.post("/getplaylist", async (req, res, next) => {
-  const roomid = req.body.roomid
+  const roomid = req.body.roomid;
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
   if (playlist === null) {
     playlist = [];
   }
-  res.send(playlist)
-})
+  res.send(playlist);
+});
 
 router.post("/playlistpreset", async (req, res, next) => {
   let presets = [
@@ -420,35 +452,35 @@ router.post("/playlistpreset", async (req, res, next) => {
         duration: 5,
         select: false,
         transition: "",
-        effect:""
+        effect: "",
       },
       {
         url: "",
         duration: 5,
         select: false,
         transition: "",
-        effect:""
+        effect: "",
       },
       {
         url: "",
         duration: 15,
         select: false,
         transition: "",
-        effect:""
+        effect: "",
       },
       {
         url: "",
         duration: 15,
         select: false,
         transition: "",
-        effect:""
+        effect: "",
       },
       {
         url: "",
         duration: 5,
         select: false,
         transition: "",
-        effect:""
+        effect: "",
       },
     ],
     [
@@ -457,53 +489,53 @@ router.post("/playlistpreset", async (req, res, next) => {
         duration: 15,
         select: false,
         transition: "",
-        effect:""
+        effect: "",
       },
       {
         url: "",
         duration: 5,
         select: false,
         transition: "",
-        effect:""
+        effect: "",
       },
       {
         url: "",
         duration: 5,
         select: false,
         transition: "",
-        effect:""
+        effect: "",
       },
       {
         url: "",
         duration: 5,
         select: false,
         transition: "",
-        effect:""
+        effect: "",
       },
       {
         url: "",
         duration: 20,
         select: false,
         transition: "",
-        effect:""
+        effect: "",
       },
     ],
   ];
 
-  const idx = req.body.idx
-  const src = req.body.src
-  const roomid = req.body.roomid
+  const idx = req.body.idx;
+  const src = req.body.src;
+  const roomid = req.body.roomid;
 
-  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`))
+  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
   playlist = presets[idx];
-  await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist))
-  await redis.v4.set(`${roomid}/song`, JSON.stringify([idx,src]))
+  await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
+  await redis.v4.set(`${roomid}/song`, JSON.stringify([idx, src]));
 
   res.json({ results: playlist });
 });
 
 router.post("/postplaylist", async (req, res, next) => {
-  const roomid = req.body.roomid
+  const roomid = req.body.roomid;
 
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
 
@@ -517,7 +549,7 @@ router.post("/postplaylist", async (req, res, next) => {
 
 // 삭제 이벤트 해당 객체 삭제
 router.post("/deleteplayurl", async (req, res, next) => {
-  const roomid = req.body.roomid
+  const roomid = req.body.roomid;
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
   const idx = req.body.idx;
 
@@ -533,7 +565,7 @@ router.post("/deleteplayurl", async (req, res, next) => {
 
 // 재생목록 click시 이벤트
 router.post("/clickimg", async (req, res, next) => {
-  const roomid = req.body.roomid
+  const roomid = req.body.roomid;
   const idx = req.body.idx;
 
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
@@ -574,13 +606,13 @@ router.post("/clickimg", async (req, res, next) => {
       time: time,
       duration: playlist[idx].duration,
       totaltime: totaltime,
-      url:url
+      url: url,
     });
   }
 });
 // 새로운 사진을 재생목록에 추가(프리셋 말고)
 router.post("/inputnewplay", async (req, res, next) => {
-  const roomid = req.body.roomid
+  const roomid = req.body.roomid;
   const url = req.body.url;
 
   const newimage = {
@@ -602,7 +634,7 @@ router.post("/inputnewplay", async (req, res, next) => {
 });
 // 이미지 재생 시간 변경
 router.post("/changetime", async (req, res, next) => {
-  const roomid = req.body.roomid
+  const roomid = req.body.roomid;
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
   const idx = req.body.idx;
   const time = req.body.time;

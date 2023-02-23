@@ -67,7 +67,6 @@ const PlaylistMain = (props) => {
         roomid: roomid
       })
       .then((res) => {
-        console.log(res.data.url)
         playlistCtx.changeDT(res.data.duration);
         playlistCtx.changeTT(res.data.totaltime);
         playlistCtx.changeidx(props.i);

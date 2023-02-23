@@ -11,7 +11,7 @@ const ffmpeg = require("fluent-ffmpeg");
 // ffmpeg.setFfmpegPath(ffmpegPath);
 // ffmpeg.setFfprobePath(ffprobePath);
 const fs = require("fs");
-
+const io = require("../app");
 AWS.config.update({
   region: "ap-northeast-2",
   accessKeyId: process.env.Access_key_ID,
@@ -24,6 +24,84 @@ const router = express.Router();
 const upload = multer();
 dotenv.config();
 
+let presets = [
+  [],
+  [
+    {
+      url: "",
+      duration: 5,
+      select: false,
+      transition: "",
+      effect: "",
+    },
+    {
+      url: "",
+      duration: 5,
+      select: false,
+      transition: "",
+      effect: "",
+    },
+    {
+      url: "",
+      duration: 15,
+      select: false,
+      transition: "",
+      effect: "",
+    },
+    {
+      url: "",
+      duration: 15,
+      select: false,
+      transition: "",
+      effect: "",
+    },
+    {
+      url: "",
+      duration: 5,
+      select: false,
+      transition: "",
+      effect: "",
+    },
+  ],
+  [
+    {
+      url: "",
+      duration: 15,
+      select: false,
+      transition: "",
+      effect: "",
+    },
+    {
+      url: "",
+      duration: 5,
+      select: false,
+      transition: "",
+      effect: "",
+    },
+    {
+      url: "",
+      duration: 5,
+      select: false,
+      transition: "",
+      effect: "",
+    },
+    {
+      url: "",
+      duration: 5,
+      select: false,
+      transition: "",
+      effect: "",
+    },
+    {
+      url: "",
+      duration: 20,
+      select: false,
+      transition: "",
+      effect: "",
+    },
+  ],
+];
+router.presets = presets;
 const effectFilters = {
   zoom_in: [
     "-filter_complex",
@@ -98,7 +176,7 @@ function addEffects(inputPath, durations, effects) {
 
     for (let i = 0; i < inputPath.length; i++) {
       const effectedPath = `./Router_storage/input/effects${i}.mp4`;
-      if (effects[i]){
+      if (effects[i]) {
         effects[i] = effectFilters[effects[i]];
         ffmpeg(inputPath[i])
           // .size("1280x720")
@@ -120,25 +198,25 @@ function addEffects(inputPath, durations, effects) {
             }
           })
           .save(effectedPath);
-      }else{
+      } else {
         ffmpeg(inputPath[i])
-        .loop(durations[i])
-        .on("start", function (commandLine) {
-          console.log("Spawned Ffmpeg with command: " + commandLine);
-        })
-        .on("error", function (err) {
-          console.log("An error occurred: " + err.message);
-          reject(err);
-        })
-        .on("end", function () {
-          console.log(`Processing ${effectedPath} finished !`);
-          effectedVideos[i] = effectedPath;
-          cnt += 1;
-          if (cnt === inputPath.length) {
-            resolve(effectedVideos);
-          }
-        })
-        .save(effectedPath);
+          .loop(durations[i])
+          .on("start", function (commandLine) {
+            console.log("Spawned Ffmpeg with command: " + commandLine);
+          })
+          .on("error", function (err) {
+            console.log("An error occurred: " + err.message);
+            reject(err);
+          })
+          .on("end", function () {
+            console.log(`Processing ${effectedPath} finished !`);
+            effectedVideos[i] = effectedPath;
+            cnt += 1;
+            if (cnt === inputPath.length) {
+              resolve(effectedVideos);
+            }
+          })
+          .save(effectedPath);
       }
     }
   });
@@ -333,7 +411,7 @@ router.post("/merge", async (req, res, next) => {
   console.log("소요시간", result);
 
   // res.download(finishedPath);
-  res.send(finishedPath)
+  res.send(finishedPath);
   // res.json({ message: "success" });
 });
 
@@ -395,90 +473,10 @@ router.post("/getplaylist", async (req, res, next) => {
 
 // 음원 고르면 해당 프리셋과 음파 저장
 router.post("/playlistpreset", async (req, res, next) => {
-
-  let presets = [
-    [],
-    [
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 15,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 15,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-    ],
-    [
-      {
-        url: "",
-        duration: 15,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 20,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-    ],
-  ];
-
   const idx = req.body.idx;
   const src = req.body.src;
   const roomid = req.body.roomid;
 
-  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
   playlist = presets[idx];
   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
   await redis.v4.set(`${roomid}/song`, JSON.stringify([idx, src]));
@@ -489,6 +487,7 @@ router.post("/playlistpreset", async (req, res, next) => {
 // 프리셋에 이미지 넣기
 router.post("/postplaylist", async (req, res, next) => {
   const roomid = req.body.roomid;
+  console.log("플레이리스트 사진 요청");
 
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
 
@@ -609,7 +608,7 @@ router.post("/sendplaylist", async (req, res, next) => {
   const musicinfo = JSON.parse(await redis.v4.get(`${roomid}/song`));
 
   // 이것만 playlist context에 담아주면 재생목록쪽은 올클리어
-  res.json({playlist, musicinfo})
-})
+  res.json({ playlist, musicinfo });
+});
 
 module.exports = router;

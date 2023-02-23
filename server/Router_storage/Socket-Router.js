@@ -182,6 +182,10 @@ module.exports = function (io) {
         console.log(data.Id, playlist);
         socket.to(data.roomId).emit("playlistChanged", { playlist });
         io.to(data.Id).emit("playlistChanged", { playlist });
+        socket.to(data.roomId).emit("preset", {
+          selectedMusicSrc: data.selectedMusicSrc,
+          selectedMusicIdx: data.selectedMusicIdx,
+        });
       } catch (e) {
         console.log(e);
       }

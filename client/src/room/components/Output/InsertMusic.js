@@ -54,9 +54,15 @@ export default function InsertMusic() {
     //     playlistCtx.addToPlaylist(res.data.results);
     //   });
     App.mainSocket.emit("playlistpreset", {
-      idx,
+      selectedMusicSrc,
+      selectedMusicIdx,
       roomId: App.roomId,
       Id: App.mainSocket.id,
+    });
+    App.mainSocket.removeAllListeners("preset");
+    App.mainSocket.on("preset", (data) => {
+      playlistCtx.selectmusicsrc(data.selectedMusicSrc);
+      getPresetbyIndex(data.selectedMusicIdx);
     });
   };
   return (
@@ -112,8 +118,8 @@ export default function InsertMusic() {
               onClick={() => {
                 console.log("최종 idx", selectedMusicIdx);
                 console.log("최종 src", selectedMusicSrc);
-                getPresetbyIndex(selectedMusicIdx);
                 playlistCtx.selectmusicsrc(selectedMusicSrc);
+                getPresetbyIndex(selectedMusicIdx);
                 handleClose();
               }}
             >

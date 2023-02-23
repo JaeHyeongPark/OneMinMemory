@@ -22,7 +22,7 @@ const Room = () => {
     //   });
     // roomid여기
     App.roomId = roomId;
-    AuthCtx.rooomId = roomId;
+    AuthCtx.changeid(roomId);
     setTimeout(() => {
       App.mainSocket.emit("joinRoom", {
         Id: App.mainSocket.id,

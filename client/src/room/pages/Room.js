@@ -23,10 +23,13 @@ const Room = () => {
     // roomid여기
     App.roomId = roomId;
     AuthCtx.rooomId = roomId;
-    App.mainSocket.emit("joinRoom", {
-      Id: App.mainSocket.id,
-      roomId: roomId,
-    });
+    setTimeout(() => {
+      App.mainSocket.emit("joinRoom", {
+        Id: App.mainSocket.id,
+        roomId: roomId,
+      });
+    }, 2000);
+
     App.mainSocket.on("welcome", (data) => {
       if (data.ans === "NO") {
         navigate("/");

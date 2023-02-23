@@ -14,7 +14,7 @@ const PlaylistMain = (props) => {
   // 삭제 딜레이 커버 체크(상태) 변수
   let check = true;
 
-// playlist 드랍존
+  // playlist 드랍존
   const [{ isover }, playlist] = useDrop(() => ({
     accept: ["image", "effect"],
     drop: (item) => {
@@ -31,12 +31,11 @@ const PlaylistMain = (props) => {
 
   // 이미지 드랍으로 이미지를 재생목록에 추가
   const sendTourl = (url) => {
-    console.log(roomid, "1312313")
     axios
       .post("http://localhost:5000/output/postplaylist", {
         url: url,
         idx: props.i,
-        roomid: roomid
+        roomid: roomid,
       })
       .then((res) => {
         playlistCtx.addToPlaylist(res.data);
@@ -50,7 +49,7 @@ const PlaylistMain = (props) => {
     axios
       .post("http://localhost:5000/output/deleteplayurl", {
         idx: props.i,
-        roomid: roomid
+        roomid: roomid,
       })
       .then((res) => {
         playlistCtx.addToPlaylist(res.data);
@@ -66,7 +65,7 @@ const PlaylistMain = (props) => {
     axios
       .post("http://localhost:5000/output/clickimg", {
         idx: props.i,
-        roomid: roomid
+        roomid: roomid,
       })
       .then((res) => {
         playlistCtx.changeDT(res.data.duration);
@@ -83,7 +82,7 @@ const PlaylistMain = (props) => {
       .post("http://localhost:5000/output/effect", {
         effect,
         idx: props.i,
-        roomid: roomid
+        roomid: roomid,
       })
       .then((res) => playlistCtx.addToPlaylist(res.data));
   };

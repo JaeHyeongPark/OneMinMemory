@@ -10,6 +10,7 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import music from "../../assets/music.svg";
 import Music from "./Sound/Music";
 import axios from "axios";
+import { AuthContext } from "../../../shared/context/auth-context";
 
 const style = {
   position: "absolute",
@@ -38,6 +39,7 @@ export default function InsertMusic() {
   const handleClose = () => setOpen(false);
   const [selectedMusicSrc, setSelectedMusicSrc] = useState(null);
   const [selectedMusicIdx, setSelectedMusicIdx] = useState("0");
+  const AuthCtx = useContext(AuthContext);
 
   const getPresetbyIndex = (idx, src) => {
     if (!selectedMusicIdx) {
@@ -93,7 +95,6 @@ export default function InsertMusic() {
             index={10002}
             style={musicItemStyle}
             onClick={() => {
-              console.log(1);
               setSelectedMusicSrc("../music/뉴진스.mp3");
               setSelectedMusicIdx("2");
             }}
@@ -106,9 +107,6 @@ export default function InsertMusic() {
               variant="contained"
               onClick={() => {
                 getPresetbyIndex(selectedMusicIdx, selectedMusicSrc);
-                // playlistCtx.selectmusicsrc(selectedMusicSrc);
-                handleClose();
-                console.log(playlistCtx.musicsrc);
               }}
             >
               선택

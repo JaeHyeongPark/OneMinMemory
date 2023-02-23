@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import PlaylistContext from "../../../shared/context/playlist-context";
+import { AuthContext } from "../../../shared/context/auth-context";
 import axios from "axios";
 import FileDownload from "js-file-download";
 import { useParams } from "react-router-dom";
@@ -19,7 +20,7 @@ const RenderButton = () => {
       responseType: "blob",
       data: {
         playlist: playlistCtx.playlist,
-        roomid:roomId
+        roomid: roomId,
       },
     }).then((res) => {
       FileDownload(res.data, `oneminute_${Date.now()}.mp4`);

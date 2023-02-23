@@ -5,11 +5,7 @@ const redis = require("./RedisClient");
 const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const { spawn } = require("child_process");
-// const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
-// const ffprobePath = require("@ffprobe-installer/ffprobe").path;
 const ffmpeg = require("fluent-ffmpeg");
-// ffmpeg.setFfmpegPath(ffmpegPath);
-// ffmpeg.setFfprobePath(ffprobePath);
 const fs = require("fs");
 
 AWS.config.update({
@@ -51,7 +47,6 @@ const effectFilters = {
   ],
 };
 
-// 랜더링시 이미지 -> 영상으로 변환
 function getImages(inputPath, width, height) {
   return new Promise((resolve, reject) => {
     const promises = [];
@@ -98,7 +93,7 @@ function addEffects(inputPath, durations, effects) {
 
     for (let i = 0; i < inputPath.length; i++) {
       const effectedPath = `./Router_storage/input/effects${i}.mp4`;
-      if (effects[i]){
+      if (effects[i]) {
         effects[i] = effectFilters[effects[i]];
         ffmpeg(inputPath[i])
           // .size("1280x720")
@@ -120,25 +115,25 @@ function addEffects(inputPath, durations, effects) {
             }
           })
           .save(effectedPath);
-      }else{
+      } else {
         ffmpeg(inputPath[i])
-        .loop(durations[i])
-        .on("start", function (commandLine) {
-          console.log("Spawned Ffmpeg with command: " + commandLine);
-        })
-        .on("error", function (err) {
-          console.log("An error occurred: " + err.message);
-          reject(err);
-        })
-        .on("end", function () {
-          console.log(`Processing ${effectedPath} finished !`);
-          effectedVideos[i] = effectedPath;
-          cnt += 1;
-          if (cnt === inputPath.length) {
-            resolve(effectedVideos);
-          }
-        })
-        .save(effectedPath);
+          .loop(durations[i])
+          .on("start", function (commandLine) {
+            console.log("Spawned Ffmpeg with command: " + commandLine);
+          })
+          .on("error", function (err) {
+            console.log("An error occurred: " + err.message);
+            reject(err);
+          })
+          .on("end", function () {
+            console.log(`Processing ${effectedPath} finished !`);
+            effectedVideos[i] = effectedPath;
+            cnt += 1;
+            if (cnt === inputPath.length) {
+              resolve(effectedVideos);
+            }
+          })
+          .save(effectedPath);
       }
     }
   });
@@ -402,7 +397,6 @@ router.post("/getplaylist", async (req, res, next) => {
 
 // 음원 고르면 해당 프리셋과 음파 저장
 router.post("/playlistpreset", async (req, res, next) => {
-
   let presets = [
     [],
     [
@@ -616,7 +610,7 @@ router.post("/sendplaylist", async (req, res, next) => {
   const musicinfo = JSON.parse(await redis.v4.get(`${roomid}/song`));
 
   // 이것만 playlist context에 담아주면 재생목록쪽은 올클리어
-  res.json({playlist, musicinfo})
-})
+  res.json({ playlist, musicinfo });
+});
 
 module.exports = router;

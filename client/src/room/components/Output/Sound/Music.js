@@ -12,7 +12,7 @@ const Music = ({ song }) => {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
 
-  const audioRef = useRef();
+  const audioRef = useRef(null);
 
   const onChange = (e) => {
     const audio = audioRef.current;

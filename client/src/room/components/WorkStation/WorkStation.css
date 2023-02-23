@@ -1,4 +1,5 @@
 .ROOM-BODY-WorkStation {
+  height: 900px;
   align-self: stretch;
   flex-grow: 1;
   display: flex;
@@ -6,5 +7,5 @@
   justify-content: flex-start;
   align-items: flex-end;
   padding: 0;
-  background-color: #d9e8ef;
+  background-color: #272833;
 }

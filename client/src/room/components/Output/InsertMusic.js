@@ -10,6 +10,7 @@ import music from "../../assets/music.svg";
 import Music from "./Sound/Music";
 import axios from "axios";
 import { AuthContext } from "../../../shared/context/auth-context";
+import App from "../../../App";
 
 const style = {
   position: "absolute",
@@ -44,14 +45,19 @@ export default function InsertMusic() {
     //   return;
     // }
     playlistCtx.changemusicidx(selectedMusicIdx);
-    axios
-      .post(`http://localhost:5000/output/playlistpreset`, {
-        idx: idx,
-        roomid: AuthCtx.rooomId,
-      })
-      .then((res) => {
-        playlistCtx.addToPlaylist(res.data.results);
-      });
+    // axios
+    //   .post(`http://localhost:5000/output/playlistpreset`, {
+    //     idx: idx,
+    //     roomid: AuthCtx.rooomId,
+    //   })
+    //   .then((res) => {
+    //     playlistCtx.addToPlaylist(res.data.results);
+    //   });
+    App.mainSocket.emit("playlistpreset", {
+      idx,
+      roomId: App.roomId,
+      Id: App.mainSocket.id,
+    });
   };
   return (
     <div>

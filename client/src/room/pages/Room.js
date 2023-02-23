@@ -6,23 +6,31 @@ import RoomCodeContext from "../../shared/context/roomcode-context";
 import RoomHeader from "../components/RoomHeader/RoomHeader";
 import Contents from "./Contents";
 import App from "../../App.js";
-import { useState, useEffect, useContext } from "react";
 
 const Room = () => {
   const navigate = useNavigate();
   const roomId = useParams().roomId;
 
   useEffect(() => {
-    axios
-      .post("http://localhost:5000/home/check", { id: roomId })
-      .then((res) => {
-        if (res.data === "No") {
-          navigate("/");
-        }
-      });
+    // axios
+    //   .post("http://localhost:5000/home/check", { id: roomId })
+    //   .then((res) => {
+    //     if (res.data === "No") {
+    //       navigate("/");
+    //     }
+    //   });
     // roomid여기
-    App.mainSocket.emit("joinRoom", { Id: App.mainSocket.id, roomId: roomId });
     App.roomId = roomId;
+
+    App.mainSocket.emit("joinRoom", {
+      Id: App.mainSocket.id,
+      roomId: roomId,
+    });
+    App.mainSocket.on("welcome", (data) => {
+      if (data.ans === "NO") {
+        navigate("/");
+      }
+    });
   }, []);
 
   return (

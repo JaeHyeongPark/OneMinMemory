@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import { AuthContext } from "./auth-context";
 import axios from "axios";
-
 const PlaylistContext = createContext({
   playlist: [],
   selecttime: "",
@@ -49,16 +48,10 @@ export const PlaylistContextProvider = (props) => {
   const changetime = (time) => {
     settime(time);
   };
-    settime(time);
-  };
   const changeDT = (DT) => {
     setDT(DT);
   };
-    setDT(DT);
-  };
   const changeTT = (TT) => {
-    setTT(TT);
-  };
     setTT(TT);
   };
   const changeidx = (idx) => {
@@ -95,5 +88,4 @@ export const PlaylistContextProvider = (props) => {
     </PlaylistContext.Provider>
   );
 };
-
 export default PlaylistContext;

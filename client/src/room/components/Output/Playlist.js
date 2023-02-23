@@ -22,6 +22,7 @@ const Playlist = () => {
 
   const inputnewplay = (url) => {
     if (App.playlistPermissionState != 1) {
+      console.log("여기");
       return;
     }
     // axios
@@ -37,7 +38,7 @@ const Playlist = () => {
       roomId: App.roomId,
     });
   };
-
+  console.log(22222222222);
   return (
     <div className="playlist_layout">
       <div className="playlist_main">

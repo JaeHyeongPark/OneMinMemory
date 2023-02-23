@@ -358,16 +358,16 @@ router.post("/merge", async (req, res, next) => {
   // res.json({ message: "success" });
 });
 
-// effect효과 playlist에 넣기
-router.post("/effect", async (req, res, next) => {
-  const roomid = req.body.roomid;
-  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
-  const effect = req.body.effect;
-  const idx = req.body.idx;
-  playlist[idx].effect = effect;
-  await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-  res.send(playlist);
-});
+// // effect효과 playlist에 넣기---------------------완
+// router.post("/effect", async (req, res, next) => {
+//   const roomid = req.body.roomid;
+//   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+//   const effect = req.body.effect;
+//   const idx = req.body.idx;
+//   playlist[idx].effect = effect;
+//   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
+//   res.send(playlist);
+// });
 // effect 지우기(해당 인덱스만) 아직 미구현 / 컴포넌트 추가예정
 router.post("/deleffect", async (req, res, next) => {
   const roomid = req.body.roomid;
@@ -378,31 +378,31 @@ router.post("/deleffect", async (req, res, next) => {
   res.send(playlist);
 });
 
-// transition효과 playlist에 넣기
-router.post("/transition", async (req, res, next) => {
-  const roomid = req.body.roomid;
-  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+// // transition효과 playlist에 넣기=-------------------------------------------------완
+// router.post("/transition", async (req, res, next) => {
+//   const roomid = req.body.roomid;
+//   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
 
-  const transition = req.body.transition;
-  const idx = req.body.idx;
-  playlist[idx].transition = transition;
+//   const transition = req.body.transition;
+//   const idx = req.body.idx;
+//   playlist[idx].transition = transition;
 
-  await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-  res.send(playlist);
-});
-// 클릭으로 transition 지우기(해당 인덱스만)
-router.post("/deltransition", async (req, res, next) => {
-  const roomid = req.body.roomid;
-  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+//   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
+//   res.send(playlist);
+// });
+// // 클릭으로 transition 지우기(해당 인덱스만)-------------------------------------------------완
+// router.post("/deltransition", async (req, res, next) => {
+//   const roomid = req.body.roomid;
+//   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
 
-  const idx = req.body.idx;
-  playlist[idx].transition = "";
+//   const idx = req.body.idx;
+//   playlist[idx].transition = "";
 
-  await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-  res.send(playlist);
-});
+//   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
+//   res.send(playlist);
+// });
 
-// 재생목록 호출 API
+// 재생목록 호출 API ===========================살려========================
 router.post("/getplaylist", async (req, res, next) => {
   const roomid = req.body.roomid;
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
@@ -411,204 +411,205 @@ router.post("/getplaylist", async (req, res, next) => {
   }
   res.send(playlist);
 });
+// // preset 가져오기 ------------------------------------완
+// router.post("/playlistpreset", async (req, res, next) => {
+//   let presets = [
+//     [],
+//     [
+//       {
+//         url: "",
+//         duration: 5,
+//         select: false,
+//         transition: "",
+//         effect: "",
+//       },
+//       {
+//         url: "",
+//         duration: 5,
+//         select: false,
+//         transition: "",
+//         effect: "",
+//       },
+//       {
+//         url: "",
+//         duration: 15,
+//         select: false,
+//         transition: "",
+//         effect: "",
+//       },
+//       {
+//         url: "",
+//         duration: 15,
+//         select: false,
+//         transition: "",
+//         effect: "",
+//       },
+//       {
+//         url: "",
+//         duration: 5,
+//         select: false,
+//         transition: "",
+//         effect: "",
+//       },
+//     ],
+//     [
+//       {
+//         url: "",
+//         duration: 15,
+//         select: false,
+//         transition: "",
+//         effect: "",
+//       },
+//       {
+//         url: "",
+//         duration: 5,
+//         select: false,
+//         transition: "",
+//         effect: "",
+//       },
+//       {
+//         url: "",
+//         duration: 5,
+//         select: false,
+//         transition: "",
+//         effect: "",
+//       },
+//       {
+//         url: "",
+//         duration: 5,
+//         select: false,
+//         transition: "",
+//         effect: "",
+//       },
+//       {
+//         url: "",
+//         duration: 20,
+//         select: false,
+//         transition: "",
+//         effect: "",
+//       },
+//     ],
+//   ];
 
-router.post("/playlistpreset", async (req, res, next) => {
-  let presets = [
-    [],
-    [
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 15,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 15,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-    ],
-    [
-      {
-        url: "",
-        duration: 15,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 20,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-    ],
-  ];
+//   const idx = req.body.idx;
+//   const roomid = req.body.roomid;
 
-  const idx = req.body.idx;
-  const roomid = req.body.roomid;
+//   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+//   playlist = JSON.parse(JSON.stringify(presets[idx]));
+//   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
 
-  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
-  playlist = JSON.parse(JSON.stringify(presets[idx]));
-  await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
+//   res.json({ results: playlist });
+// });
 
-  res.json({ results: playlist });
-});
+// // 재생목록 사진 추가------------------------------수정완
+// router.post("/postplaylist", async (req, res, next) => {
+//   const roomid = req.body.roomid;
+//   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
 
-router.post("/postplaylist", async (req, res, next) => {
-  const roomid = req.body.roomid;
-  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+//   const url = req.body.url;
+//   const idx = req.body.idx;
+//   playlist[idx].url = url;
 
-  const url = req.body.url;
-  const idx = req.body.idx;
-  playlist[idx].url = url;
+//   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
+//   res.send(playlist);
+// });
 
-  await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-  res.send(playlist);
-});
+// // 삭제 이벤트 해당 객체 삭제-----------------------------수정완
+// router.post("/deleteplayurl", async (req, res, next) => {
+//   const roomid = req.body.roomid;
+//   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+//   const idx = req.body.idx;
 
-// 삭제 이벤트 해당 객체 삭제
-router.post("/deleteplayurl", async (req, res, next) => {
-  const roomid = req.body.roomid;
-  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
-  const idx = req.body.idx;
+//   playlist = playlist.filter((data, i) => {
+//     if (idx !== i) {
+//       return data;
+//     }
+//   });
 
-  playlist = playlist.filter((data, i) => {
-    if (idx !== i) {
-      return data;
-    }
-  });
+//   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
+//   res.send(playlist);
+// });
 
-  await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-  res.send(playlist);
-});
+// // 재생목록 click시 이벤트---------------------------수정완
+// router.post("/clickimg", async (req, res, next) => {
+//   const roomid = req.body.roomid;
+//   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
 
-// 재생목록 click시 이벤트
-router.post("/clickimg", async (req, res, next) => {
-  const roomid = req.body.roomid;
-  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+//   //   const idx = req.body.idx;
+//   //   const url = playlist[idx].url;
 
-  //   const idx = req.body.idx;
-  //   const url = playlist[idx].url;
+//   //   let check = false;
+//   //   let time = playlist[idx].duration;
+//   //   let totaltime = 0;
+//   //   playlist.forEach((data, i) => {
+//   //     if (i !== idx && data.select === true) {
+//   //       // 0번째 일때 0과 false가 겹쳐서 의도와 다른 결과가 나옴
+//   //       check = String(i);
+//   //     }
+//   //     if (i < idx) {
+//   //       time += playlist[i].duration;
+//   //     }
+//   //     totaltime += data.duration;
+//   //   });
 
-  //   let check = false;
-  //   let time = playlist[idx].duration;
-  //   let totaltime = 0;
-  //   playlist.forEach((data, i) => {
-  //     if (i !== idx && data.select === true) {
-  //       // 0번째 일때 0과 false가 겹쳐서 의도와 다른 결과가 나옴
-  //       check = String(i);
-  //     }
-  //     if (i < idx) {
-  //       time += playlist[i].duration;
-  //     }
-  //     totaltime += data.duration;
-  //   });
+//   if (check) {
+//     check = Number(check);
+//     playlist[idx].url = playlist[check].url;
+//     playlist[check].url = url;
+//     playlist[idx].select = false;
+//     playlist[check].select = false;
+//     await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
+//     res.json({ playlist });
+//   } else if (playlist[idx].select) {
+//     playlist[idx].select = false;
+//     await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
+//     res.json({ playlist });
+//   } else {
+//     playlist[idx].select = true;
+//     await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
+//     res.json({
+//       playlist,
+//       time: time,
+//       duration: playlist[idx].duration,
+//       totaltime: totaltime,
+//     });
+//   }
+// });
+// // 새로운 사진을 재생목록에 추가(프리셋 말고)------------------------수정완
+// router.post("/inputnewplay", async (req, res, next) => {
+//   const roomid = req.body.roomid;
+//   const url = req.body.url;
 
-  if (check) {
-    check = Number(check);
-    playlist[idx].url = playlist[check].url;
-    playlist[check].url = url;
-    playlist[idx].select = false;
-    playlist[check].select = false;
-    await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-    res.json({ playlist });
-  } else if (playlist[idx].select) {
-    playlist[idx].select = false;
-    await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-    res.json({ playlist });
-  } else {
-    playlist[idx].select = true;
-    await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-    res.json({
-      playlist,
-      time: time,
-      duration: playlist[idx].duration,
-      totaltime: totaltime,
-    });
-  }
-});
-// 새로운 사진을 재생목록에 추가(프리셋 말고)
-router.post("/inputnewplay", async (req, res, next) => {
-  const roomid = req.body.roomid;
-  const url = req.body.url;
+//   const newimage = {
+//     url: url,
+//     duration: 5,
+//     select: false,
+//     effect: "",
+//     transition: "",
+//     effect: "",
+//   };
 
-  const newimage = {
-    url: url,
-    duration: 5,
-    select: false,
-    effect: "",
-    transition: "",
-    effect: "",
-  };
+//   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+//   if (playlist === null) {
+//     playlist = [];
+//   }
+//   playlist.push(newimage);
 
-  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
-  if (playlist === null) {
-    playlist = [];
-  }
-  playlist.push(newimage);
+//   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
+//   res.send(playlist);
+// });
+// // 이미지 재생 시간 변경------------------------수정완
+// router.post("/changetime", async (req, res, next) => {
+//   const roomid = req.body.roomid;
+//   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+//   const idx = req.body.idx;
+//   const time = req.body.time;
 
-  await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-  res.send(playlist);
-});
-// 이미지 재생 시간 변경
-router.post("/changetime", async (req, res, next) => {
-  const roomid = req.body.roomid;
-  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
-  const idx = req.body.idx;
-  const time = req.body.time;
+//   //   playlist[idx].select = false;
+//   //   playlist[idx].duration += time;
 
-  //   playlist[idx].select = false;
-  //   playlist[idx].duration += time;
-
-  await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-  res.json({ playlist, DT: playlist[idx].duration });
-});
+//   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
+//   res.json({ playlist, DT: playlist[idx].duration });
+// });
 
 module.exports = router;

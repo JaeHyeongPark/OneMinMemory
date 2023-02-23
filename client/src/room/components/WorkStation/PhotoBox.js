@@ -32,7 +32,7 @@ const PhotoBox = (props) => {
         ToCanvas.setorigin(origin);
         ToCanvas.seteffect(effect);
       });
-  }, []);
+  }, [AuthCtx.rooomId]);
   App.mainSocket.removeAllListeners("upload");
   App.mainSocket.on("upload", (data) => {
     const neworigin = { ...ToCanvas.origin };

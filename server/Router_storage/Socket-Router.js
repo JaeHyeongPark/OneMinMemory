@@ -177,7 +177,7 @@ module.exports = function (io) {
       try {
         const idx = data.idx;
 
-        let playlist = presets[idx];
+        playlist = JSON.parse(JSON.stringify(presets[idx]));
         await redis.v4.set(data.roomId + "/playlist", JSON.stringify(playlist));
         console.log(data.Id, playlist);
         socket.to(data.roomId).emit("playlistChanged", { playlist });

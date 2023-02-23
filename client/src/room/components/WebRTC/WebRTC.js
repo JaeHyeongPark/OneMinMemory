@@ -3,7 +3,7 @@ import React from "react";
 // import cans from "../../assets/cans.svg";
 
 import "./WebRTC.css";
-
+import { useEffect } from "react";
 import { io } from "socket.io-client"; // Client Socket
 import App from "../../../App";
 
@@ -358,10 +358,12 @@ async function makeNewConnection() {
 }
 
 const WebRTC = () => {
-  setTimeout(() => {
-    console.log(11111121221212121212);
-    return startMedia();
-  }, 2000);
+  useEffect(() => {
+    setTimeout(() => {
+      console.log(11111121221212121212);
+      return startMedia();
+    }, 2000);
+  }, []);
   return (
     <div className="ROOM-BODY-WebRTC">
       <div className="CAMs">

@@ -102,8 +102,8 @@ module.exports = function (io) {
         socket.join(data.roomId);
         socket.Id = data.Id;
         socket.roomId = data.roomId;
-        redis.v4.set(data.Id, data.roomId);
-        redis.v4.rPush(data.roomId + "/user", data.Id);
+        redis.v4.set(data.Id + "", data.roomId);
+        redis.v4.rPush(data.roomId + "/user", data.Id + "");
         console.log("누가 왔어요~", data.roomId, data.Id);
         let AmIFirst = await redis.v4.set(
           data.roomId + "/playlistPermissionState",
@@ -274,7 +274,22 @@ module.exports = function (io) {
     socket.on("clicking", async (d) => {
       try {
         let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+        const idx = d.idx;
+        const url = playlist[idx].url;
 
+        let check = false;
+        let time = playlist[idx].duration;
+        let totaltime = 0;
+        playlist.forEach((data, i) => {
+          if (i !== idx && data.select === true) {
+            // 0번째 일때 0과 false가 겹쳐서 의도와 다른 결과가 나옴
+            check = String(i);
+          }
+          if (i < idx) {
+            time += playlist[i].duration;
+          }
+          totaltime += data.duration;
+        });
         if (check) {
           check = Number(check);
           playlist[idx].url = playlist[check].url;
@@ -365,11 +380,11 @@ module.exports = function (io) {
         }
         console.log(socket.Id + "님이 나가셨습니다");
         redis.lRem(socket.roomId + "/user", 1, socket.Id);
-        redis.v4.del(socket.Id);
+        redis.v4.del(socket.Id + "");
         const numUserLeft = await redis.v4.lLen(socket.roomId + "/user");
         if (numUserLeft === 0) {
           console.log("방파괴!!!");
-          redis.v4.del(socket.roomId);
+          redis.v4.del(socket.roomId + "");
         }
       } catch (e) {
         console.log(e);

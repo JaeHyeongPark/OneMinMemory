@@ -2,14 +2,15 @@ import axios from "axios";
 import React, { useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import RoomCodeContext from "../../shared/context/roomcode-context";
-
 import RoomHeader from "../components/RoomHeader/RoomHeader";
 import Contents from "./Contents";
 import App from "../../App.js";
+import { AuthContext } from "../../shared/context/auth-context";
 
 const Room = () => {
   const navigate = useNavigate();
   const roomId = useParams().roomId;
+  const AuthCtx = useContext(AuthContext);
 
   useEffect(() => {
     // axios
@@ -21,7 +22,7 @@ const Room = () => {
     //   });
     // roomid여기
     App.roomId = roomId;
-
+    AuthCtx.rooomId = roomId;
     App.mainSocket.emit("joinRoom", {
       Id: App.mainSocket.id,
       roomId: roomId,

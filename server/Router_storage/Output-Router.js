@@ -307,7 +307,7 @@ function addAudio(inputPath) {
 router.post("/merge", async (req, res, next) => {
   const roomid = req.body.roomid;
   console.log(roomid);
-  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+  let playlist = JSON.parse(await redis.v4.get(roomid + "/playlist"));
   console.log(playlist);
   const imageUrls = playlist.map(({ url }) => url);
   const durations = playlist.map(({ duration }) => duration);
@@ -371,10 +371,10 @@ router.post("/merge", async (req, res, next) => {
 // effect 지우기(해당 인덱스만) 아직 미구현 / 컴포넌트 추가예정
 router.post("/deleffect", async (req, res, next) => {
   const roomid = req.body.roomid;
-  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+  let playlist = JSON.parse(await redis.v4.get(roomid + "/playlist"));
   const idx = req.body.idx;
   playlist[idx].effect = "";
-  await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
+  await redis.v4.set(roomid + "/playlist", JSON.stringify(playlist));
   res.send(playlist);
 });
 
@@ -405,7 +405,7 @@ router.post("/deleffect", async (req, res, next) => {
 // 재생목록 호출 API ===========================살려========================
 router.post("/getplaylist", async (req, res, next) => {
   const roomid = req.body.roomid;
-  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+  let playlist = JSON.parse(await redis.v4.get(roomid + "/playlist"));
   if (playlist === null) {
     playlist = [];
   }

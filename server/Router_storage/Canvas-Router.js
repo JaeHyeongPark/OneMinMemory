@@ -52,7 +52,7 @@ router.post("/newimage", upload.none(), async (req, res) => {
     `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` + url
   );
 
-  s3.putObject(params).promise().then();
+  await s3.putObject(params).promise().then();
   res.send(
     `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` + url
   );

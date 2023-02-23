@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import axios from "axios";
 import { useDrop } from "react-dnd";
 import { useContext } from "react";
 import { AuthContext } from "../../../shared/context/auth-context";
@@ -10,37 +8,11 @@ import "./Playlist.css";
 const PlaylistMain = (props) => {
   const playlistCtx = useContext(PlaylistContext);
   const AuthCtx = useContext(AuthContext);
-  console.log("여기");
-
-  // 다른사람이 playlist를 수정했을 때 동기화를 위한 소캣이벤트 추가
-  useEffect(() => {
-    console.log(1111111111111111111111111111);
-    // 그냥 playlist만 입력하면 수정사항이 적용되는 경우
-    // 이미지 삭제, 추가, 효과 추가, 삭제
-    App.mainSocket.on("playlistChanged", (data) => {
-      playlistCtx.addToPlaylist(data.playlist);
-      playlistCtx.changetime("");
-      check = true;
-    });
-    // 이미지 클릭 핸들링
-    App.mainSocket.on("clicking", (data) => {
-      playlistCtx.changeDT(data.duration);
-      playlistCtx.changeTT(data.totaltime);
-      playlistCtx.changeidx(data.idx);
-      playlistCtx.addToPlaylist(data.playlist);
-      playlistCtx.changetime(data.time);
-    });
-    App.mainSocket.on("changetime", (data) => {
-      playlistCtx.addToPlaylist(data.playlist);
-      playlistCtx.changetime("");
-      playlistCtx.changeDT(data.DT);
-    });
-  }, []);
 
   // const effect = playlistCtx.playlist[props.idx].effect;
 
   // 삭제 딜레이 커버 체크(상태) 변수
-  let check = true;
+  App.check = true;
   const [{ isover }, playlist] = useDrop(() => ({
     accept: ["image", "effect"],
     drop: (item) => {
@@ -72,7 +44,7 @@ const PlaylistMain = (props) => {
       return;
     }
     e.preventDefault();
-    check = false;
+    App.check = false;
     App.mainSocket.emit("deleteplayurl", {
       idx: props.i,
       roomId: App.roomId,
@@ -85,7 +57,7 @@ const PlaylistMain = (props) => {
     if (App.playlistPermissionState != 1) {
       return;
     }
-    if (!check) return;
+    if (!App.check) return;
     App.mainSocket.emit("clicking", {
       roomId: App.roomId,
       Id: App.mainSocket.id,

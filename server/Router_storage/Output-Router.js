@@ -299,10 +299,7 @@ router.post("/merge", async (req, res, next) => {
   const durations = playlist.map(({ duration }) => duration);
   const effects = playlist.map(({ effect }) => effect);
   const transitions = playlist.map(({ transition }) => transition);
-  // console.log("durations", durations);
-  // console.log("URL", images);
-  // console.log("effects", effects);
-  // console.log("transitions", transitions);
+
   console.log("이미지 >>>> 동영상(with duration) Rendering...");
   let start = new Date();
 
@@ -311,12 +308,6 @@ router.post("/merge", async (req, res, next) => {
   console.log("이미지 다운 완료:", images);
   let result = end1.getTime() - start.getTime();
   console.log("소요시간", result);
-
-  // const videoPaths = await imageToVideos(images, durations);
-  // let end1 = new Date();
-  // console.log("이미지를 비디오로 변환 완료, 변환된 비디오:", videoPaths);
-  // let result = end1.getTime() - start.getTime();
-  // console.log("소요시간", result);
 
   const effectedPaths = await addEffects(images, durations, effects);
   let end2 = new Date();
@@ -329,6 +320,7 @@ router.post("/merge", async (req, res, next) => {
     durations,
     transitions
   );
+
   let end3 = new Date();
   console.log("비디오 트랜지션 완료, 오디오 삽입 시작");
   result = end3.getTime() - start.getTime();
@@ -340,7 +332,8 @@ router.post("/merge", async (req, res, next) => {
   result = end4.getTime() - start.getTime();
   console.log("소요시간", result);
 
-  res.download(finishedPath);
+  // res.download(finishedPath);
+  res.send(finishedPath)
   // res.json({ message: "success" });
 });
 

@@ -18,11 +18,10 @@ const PhotoBox = (props) => {
   const playlistCtx = useContext(PlaylistContext);
   const roomId = useParams().roomId;
 
+  // 처음 방에 들어오면 해당 방에 대한 정보를 싸악 받는다.
   useEffect(() => {
-    const filename = cloud ? "Original" : "Effect";
     axios
       .post("http://localhost:5000/photoBox/sendimage", {
-        filename: filename,
         roomid: roomId,
       })
       .then((res) => {
@@ -35,8 +34,6 @@ const PhotoBox = (props) => {
         ToCanvas.seteffect(effect);
         playlistCtx.changemusicidx(res.data.playsong[0]);
         playlistCtx.selectmusicsrc(res.data.playsong[1]);
-
-        console.log(res.data.playsong);
       });
   }, []);
 

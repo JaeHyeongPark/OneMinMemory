@@ -31,7 +31,6 @@ const PlaylistMain = (props) => {
 
   // 이미지 드랍으로 이미지를 재생목록에 추가
   const sendTourl = (url) => {
-    console.log(roomid, "1312313")
     axios
       .post("http://localhost:5000/output/postplaylist", {
         url: url,

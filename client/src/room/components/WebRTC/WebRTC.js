@@ -6,7 +6,8 @@ import "./WebRTC.css";
 
 import { io } from "socket.io-client"; // Client Socket
 import App from "../../../App";
-let roomId = App.roomId;
+
+let roomId = 1;
 
 // streamId to user
 let streamIdToUser = {};

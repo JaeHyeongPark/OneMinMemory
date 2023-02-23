@@ -359,7 +359,7 @@ async function makeNewConnection() {
 
 const WebRTC = () => {
   setTimeout(() => {
-    console.log(11111121221212121212211212121212);
+    console.log(11111121221212121212);
     return startMedia();
   }, 2000);
   return (

@@ -5,8 +5,7 @@ import React from "react";
 import "./WebRTC.css";
 
 import { io } from "socket.io-client"; // Client Socket
-
-console.log(1);
+import App from "../../../App";
 
 // streamId to user
 let streamIdToUser = {};
@@ -21,7 +20,7 @@ let sendingConnection;
 let myStream;
 // let mute = false;
 // let cameraOff = false;
-let roomId = 3;
+let roomId = App.roomId;
 
 // RTC 연결 생성 변수 (추가 설명 필요)
 const RTC_config = {
@@ -123,14 +122,7 @@ async function startMedia() {
 
 // const socket = io("https://23f7-1-223-174-170.jp.ngrok.io");
 
-const socket = io("https://chjungle.shop", {
-  path: "/sfusocket",
-  withCredentials: true,
-  // transports: ["websocket"],
-  extraHeaders: {
-    "my-custom-header": "abcd",
-  },
-});
+const socket = App.socket;
 
 // const socket = io("1.223.174.170:3000", {
 //   withCredentials: true,

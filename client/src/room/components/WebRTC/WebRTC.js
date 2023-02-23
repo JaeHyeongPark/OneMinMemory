@@ -358,7 +358,9 @@ async function makeNewConnection() {
 }
 
 const WebRTC = () => {
-  setTimeout(startMedia(), 2000);
+  setTimeout(() => {
+    return startMedia();
+  }, 2000);
   return (
     <div className="ROOM-BODY-WebRTC">
       <div className="CAMs">

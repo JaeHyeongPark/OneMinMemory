@@ -6,6 +6,7 @@ import "./WebRTC.css";
 
 import { io } from "socket.io-client"; // Client Socket
 import App from "../../../App";
+let roomId = App.roomId;
 
 // streamId to user
 let streamIdToUser = {};
@@ -358,7 +359,6 @@ const WebRTC = () => {
       "my-custom-header": "abcd",
     },
   });
-  let roomId = App.roomId;
   socket.startMedia();
   return (
     <div className="ROOM-BODY-WebRTC">

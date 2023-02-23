@@ -8,7 +8,7 @@ import { io } from "socket.io-client";
 
 /* 아이디 연결시, 방 생성시 작업해야 할 부분
 <Route path="/:userId/room" element={<Room/>}/>  */
-const mainSocket = io("http://localhost:5000", {
+const mainSocket = io("https://chjungle.shop", {
   path: "/mainsocket",
   withCredentials: true,
 });

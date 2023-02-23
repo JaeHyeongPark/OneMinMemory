@@ -29,7 +29,7 @@ function LoginPage() {
 
   const handleOpen = (e) => {
     e.preventDefault();
-    axios.get("http://localhost:5000/home/roomid").then((res) => {
+    axios.get("https://chjungle.shop/home/roomid").then((res) => {
       AuthCtx.changeid(res.data);
     });
     setOpen(true);
@@ -37,11 +37,13 @@ function LoginPage() {
 
   const makeroom = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:5000/home/makeroom", {id: AuthCtx.rooomId}).then((res) => {
-      const url = `/room/${AuthCtx.rooomId}`
-      navigate(url)
-    });
-  }
+    await axios
+      .post("https://chjungle.shop/home/makeroom", { id: AuthCtx.rooomId })
+      .then((res) => {
+        const url = `/room/${AuthCtx.rooomId}`;
+        navigate(url);
+      });
+  };
 
   return (
     <div className={css.logininner}>
@@ -68,9 +70,11 @@ function LoginPage() {
             아래 URL를 통해 친구들을 초대하세요!
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {`http://localhost:3000/rome/${AuthCtx.rooomId}`}
+            {`https://chjungle.shop/room/${AuthCtx.rooomId}`}
           </Typography>
-          <span style={{ cursor: "pointer" }} onClick={makeroom}>시작하기</span>
+          <span style={{ cursor: "pointer" }} onClick={makeroom}>
+            시작하기
+          </span>
         </Box>
       </Modal>
     </div>

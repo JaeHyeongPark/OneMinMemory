@@ -35,7 +35,7 @@ export const PlaylistContextProvider = (props) => {
 
   useEffect(() => {
     axios
-      .post("http://localhost:5000/output/getplaylist", {
+      .post("https://chjungle.shop/output/getplaylist", {
         roomid: AuthCtx.rooomId,
       })
       .then((res) => {

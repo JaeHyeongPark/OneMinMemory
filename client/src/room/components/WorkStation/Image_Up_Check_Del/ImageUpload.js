@@ -21,7 +21,7 @@ const ImageUpload = (props) => {
     formdata.append("roomid", AuthCtx.rooomId);
 
     axios
-      .post("http://localhost:5000/photoBox/upload", formdata, {
+      .post("https://chjungle.shop/photoBox/upload", formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

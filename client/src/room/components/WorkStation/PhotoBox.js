@@ -20,7 +20,7 @@ const PhotoBox = (props) => {
   useEffect(() => {
     const filename = cloud ? "Original" : "Effect";
     axios
-      .post("http://localhost:5000/photoBox/sendimage", {
+      .post("https://chjungle.shop/photoBox/sendimage", {
         filename: filename,
         roomid: AuthCtx.rooomId,
       })

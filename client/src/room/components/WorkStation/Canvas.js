@@ -171,7 +171,7 @@ function Canvas() {
 
     //checked
     await axios
-      .post("http://localhost:5000/canvas/newimage", formdata, {
+      .post("https://chjungle.shop/canvas/newimage", formdata, {
         headers: {
           "content-type": "multipart/form-data",
         },
@@ -207,7 +207,7 @@ function Canvas() {
     formdata.append(`${name}ImageData`, imageData);
     formdata.append("roomid", AuthCtx.rooomId);
     await axios
-      .post(`http://localhost:5000/canvas/image/${name}`, formdata, {
+      .post(`https://chjungle.shop/canvas/image/${name}`, formdata, {
         headers: {
           "content-type": "multipart/form-data",
         },

@@ -277,7 +277,7 @@ module.exports = function (io) {
     // 클릭 핸들링
     socket.on("clicking", async (d) => {
       try {
-        let playlist = JSON.parse(await redis.v4.get("testroom/playlist"));
+        let playlist = JSON.parse(await redis.v4.get(d.roomId + "/playlist"));
         const idx = d.idx;
         const url = playlist[idx].url;
 

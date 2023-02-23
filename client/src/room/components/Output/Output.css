@@ -1,6 +1,6 @@
 .ROOM-FOOTER {
   width: 100%;
-  height: 240px;
+  height: 400px;
   align-self: stretch;
   flex-grow: 0;
   display: flex;

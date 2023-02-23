@@ -135,26 +135,47 @@ function addEffects(inputPath, durations, effects) {
 
     for (let i = 0; i < inputPath.length; i++) {
       const effectedPath = `./Router_storage/input/effects${i}.mp4`;
-      effects[i] = effectFilters[effects[i]];
-      ffmpeg(inputPath[i])
-        .loop(durations[i])
-        .outputOptions(effects[i])
-        .on("start", function (commandLine) {
-          console.log("Spawned Ffmpeg with command: " + commandLine);
-        })
-        .on("error", function (err) {
-          console.log("An error occurred: " + err.message);
-          reject(err);
-        })
-        .on("end", function () {
-          console.log(`Processing ${effectedPath} finished !`);
-          effectedVideos[i] = effectedPath;
-          cnt += 1;
-          if (cnt === inputPath.length) {
-            resolve(effectedVideos);
-          }
-        })
-        .save(effectedPath);
+      if (effects[i]) {
+        effects[i] = effectFilters[effects[i]];
+        ffmpeg(inputPath[i])
+          .loop(durations[i])
+          .outputOptions(effects[i])
+          .on("start", function (commandLine) {
+            console.log("Spawned Ffmpeg with command: " + commandLine);
+          })
+          .on("error", function (err) {
+            console.log("An error occurred: " + err.message);
+            reject(err);
+          })
+          .on("end", function () {
+            console.log(`Processing ${effectedPath} finished !`);
+            effectedVideos[i] = effectedPath;
+            cnt += 1;
+            if (cnt === inputPath.length) {
+              resolve(effectedVideos);
+            }
+          })
+          .save(effectedPath);
+      } else {
+        ffmpeg(inputPath[i])
+          .loop(durations[i])
+          .on("start", function (commandLine) {
+            console.log("Spawned Ffmpeg with command: " + commandLine);
+          })
+          .on("error", function (err) {
+            console.log("An error occurred: " + err.message);
+            reject(err);
+          })
+          .on("end", function () {
+            console.log(`Processing ${effectedPath} finished !`);
+            effectedVideos[i] = effectedPath;
+            cnt += 1;
+            if (cnt === inputPath.length) {
+              resolve(effectedVideos);
+            }
+          })
+          .save(effectedPath);
+      }
     }
   });
 }
@@ -306,7 +327,11 @@ router.post("/merge", async (req, res, next) => {
   const roomid = req.body.roomid;
   console.log(roomid);
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+<<<<<<< HEAD
   console.log(playlist);
+=======
+  console.log("playlist", playlist);
+>>>>>>> fa0d94c (css style ing_220223)
   const imageUrls = playlist.map(({ url }) => url);
   const durations = playlist.map(({ duration }) => duration);
   const effects = playlist.map(({ effect }) => effect);
@@ -419,35 +444,35 @@ router.post("/playlistpreset", async (req, res, next) => {
         duration: 5,
         select: false,
         transition: "",
-        effect: "",
+        effect: "zoom_in",
       },
       {
         url: "",
         duration: 5,
         select: false,
         transition: "",
-        effect: "",
+        effect: "zoom_in",
       },
       {
         url: "",
         duration: 15,
         select: false,
         transition: "",
-        effect: "",
+        effect: "zoom_in",
       },
       {
         url: "",
         duration: 15,
         select: false,
         transition: "",
-        effect: "",
+        effect: "zoom_in",
       },
       {
         url: "",
         duration: 5,
         select: false,
         transition: "",
-        effect: "",
+        effect: "zoom_in",
       },
     ],
     [

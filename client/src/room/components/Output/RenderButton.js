@@ -3,7 +3,6 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import { AuthContext } from "../../../shared/context/auth-context";
 import axios from "axios";
 import FileDownload from "js-file-download";
-
 import infinity from "../../assets/infinity.svg";
 
 const RenderButton = () => {

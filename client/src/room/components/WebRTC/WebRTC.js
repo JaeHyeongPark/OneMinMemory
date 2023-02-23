@@ -20,7 +20,6 @@ let sendingConnection;
 let myStream;
 // let mute = false;
 // let cameraOff = false;
-let roomId = App.roomId;
 
 // RTC 연결 생성 변수 (추가 설명 필요)
 const RTC_config = {
@@ -351,7 +350,16 @@ async function makeNewConnection() {
 }
 
 const WebRTC = () => {
-  startMedia();
+  const socket = io("https://chjungle.shop", {
+    path: "/sfusocket",
+    withCredentials: true,
+    // transports: ["websocket"],
+    extraHeaders: {
+      "my-custom-header": "abcd",
+    },
+  });
+  let roomId = App.roomId;
+  socket.startMedia();
   return (
     <div className="ROOM-BODY-WebRTC">
       <div className="CAMs">

@@ -8,21 +8,13 @@ import { io } from "socket.io-client";
 
 /* 아이디 연결시, 방 생성시 작업해야 할 부분
 <Route path="/:userId/room" element={<Room/>}/>  */
-const mainSocket = io("https://chjungle.shop", {
-  path: "/mainsocket",
-  withCredentials: true,
-});
-App.mainSocket = mainSocket;
-const socket = io("https://chjungle.shop", {
-  path: "/sfusocket",
-  withCredentials: true,
-  // transports: ["websocket"],
-  extraHeaders: {
-    "my-custom-header": "abcd",
-  },
-});
-App.socket = socket;
+
 function App() {
+  const mainSocket = io("https://chjungle.shop", {
+    path: "/mainsocket",
+    withCredentials: true,
+  });
+  App.mainSocket = mainSocket;
   return (
     <BrowserRouter>
       <AuthContextProvider>

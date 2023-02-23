@@ -7,6 +7,14 @@ import "./WebRTC.css";
 import { io } from "socket.io-client"; // Client Socket
 import App from "../../../App";
 
+const socket = io("https://chjungle.shop", {
+  path: "/sfusocket",
+  withCredentials: true,
+  // transports: ["websocket"],
+  extraHeaders: {
+    "my-custom-header": "abcd",
+  },
+});
 let roomId = 1;
 
 // streamId to user
@@ -122,8 +130,6 @@ async function startMedia() {
 }
 
 // const socket = io("https://23f7-1-223-174-170.jp.ngrok.io");
-
-const socket = App.socket;
 
 // const socket = io("1.223.174.170:3000", {
 //   withCredentials: true,
@@ -352,15 +358,7 @@ async function makeNewConnection() {
 }
 
 const WebRTC = () => {
-  const socket = io("https://chjungle.shop", {
-    path: "/sfusocket",
-    withCredentials: true,
-    // transports: ["websocket"],
-    extraHeaders: {
-      "my-custom-header": "abcd",
-    },
-  });
-  socket.startMedia();
+  startMedia();
   return (
     <div className="ROOM-BODY-WebRTC">
       <div className="CAMs">

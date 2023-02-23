@@ -22,10 +22,8 @@ const storage = multer.memoryStorage({
 });
 const upload = multer({ storage: storage }).array("images");
 
-// const Original = {};
-// const Effect = {};
 
-// 현재 해당 방에대한 정보를 처음에 싹 보내줌
+// 현재 해당 방에대한 정보를 처음에 싹 보내줌(새로 들어온 사람이나 새로고침)
 router.post("/sendimage", async (req, res, next) => {
   const roomid = req.body.roomid
 
@@ -33,7 +31,6 @@ router.post("/sendimage", async (req, res, next) => {
   const roomeffect = await redis.v4.lRange(`${roomid}/effect`, 0, -1);
   let roomplaylist = JSON.parse(await redis.v4.get(`${roomid}/playlist`))
   let roomplaysong = JSON.parse(await redis.v4.get(`${roomid}/song`))
-  console.log(roomplaysong)
   if (roomplaylist === null) roomplaylist = []
   if (roomplaysong === null) roomplaysong = [0,'']
 

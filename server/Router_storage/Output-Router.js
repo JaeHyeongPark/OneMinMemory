@@ -24,57 +24,6 @@ const router = express.Router();
 const upload = multer();
 dotenv.config();
 
-router.post("/addtoplay", upload.none(), async (req, res, next) => {
-  const imageurl = req.body.imagedata.split("base64,")[1];
-  const s3filename = req.body.originurl.split("testroom/Effectroom/Effect/")[1];
-  const imgbuffer = Buffer.from(imageurl, "base64");
-  const image = sharp(imgbuffer);
-  const imgMeta = await image.metadata();
-  const params = {
-    Bucket: process.env.Bucket_Name,
-    Key: "toplay/Effect" + s3filename,
-    ACL: "public-read",
-    Body: imgbuffer,
-    ContentType: "image/" + imgMeta.format,
-    CacheControl: "no-store",
-  };
-  s3.putObject(params)
-    .promise()
-    .then(() => {
-      const addedUrl =
-        `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
-        params.Key;
-      res.send(addedUrl);
-    });
-});
-
-// function imageToVideos(imagePath, durations) {
-// const toPlayUrlList = {};
-// router.get("/playlist", async (req, res, next) => {
-//   const params = {
-//     Bucket: process.env.Bucket_Name,
-//     // Prefix : `${req.body.roomNumber}/`
-//     Prefix: "toplay",
-//   };
-//   try {
-//     const data = await s3.listObjectsV2(params).promise();
-//     for (const info of data.Contents) {
-//       const url =
-//         `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
-//         info.Key;
-//       if (url in toPlayUrlList) {
-//         continue;
-//       } else {
-//         toPlayUrlList[url] = 0;
-//       }
-//     }
-//     res.send(toPlayUrlList);
-//   } catch (err) {
-//     // 에러 핸들러로 보냄
-//     return next(err);
-//   }
-// });
-
 const effectFilters = {
   zoom_in: [
     "-filter_complex",
@@ -102,6 +51,7 @@ const effectFilters = {
   ],
 };
 
+// 랜더링시 이미지 -> 영상으로 변환
 function getImages(inputPath, width, height) {
   return new Promise((resolve, reject) => {
     const promises = [];
@@ -140,6 +90,7 @@ function getImages(inputPath, width, height) {
   });
 }
 
+// 랜더링시 영상에 effect효과 적용
 function addEffects(inputPath, durations, effects) {
   return new Promise((resolve, reject) => {
     let effectedVideos = [];
@@ -171,7 +122,6 @@ function addEffects(inputPath, durations, effects) {
           .save(effectedPath);
       }else{
         ffmpeg(inputPath[i])
-        // .size("1280x720")
         .loop(durations[i])
         .on("start", function (commandLine) {
           console.log("Spawned Ffmpeg with command: " + commandLine);
@@ -194,6 +144,7 @@ function addEffects(inputPath, durations, effects) {
   });
 }
 
+// 랜더링시 영상에 transition효과 적용
 function ffmpegSyncTrans(
   prev_video,
   input,
@@ -227,6 +178,7 @@ function ffmpegSyncTrans(
   });
 }
 
+// 랜더링시 각각의 영상 merge
 function ffmpegSyncMerge(prev_video, input, transedPath) {
   console.log("ffmpegSyncMerge 함수 호출");
   return new Promise((resolve, reject) => {
@@ -248,6 +200,7 @@ function ffmpegSyncMerge(prev_video, input, transedPath) {
   });
 }
 
+// 랜더링시 각각의 transition영상끼리 merge??
 function mergeTransitions(inputPath, durations, transitions) {
   console.log("mergeTransitions 함수 호출");
   return new Promise(async (resolve, reject) => {
@@ -286,6 +239,7 @@ function mergeTransitions(inputPath, durations, transitions) {
   });
 }
 
+// 최종 완성본에 Audio추가
 function addAudio(inputPath) {
   return new Promise((resolve, reject) => {
     // Use ffprobe to get input duration
@@ -337,6 +291,7 @@ function addAudio(inputPath) {
   });
 }
 
+// 랜더링시 호출(각 단계별로 진행되며 이미지로 영상을 추출)
 router.post("/merge", async (req, res, next) => {
   const roomid = req.body.roomid;
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
@@ -399,6 +354,7 @@ router.post("/effect", async (req, res, next) => {
   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
   res.send(playlist);
 });
+
 // effect 지우기(해당 인덱스만) 아직 미구현 / 컴포넌트 추가예정
 router.post("/deleffect", async (req, res, next) => {
   const roomid = req.body.roomid;
@@ -421,6 +377,7 @@ router.post("/transition", async (req, res, next) => {
   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
   res.send(playlist);
 });
+
 // 클릭으로 transition 지우기(해당 인덱스만)
 router.post("/deltransition", async (req, res, next) => {
   const roomid = req.body.roomid;
@@ -443,7 +400,9 @@ router.post("/getplaylist", async (req, res, next) => {
   res.send(playlist);
 });
 
+// 음원 고르면 해당 프리셋과 음파 저장
 router.post("/playlistpreset", async (req, res, next) => {
+
   let presets = [
     [],
     [
@@ -534,6 +493,7 @@ router.post("/playlistpreset", async (req, res, next) => {
   res.json({ results: playlist });
 });
 
+// 프리셋에 이미지 넣기
 router.post("/postplaylist", async (req, res, next) => {
   const roomid = req.body.roomid;
 
@@ -610,6 +570,7 @@ router.post("/clickimg", async (req, res, next) => {
     });
   }
 });
+
 // 새로운 사진을 재생목록에 추가(프리셋 말고)
 router.post("/inputnewplay", async (req, res, next) => {
   const roomid = req.body.roomid;
@@ -632,6 +593,7 @@ router.post("/inputnewplay", async (req, res, next) => {
   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
   res.send(playlist);
 });
+
 // 이미지 재생 시간 변경
 router.post("/changetime", async (req, res, next) => {
   const roomid = req.body.roomid;
@@ -645,5 +607,16 @@ router.post("/changetime", async (req, res, next) => {
   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
   res.json({ playlist, DT: playlist[idx].duration });
 });
+
+// (소켓) playlist넘겨줄 정보
+router.post("/sendplaylist", async (req, res, next) => {
+  const roomid = req.body.roomid;
+  let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+  // 인덱스 0번이 idx, 1번이 src
+  const musicinfo = JSON.parse(await redis.v4.get(`${roomid}/song`));
+
+  // 이것만 playlist context에 담아주면 재생목록쪽은 올클리어
+  res.json({playlist, musicinfo})
+})
 
 module.exports = router;

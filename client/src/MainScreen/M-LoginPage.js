@@ -10,7 +10,6 @@ import axios from "axios";
 
 function LoginPage() {
   const AuthCtx = useContext(AuthContext);
-  // const [id, setid] = useState('')
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
@@ -27,6 +26,7 @@ function LoginPage() {
     p: 4,
   };
 
+  // 방생성으로 방의 난수를 받는다.(아직 DB에 저장 X)
   const handleOpen = (e) => {
     e.preventDefault();
     axios.get("http://localhost:5000/home/roomid").then((res) => {
@@ -35,13 +35,16 @@ function LoginPage() {
     setOpen(true);
   };
 
+  // 위에서 받은 난수로 DB에 방저장후 room으로 이동(DB 저장 O)
   const makeroom = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:5000/home/makeroom", {id: AuthCtx.rooomId}).then((res) => {
-      const url = `/room/${AuthCtx.rooomId}`
-      navigate(url)
-    });
-  }
+    await axios
+      .post("http://localhost:5000/home/makeroom", { id: AuthCtx.rooomId })
+      .then((res) => {
+        const url = `/room/${AuthCtx.rooomId}`;
+        navigate(url);
+      });
+  };
 
   return (
     <div className={css.logininner}>
@@ -70,7 +73,9 @@ function LoginPage() {
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {`http://localhost:3000/room/${AuthCtx.rooomId}`}
           </Typography>
-          <span style={{ cursor: "pointer" }} onClick={makeroom}>시작하기</span>
+          <span style={{ cursor: "pointer" }} onClick={makeroom}>
+            시작하기
+          </span>
         </Box>
       </Modal>
     </div>

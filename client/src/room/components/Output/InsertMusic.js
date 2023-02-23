@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import PlaylistContext from "../../../shared/context/playlist-context";
-import { AuthContext } from "../../../shared/context/auth-context";
-import { useParams } from "react-router-dom";
 
 import music from "../../assets/music.svg";
 import Music from "./Sound/Music";
@@ -33,7 +32,6 @@ const musicItemStyle = {
 
 export default function InsertMusic() {
   const playlistCtx = useContext(PlaylistContext);
-  // const AuthCtx = useContext(AuthContext);
   const roomId = useParams().roomId;
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -46,10 +44,16 @@ export default function InsertMusic() {
       return;
     }
     playlistCtx.changemusicidx(selectedMusicIdx);
-    axios.post(`http://localhost:5000/output/playlistpreset`, {idx:idx, src:src, roomid:roomId}).then((res) => {
-      playlistCtx.selectmusicsrc(src)
-      playlistCtx.addToPlaylist(res.data.results);
-    });
+    axios
+      .post(`http://localhost:5000/output/playlistpreset`, {
+        idx: idx,
+        src: src,
+        roomid: roomId,
+      })
+      .then((res) => {
+        playlistCtx.selectmusicsrc(src);
+        playlistCtx.addToPlaylist(res.data.results);
+      });
   };
   return (
     <div>
@@ -89,7 +93,7 @@ export default function InsertMusic() {
             index={10002}
             style={musicItemStyle}
             onClick={() => {
-              console.log(1)
+              console.log(1);
               setSelectedMusicSrc("../music/뉴진스.mp3");
               setSelectedMusicIdx("2");
             }}

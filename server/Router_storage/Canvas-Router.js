@@ -17,6 +17,7 @@ const upload = multer();
 const s3 = new AWS.S3();
 const router = express.Router();
 
+// 캔버스로 보낼 이미지의 타입을 알기위한 함수
 router.post("/imageinfo", async (req, res, next) => {
   const imgBuffer = await axios.get(req.body.url, {
     responseType: "arraybuffer",
@@ -27,6 +28,7 @@ router.post("/imageinfo", async (req, res, next) => {
   });
 });
 
+// 캔버스에서 작업이 끝난 이미지를 저장했을때 호출
 router.post("/newimage", upload.none(), async (req, res) => {
   console.log("받기 시작함");
   const roomid = req.body.roomid
@@ -53,7 +55,8 @@ router.post("/newimage", upload.none(), async (req, res) => {
   res.send(`https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/`+url);
 });
 
-// 이미지 효과 기능들 : 밝게
+// 이미지 효과 기능들
+// 밝게
 router.post("/image/Brighten", upload.none(), async (req, res) => {
   // console.log("밝은 사진!");
   const imageurl = req.body.BrightenImageData.split("base64,")[1];
@@ -112,25 +115,3 @@ router.post("/image/Grayscale", upload.none(), async (req, res) => {
 });
 
 module.exports = router;
-
-// AWS S3 cors 정책
-// [
-//   {
-//       "AllowedHeaders": [
-//           "*"
-//       ],
-//       "AllowedMethods": [
-//           "HEAD",
-//           "GET",
-//           "PUT",
-//           "POST",
-//           "DELETE"
-//       ],
-//       "AllowedOrigins": [
-//           "https://www.example.org"
-//       ],
-//       "ExposeHeaders": [
-//            "ETag",
-//            "x-amz-meta-custom-header"]
-//   }
-// ]

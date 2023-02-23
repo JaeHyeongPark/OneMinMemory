@@ -1,13 +1,11 @@
 import axios from "axios";
 import { useContext } from "react";
 import ImageContext from "./ImageContext";
-// import { AuthContext } from "../../../../shared/context/auth-context";
 import { useParams } from "react-router-dom";
 import softwareupload from "../../../assets/software-upload.svg";
 
 const ImageUpload = (props) => {
   const ToCanvas = useContext(ImageContext)
-  // const AuthCtx = useContext(AuthContext);
   const roomId = useParams().roomId;
 
   const uploadimage = async (e) => {

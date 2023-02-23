@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 import { useDrop } from "react-dnd";
 import { useContext } from "react";
-// import { AuthContext } from "../../../shared/context/auth-context";
 import { useParams } from "react-router-dom";
 import PlaylistContext from "../../../shared/context/playlist-context";
 
@@ -10,12 +9,12 @@ import "./Playlist.css";
 
 const PlaylistMain = (props) => {
   const playlistCtx = useContext(PlaylistContext);
-  // const AuthCtx = useContext(AuthContext);
   const roomid = useParams().roomId;
-  // const effect = playlistCtx.playlist[props.idx].effect;
 
   // 삭제 딜레이 커버 체크(상태) 변수
   let check = true;
+
+// playlist 드랍존
   const [{ isover }, playlist] = useDrop(() => ({
     accept: ["image", "effect"],
     drop: (item) => {
@@ -29,6 +28,7 @@ const PlaylistMain = (props) => {
       isover: monitor.isOver(),
     }),
   }));
+
   // 이미지 드랍으로 이미지를 재생목록에 추가
   const sendTourl = (url) => {
     console.log(roomid, "1312313")
@@ -42,6 +42,7 @@ const PlaylistMain = (props) => {
         playlistCtx.addToPlaylist(res.data);
       });
   };
+
   // 클릭후 삭제 버튼
   const deleteimg = (e) => {
     e.preventDefault();
@@ -57,6 +58,7 @@ const PlaylistMain = (props) => {
         check = true;
       });
   };
+
   // 재생목록 사진 클릭시 상황에 맞게 이벤트
   const Clickimg = (e) => {
     e.preventDefault();
@@ -75,6 +77,7 @@ const PlaylistMain = (props) => {
       });
   };
 
+  // 드래그로 effect 적용
   const sendToeffect = (effect) => {
     axios
       .post("http://localhost:5000/output/effect", {
@@ -84,67 +87,6 @@ const PlaylistMain = (props) => {
       })
       .then((res) => playlistCtx.addToPlaylist(res.data));
   };
-
-  // const deleffect = (e) => {
-  //   e.preventDefault();
-  //   axios
-  //     .post("http://localhost:5000/output/deleffect", {
-  //       idx: props.idx,
-  //     })
-  //     .then((res) => playlistCtx.addToPlaylist(res.data));
-  // };
-
-  // let content;
-  // if (effect === "") {
-  //   content = (
-  //     <div
-  //       ref={playlist}
-  //       className={props.select ? "selecttoplay_img" : "toplay_img"}
-  //       id={props.i}
-  //       style={{
-  //         width: String((props.duration * 100) / 60) + "%",
-  //         height: "auto",
-  //         backgroundImage: `url(${props.url})`,
-  //         backgroundSize: "contain",
-  //         backgroundRepeat: "repeat-x",
-  //       }}
-  //       key={props.url}
-  //       onClick={Clickimg}
-  //     >
-  //       {props.url && props.select && (
-  //         <button className="del" onClick={deleteimg}>
-  //           X
-  //         </button>
-  //       )}
-  //     </div>
-  //   );
-  // } else {
-  //   content = (
-  //     <div
-  //       ref={playlist}
-  //       className={props.select ? "selecttoplay_img" : "toplay_img"}
-  //       id={props.i}
-  //       style={{
-  //         width: String((props.duration * 100) / 60) + "%",
-  //         height: "auto",
-  //         backgroundImage: `url(${props.url})`,
-  //         backgroundSize: "contain",
-  //         backgroundRepeat: "repeat-x",
-  //         border: "solid 5px #272833",
-  //         cursor: "pointer",
-  //       }}
-  //       key={props.url}
-  //       onClick={Clickimg}
-  //     >
-  //       {props.url && props.select && (
-  //         <button className="del" onClick={deleteimg}>
-  //           X
-  //         </button>
-  //       )}
-  //     </div>
-  //   );
-  // }
-  // return content;
 
   return (
     <div
@@ -161,7 +103,7 @@ const PlaylistMain = (props) => {
       key={props.url}
       onClick={Clickimg}
     >
-      {props.url && props.select && (
+      {props.select && (
         <button className="del" onClick={deleteimg}>
           X
         </button>

@@ -1,17 +1,16 @@
 import axios from "axios";
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import RoomCodeContext from "../../shared/context/roomcode-context";
-import { AuthContext } from "../../shared/context/auth-context";
 
 import RoomHeader from "../components/RoomHeader/RoomHeader";
 import Contents from "./Contents";
 
 const Room = () => {
   const navigate = useNavigate();
-  // const AuthCtx = useContext(AuthContext)
   const roomId = useParams().roomId;
 
+  // 생성된 방에만 들어가게 하기 위한 조건(처음 랜더링될때 실행)
   useEffect(() => {
     axios
       .post("http://localhost:5000/home/check", { id: roomId })
@@ -19,9 +18,6 @@ const Room = () => {
         if (res.data === "No") {
           navigate("/");
         }
-        // else{
-        //   AuthCtx.changeid(roomId)
-        // }
       });
   }, []);
 

@@ -1,18 +1,18 @@
 import React, { useContext } from "react";
 import { useDrop } from "react-dnd";
 import axios from "axios";
-
-import PlaylistContext from "../../../shared/context/playlist-context";
-// import { AuthContext } from "../../../shared/context/auth-context";
 import { useParams } from "react-router-dom";
+
 import "./Playlist.css";
+import PlaylistContext from "../../../shared/context/playlist-context";
 import PlaylistMain from "./PlaylistMain";
 import PlaylistTrans from "./PlaylistTrans";
 
 const Playlist = () => {
   const playlistCtx = useContext(PlaylistContext);
-  // const AuthCtx = useContext(AuthContext);
   const roomId = useParams().roomId;
+
+  // 프리셋 말고 빈 재생목록부분의 드랍존
   const [{ isover }, newplayimg] = useDrop(() => ({
     accept: ["image"],
     drop: (item) => inputnewplay(item.url),
@@ -21,15 +21,15 @@ const Playlist = () => {
     }),
   }));
 
+  // 새로운 사진을 재생목록에 추가(프리셋 말고)
   const inputnewplay = (url) => {
-    console.log("1231", roomId)
     axios
       .post("http://localhost:5000/output/inputnewplay", {
         url: url,
-        roomid:roomId
+        roomid: roomId,
       })
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         playlistCtx.addToPlaylist(res.data);
       });
   };

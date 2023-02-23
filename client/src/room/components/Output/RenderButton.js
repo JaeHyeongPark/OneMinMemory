@@ -3,12 +3,14 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import { AuthContext } from "../../../shared/context/auth-context";
 import axios from "axios";
 import FileDownload from "js-file-download";
+import { useParams } from "react-router-dom";
 
 import infinity from "../../assets/infinity.svg";
 
 const RenderButton = () => {
   const playlistCtx = useContext(PlaylistContext);
-  const AuthCtx = useContext(AuthContext);
+  // const AuthCtx = useContext(AuthContext);
+  const roomId = useParams().roomId;
 
   const merge = () => {
     console.log("다운로드 버튼 클릭 !");
@@ -19,7 +21,7 @@ const RenderButton = () => {
       responseType: "blob",
       data: {
         playlist: playlistCtx.playlist,
-        roomid:AuthCtx.rooomId
+        roomid:roomId
       },
     }).then((res) => {
       FileDownload(res.data, `oneminute_${Date.now()}.mp4`);

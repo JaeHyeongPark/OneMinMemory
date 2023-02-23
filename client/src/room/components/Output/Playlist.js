@@ -3,14 +3,16 @@ import { useDrop } from "react-dnd";
 import axios from "axios";
 
 import PlaylistContext from "../../../shared/context/playlist-context";
-import { AuthContext } from "../../../shared/context/auth-context";
+// import { AuthContext } from "../../../shared/context/auth-context";
+import { useParams } from "react-router-dom";
 import "./Playlist.css";
 import PlaylistMain from "./PlaylistMain";
 import PlaylistTrans from "./PlaylistTrans";
 
 const Playlist = () => {
   const playlistCtx = useContext(PlaylistContext);
-  const AuthCtx = useContext(AuthContext);
+  // const AuthCtx = useContext(AuthContext);
+  const roomId = useParams().roomId;
   const [{ isover }, newplayimg] = useDrop(() => ({
     accept: ["image"],
     drop: (item) => inputnewplay(item.url),
@@ -20,12 +22,14 @@ const Playlist = () => {
   }));
 
   const inputnewplay = (url) => {
+    console.log("1231", roomId)
     axios
       .post("http://localhost:5000/output/inputnewplay", {
         url: url,
-        roomid:AuthCtx.rooomId
+        roomid:roomId
       })
       .then((res) => {
+        console.log(res.data)
         playlistCtx.addToPlaylist(res.data);
       });
   };

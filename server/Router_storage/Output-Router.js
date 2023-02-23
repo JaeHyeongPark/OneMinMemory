@@ -491,17 +491,20 @@ router.post("/playlistpreset", async (req, res, next) => {
   ];
 
   const idx = req.body.idx
+  const src = req.body.src
   const roomid = req.body.roomid
 
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`))
-  playlist = JSON.parse(JSON.stringify(presets[idx]));
+  playlist = presets[idx];
   await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist))
+  await redis.v4.set(`${roomid}/song`, JSON.stringify([idx,src]))
 
   res.json({ results: playlist });
 });
 
 router.post("/postplaylist", async (req, res, next) => {
   const roomid = req.body.roomid
+
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
 
   const url = req.body.url;
@@ -531,9 +534,10 @@ router.post("/deleteplayurl", async (req, res, next) => {
 // 재생목록 click시 이벤트
 router.post("/clickimg", async (req, res, next) => {
   const roomid = req.body.roomid
+  const idx = req.body.idx;
+
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
 
-  const idx = req.body.idx;
   const url = playlist[idx].url;
 
   let check = false;
@@ -570,6 +574,7 @@ router.post("/clickimg", async (req, res, next) => {
       time: time,
       duration: playlist[idx].duration,
       totaltime: totaltime,
+      url:url
     });
   }
 });
@@ -584,7 +589,6 @@ router.post("/inputnewplay", async (req, res, next) => {
     select: false,
     effect: "",
     transition: "",
-    effect:""
   };
 
   let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));

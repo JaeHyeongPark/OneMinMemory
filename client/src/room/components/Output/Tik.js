@@ -2,7 +2,8 @@ import { useContext } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import axios from "axios";
 import PlaylistContext from "../../../shared/context/playlist-context";
-import { AuthContext } from "../../../shared/context/auth-context";
+// import { AuthContext } from "../../../shared/context/auth-context";
+import { useParams } from "react-router-dom";
 
 import lineA from "../../assets/LineA.svg";
 import lineB from "../../assets/LineB.svg";
@@ -10,7 +11,9 @@ import lineC from "../../assets/LineC.svg";
 
 const Tik = (props) => {
   const playlistCtx = useContext(PlaylistContext);
-  const AuthCtx = useContext(AuthContext);
+  // const AuthCtx = useContext(AuthContext);
+  const roomId = useParams().roomId;
+
   // 선택사진의 우측끝 지점을 드래그존으로 설정
   const [{ isDragging }, nowtime] = useDrag(
     () => ({
@@ -51,7 +54,7 @@ const Tik = (props) => {
       .post("http://localhost:5000/output/changetime", {
         time: props.time - time,
         idx: idx,
-        roomid:AuthCtx.rooomId
+        roomid:roomId
       })
       .then((res) => {
         playlistCtx.addToPlaylist(res.data.playlist);

@@ -25,108 +25,20 @@ const upload = multer({ storage: storage }).array("images");
 // const Original = {};
 // const Effect = {};
 
-// 업로드된 s3 서버에 있는 Original 이미지 전송
+// 현재 해당 방에대한 정보를 처음에 싹 보내줌
 router.post("/sendimage", async (req, res, next) => {
-  // const filename = req.body.filename;
-  // const params = {
-  //   Bucket: process.env.Bucket_Name,
-  //   // Prefix : `${req.body.roomNumber}/`
-  //   Prefix: `testroom/${filename}/`,
-  // };
-  // let roomorigin = JSON.parse(await redis.v4.hGet("testroom", "origin"))
-  // let roomeffect = JSON.parse(await redis.v4.hGet("testroom", "effect"))
   const roomid = req.body.roomid
-  console.log(roomid)
+
   const roomorigin = await redis.v4.lRange(`${roomid}/origin`, 0, -1);
   const roomeffect = await redis.v4.lRange(`${roomid}/effect`, 0, -1);
-  res.json({ origin: roomorigin, effect: roomeffect });
+  let roomplaylist = JSON.parse(await redis.v4.get(`${roomid}/playlist`))
+  let roomplaysong = JSON.parse(await redis.v4.get(`${roomid}/song`))
+  console.log(roomplaysong)
+  if (roomplaylist === null) roomplaylist = []
+  if (roomplaysong === null) roomplaysong = [0,'']
 
-  // roomorigin = roomorigin.map((url) => `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/`+ url)
-  // roomeffect = roomeffect.map((url) => `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/`+ url)
-  // console.log(roomorigin)
-
-  // try {
-  //   const data = await s3.listObjectsV2(params).promise();
-  //   for (const info of data.Contents) {
-  //     const url =
-  //       `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
-  //       info.Key;
-  //     if (filename === "Original") {
-  //       if (url in Original) {
-  //         continue;
-  //       } else {
-  //         Original[url] = 0;
-  //       }
-  //     } else {
-  //       if (url in Effect) {
-  //         continue;
-  //       } else {
-  //         Effect[url] = 0;
-  //       }
-  //     }
-  //   }
-  //   if (filename === "Original") {
-  //     res.send(Original);
-  //   } else {
-  //     res.send(Effect);
-  //   }
-  // } catch (err) {
-  //   // 에러 핸들러로 보냄
-  //   return next(err);
-  // }
+  res.json({ origin: roomorigin, effect: roomeffect, playlist:roomplaylist, playsong:roomplaysong});
 });
-
-// 클릭 이벤트 발생시 (레디스로 넘어가면 없어도됨ㅠㅠ...)
-// router.post("/clickimage", (req, res, next) => {
-//   const url = req.body.url;
-//   const mode = req.body.mode;
-//   if (mode === "Original") {
-//     Original[url] = Original[url] ? 0 : 1;
-//     res.send(Original);
-//   } else {
-//     Effect[url] = Effect[url] ? 0 : 1;
-//     res.send(Effect);
-//   }
-// });
-
-// 선택된 이미지 삭제
-// router.post("/deleteimage", async (req, res, next) => {
-//   const mode = req.body.mode;
-//   const selectimg = [];
-
-//   if (mode === "Original") {
-//     Object.keys(Original).forEach((url) => {
-//       if (Original[url] === 1) {
-//         selectimg.push(url);
-//         delete Original[url];
-//       }
-//     });
-//   } else {
-//     Object.keys(Effect).forEach((url) => {
-//       if (Effect[url] === 1) {
-//         selectimg.push(url);
-//         delete Effect[url];
-//       }
-//     });
-//   }
-
-//   try{
-//     for await (let s3url of selectimg) {
-//       const s3key = s3url.split("com/");
-//       await s3.deleteObject({
-//         Bucket: process.env.Bucket_Name,
-//         Key: s3key[1],
-//       }).promise();
-//     }
-//     if (mode === "Original") {
-//       res.send(Original);
-//     } else {
-//       res.send(Effect);
-//     }
-//   }catch(err){
-//     return next(err)
-//   }
-// });
 
 // 업로드 하려고 받은 이미지 s3에 저장
 router.post("/upload", async (req, res, next) => {
@@ -136,7 +48,6 @@ router.post("/upload", async (req, res, next) => {
       res.status(400).send(err);
     }
     const roomid = req.body.roomid
-    console.log(roomid)
     
     // const foldername = "roomNumber"
     const foldername = `${roomid}/Original/`;

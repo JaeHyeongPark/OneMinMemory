@@ -68,7 +68,7 @@ function LoginPage() {
             아래 URL를 통해 친구들을 초대하세요!
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {`http://localhost:3000/rome/${AuthCtx.rooomId}`}
+            {`http://localhost:3000/room/${AuthCtx.rooomId}`}
           </Typography>
           <span style={{ cursor: "pointer" }} onClick={makeroom}>시작하기</span>
         </Box>

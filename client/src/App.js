@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/room/:roomId" element={<Room />} />
-          <Route path="/*" element={<Navigate to="/" />} />
+          {/* <Route path="/*" element={<Navigate to="/" />} /> */}
         </Routes>
       </AuthContextProvider>
     </BrowserRouter>

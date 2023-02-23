@@ -2,14 +2,16 @@ import React from "react";
 import axios from "axios";
 import { useDrop } from "react-dnd";
 import { useContext } from "react";
-import { AuthContext } from "../../../shared/context/auth-context";
+// import { AuthContext } from "../../../shared/context/auth-context";
+import { useParams } from "react-router-dom";
 import PlaylistContext from "../../../shared/context/playlist-context";
 
 import "./Playlist.css";
 
 const PlaylistMain = (props) => {
   const playlistCtx = useContext(PlaylistContext);
-  const AuthCtx = useContext(AuthContext);
+  // const AuthCtx = useContext(AuthContext);
+  const roomid = useParams().roomId;
   // const effect = playlistCtx.playlist[props.idx].effect;
 
   // 삭제 딜레이 커버 체크(상태) 변수
@@ -29,11 +31,12 @@ const PlaylistMain = (props) => {
   }));
   // 이미지 드랍으로 이미지를 재생목록에 추가
   const sendTourl = (url) => {
+    console.log(roomid, "1312313")
     axios
       .post("http://localhost:5000/output/postplaylist", {
         url: url,
         idx: props.i,
-        roomid:AuthCtx.rooomId
+        roomid: roomid
       })
       .then((res) => {
         playlistCtx.addToPlaylist(res.data);
@@ -46,7 +49,7 @@ const PlaylistMain = (props) => {
     axios
       .post("http://localhost:5000/output/deleteplayurl", {
         idx: props.i,
-        roomid:AuthCtx.rooomId
+        roomid: roomid
       })
       .then((res) => {
         playlistCtx.addToPlaylist(res.data);
@@ -61,9 +64,10 @@ const PlaylistMain = (props) => {
     axios
       .post("http://localhost:5000/output/clickimg", {
         idx: props.i,
-        roomid:AuthCtx.rooomId
+        roomid: roomid
       })
       .then((res) => {
+        console.log(res.data.url)
         playlistCtx.changeDT(res.data.duration);
         playlistCtx.changeTT(res.data.totaltime);
         playlistCtx.changeidx(props.i);
@@ -77,7 +81,7 @@ const PlaylistMain = (props) => {
       .post("http://localhost:5000/output/effect", {
         effect,
         idx: props.i,
-        roomid:AuthCtx.rooomId
+        roomid: roomid
       })
       .then((res) => playlistCtx.addToPlaylist(res.data));
   };

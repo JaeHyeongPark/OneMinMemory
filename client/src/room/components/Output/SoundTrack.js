@@ -12,8 +12,10 @@ const SoundTrack = () => {
   const audioRef = useRef("");
 
   useEffect(() => {
-    setNewIdx(playlistCtx.musicidx);
-    setNewSrc(playlistCtx.musicsrc);
+    if (newidx !== playlistCtx.musicidx){
+      setNewSrc(playlistCtx.musicsrc);
+      setNewIdx(playlistCtx.musicidx);
+    }
   }, [playlistCtx.musicidx]);
 
   useEffect(() => {

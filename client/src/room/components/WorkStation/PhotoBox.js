@@ -1,30 +1,39 @@
 import React from "react";
 import { useState, useEffect, useContext} from "react";
-import { AuthContext } from "../../../shared/context/auth-context";
+// import { AuthContext } from "../../../shared/context/auth-context";
 import axios from "axios";
 
 import Cloud from "../../assets/cloud.svg";
 import ImageShow from "./Image_Up_Check_Del/ImageShow";
 import ImageUpload from "./Image_Up_Check_Del/ImageUpload";
 import ImageDel from "./Image_Up_Check_Del/ImageDel";
+import { useParams } from "react-router-dom";
 import ImageContext from "./Image_Up_Check_Del/ImageContext";
+import PlaylistContext from "../../../shared/context/playlist-context";
 import "./PhotoBox.css";
 
 const PhotoBox = (props) => {
   const [cloud, setcloud] = useState(true)
   const [view, setview] = useState({})
   const ToCanvas = useContext(ImageContext)
-  const AuthCtx = useContext(AuthContext);
+  const playlistCtx = useContext(PlaylistContext);
+  const roomId = useParams().roomId;
+  // const AuthCtx = useContext(AuthContext);
 
   useEffect(() => {
     const filename = cloud ? "Original" : "Effect"
-      axios.post("http://localhost:5000/photoBox/sendimage", {filename : filename, roomid:AuthCtx.rooomId}).then((res) => {
+      axios.post("http://localhost:5000/photoBox/sendimage", {filename : filename, roomid:roomId}).then((res) => {
         const origin = {...ToCanvas.origin}
         const effect = {...ToCanvas.effect}
         res.data.origin.forEach((url) => origin[url] = 0)
         res.data.effect.forEach((url) => effect[url] = 0)
+        playlistCtx.addToPlaylist(res.data.playlist)
         ToCanvas.setorigin(origin)
         ToCanvas.seteffect(effect)
+        playlistCtx.changemusicidx(res.data.playsong[0])
+        playlistCtx.selectmusicsrc(res.data.playsong[1])
+  
+        console.log(res.data.playsong)
       });
   }, []);
 

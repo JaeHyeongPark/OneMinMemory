@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import { AuthContext } from "../../../shared/context/auth-context";
+import { useParams } from "react-router-dom";
 
 import music from "../../assets/music.svg";
 import Music from "./Sound/Music";
@@ -32,19 +33,21 @@ const musicItemStyle = {
 
 export default function InsertMusic() {
   const playlistCtx = useContext(PlaylistContext);
-  const AuthCtx = useContext(AuthContext);
+  // const AuthCtx = useContext(AuthContext);
+  const roomId = useParams().roomId;
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [selectedMusicSrc, setSelectedMusicSrc] = useState(null);
   const [selectedMusicIdx, setSelectedMusicIdx] = useState("0");
 
-  const getPresetbyIndex = (idx) => {
+  const getPresetbyIndex = (idx, src) => {
     if (!selectedMusicIdx) {
       return;
     }
     playlistCtx.changemusicidx(selectedMusicIdx);
-    axios.post(`http://localhost:5000/output/playlistpreset`, {idx:idx, roomid:AuthCtx.rooomId}).then((res) => {
+    axios.post(`http://localhost:5000/output/playlistpreset`, {idx:idx, src:src, roomid:roomId}).then((res) => {
+      playlistCtx.selectmusicsrc(src)
       playlistCtx.addToPlaylist(res.data.results);
     });
   };
@@ -74,7 +77,7 @@ export default function InsertMusic() {
             index={10001}
             style={musicItemStyle}
             onClick={() => {
-              setSelectedMusicSrc("./music/abc.mp3");
+              setSelectedMusicSrc("../music/abc.mp3");
               setSelectedMusicIdx("1");
             }}
           >
@@ -87,7 +90,7 @@ export default function InsertMusic() {
             style={musicItemStyle}
             onClick={() => {
               console.log(1)
-              setSelectedMusicSrc("./music/뉴진스.mp3");
+              setSelectedMusicSrc("../music/뉴진스.mp3");
               setSelectedMusicIdx("2");
             }}
           >
@@ -98,8 +101,8 @@ export default function InsertMusic() {
             <Button
               variant="contained"
               onClick={() => {
-                getPresetbyIndex(selectedMusicIdx);
-                playlistCtx.selectmusicsrc(selectedMusicSrc);
+                getPresetbyIndex(selectedMusicIdx, selectedMusicSrc);
+                // playlistCtx.selectmusicsrc(selectedMusicSrc);
                 handleClose();
                 console.log(playlistCtx.musicsrc);
               }}

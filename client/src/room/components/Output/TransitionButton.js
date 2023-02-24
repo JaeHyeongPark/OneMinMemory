@@ -2,11 +2,12 @@ import axios from "axios";
 import { useDrop } from "react-dnd";
 import { useContext } from "react";
 import PlaylistContext from "../../../shared/context/playlist-context";
-
 import { useParams } from "react-router-dom";
-// require("dotenv").config();
-
 import App from "../../../App";
+
+import trans_off from "../../assets/transition_off.png";
+import trans_on from "../../assets/transition_on.png";
+
 const TransitionButton = (props) => {
   const playlistCtx = useContext(PlaylistContext);
   const roomId = useParams().roomId;
@@ -57,22 +58,23 @@ const TransitionButton = (props) => {
   let content;
   if (transition === "") {
     content = (
-      <div
+      <img
         ref={playlist}
-        className={props.className}
+        className="toplay_transOff"
+        src={trans_off}
         style={{
-          width: String((1 * 100) / 60) + "%",
+          width: String((2 * 100) / 60) + "%",
         }}
       />
     );
   } else {
     content = (
-      <div
+      <img
         ref={playlist}
-        className={props.className}
+        className="toplay_transOn"
+        src={trans_on}
         style={{
-          width: String((1 * 100) / 60) + "%",
-          border: "solid 5px #e2f01d",
+          width: String((2 * 100) / 60) + "%",
           cursor: "pointer",
         }}
         onClick={deltransition}

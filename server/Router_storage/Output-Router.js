@@ -455,14 +455,17 @@ module.exports = function (io) {
     io.to(roomid).emit("playlistChangedBasic", { playlist });
   });
 
-  // effect 지우기(해당 인덱스만) 아직 미구현 / 컴포넌트 추가예정
+  // effect 지우기
   router.post("/deleffect", async (req, res, next) => {
     const roomid = req.body.roomid;
-    let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
     const idx = req.body.idx;
+
+    let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
     playlist[idx].effect = "";
+
     await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-    res.send(playlist);
+    res.send({ success: true });
+    io.to(roomid).emit("playlistChangedBasic", { playlist });
   });
 
   // transition효과 playlist에 넣기

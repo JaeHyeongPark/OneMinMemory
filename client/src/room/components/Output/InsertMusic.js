@@ -45,7 +45,6 @@ export default function InsertMusic() {
     if (!selectedMusicIdx) {
       return;
     }
-    playlistCtx.changemusicidx(selectedMusicIdx);
     axios
       .post(process.env.REACT_APP_expressURL + `/output/playlistpreset`, {
         idx: idx,
@@ -53,10 +52,11 @@ export default function InsertMusic() {
         roomid: roomId,
       })
       .then((res) => {
-        if (res.data.success != true) {
+        if (res.data.success !== true) {
           console.log("응답에러");
         }
       });
+      setOpen(false)
   };
   return (
     <div>

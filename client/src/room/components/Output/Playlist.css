@@ -13,6 +13,14 @@
   border-radius: 1em;
   background-color: #3b3c48;
 }
+.toplay_img img{
+  position:absolute;
+  object-fit: cover;
+  width: 40px;
+  height: 35px;
+  margin: 5px;
+  cursor: pointer;
+}
 .playlist_space {
   display: flex;
   flex-grow: 1;
@@ -29,7 +37,7 @@
   row-gap: 0px;
   border: solid 5px #e2e447;
   border-radius: 1em;
-  background-color: #d9e8ef;
+  background-color: #3b3c48;
 }
 .selecttoplay_img .del {
   position: relative;
@@ -40,22 +48,12 @@
   font-size: 16px;
   cursor: pointer;
 }
-.selecttoplay_img .plus {
-  position: relative;
-  background: none;
-  bottom: 30px;
-  border: none;
-  color: red;
-  font-size: 16px;
-  cursor: pointer;
-}
-.selecttoplay_img .minus {
-  position: relative;
-  background: none;
-  bottom: 30px;
-  border: none;
-  color: red;
-  font-size: 16px;
+.selecttoplay_img img{
+  position:absolute;
+  object-fit: cover;
+  width: 40px;
+  height: 35px;
+  margin: 5px;
   cursor: pointer;
 }
 
@@ -76,7 +74,7 @@
   background-repeat: no-repeat;
 }
 
-.toplay_trans {
+.toplay_transOff {
   flex-grow: 0;
   display: flex;
   flex-direction: row;
@@ -84,11 +82,20 @@
   align-items: stretch;
   padding: 0;
   row-gap: 0px;
-  border: solid 0px #000;
-  background-color: #d9e8ef;
-  background-image: url("https://static.thenounproject.com/png/3330269-200.png");
+  border: solid 0px #000; 
+}
+.toplay_transOn {
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
+  row-gap: 0px;
+  /* border: solid 0px #000;
+  background-image: url("../../assets/transition_on.png");
   background-size: contain;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat; */
 }
 
 .toplay_select_img {

@@ -55,10 +55,8 @@ const SoundTrack = () => {
       const rect = canvas.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const proportion = x / actualMusicWidth;
-      console.log(proportion);
       const myAudio = audioRef.current;
       myAudio.currentTime = Wavedata[newidx].duration * proportion;
-      // myAudio.load();
       myAudio.play();
     }
 

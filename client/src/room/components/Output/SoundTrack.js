@@ -12,7 +12,7 @@ const SoundTrack = () => {
   const audioRef = useRef("");
 
   useEffect(() => {
-    if (newidx !== playlistCtx.musicidx){
+    if (newidx !== playlistCtx.musicidx) {
       setNewSrc(playlistCtx.musicsrc);
       setNewIdx(playlistCtx.musicidx);
     }
@@ -55,7 +55,7 @@ const SoundTrack = () => {
       console.log(proportion);
       const myAudio = audioRef.current;
       myAudio.currentTime = Wavedata[newidx].duration * proportion;
-      myAudio.load()
+      myAudio.load();
       myAudio.play();
     }
 

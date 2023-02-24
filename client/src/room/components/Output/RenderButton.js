@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import FileDownload from "js-file-download";
 import { useParams } from "react-router-dom";
-
 import infinity from "../../assets/infinity.svg";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import App from "../../../App";
 
 const style = {
   position: "absolute",
@@ -36,14 +36,21 @@ const RenderButton = () => {
       url: "http://localhost:5000/output/merge",
       responseType: "blob",
       data: {
-        roomid:roomId
+        roomid: roomId,
       },
     }).then((res) => {
       // FileDownload(res.data, `oneminute_${Date.now()}.mp4`);
-      console.log(res.data)
-      setloading(true)
+      console.log(res.data);
+      setloading(true);
     });
   };
+
+  useEffect(() => {
+    App.mainSocket.on("renderingProgress", (data) => {
+      // 여기에 25, 50, 75, 100 순서로 들어옴 100하고 얼마 안지나서 httpresponse 올듯
+      console.log(data.progress);
+    });
+  }, []);
 
   return (
     <div className="render_button_group">

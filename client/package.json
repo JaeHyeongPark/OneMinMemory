@@ -26,6 +26,7 @@
     "react-router-dom": "^6.8.1",
     "react-scripts": "^5.0.1",
     "sharp": "^0.31.3",
+    "socket.io-client": "^4.6.1",
     "videoshow": "^0.1.12",
     "wavesurfer.js": "^6.4.0",
     "web-vitals": "^2.1.4"

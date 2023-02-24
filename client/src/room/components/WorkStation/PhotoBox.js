@@ -11,6 +11,8 @@ import ImageContext from "./Image_Up_Check_Del/ImageContext";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import "./PhotoBox.css";
 
+import App from "../../../App.js";
+
 const PhotoBox = (props) => {
   const [cloud, setcloud] = useState(true);
   const [view, setview] = useState({});
@@ -49,6 +51,19 @@ const PhotoBox = (props) => {
     setcloud(cloud ? false : true);
   };
 
+  App.mainSocket.removeAllListeners("upload");
+  App.mainSocket.on("upload", (data) => {
+    console.log("수신");
+    const neworigin = { ...ToCanvas.origin };
+    data.upimg.forEach((url) => (neworigin[url] = 0));
+    ToCanvas.setorigin(neworigin);
+  });
+  App.mainSocket.removeAllListeners("edit");
+  App.mainSocket.on("edit", (data) => {
+    const neweffect = { ...ToCanvas.effect };
+    neweffect[data.editedUrl] = 0;
+    ToCanvas.seteffect(neweffect);
+  });
   return (
     <React.Fragment>
       <div className="title_and_photobox">

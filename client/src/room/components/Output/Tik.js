@@ -8,6 +8,8 @@ import lineA from "../../assets/LineA.svg";
 import lineB from "../../assets/LineB.svg";
 import lineC from "../../assets/LineC.svg";
 
+import App from "../../../App";
+
 const Tik = (props) => {
   const playlistCtx = useContext(PlaylistContext);
   const roomId = useParams().roomId;
@@ -47,7 +49,9 @@ const Tik = (props) => {
     if (props.time < time - DT + 1 || TT + (props.time - time) > 60) {
       return;
     }
-
+    if (App.playlistPermissionState !== 1) {
+      return;
+    }
     axios
       .post("http://localhost:5000/output/changetime", {
         time: props.time - time,
@@ -55,9 +59,9 @@ const Tik = (props) => {
         roomid: roomId,
       })
       .then((res) => {
-        playlistCtx.addToPlaylist(res.data.playlist);
-        playlistCtx.changetime("");
-        playlistCtx.changeDT(res.data.DT);
+        if (res.data.success != true) {
+          console.log("응답에러");
+        }
       });
   };
 

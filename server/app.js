@@ -1,3 +1,5 @@
+const socketio = require("socket.io");
+const http = require("http");
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -14,26 +16,32 @@ const Socket_router = require("./Router_storage/Socket-Router");
 // const cluster = require("cluster");
 //=====================================================================
 // router 추가 by 충일
-const http = require("http");
-// const s3 = new AWS.S3()
+// express 기반 http server 생성과 socket 연결 by 충일
 const app = express();
+const httpServer = http.createServer(app);
+const io = new socketio.Server(httpServer, {
+  path: "/mainsocket",
+  cors: {
+    origin: "http://localhost:3000",
+    credentials: true,
+    methods: ["GET", "POST", "OPTIONS"],
+  },
+});
 app.use(cors());
 app.use(bodyParser.json());
+// socket 라우터는 여기로~ by 충일
+app.use("/mainsocket", Socket_router(io));
+// const s3 = new AWS.S3()
 
 // app.use(morgan("combined"));
 // photoBox 라우터는 다 여기로 슝슝~~
-app.use("/photoBox", AWS_S3_router);
+app.use("/photoBox", AWS_S3_router(io));
 // canvas 라우터는 여기로~~
-app.use("/canvas", Canvas_router);
+app.use("/canvas", Canvas_router(io));
 // output 라우터는 일루~
-app.use("/output", Output_router);
+app.use("/output", Output_router(io));
 // MainPage 라우터는 여기로~~~
 app.use("/home", MainPage_router);
-
-// socket IO용 모듈 import by 충일
-const socketio = require("socket.io");
-// express 기반 http server 생성과 socket 연결 by 충일
-const httpServer = http.createServer(app);
 
 //===========클러스터 관련 코드(작업중)=============
 // setupMaster(httpServer, {
@@ -46,17 +54,6 @@ const httpServer = http.createServer(app);
 // setupPrimary();
 //=======================================
 
-const io = new socketio.Server(httpServer, {
-  path: "/mainsocket",
-  cors: {
-    origin: "http://localhost:3000",
-    credentials: true,
-    methods: ["GET", "POST", "OPTIONS"],
-  },
-});
-
-// socket 라우터는 여기로~ by 충일
-app.use("/mainsocket", Socket_router(io));
 // socket.io error handling
 io.on("error", (err) => {
   console.error("Socket.IO Error:", err);

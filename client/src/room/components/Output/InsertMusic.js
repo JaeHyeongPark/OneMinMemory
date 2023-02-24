@@ -10,6 +10,7 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import music from "../../assets/music.svg";
 import Music from "./Sound/Music";
 import axios from "axios";
+import App from "../../../App";
 
 const style = {
   position: "absolute",
@@ -51,8 +52,9 @@ export default function InsertMusic() {
         roomid: roomId,
       })
       .then((res) => {
-        playlistCtx.selectmusicsrc(src);
-        playlistCtx.addToPlaylist(res.data.results);
+        if (res.data.success != true) {
+          console.log("응답에러");
+        }
       });
   };
   return (

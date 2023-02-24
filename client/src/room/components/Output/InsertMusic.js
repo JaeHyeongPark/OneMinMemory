@@ -39,7 +39,6 @@ export default function InsertMusic() {
   const handleClose = () => setOpen(false);
   const [selectedMusicSrc, setSelectedMusicSrc] = useState(null);
   const [selectedMusicIdx, setSelectedMusicIdx] = useState("0");
-  const AuthCtx = useContext(AuthContext);
 
   const getPresetbyIndex = (idx, src) => {
     if (!selectedMusicIdx) {

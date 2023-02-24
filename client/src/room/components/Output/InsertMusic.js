@@ -39,6 +39,7 @@ export default function InsertMusic() {
   const handleClose = () => setOpen(false);
   const [selectedMusicSrc, setSelectedMusicSrc] = useState(null);
   const [selectedMusicIdx, setSelectedMusicIdx] = useState("0");
+  const AuthCtx = useContext(AuthContext);
 
   const getPresetbyIndex = (idx, src) => {
     if (!selectedMusicIdx) {
@@ -107,9 +108,6 @@ export default function InsertMusic() {
               variant="contained"
               onClick={() => {
                 getPresetbyIndex(selectedMusicIdx, selectedMusicSrc);
-                // playlistCtx.selectmusicsrc(selectedMusicSrc);
-                handleClose();
-                console.log(playlistCtx.musicsrc);
               }}
             >
               선택

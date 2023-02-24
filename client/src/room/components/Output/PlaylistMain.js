@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import App from "../../../App";
+import ClearIcon from "@mui/icons-material/Clear";
 
 import "./Playlist.css";
 
@@ -117,9 +118,9 @@ const PlaylistMain = (props) => {
       onClick={Clickimg}
     >
       {props.select && (
-        <button className="del" onClick={deleteimg}>
+        <ClearIcon className="del" onClick={deleteimg}>
           X
-        </button>
+        </ClearIcon>
       )}
     </div>
   );

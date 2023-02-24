@@ -4,6 +4,7 @@ import RoomCodeContext from "../../shared/context/roomcode-context";
 
 import RoomHeader from "../components/RoomHeader/RoomHeader";
 import Contents from "./Contents";
+import "./Room.css";
 
 import App from "../../App";
 
@@ -31,7 +32,7 @@ const Room = () => {
     <RoomCodeContext.Provider value={Math.floor(Math.random() * 1000)}>
       <React.Fragment>
         <RoomHeader />
-        <main width="100%">
+        <main className="main-box">
           <Contents />
         </main>
       </React.Fragment>

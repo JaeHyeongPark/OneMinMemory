@@ -71,7 +71,11 @@ const Tik = (props) => {
     content = (
       <div
         ref={nowtime}
-        style={{ height: "40px", backgroundColor: "red", cursor: "col-resize" }}
+        style={{
+          height: "100px",
+          backgroundColor: "red",
+          cursor: "col-resize",
+        }}
       >
         |
       </div>

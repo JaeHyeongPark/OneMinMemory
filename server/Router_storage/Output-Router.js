@@ -5,11 +5,7 @@ const redis = require("./RedisClient");
 const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const { spawn } = require("child_process");
-// const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
-// const ffprobePath = require("@ffprobe-installer/ffprobe").path;
 const ffmpeg = require("fluent-ffmpeg");
-// ffmpeg.setFfmpegPath(ffmpegPath);
-// ffmpeg.setFfprobePath(ffprobePath);
 const fs = require("fs");
 const io = require("../app");
 AWS.config.update({
@@ -51,7 +47,6 @@ const effectFilters = {
   ],
 };
 
-// 랜더링시 이미지 -> 영상으로 변환
 function getImages(inputPath, width, height) {
   return new Promise((resolve, reject) => {
     const promises = [];

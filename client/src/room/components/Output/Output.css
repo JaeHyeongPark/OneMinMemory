@@ -1,6 +1,6 @@
 .ROOM-FOOTER {
   width: 100%;
-  height: 240px;
+  height: 35%;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
@@ -66,15 +66,15 @@
 
 .ROOM-FOOTER-TEST {
   width: 80%;
-  height: 240px;
+  height: 70%;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
   padding: 5px 20px;
-  border: solid 1px #272833;
-  background-color: #d9e8ef;
+  border: groove 5px rgba(231, 207, 207, 0.1);
+  background-color: #272833;
 }
 
 .insert_music_button {
@@ -235,7 +235,7 @@ img.infinity {
 }
 
 .TimeandBar {
-  height: 90px;
+  height: 20%;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
@@ -246,7 +246,7 @@ img.infinity {
 }
 
 .TimeBar {
-  height: 40px;
+  height: 30px;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
@@ -255,11 +255,6 @@ img.infinity {
   align-items: flex-start;
   padding: 0 20px;
 }
-/* .TimeBar .timediv{
-  width: 100%;
-  display: flex;
-  justify-content: center;
-} */
 
 .time {
   height: 34px;

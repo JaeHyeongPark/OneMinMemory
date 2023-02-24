@@ -4,6 +4,7 @@ import ImageContext from "./ImageContext";
 import { useParams } from "react-router-dom";
 import softwareupload from "../../../assets/software-upload.svg";
 import App from "../../../../App.js";
+import Button from "@mui/material/Button";
 
 const ImageUpload = (props) => {
   const ToCanvas = useContext(ImageContext);
@@ -37,19 +38,18 @@ const ImageUpload = (props) => {
   };
 
   return (
-    <div>
-      <label className="uploadButton" htmlFor="upload">
-        <img src={softwareupload} className="img.software-upload" alt="a" />
-      </label>
+    <Button className="upload_button" variant="contained" component="label">
+      <img src={softwareupload} alt="upload"></img>
       <input
         type="file"
         className="uploadinput"
         id="upload"
+        hidden
         accept="image/*"
         multiple
         onChange={uploadimage}
       />
-    </div>
+    </Button>
   );
 };
 export default ImageUpload;

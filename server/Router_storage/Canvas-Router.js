@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const axios = require("axios");
 const multer = require("multer");
 const redis = require("./RedisClient");
+const redis = require("./RedisClient");
 
 dotenv.config();
 AWS.config.update({

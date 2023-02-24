@@ -4,7 +4,7 @@ import FileDownload from "js-file-download";
 import { useParams } from "react-router-dom";
 import infinity from "../../assets/infinity.svg";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import loadGif from "./RenderLoading.gif";
 import Modal from "@mui/material/Modal";
 import App from "../../../App";
 
@@ -25,30 +25,54 @@ const RenderButton = () => {
   const roomId = useParams().roomId;
   const [open, setOpen] = useState(false);
   const [loading, setloading] = useState(false);
+  const [percent, setpercent] = useState("");
+  const [finalUrl, setfinalUrl] = useState('')
   const handleClose = () => setOpen(false);
 
   const merge = (e) => {
     e.preventDefault();
     setOpen(true);
-    console.log("다운로드 버튼 클릭 !");
+    if (finalUrl === ''){
+      axios({
+        method: "post",
+        url: "http://localhost:5000/output/merge",
+        data: {
+          roomid: roomId,
+        },
+      }).then((res) => {
+        setfinalUrl(res.data)
+        setloading(true);
+      });
+    }
+  };
+
+  const download = (e) => {
+    e.preventDefault()
     axios({
       method: "post",
-      url: "http://localhost:5000/output/merge",
+      url: "http://localhost:5000/output/download",
       responseType: "blob",
       data: {
         roomid: roomId,
       },
     }).then((res) => {
-      // FileDownload(res.data, `oneminute_${Date.now()}.mp4`);
-      console.log(res.data);
-      setloading(true);
+      console.log(res.data)
+      FileDownload(res.data, `oneminute_${Date.now()}.mp4`);
     });
-  };
+  }
+
+  const CopyLink = async (e) => {
+    e.preventDefault()
+    try{
+      await navigator.clipboard.writeText(finalUrl)
+    }catch(err){
+      console.error(err)
+    }
+  }
 
   useEffect(() => {
     App.mainSocket.on("renderingProgress", (data) => {
-      // 여기에 25, 50, 75, 100 순서로 들어옴 100하고 얼마 안지나서 httpresponse 올듯
-      console.log(data.progress);
+      setpercent(data.progress);
     });
   }, []);
 
@@ -69,14 +93,17 @@ const RenderButton = () => {
             <div className="video-player"></div>
             <div className="modal-content">
               {loading ? (
-                <video src="../TransitionList/diagtl.mp4" controls />
+                <video src={finalUrl} controls />
               ) : (
-                "loading...."
+                <>
+                  <img src={loadGif} />
+                  현재 {percent} % 진행중..
+                </>
               )}
             </div>
             <div className="button-container">
-              <button>업로드</button>
-              <button>링크</button>
+              <button onClick={download}>다운로드</button>
+              <button onClick={CopyLink}>링크</button>
               <button onClick={() => setOpen(false)}>나가기</button>
             </div>
           </div>

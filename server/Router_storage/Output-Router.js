@@ -240,7 +240,7 @@ function mergeTransitions(inputPath, durations, transitions) {
 }
 
 // 최종 완성본에 Audio추가
-function addAudio(inputPath) {
+function addAudio(inputPath, roomid) {
   return new Promise((resolve, reject) => {
     // Use ffprobe to get input duration
     const ffprobe = spawn("ffprobe", [
@@ -264,7 +264,7 @@ function addAudio(inputPath) {
       } else {
         console.log(`Input duration: ${inputDuration}`);
         // Use inputDuration in your ffmpeg command
-        const finishedVideo = `./Router_storage/output/oneminute_${Date.now()}.mp4`;
+        const finishedVideo = `./Router_storage/output/oneminute_${roomid}.mp4`;
         ffmpeg(inputPath)
           .videoCodec("libx264")
           .audioCodec("libmp3lame")
@@ -290,6 +290,25 @@ function addAudio(inputPath) {
     });
   });
 }
+
+// 최종 완성본 S3 저장
+const AddS3 = async (Path, VideoKey) => {
+  const params = {
+    Bucket: process.env.Bucket_Name,
+    Key: VideoKey,
+    ACL: "public-read",
+    Body: fs.createReadStream(Path),
+    ContentType: "video/mp4",
+    CacheControl: "no-store",
+  };
+  return s3.upload(params).promise();
+};
+
+// 최종 완성본 다운로드 버튼
+router.post("/download", (req, res, next) => {
+  const roomid = req.body.roomid
+  res.download(`./Router_storage/output/oneminute_${roomid}.mp4`)
+})
 
 module.exports = function (io) {
   const presets = [
@@ -369,6 +388,7 @@ module.exports = function (io) {
       },
     ],
   ];
+
   // 랜더링시 호출(각 단계별로 진행되며 이미지로 영상을 추출)
   router.post("/merge", async (req, res, next) => {
     const roomid = req.body.roomid;
@@ -409,7 +429,7 @@ module.exports = function (io) {
     result = end3.getTime() - start.getTime();
     console.log("소요시간", result);
 
-    const finishedPath = await addAudio(transedPath);
+    const finishedPath = await addAudio(transedPath, roomid);
     // 100퍼 진행됐음을 클라이언트에 알림
     io.to(req.body.roomid).emit("renderingProgress", { progress: 100 });
     let end4 = new Date();
@@ -420,9 +440,12 @@ module.exports = function (io) {
     result = end4.getTime() - start.getTime();
     console.log("소요시간", result);
 
-    // res.download(finishedPath);
-    res.send(finishedPath);
-    // res.json({ message: "success" });
+    // S3에 영상 저장
+    const VideoKey = `${roomid}/Final/oneminute_${roomid}.mp4`;
+    await AddS3(finishedPath, VideoKey);
+    console.log("영상 S3 저장 완료");
+    
+    res.send("https://oneminutememory.s3.ap-northeast-2.amazonaws.com/" + VideoKey)
   });
 
   // effect효과 playlist에 넣기
@@ -494,7 +517,7 @@ module.exports = function (io) {
     await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
     await redis.v4.set(`${roomid}/song`, JSON.stringify([idx, src]));
     res.send({ success: true });
-    io.to(roomid).emit("playlistpreset", { playlist, src });
+    io.to(roomid).emit("playlistpreset", { playlist, src, idx });
   });
 
   // 프리셋에 이미지 넣기
@@ -624,15 +647,5 @@ module.exports = function (io) {
     });
   });
 
-  // (소켓) playlist넘겨줄 정보
-  router.post("/sendplaylist", async (req, res, next) => {
-    const roomid = req.body.roomid;
-    let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
-    // 인덱스 0번이 idx, 1번이 src
-    const musicinfo = JSON.parse(await redis.v4.get(`${roomid}/song`));
-
-    // 이것만 playlist context에 담아주면 재생목록쪽은 올클리어
-    res.json({ playlist, musicinfo });
-  });
   return router;
 };

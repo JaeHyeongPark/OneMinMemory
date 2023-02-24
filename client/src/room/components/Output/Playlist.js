@@ -61,6 +61,7 @@ const Playlist = () => {
     });
     App.mainSocket.on("playlistpreset", (data) => {
       playlistCtx.selectmusicsrc(data.src);
+      playlistCtx.changemusicidx(data.idx)
       playlistCtx.addToPlaylist(data.playlist);
     });
   }, []);

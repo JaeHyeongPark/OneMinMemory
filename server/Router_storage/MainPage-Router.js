@@ -10,11 +10,10 @@ router.get("/roomid", async (req, res, next) => {
 });
 
 router.post("/makeroom", async (req, res, next) => {
-  const roomid = req.body.id;
-  console.log(roomid);
-  await redis.v4.set(`${roomid}`, "ture");
-  res.send("완료");
-});
+    const roomid = req.body.id
+    await redis.v4.set(`${roomid}`, "ture")
+    res.send("완료")
+})
 
 router.post("/check", async (req, res, next) => {
   const check = await redis.v4.get(`${req.body.id}`);

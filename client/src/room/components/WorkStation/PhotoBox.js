@@ -11,6 +11,8 @@ import ImageContext from "./Image_Up_Check_Del/ImageContext";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import "./PhotoBox.css";
 
+import App from "../../../App.js";
+
 const PhotoBox = (props) => {
   const [cloud, setcloud] = useState(true);
   const [view, setview] = useState({});
@@ -18,11 +20,10 @@ const PhotoBox = (props) => {
   const playlistCtx = useContext(PlaylistContext);
   const roomId = useParams().roomId;
 
+  // 처음 방에 들어오면 해당 방에 대한 정보를 싸악 받는다.
   useEffect(() => {
-    const filename = cloud ? "Original" : "Effect";
     axios
       .post("http://localhost:5000/photoBox/sendimage", {
-        filename: filename,
         roomid: roomId,
       })
       .then((res) => {
@@ -35,8 +36,6 @@ const PhotoBox = (props) => {
         ToCanvas.seteffect(effect);
         playlistCtx.changemusicidx(res.data.playsong[0]);
         playlistCtx.selectmusicsrc(res.data.playsong[1]);
-
-        console.log(res.data.playsong);
       });
   }, []);
 
@@ -52,6 +51,19 @@ const PhotoBox = (props) => {
     setcloud(cloud ? false : true);
   };
 
+  App.mainSocket.removeAllListeners("upload");
+  App.mainSocket.on("upload", (data) => {
+    console.log("수신");
+    const neworigin = { ...ToCanvas.origin };
+    data.upimg.forEach((url) => (neworigin[url] = 0));
+    ToCanvas.setorigin(neworigin);
+  });
+  App.mainSocket.removeAllListeners("edit");
+  App.mainSocket.on("edit", (data) => {
+    const neweffect = { ...ToCanvas.effect };
+    neweffect[data.editedUrl] = 0;
+    ToCanvas.seteffect(neweffect);
+  });
   return (
     <React.Fragment>
       <div className="title_and_photobox">

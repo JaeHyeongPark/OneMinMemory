@@ -151,3 +151,29 @@
   /* gap: 5px; */
   padding: 0px;
 }
+.modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.modal-content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content video{
+  width: 80rem;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  gap: 25%;
+  /* styles for button container */
+}

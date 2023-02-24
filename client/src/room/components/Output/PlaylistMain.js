@@ -4,6 +4,7 @@ import { useDrop } from "react-dnd";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import PlaylistContext from "../../../shared/context/playlist-context";
+import App from "../../../App";
 import ClearIcon from "@mui/icons-material/Clear";
 
 import "./Playlist.css";
@@ -11,9 +12,6 @@ import "./Playlist.css";
 const PlaylistMain = (props) => {
   const playlistCtx = useContext(PlaylistContext);
   const roomid = useParams().roomId;
-
-  // 삭제 딜레이 커버 체크(상태) 변수
-  let check = true;
 
   // playlist 드랍존
   const [{ isover }, playlist] = useDrop(() => ({
@@ -32,6 +30,9 @@ const PlaylistMain = (props) => {
 
   // 이미지 드랍으로 이미지를 재생목록에 추가
   const sendTourl = (url) => {
+    if (App.playlistPermissionState !== 1) {
+      return;
+    }
     axios
       .post("http://localhost:5000/output/postplaylist", {
         url: url,
@@ -39,53 +40,66 @@ const PlaylistMain = (props) => {
         roomid: roomid,
       })
       .then((res) => {
-        playlistCtx.addToPlaylist(res.data);
+        if (res.data.success != true) {
+          console.log("응답에러");
+        }
       });
   };
 
   // 클릭후 삭제 버튼
   const deleteimg = (e) => {
+    if (App.playlistPermissionState !== 1) {
+      return;
+    }
     e.preventDefault();
-    check = false;
+    App.check = false;
     axios
       .post("http://localhost:5000/output/deleteplayurl", {
         idx: props.i,
         roomid: roomid,
       })
       .then((res) => {
-        playlistCtx.addToPlaylist(res.data);
-        playlistCtx.changetime("");
-        check = true;
+        if (res.data.success != true) {
+          console.log("응답에러");
+        }
       });
   };
 
   // 재생목록 사진 클릭시 상황에 맞게 이벤트
   const Clickimg = (e) => {
+    if (App.playlistPermissionState !== 1) {
+      return;
+    }
     e.preventDefault();
-    if (!check) return;
+    if (!App.check) return;
     axios
       .post("http://localhost:5000/output/clickimg", {
         idx: props.i,
         roomid: roomid,
       })
       .then((res) => {
-        playlistCtx.changeDT(res.data.duration);
-        playlistCtx.changeTT(res.data.totaltime);
-        playlistCtx.changeidx(props.i);
-        playlistCtx.addToPlaylist(res.data.playlist);
-        playlistCtx.changetime(res.data.time);
+        if (res.data.success != true) {
+          console.log("응답에러");
+        }
       });
   };
 
   // 드래그로 effect 적용
   const sendToeffect = (effect) => {
+    if (App.playlistPermissionState !== 1) {
+      return;
+    }
     axios
       .post("http://localhost:5000/output/effect", {
         effect,
         idx: props.i,
         roomid: roomid,
       })
-      .then((res) => playlistCtx.addToPlaylist(res.data));
+      .then((res) => {
+        if (res.data.success != true) {
+          console.log("응답에러");
+        }
+      });
   };
 
   return (

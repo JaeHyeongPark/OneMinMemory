@@ -175,9 +175,10 @@ function Canvas() {
         },
       })
       .then((res) => {
-        const effect = { ...ToCanvas.effect };
-        effect[res.data] = 0;
-        ToCanvas.seteffect(effect);
+        if (res.data.success != true) {
+          console.log("응답에러");
+          return;
+        }
         // 수정한 사진 저장하면 새로운 캔버스를 깔아준다.
         const canvas = canvasRef.current;
         canvas.style = {};

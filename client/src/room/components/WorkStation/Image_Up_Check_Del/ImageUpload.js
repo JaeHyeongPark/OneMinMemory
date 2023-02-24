@@ -3,6 +3,7 @@ import { useContext } from "react";
 import ImageContext from "./ImageContext";
 import { useParams } from "react-router-dom";
 import softwareupload from "../../../assets/software-upload.svg";
+import App from "../../../../App.js";
 import Button from "@mui/material/Button";
 
 const ImageUpload = (props) => {
@@ -27,9 +28,9 @@ const ImageUpload = (props) => {
         },
       })
       .then((res) => {
-        const neworigin = { ...ToCanvas.origin };
-        res.data.forEach((url) => (neworigin[url] = 0));
-        ToCanvas.setorigin(neworigin);
+        if (res.data.success != true) {
+          console.log("응답에러");
+        }
       })
       .catch((err) => {
         console.log(err);

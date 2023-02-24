@@ -9,6 +9,60 @@
   align-items: flex-start;
   padding: 0;
 }
+.permission_button_group {
+  width: 190px;
+  height: 30px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+.permission_button_disable {
+  width: 190px;
+  height: 30px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: solid 2px #e74733;
+  background-color: #e74733;
+}
+.permission_button {
+  width: 190px;
+  height: 30px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: solid 2px #e74733;
+  background-color: #ffc043;
+  cursor: pointer;
+}
+
+.permission_label_able {
+  height: 28px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: black;
+  cursor: pointer;
+}
 
 .ROOM-FOOTER-TEST {
   width: 80%;

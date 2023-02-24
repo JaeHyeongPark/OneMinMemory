@@ -5,6 +5,7 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 
 import { useParams } from "react-router-dom";
 
+import App from "../../../App";
 const TransitionButton = (props) => {
   const playlistCtx = useContext(PlaylistContext);
   const roomId = useParams().roomId;
@@ -20,22 +21,36 @@ const TransitionButton = (props) => {
   const transition = playlistCtx.playlist[props.idx].transition;
 
   const sendTotransition = (transition) => {
+    if (App.playlistPermissionState !== 1) {
+      return;
+    }
     axios
       .post("http://localhost:5000/output/transition", {
         transition,
         idx: props.idx,
         roomid: roomId,
       })
-      .then((res) => playlistCtx.addToPlaylist(res.data));
+      .then((res) => {
+        if (res.data.success != true) {
+          console.log("응답에러");
+        }
+      });
   };
   const deltransition = (e) => {
+    if (App.playlistPermissionState !== 1) {
+      return;
+    }
     e.preventDefault();
     axios
       .post("http://localhost:5000/output/deltransition", {
         idx: props.idx,
         roomid: roomId,
       })
-      .then((res) => playlistCtx.addToPlaylist(res.data));
+      .then((res) => {
+        if (res.data.success != true) {
+          console.log("응답에러");
+        }
+      });
   };
 
   let content;

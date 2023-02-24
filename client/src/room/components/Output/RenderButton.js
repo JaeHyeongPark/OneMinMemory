@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import loadGif from "./RenderLoading.gif";
 import Modal from "@mui/material/Modal";
 import App from "../../../App";
+// require("dotenv").config();
 
 const style = {
   position: "absolute",
@@ -26,49 +27,49 @@ const RenderButton = () => {
   const [open, setOpen] = useState(false);
   const [loading, setloading] = useState(false);
   const [percent, setpercent] = useState("");
-  const [finalUrl, setfinalUrl] = useState('')
+  const [finalUrl, setfinalUrl] = useState("");
   const handleClose = () => setOpen(false);
 
   const merge = (e) => {
     e.preventDefault();
     setOpen(true);
-    if (finalUrl === ''){
+    if (finalUrl === "") {
       axios({
         method: "post",
-        url: "http://localhost:5000/output/merge",
+        url: process.env.REACT_APP_expressURL + "/output/merge",
         data: {
           roomid: roomId,
         },
       }).then((res) => {
-        setfinalUrl(res.data)
+        setfinalUrl(res.data);
         setloading(true);
       });
     }
   };
 
   const download = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     axios({
       method: "post",
-      url: "http://localhost:5000/output/download",
+      url: process.env.REACT_APP_expressURL + "/output/download",
       responseType: "blob",
       data: {
         roomid: roomId,
       },
     }).then((res) => {
-      console.log(res.data)
+      console.log(res.data);
       FileDownload(res.data, `oneminute_${Date.now()}.mp4`);
     });
-  }
+  };
 
   const CopyLink = async (e) => {
-    e.preventDefault()
-    try{
-      await navigator.clipboard.writeText(finalUrl)
-    }catch(err){
-      console.error(err)
+    e.preventDefault();
+    try {
+      await navigator.clipboard.writeText(finalUrl);
+    } catch (err) {
+      console.error(err);
     }
-  }
+  };
 
   useEffect(() => {
     App.mainSocket.on("renderingProgress", (data) => {

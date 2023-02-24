@@ -12,6 +12,7 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import "./PhotoBox.css";
 
 import App from "../../../App.js";
+// require("dotenv").config();
 
 const PhotoBox = (props) => {
   const [cloud, setcloud] = useState(true);
@@ -23,7 +24,7 @@ const PhotoBox = (props) => {
   // 처음 방에 들어오면 해당 방에 대한 정보를 싸악 받는다.
   useEffect(() => {
     axios
-      .post("http://localhost:5000/photoBox/sendimage", {
+      .post(process.env.REACT_APP_expressURL + "/photoBox/sendimage", {
         roomid: roomId,
       })
       .then((res) => {

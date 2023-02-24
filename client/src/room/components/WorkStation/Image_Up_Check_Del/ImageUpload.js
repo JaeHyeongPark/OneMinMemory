@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import softwareupload from "../../../assets/software-upload.svg";
 import App from "../../../../App.js";
 import Button from "@mui/material/Button";
+// require("dotenv").config();
 
 const ImageUpload = (props) => {
   const ToCanvas = useContext(ImageContext);
@@ -22,7 +23,7 @@ const ImageUpload = (props) => {
     formdata.append("roomid", roomId);
 
     axios
-      .post("http://localhost:5000/photoBox/upload", formdata, {
+      .post(process.env.REACT_APP_expressURL + "/photoBox/upload", formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

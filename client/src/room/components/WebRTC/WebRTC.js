@@ -42,14 +42,17 @@ const RTC_config = {
     { urls: "stun:stun4.l.google.com:19302" },
     {
       urls: [
-        "stun:15.165.18.173:3478",
-        "turn:15.165.18.173:3478?transport=udp",
+        "stun:" + process.env.REACT_APP_TurnIP1 + ":3478",
+        "turn:" + process.env.REACT_APP_TurnIP1 + ":3478?transport=udp",
       ],
       username: "choongil",
       credential: "Lee",
     },
     {
-      urls: ["stun:43.201.60.133", "turn:43.201.60.133:3478?transport=udp"],
+      urls: [
+        "stun:" + process.env.REACT_APP_TurnIP2 + ":3478",
+        "turn:" + process.env.REACT_APP_TurnIP2 + ":3478?transport=udp",
+      ],
       username: "choongil",
       credential: "Lee",
     },

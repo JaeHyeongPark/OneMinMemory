@@ -8,6 +8,7 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import PlaylistMain from "./PlaylistMain";
 import PlaylistTrans from "./PlaylistTrans";
 import App from "../../../App";
+// require("dotenv").config();
 
 const Playlist = () => {
   const playlistCtx = useContext(PlaylistContext);
@@ -28,7 +29,7 @@ const Playlist = () => {
       return;
     }
     axios
-      .post("http://localhost:5000/output/inputnewplay", {
+      .post(process.env.REACT_APP_expressURL + "/output/inputnewplay", {
         url: url,
         roomid: roomId,
       })
@@ -61,7 +62,7 @@ const Playlist = () => {
     });
     App.mainSocket.on("playlistpreset", (data) => {
       playlistCtx.selectmusicsrc(data.src);
-      playlistCtx.changemusicidx(data.idx)
+      playlistCtx.changemusicidx(data.idx);
       playlistCtx.addToPlaylist(data.playlist);
     });
   }, []);

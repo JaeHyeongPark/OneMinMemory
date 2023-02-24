@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+// require("dotenv").config();
 
 const PlaylistContext = createContext({
   playlist: [],
@@ -31,7 +32,9 @@ export const PlaylistContextProvider = (props) => {
 
   useEffect(() => {
     axios
-      .post("http://localhost:5000/output/getplaylist", { roomid: roomId })
+      .post(process.env.REACT_APP_expressURL + "/output/getplaylist", {
+        roomid: roomId,
+      })
       .then((res) => {
         setPlaylist(res.data);
       });

@@ -4,6 +4,7 @@ import { useContext } from "react";
 import PlaylistContext from "../../../shared/context/playlist-context";
 
 import { useParams } from "react-router-dom";
+// require("dotenv").config();
 
 import App from "../../../App";
 const TransitionButton = (props) => {
@@ -25,7 +26,7 @@ const TransitionButton = (props) => {
       return;
     }
     axios
-      .post("http://localhost:5000/output/transition", {
+      .post(process.env.REACT_APP_expressURL + "/output/transition", {
         transition,
         idx: props.idx,
         roomid: roomId,
@@ -42,7 +43,7 @@ const TransitionButton = (props) => {
     }
     e.preventDefault();
     axios
-      .post("http://localhost:5000/output/deltransition", {
+      .post(process.env.REACT_APP_expressURL + "/output/deltransition", {
         idx: props.idx,
         roomid: roomId,
       })

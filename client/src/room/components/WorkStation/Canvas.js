@@ -8,6 +8,7 @@ import "./Canvas.css";
 import SidebarItem from "./SidebarItem";
 import Effect from "./Effects/Effect";
 import Transition from "./Transitions/Transition";
+// require("dotenv").config();
 
 const DEFAULT_OPTIONS = [
   {
@@ -169,7 +170,7 @@ function Canvas() {
 
     //checked
     await axios
-      .post("http://localhost:5000/canvas/newimage", formdata, {
+      .post(process.env.REACT_APP_expressURL + "/canvas/newimage", formdata, {
         headers: {
           "content-type": "multipart/form-data",
         },
@@ -201,11 +202,15 @@ function Canvas() {
     formdata.append(`${name}ImageData`, imageData);
     formdata.append("roomid", roomId);
     await axios
-      .post(`http://localhost:5000/canvas/image/${name}`, formdata, {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      })
+      .post(
+        process.env.REACT_APP_expressURL + `/canvas/image/${name}`,
+        formdata,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        }
+      )
       .then((res) => {
         console.log("this is res", res);
 

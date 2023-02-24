@@ -44,7 +44,6 @@ export default function InsertMusic() {
     if (!selectedMusicIdx) {
       return;
     }
-    playlistCtx.changemusicidx(selectedMusicIdx);
     axios
       .post(`http://localhost:5000/output/playlistpreset`, {
         idx: idx,
@@ -56,6 +55,7 @@ export default function InsertMusic() {
           console.log("응답에러");
         }
       });
+      setOpen(false)
   };
   return (
     <div>

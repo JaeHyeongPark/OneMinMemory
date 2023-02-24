@@ -33,7 +33,7 @@ const Playlist = () => {
         roomid: roomId,
       })
       .then((res) => {
-        if (res.data.success != true) {
+        if (res.data.success !== true) {
           console.log("응답에러");
         }
       });
@@ -61,7 +61,7 @@ const Playlist = () => {
     });
     App.mainSocket.on("playlistpreset", (data) => {
       playlistCtx.selectmusicsrc(data.src);
-      playlistCtx.changemusicidx(data.idx)
+      playlistCtx.changemusicidx(data.idx);
       playlistCtx.addToPlaylist(data.playlist);
     });
   }, []);

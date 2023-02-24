@@ -51,7 +51,7 @@ export default function InsertMusic() {
         roomid: roomId,
       })
       .then((res) => {
-        if (res.data.success != true) {
+        if (res.data.success !== true) {
           console.log("응답에러");
         }
       });

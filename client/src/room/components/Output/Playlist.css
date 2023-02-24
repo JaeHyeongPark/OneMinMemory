@@ -6,6 +6,8 @@
   justify-content: flex-start;
   align-items: stretch;
   padding: 0;
+  object-fit: contain;
+
   row-gap: 0px;
   border: solid 1px #b180e9;
   border-radius: 1em;
@@ -165,7 +167,7 @@
   justify-content: center;
   align-items: center;
 }
-.modal-content video{
+.modal-content video {
   width: 80rem;
 }
 

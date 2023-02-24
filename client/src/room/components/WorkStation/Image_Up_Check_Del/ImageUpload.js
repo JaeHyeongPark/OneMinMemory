@@ -1,7 +1,15 @@
 import axios from "axios";
+import { useContext } from "react";
+import ImageContext from "./ImageContext";
+import { useParams } from "react-router-dom";
 import softwareupload from "../../../assets/software-upload.svg";
+import App from "../../../../App.js";
+import Button from "@mui/material/Button";
 
 const ImageUpload = (props) => {
+  const ToCanvas = useContext(ImageContext);
+  const roomId = useParams().roomId;
+
   const uploadimage = async (e) => {
     e.preventDefault();
     const images = e.target.files;
@@ -11,6 +19,7 @@ const ImageUpload = (props) => {
       formdata.append("images", images[i]);
       formdata.append("lastModified", images[i].lastModified);
     }
+    formdata.append("roomid", roomId);
 
     axios
       .post("http://localhost:5000/photoBox/upload", formdata, {
@@ -19,7 +28,9 @@ const ImageUpload = (props) => {
         },
       })
       .then((res) => {
-        props.change();
+        if (res.data.success != true) {
+          console.log("응답에러");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -27,19 +38,18 @@ const ImageUpload = (props) => {
   };
 
   return (
-    <div >
-      <label className="uploadButton" htmlFor="upload">
-        <img src={softwareupload} className="img.software-upload" alt="a" />
-      </label>
+    <Button className="upload_button" variant="contained" component="label">
+      <img src={softwareupload} alt="upload"></img>
       <input
         type="file"
         className="uploadinput"
         id="upload"
+        hidden
         accept="image/*"
         multiple
         onChange={uploadimage}
       />
-    </div>
+    </Button>
   );
 };
 export default ImageUpload;

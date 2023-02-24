@@ -1,5 +1,6 @@
 .ROOM-FOOTER {
-  height: 180px;
+  width: 100%;
+  height: 35%;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
@@ -8,17 +9,72 @@
   align-items: flex-start;
   padding: 0;
 }
+.permission_button_group {
+  width: 190px;
+  height: 30px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+.permission_button_disable {
+  width: 190px;
+  height: 30px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: solid 2px #e74733;
+  background-color: #e74733;
+}
+.permission_button {
+  width: 190px;
+  height: 30px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: solid 2px #e74733;
+  background-color: #ffc043;
+  cursor: pointer;
+}
+
+.permission_label_able {
+  height: 28px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: black;
+  cursor: pointer;
+}
 
 .ROOM-FOOTER-TEST {
-  height: 180px;
+  width: 80%;
+  height: 70%;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
   padding: 5px 20px;
-  border: solid 1px #272833;
-  background-color: #d9e8ef;
+  border: groove 5px rgba(231, 207, 207, 0.1);
+  background-color: #272833;
 }
 
 .insert_music_button {
@@ -57,14 +113,13 @@
 }
 
 .ROOM-FOOTER-BUTTONS {
-  width: 280px;
-  height: 180px;
+  width: 10%;
+  height: 70%;
   flex-grow: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  /* padding: 20px 40px; */
   border: solid 1px #d9e8ef;
   background-color: #272833;
 }
@@ -179,7 +234,7 @@ img.infinity {
 }
 
 .TimeandBar {
-  height: 90px;
+  height: 20%;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
@@ -190,7 +245,7 @@ img.infinity {
 }
 
 .TimeBar {
-  height: 40px;
+  height: 30px;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
@@ -239,6 +294,10 @@ img.infinity {
   letter-spacing: normal;
   text-align: center;
   color: #000;
+}
+.SoundTrack {
+  max-width: calc(100% - 40px);
+  overflow: auto;
 }
 
 /* .LineA {

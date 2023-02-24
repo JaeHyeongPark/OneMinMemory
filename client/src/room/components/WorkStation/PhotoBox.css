@@ -1,36 +1,40 @@
 /* 230211 수정 css */
+/* 230224 수정 css */
 .title_and_photobox {
   width: 35%;
-  height: 900px;
-  flex-grow: 0;
+  height: 100%;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  padding: 0;
+  /* padding: 5px; */
+  border-right: rgba(231, 207, 207, 0.1);
+  border-right-width: 1px;
+  border-right-style: solid;
 }
 
 .fileupload_title {
   box-sizing: border-box;
 
   /* Auto layout */
-
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 10px 20px;
   gap: 10px;
+  margin-top: 10px;
 
   width: 550px;
   height: 50px;
 
-  background: rgba(255, 255, 255, 0.7);
+  background: #272833;
   /* 1min/navy */
 
-  border-width: 1px 1px 0px 1px;
+  border-width: 3px 3px 0px 3px;
   border-style: solid;
-  border-color: #272833;
+  border-color: rgba(231, 207, 207, 0.1);
   border-radius: 10px 10px 0px 0px;
 }
 
@@ -50,7 +54,6 @@ img.cloud {
   height: 26.2px;
   flex-grow: 0;
   object-fit: contain;
-  background-color: #174291;
 }
 
 .cloud_span {
@@ -64,26 +67,23 @@ img.cloud {
   line-height: 1.4;
   letter-spacing: normal;
   text-align: center;
-  color: #174291;
+  color: skyblue;
 }
 
 .PhotoBox {
-  width: 600px;
-  height: 820px;
-  flex-grow: 0;
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: stretch;
-  gap: 2px;
-  padding: 5px;
-  border-radius: 15px;
-  border: solid 2px #272833;
-  background-color: #d9e8ef;
-  margin-bottom: 15px;
+  border-top: solid 2px rgba(231, 207, 207, 0.1);
+  background-color: #272833;
 }
 
 .Photos_and_Button {
+  height: 100%;
   align-self: stretch;
   flex-grow: 1;
   display: flex;
@@ -95,6 +95,7 @@ img.cloud {
 }
 
 .upload_Photos {
+  height: 100%;
   align-self: stretch;
   flex-grow: 1;
   display: flex;
@@ -103,10 +104,11 @@ img.cloud {
   align-items: flex-start;
   gap: 10px;
   padding: 10px;
-  border: solid 1px #272833;
-  overflow-y:auto;
+  background-color: rgba(59, 61, 85, 0.306);
+  border: solid 1px rgba(231, 207, 207, 0.1);
+  border-radius: 15px;
+  overflow-y: auto;
   flex-wrap: wrap;
-  border-radius: 15px
 }
 
 .upload_Photos_layout {
@@ -133,7 +135,7 @@ img.cloud {
   row-gap: 3px;
   background-color: #d9e8ef;
 }
-.upload_img:hover{
+.upload_img:hover {
   transform: scale(1.4);
 }
 
@@ -162,11 +164,10 @@ img.cloud {
   padding: 5px 20px;
   border-radius: 15px;
   border: solid 1px #272833;
-  background-color: #d9e8ef;
 }
 
-.uploadButton {
-  width: 105px;
+.upload_button {
+  width: 40%;
   height: 38px;
   flex-grow: 0;
   display: flex;
@@ -175,19 +176,14 @@ img.cloud {
   align-items: center;
   gap: 5px;
   padding: 5px 10px;
-  border-radius: 10px;
-  background-color: #36a06d;
+  /* border-radius: 30px; */
   cursor: pointer;
 }
-.uploadButton :hover{
-  transform: scale(2);
-}
 
-.uploadinput{
+.uploadinput {
   opacity: 0;
   display: none;
 }
-
 
 img.software-upload {
   width: 24px;
@@ -221,7 +217,7 @@ img.trash {
 }
 
 .delete_button {
-  width: 105px;
+  width: 40%;
   height: 38px;
   flex-grow: 0;
   display: flex;
@@ -230,12 +226,9 @@ img.trash {
   align-items: center;
   gap: 5px;
   padding: 5px 10px;
-  border-radius: 10px;
-  background-color: #e74733;
+  border-radius: 30px;
+  border-color: red;
   cursor: pointer;
-}
-.delete_button :hover{
-  transform: scale(2.5);
 }
 
 .filterButton {
@@ -339,43 +332,6 @@ img.Icon-Arrow {
   height: 48px;
   flex-grow: 0;
   object-fit: contain;
-}
-
-.Username_and_canvas {
-  align-self: stretch;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0 5px;
-  height: 870px;
-  margin-top: 15px;
-}
-
-.Username {
-  box-sizing: border-box;
-
-  /* Auto layout */
-
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 30px;
-
-  width: 500px;
-  height: 50px;
-
-  /* blue/800 */
-
-  background: #102c60;
-  /* white */
-
-  border-width: 1px 1px 0px 1px;
-  border-style: solid;
-  border-color: #ffffff;
-  border-radius: 15px 15px 0px 0px;
 }
 
 .USER_canvan_span {

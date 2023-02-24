@@ -1,13 +1,14 @@
 import React from "react";
-
 import Playlist from "./Playlist";
 import RenderButton from "./RenderButton";
 import Scale from "./Scale";
+import InsertMusic from "./InsertMusic";
+import SoundTrack from "./SoundTrack";
 
-import music from "../../assets/music.svg";
 import polaroid from "../../assets/polaroid.svg";
-
 import "./Output.css";
+
+import EditPermissionButton from "./EditPermissionButton";
 
 const Output = () => {
   return (
@@ -23,15 +24,11 @@ const Output = () => {
           </div>
         </div>
         <Playlist />
+        <SoundTrack />
       </div>
       <div className="ROOM-FOOTER-BUTTONS">
         <div className="finished_layout">
-          <div className="insert_music_button">
-            <div className="insert_music_icon">
-              <img src={music} alt="insert music" />
-            </div>
-            <span className="music_span">음악넣기</span>
-          </div>
+          <InsertMusic />
           <div className="preview_button_group">
             <div className="preview_button">
               <img
@@ -43,6 +40,7 @@ const Output = () => {
             </div>
           </div>
           <RenderButton />
+          <EditPermissionButton />
         </div>
       </div>
     </div>

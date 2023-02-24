@@ -7,8 +7,17 @@
   align-items: stretch;
   padding: 0;
   row-gap: 0px;
-  border: solid 1px #000;
-  background-color: #d9e8ef;
+  border: solid 1px #b180e9;
+  border-radius: 1em;
+  background-color: #3b3c48;
+}
+.toplay_img img{
+  position:absolute;
+  object-fit: cover;
+  width: 40px;
+  height: 35px;
+  margin: 5px;
+  cursor: pointer;
 }
 .playlist_space {
   display: flex;
@@ -24,8 +33,9 @@
   align-items: stretch;
   padding: 0;
   row-gap: 0px;
-  border: solid 3px #e2e447;
-  background-color: #d9e8ef;
+  border: solid 5px #e2e447;
+  border-radius: 1em;
+  background-color: #3b3c48;
 }
 .selecttoplay_img .del {
   position: relative;
@@ -36,22 +46,12 @@
   font-size: 16px;
   cursor: pointer;
 }
-.selecttoplay_img .plus {
-  position: relative;
-  background: none;
-  align-self: flex-end;
-  border: none;
-  color: rgb(242, 254, 0);
-  font-size: 16px;
-  cursor: pointer;
-}
-.selecttoplay_img .minus {
-  position: relative;
-  background: none;
-  align-self: flex-start;
-  border: none;
-  color: rgb(242, 254, 0);
-  font-size: 16px;
+.selecttoplay_img img{
+  position:absolute;
+  object-fit: cover;
+  width: 40px;
+  height: 35px;
+  margin: 5px;
   cursor: pointer;
 }
 
@@ -72,7 +72,7 @@
   background-repeat: no-repeat;
 }
 
-.toplay_trans {
+.toplay_transOff {
   flex-grow: 0;
   display: flex;
   flex-direction: row;
@@ -80,11 +80,20 @@
   align-items: stretch;
   padding: 0;
   row-gap: 0px;
-  border: solid 0px #000;
-  background-color: #d9e8ef;
-  background-image: url("https://static.thenounproject.com/png/3330269-200.png");
+  border: solid 0px #000; 
+}
+.toplay_transOn {
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
+  row-gap: 0px;
+  /* border: solid 0px #000;
+  background-image: url("../../assets/transition_on.png");
   background-size: contain;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat; */
 }
 
 .toplay_select_img {
@@ -116,7 +125,7 @@
 }
 
 .playlist_layout {
-  height: 100px;
+  height: 60%;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -129,7 +138,7 @@
 }
 
 .playlist_main {
-  height: 100px;
+  height: 80%;
   flex-grow: 1;
   display: flex;
   flex-direction: row;
@@ -140,7 +149,7 @@
 }
 
 .playlist_transition {
-  height: 100px;
+  height: 20%;
   flex-grow: 1;
   display: flex;
   flex-direction: row;
@@ -148,4 +157,30 @@
   align-items: stretch;
   /* gap: 5px; */
   padding: 0px;
+}
+.modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.modal-content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content video{
+  width: 80rem;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  gap: 25%;
+  /* styles for button container */
 }

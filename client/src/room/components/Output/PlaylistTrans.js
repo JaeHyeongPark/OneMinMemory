@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import PlaylistContext from "../../../shared/context/playlist-context";
+import TransitionButton from "./TransitionButton";
 import "./Playlist.css";
 
 const PlaylistTrans = (props) => {
@@ -14,14 +15,10 @@ const PlaylistTrans = (props) => {
             className="toplay_block"
             id={props.i}
             style={{
-              width: String(((props.duration - 0.5) * 100) / 60) + "%",
-            }}></div>
-          <div
-            className="toplay_trans"
-            id={props.i}
-            style={{
-              width: String((1 * 100) / 60) + "%",
-            }}></div>
+              width: String(((props.duration - 1) * 100) / 60) + "%",
+            }}
+          />
+          {<TransitionButton className="toplay_trans" idx={props.i}/>}
         </>
       ) : props.i < playlistView.length - 1 ? (
         <>
@@ -29,14 +26,10 @@ const PlaylistTrans = (props) => {
             className="toplay_block"
             id={props.i}
             style={{
-              width: String(((props.duration - 1) * 100) / 60) + "%",
-            }}></div>
-          <div
-            className="toplay_trans"
-            id={props.i}
-            style={{
-              width: String((1 * 100) / 60) + "%",
-            }}></div>
+              width: String(((props.duration - 2) * 100) / 60) + "%",
+            }}
+          />
+          <TransitionButton className="toplay_trans" idx={props.i}/>
         </>
       ) : (
         <></>

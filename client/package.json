@@ -4,8 +4,12 @@
   "private": true,
   "dependencies": {
     "@blueprintjs/core": "^4.16.3",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@ffprobe-installer/ffprobe": "^1.4.1",
+    "@mui/icons-material": "^5.11.9",
+    "@mui/material": "^5.11.10",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -22,7 +26,9 @@
     "react-router-dom": "^6.8.1",
     "react-scripts": "^5.0.1",
     "sharp": "^0.31.3",
+    "socket.io-client": "^4.6.1",
     "videoshow": "^0.1.12",
+    "wavesurfer.js": "^6.4.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

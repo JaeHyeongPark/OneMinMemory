@@ -7,7 +7,7 @@ function MainPage() {
   return (
     <React.Fragment>
       <MainHeader />
-      <main>
+      <main width="100%">
         <MainBody />
       </main>
       <MainFooter />

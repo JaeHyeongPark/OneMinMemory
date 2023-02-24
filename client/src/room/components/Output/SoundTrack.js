@@ -21,24 +21,27 @@ const SoundTrack = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const layout = layoutRef.current;
-
-    canvas.width = (Wavedata[newidx].duration / 60) * (layout.offsetWidth - 40);
-
+    // canvas.width = (Wavedata[newidx].duration / 60) * (layout.offsetWidth - 20);
+    canvas.width = layout.offsetWidth - 20;
     const context = canvas.getContext("2d");
-
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     const height = canvas.height;
     const width = canvas.width;
+    const actualMusicWidth =
+      (Wavedata[newidx].duration / 60) * (layout.offsetWidth - 20);
     const centerY = height / 2;
-    context.fillStyle = "rgba(255,0,0,0)";
+    context.fillStyle = "rgba(255,0,0,0.5)";
     context.fillRect(0, 0, width, height);
-    context.strokeStyle = "red";
+    context.strokeStyle = "white";
     context.lineWidth = 1;
     context.beginPath();
 
+    const duration = Wavedata[newidx].duration;
+
     Wavedata[newidx].peaks.forEach((peak, index) => {
-      const x = (index / Wavedata[newidx].peaks.length) * width;
+      const x =
+        (index / (Wavedata[newidx].peaks.length * (60 / duration))) * width;
       const y = peak * (height / 2) + centerY;
       if (index === 0) {
         context.moveTo(x, y);
@@ -51,11 +54,11 @@ const SoundTrack = () => {
     function handleClick(event) {
       const rect = canvas.getBoundingClientRect();
       const x = event.clientX - rect.left;
-      const proportion = x / width;
+      const proportion = x / actualMusicWidth;
       console.log(proportion);
       const myAudio = audioRef.current;
       myAudio.currentTime = Wavedata[newidx].duration * proportion;
-      myAudio.load();
+      // myAudio.load();
       myAudio.play();
     }
 
@@ -83,7 +86,7 @@ const SoundTrack = () => {
       <audio ref={audioRef} src={newsrc} id="myAudio"></audio>
       <canvas
         className="soundtrack_canvas"
-        height={40}
+        height={70}
         ref={canvasRef}
       ></canvas>
     </div>

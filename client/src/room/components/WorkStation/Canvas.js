@@ -234,7 +234,44 @@ function Canvas() {
     <React.Fragment>
       <div className="Username_and_canvas">
         <div className="Username">
-          <span className="USER_canvas_span">USER1의 캔버스</span>
+          {/* <span className="USER_canvas_span">USER1의 캔버스</span> */}
+          <div className="sidebar">
+            {DEFAULT_OPTIONS.map((option, index) => {
+              return (
+                <SidebarItem
+                  key={index}
+                  name={option.name}
+                  active={index === selectedOptionIndex}
+                  handleClick={() => selectedOptionApply(index, option.name)}
+                />
+              );
+            })}
+            <button
+              className="sidebar-item"
+              onClick={() => setPaintMode(PaintMode ? false : true)}
+            >
+              PaintMode-{PaintMode ? "ON" : "OFF"}
+            </button>
+            <button
+              className="sidebar-item"
+              onClick={() => {
+                setTextMode(TextMode ? false : true);
+              }}
+            >
+              Text Mode-{TextMode ? "END" : "Write"}
+            </button>
+            <button
+              className="sidebar-item"
+              onClick={() => {
+                setTransitionModal(!transitionModal);
+              }}
+            >
+              Transition / Effect
+            </button>
+            <button className="sidebar-item" onClick={newImage}>
+              저장하기
+            </button>
+          </div>
         </div>
         <div className="canvas">
           <div className="container">
@@ -298,44 +335,6 @@ function Canvas() {
                 </div>
               </div>
             )}
-
-            <div className="sidebar">
-              {DEFAULT_OPTIONS.map((option, index) => {
-                return (
-                  <SidebarItem
-                    key={index}
-                    name={option.name}
-                    active={index === selectedOptionIndex}
-                    handleClick={() => selectedOptionApply(index, option.name)}
-                  />
-                );
-              })}
-              <button
-                className="sidebar-item"
-                onClick={() => setPaintMode(PaintMode ? false : true)}
-              >
-                PaintMode-{PaintMode ? "ON" : "OFF"}
-              </button>
-              <button
-                className="sidebar-item"
-                onClick={() => {
-                  setTextMode(TextMode ? false : true);
-                }}
-              >
-                Text Mode-{TextMode ? "END" : "Write"}
-              </button>
-              <button
-                className="sidebar-item"
-                onClick={() => {
-                  setTransitionModal(!transitionModal);
-                }}
-              >
-                Transition / Effect
-              </button>
-              <button className="sidebar-item" onClick={newImage}>
-                저장하기
-              </button>
-            </div>
           </div>
         </div>
       </div>

@@ -113,14 +113,13 @@
 }
 
 .ROOM-FOOTER-BUTTONS {
-  width: 280px;
-  height: 240px;
+  width: 10%;
+  height: 70%;
   flex-grow: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  /* padding: 20px 40px; */
   border: solid 1px #d9e8ef;
   background-color: #272833;
 }

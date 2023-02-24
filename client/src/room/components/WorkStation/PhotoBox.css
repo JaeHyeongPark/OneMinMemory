@@ -14,6 +14,13 @@
   border-right-style: solid;
 }
 
+.title_mode{
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  padding-top: 9px;
+}
+
 .fileupload_title {
   box-sizing: border-box;
 
@@ -24,18 +31,14 @@
   align-items: center;
   padding: 10px 20px;
   gap: 10px;
-  margin-top: 10px;
 
-  width: 550px;
+  width: 45%;
   height: 50px;
+  cursor: pointer;
 
   background: #272833;
   /* 1min/navy */
-
-  border-width: 3px 3px 0px 3px;
-  border-style: solid;
-  border-color: rgba(231, 207, 207, 0.1);
-  border-radius: 10px 10px 0px 0px;
+  border-bottom: solid 3px #fff
 }
 
 .cloud {
@@ -67,7 +70,6 @@ img.cloud {
   line-height: 1.4;
   letter-spacing: normal;
   text-align: center;
-  color: skyblue;
 }
 
 .PhotoBox {
@@ -90,7 +92,7 @@ img.cloud {
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  padding: 15px;
+  padding: 0px 15px 15px 15px;
   gap: 15px;
 }
 

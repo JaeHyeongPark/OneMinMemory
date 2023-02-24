@@ -48,8 +48,12 @@ const PhotoBox = (props) => {
     }
   }, [ToCanvas.origin, cloud, ToCanvas.effect]);
 
-  const CloudChange = () => {
-    setcloud(cloud ? false : true);
+  const Cloudtrue = () => {
+    setcloud(true);
+  };
+
+  const Cloudfalse = () => {
+    setcloud(false);
   };
 
   App.mainSocket.removeAllListeners("upload");
@@ -68,13 +72,37 @@ const PhotoBox = (props) => {
   return (
     <React.Fragment>
       <div className="title_and_photobox">
-        <div className="fileupload_title">
-          <div className="cloud">
-            <img src={Cloud} className="img.cloud" alt="" />
+        <div className="title_mode">
+          <div
+            className="fileupload_title"
+            style={cloud ? {} : { borderBottom: "3px solid #272833" }}
+          >
+            <div className="cloud">
+              <img src={Cloud} className="img.cloud" alt="" />
+            </div>
+            <span
+              className="cloud_span"
+              style={cloud ? { color: "skyblue" } : { color: "gray" }}
+              onClick={Cloudtrue}
+            >
+              Original
+            </span>
           </div>
-          <span className="cloud_span" onClick={CloudChange}>
-            {cloud ? "CLOUD - Original" : "CLOUD - Effect"}
-          </span>
+          <div
+            className="fileupload_title"
+            style={cloud ? { borderBottom: "3px solid #272833" } : {}}
+          >
+            <div className="cloud">
+              <img src={Cloud} className="img.cloud" alt="" />
+            </div>
+            <span
+              className="cloud_span"
+              style={cloud ? { color: "gray" } : { color: "skyblue" }}
+              onClick={Cloudfalse}
+            >
+              Edited
+            </span>
+          </div>
         </div>
         <div className="PhotoBox">
           <div className="Photos_and_Button">

@@ -29,7 +29,7 @@ const RoomHeader = (props) => {
             <div className="invite_button_group">
               <div className="invite_button">
                 <img src={useradd} className="img.user-add" alt="a"/>
-                <label className="invite_label">초대하기</label>
+                <label className="invite_label">초대링크</label>
               </div>
             </div>
           </div>

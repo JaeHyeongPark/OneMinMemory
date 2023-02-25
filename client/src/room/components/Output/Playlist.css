@@ -19,7 +19,6 @@
   width: 40px;
   height: 35px;
   margin: 5px;
-  cursor: pointer;
 }
 .playlist_space {
   display: flex;
@@ -54,7 +53,6 @@
   width: 40px;
   height: 35px;
   margin: 5px;
-  cursor: pointer;
 }
 
 .toplay_block {

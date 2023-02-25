@@ -1,29 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDrag } from "react-dnd";
 import "./Transition.css";
 
 const Transition = ({ className, onChange }) => {
+  const [check, setcheck] = useState(false)
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: "transition",
     item: { className },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-    // end: (className, monitor) => {},
   }));
+  
   return (
     <div
       ref={dragRef}
       id="transition"
-      onClick={onChange}
       className={className}
       style={{ opacity: isDragging ? "0.3" : "1" }}
+      onMouseOver={() => setcheck(true)}
+      onMouseOut={() => setcheck(false)}
     >
       <img
         className={className}
-        src="/TransitionList/profile.jpeg"
+        src= {check ? `/TransitionList/${className}.gif` : "/TransitionList/profile.jpeg"}
         alt="transition"
-        onClick={onChange}
       />
       <div className="transition-title">{className}</div>
     </div>

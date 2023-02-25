@@ -142,7 +142,7 @@ const PlaylistMain = (props) => {
         </ClearIcon>
       )}
       {props.effect ? (
-        <img src={effectOn} onClick={deleffect} />
+        <img src={effectOn} onClick={deleffect} style={{cursor:"pointer"}} />
       ) : (
         <img src={effectOff} />
       )}

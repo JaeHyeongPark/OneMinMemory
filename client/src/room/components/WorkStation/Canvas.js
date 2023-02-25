@@ -51,7 +51,7 @@ const TRANSITION_LIST = [
   "slideright",
   "slideup",
   "vuslice",
-  "wipelife",
+  "wipeleft",
   "wiperight",
 ];
 
@@ -240,7 +240,6 @@ function Canvas() {
     <React.Fragment>
       <div className="Username_and_canvas">
         <div className="Username">
-          {/* <span className="USER_canvas_span">USER1의 캔버스</span> */}
           <div className="sidebar">
             {DEFAULT_OPTIONS.map((option, index) => {
               return (
@@ -329,16 +328,6 @@ function Canvas() {
                   })}
                 </div>
                 <hr></hr>
-                <div className="transition-clip">
-                  {transitionClip && (
-                    <video
-                      id="transition-clip"
-                      width="300"
-                      height="200"
-                      controls
-                    ></video>
-                  )}
-                </div>
               </div>
             )}
           </div>

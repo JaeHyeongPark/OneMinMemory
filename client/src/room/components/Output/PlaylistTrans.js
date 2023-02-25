@@ -15,7 +15,7 @@ const PlaylistTrans = (props) => {
             className="toplay_block"
             id={props.i}
             style={{
-              width: String(((props.duration - 0.5) * 100) / 60) + "%",
+              width: String(((props.duration - 1) * 100) / 60) + "%",
             }}
           />
           {<TransitionButton className="toplay_trans" idx={props.i}/>}
@@ -26,7 +26,7 @@ const PlaylistTrans = (props) => {
             className="toplay_block"
             id={props.i}
             style={{
-              width: String(((props.duration - 1) * 100) / 60) + "%",
+              width: String(((props.duration - 2) * 100) / 60) + "%",
             }}
           />
           <TransitionButton className="toplay_trans" idx={props.i}/>

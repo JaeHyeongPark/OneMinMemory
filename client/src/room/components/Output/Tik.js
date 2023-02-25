@@ -46,7 +46,7 @@ const Tik = (props) => {
   }));
 
   const changemovie = (time, idx, DT, TT) => {
-    if (props.time < time - DT + 1 || TT + (props.time - time) > 60) {
+    if (props.time < time - DT + 2 || TT + (props.time - time) > 60) {
       return;
     }
     if (App.playlistPermissionState !== 1) {
@@ -72,7 +72,7 @@ const Tik = (props) => {
       <div
         ref={nowtime}
         style={{
-          height: "100px",
+          height: "43px",
           backgroundColor: "red",
           cursor: "col-resize",
         }}

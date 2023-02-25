@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import App from "../../../App";
 import ClearIcon from "@mui/icons-material/Clear";
+import effectOn from "../../assets/effect_on.png";
+import effectOff from "../../assets/effect_off.png";
 
 import "./Playlist.css";
 
@@ -102,6 +104,23 @@ const PlaylistMain = (props) => {
       });
   };
 
+  // effect 삭제
+  const deleffect = (e) => {
+    // 상위 태그의 이벤트가 실행되는걸 방지
+    e.stopPropagation();
+    e.preventDefault();
+    axios
+      .post("http://localhost:5000/output/deleffect", {
+        idx: props.i,
+        roomid: roomid,
+      })
+      .then((res) => {
+        if (res.data.success !== true) {
+          console.log("에러 발생!");
+        }
+      });
+  };
+
   return (
     <div
       ref={playlist}
@@ -121,6 +140,11 @@ const PlaylistMain = (props) => {
         <ClearIcon className="del" onClick={deleteimg}>
           X
         </ClearIcon>
+      )}
+      {props.effect ? (
+        <img src={effectOn} onClick={deleffect} />
+      ) : (
+        <img src={effectOff} />
       )}
     </div>
   );

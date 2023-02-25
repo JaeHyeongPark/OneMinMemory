@@ -55,6 +55,7 @@ export default function InsertMusic() {
           console.log("응답에러");
         }
       });
+      setOpen(false)
   };
   return (
     <div>

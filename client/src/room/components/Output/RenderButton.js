@@ -4,7 +4,7 @@ import FileDownload from "js-file-download";
 import { useParams } from "react-router-dom";
 import infinity from "../../assets/infinity.svg";
 import Box from "@mui/material/Box";
-import loadGif from "./RenderLoading.gif";
+import loadGif from "../../assets/RenderLoading.gif"
 import Modal from "@mui/material/Modal";
 import App from "../../../App";
 

@@ -130,7 +130,7 @@ const PlaylistMain = (props) => {
         width: String((props.duration * 100) / 60) + "%",
         height: "auto",
         backgroundImage: `url(${props.url})`,
-        backgroundSize: "contain",
+        backgroundSize: props.duration <= 6 ? "cover" : "contain",
         backgroundRepeat: "repeat-x",
       }}
       key={props.url}

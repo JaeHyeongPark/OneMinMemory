@@ -9,6 +9,7 @@
   padding: 0;
   border: solid 2px #272731;
   background-color: #1c1c28;
+  border-radius: 1em;
 }
 
 .Tracks {
@@ -59,7 +60,7 @@
   align-items: stretch;
   padding: 0;
   row-gap: 0px;
-  border: solid 5px #e2e447;
+  border: solid 2px #e2e447;
   border-radius: 1em;
   background-color: #3b3c48;
 }
@@ -131,7 +132,7 @@
   align-items: stretch;
   padding: 0;
   row-gap: 3px;
-  border: solid 5px #e2f01d;
+  border: solid 2px #e2f01d;
   background-color: #d9e8ef;
 }
 

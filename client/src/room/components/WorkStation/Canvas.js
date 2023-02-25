@@ -111,13 +111,13 @@ function Canvas() {
     image.onload = () => {
       Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
       Ctx.lineJoin = "round";
-      Ctx.lineWidth = 4;
+      Ctx.lineWidth = 6;
     };
   }, [ToCanvas.url, Ctx, modalcheck]);
 
   const drawing = (e) => {
-    const x = e.nativeEvent.offsetX;
-    const y = e.nativeEvent.offsetY;
+    const x = e.nativeEvent.offsetX * (1280 / 768);
+    const y = e.nativeEvent.offsetY * (720 / 432);
     if (Paint && PaintMode) {
       Ctx.lineTo(x, y);
       Ctx.stroke();
@@ -139,11 +139,11 @@ function Canvas() {
     if (!TextMode) {
       return;
     }
-    const x = e.nativeEvent.offsetX;
-    const y = e.nativeEvent.offsetY;
+    const x = e.nativeEvent.offsetX ;
+    const y = e.nativeEvent.offsetY ;
     const z = canvasRef.current.getBoundingClientRect();
-    setX([x - 4, z.x + x - 4]);
-    setY([y - 4, z.y + y - 4]);
+    setX([x * (1280 / 768) , z.x + x ]);
+    setY([y * (720 / 432) , z.y + y - 12 ]);
     setinputShow(true);
   };
 
@@ -152,7 +152,7 @@ function Canvas() {
     if (code === 13) {
       Ctx.textBaseline = "top";
       Ctx.textAlign = "left";
-      Ctx.font = "25px fantasy";
+      Ctx.font = "35px fantasy";
       Ctx.fillText(e.target.value, x[0], y[0]);
       setinputShow(false);
       setTextMode(false);
@@ -243,16 +243,6 @@ function Canvas() {
     <React.Fragment>
       <div className="Username_and_canvas">
         <div className="EditButtons">
-          {/* {DEFAULT_OPTIONS.map((option, index) => {
-            return (
-              <SidebarItem
-                key={index}
-                name={option.name}
-                active={index === selectedOptionIndex}
-                handleClick={() => selectedOptionApply(index, option.name)}
-              />
-            );
-          })} */}
           <SidebarItem
             key={0}
             name="Brighten"
@@ -281,75 +271,49 @@ function Canvas() {
             key={4}
             name="Paint Mode"
             active={4 === selectedOptionIndex}
-            // className="sidebar-item"
             handleClick={() => {
-              // selectedOptionApply(4, "Paint Mode");
               setPaintMode(PaintMode ? false : true);
             }}
           />
-          {/* PaintMode-{PaintMode ? "ON" : "OFF"}
-          </button> */}
           <SidebarItem
             key={5}
             name="Text Mode"
             active={5 === selectedOptionIndex}
             handleClick={() => {
-              // selectedOptionApply(5, "Text Mode");
               setTextMode(TextMode ? false : true);
             }}
           />
-          {/* <button
-            className="sidebar-item"
-            onClick={() => {
-              setTextMode(TextMode ? false : true);
-            }}
-          >
-            Text Mode-{TextMode ? "END" : "Write"}
-          </button> */}
           <SidebarItem
             key={6}
             name="Transition/Effect"
             active={6 === selectedOptionIndex}
             handleClick={() => {
-              // selectedOptionApply(6, "Transition/Effect");
               setTransitionModal(!transitionModal);
             }}
           />
-          {/* <button
-            className="sidebar-item"
-            onClick={() => {
-              setTransitionModal(!transitionModal);
-            }}
-          >
-            Transition / Effect
-          </button> */}
           <SidebarItem
             key={7}
             name="Save"
             active={7 === selectedOptionIndex}
             handleClick={() => {
-              // selectedOptionApply(7, "Save");
               newImage();
             }}
           />
-          {/* <button className="sidebar-item" onClick={newImage}>
-            저장하기
-          </button> */}
         </div>
 
         <div className="container">
           {!transitionModal ? (
             <div className="uploaded-image" ref={drop}>
-              <canvas
-                ref={canvasRef}
-                width={768}
-                height={432}
-                onClick={(e) => addinput(e)}
-                onMouseDown={() => ChangePaint(true)}
-                onMouseUp={() => ChangePaint(false)}
-                onMouseMove={(e) => drawing(e)}
-                onMouseLeave={() => ChangePaint(false)}
-              />
+                <canvas
+                  ref={canvasRef}
+                  width={1280}
+                  height={720}
+                  onClick={(e) => addinput(e)}
+                  onMouseDown={() => ChangePaint(true)}
+                  onMouseUp={() => ChangePaint(false)}
+                  onMouseMove={(e) => drawing(e)}
+                  onMouseLeave={() => ChangePaint(false)}
+                />
               {inputShow && (
                 <input
                   type="text"
@@ -386,16 +350,6 @@ function Canvas() {
                 })}
               </div>
               <hr></hr>
-              <div className="transition-clip">
-                {transitionClip && (
-                  <video
-                    id="transition-clip"
-                    width="300"
-                    height="200"
-                    controls
-                  ></video>
-                )}
-              </div>
             </div>
           )}
         </div>

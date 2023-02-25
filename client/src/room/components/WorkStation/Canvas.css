@@ -112,6 +112,10 @@ body {
   height: auto;
   margin: auto;
 }
+.uploaded-image canvas{
+  width: 768px;
+  height: 432px;
+}
 .container .effect-modal {
   /* overflow: auto y; */
   width: auto;

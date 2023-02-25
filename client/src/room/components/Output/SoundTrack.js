@@ -84,6 +84,7 @@ const SoundTrack = () => {
       <audio ref={audioRef} src={newsrc} id="myAudio"></audio>
       <canvas
         className="soundtrack_canvas"
+        width={1520}
         height={70}
         ref={canvasRef}
       ></canvas>

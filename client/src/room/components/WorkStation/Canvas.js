@@ -51,7 +51,7 @@ const TRANSITION_LIST = [
   "slideright",
   "slideup",
   "vuslice",
-  "wipelife",
+  "wipeleft",
   "wiperight",
 ];
 
@@ -239,109 +239,105 @@ function Canvas() {
   return (
     <React.Fragment>
       <div className="Username_and_canvas">
-        <div className="Username">
-          {/* <span className="USER_canvas_span">USER1의 캔버스</span> */}
-          <div className="sidebar">
-            {DEFAULT_OPTIONS.map((option, index) => {
-              return (
-                <SidebarItem
-                  key={index}
-                  name={option.name}
-                  active={index === selectedOptionIndex}
-                  handleClick={() => selectedOptionApply(index, option.name)}
-                />
-              );
-            })}
-            <button
-              className="sidebar-item"
-              onClick={() => setPaintMode(PaintMode ? false : true)}
-            >
-              PaintMode-{PaintMode ? "ON" : "OFF"}
-            </button>
-            <button
-              className="sidebar-item"
-              onClick={() => {
-                setTextMode(TextMode ? false : true);
-              }}
-            >
-              Text Mode-{TextMode ? "END" : "Write"}
-            </button>
-            <button
-              className="sidebar-item"
-              onClick={() => {
-                setTransitionModal(!transitionModal);
-              }}
-            >
-              Transition / Effect
-            </button>
-            <button className="sidebar-item" onClick={newImage}>
-              저장하기
-            </button>
-          </div>
+        <div className="EditButtons">
+          {DEFAULT_OPTIONS.map((option, index) => {
+            return (
+              <SidebarItem
+                key={index}
+                name={option.name}
+                active={index === selectedOptionIndex}
+                handleClick={() => selectedOptionApply(index, option.name)}
+              />
+            );
+          })}
+          <button
+            className="sidebar-item"
+            onClick={() => setPaintMode(PaintMode ? false : true)}
+          >
+            PaintMode-{PaintMode ? "ON" : "OFF"}
+          </button>
+          <button
+            className="sidebar-item"
+            onClick={() => {
+              setTextMode(TextMode ? false : true);
+            }}
+          >
+            Text Mode-{TextMode ? "END" : "Write"}
+          </button>
+          <button
+            className="sidebar-item"
+            onClick={() => {
+              setTransitionModal(!transitionModal);
+            }}
+          >
+            Transition / Effect
+          </button>
+          <button className="sidebar-item" onClick={newImage}>
+            저장하기
+          </button>
         </div>
-        <div className="canvas">
-          <div className="container">
-            {!transitionModal ? (
-              <div className="uploaded-image" ref={drop}>
-                <canvas
-                  ref={canvasRef}
-                  width={1280}
-                  height={720}
-                  onClick={(e) => addinput(e)}
-                  onMouseDown={() => ChangePaint(true)}
-                  onMouseUp={() => ChangePaint(false)}
-                  onMouseMove={(e) => drawing(e)}
-                  onMouseLeave={() => ChangePaint(false)}
+
+        <div className="container">
+          {!transitionModal ? (
+            <div className="uploaded-image" ref={drop}>
+              <canvas
+                ref={canvasRef}
+                width={768}
+                height={432}
+                onClick={(e) => addinput(e)}
+                onMouseDown={() => ChangePaint(true)}
+                onMouseUp={() => ChangePaint(false)}
+                onMouseMove={(e) => drawing(e)}
+                onMouseLeave={() => ChangePaint(false)}
+              />
+              {inputShow && (
+                <input
+                  type="text"
+                  style={{
+                    position: "fixed",
+                    left: `${x[1]}px`,
+                    top: `${y[1]}px`,
+                    background: "transparent",
+                    height: "30px",
+                  }}
+                  onKeyDown={handleEnter}
                 />
-                {inputShow && (
-                  <input
-                    type="text"
-                    style={{
-                      position: "fixed",
-                      left: `${x[1]}px`,
-                      top: `${y[1]}px`,
-                      background: "transparent",
-                      height: "30px",
-                    }}
-                    onKeyDown={handleEnter}
-                  />
-                )}
-              </div>
-            ) : (
-              <div className="transition-modal" ref={modal}>
-                <div className="effect-modal" ref={modal}>
-                  <div className="effect-list">
-                    {EFFECT_LIST.map((effect, index) => {
-                      return <Effect className={effect} key={index} />;
-                    })}
-                  </div>
-                  <hr></hr>
-                </div>
-                <div className="transition-list">
-                  {TRANSITION_LIST.map((transition, index) => {
-                    return (
-                      <Transition
-                        className={transition}
-                        key={index}
-                        onChange={transitionClipUpload}
-                      />
-                    );
+              )}
+            </div>
+          ) : (
+            <div className="transition-modal" ref={modal}>
+              <div className="effect-modal" ref={modal}>
+                <div className="effect-list">
+                  {EFFECT_LIST.map((effect, index) => {
+                    return <Effect className={effect} key={index} />;
                   })}
                 </div>
                 <hr></hr>
-                <div className="transition-clip">
-                  {transitionClip && (
-                    <video
-                      id="transition-clip"
-                      width="300"
-                      height="200"
-                      controls
-                    ></video>
-                  )}
-                </div>
               </div>
-            )}
-          </div>
+              <div className="transition-list">
+                {TRANSITION_LIST.map((transition, index) => {
+                  return (
+                    <Transition
+                      className={transition}
+                      key={index}
+                      onChange={transitionClipUpload}
+                    />
+                  );
+                })}
+              </div>
+              <hr></hr>
+              <div className="transition-clip">
+                {transitionClip && (
+                  <video
+                    id="transition-clip"
+                    width="300"
+                    height="200"
+                    controls
+                  ></video>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </React.Fragment>

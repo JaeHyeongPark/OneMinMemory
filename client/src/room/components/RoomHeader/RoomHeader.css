@@ -1,48 +1,50 @@
 .ROOM-HEADER {
   display: flex;
-  height: 60px;
-  align-self: stretch;
-  align-items: stretch;
-  justify-content: center;
-  flex-grow: 0;
   flex-direction: column;
-  padding: 0;
-  background-color: #272833;
-  border-bottom: 1px solid rgba(231, 207, 207, 0.1);
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+
+  width: 1920px;
+  height: 60px;
+
+  /* 1min/Darkblue/400 */
+
+  background: #17171e;
 }
 
 .Container {
-  height: 60px;
-  align-self: stretch;
-  flex-grow: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: stretch;
-  padding: 0 20px;
+  align-items: center;
+  padding: 0px 80px;
+
+  width: 1920px;
+  height: 60px;
 }
 
 .Inner {
-  height: 60px;
-  align-self: stretch;
-  flex-grow: 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 60px;
+  padding: 10px 0px;
+
+  width: 1760px;
+  height: 60px;
 }
 
 .min-roomname {
-  width: 245px;
-  height: 40px;
-  flex-grow: 0;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  padding: 0px;
   gap: 10px;
-  padding: 0;
+
+  width: 137px;
+  height: 40px;
 }
 
 .logo_and_icon {
@@ -153,7 +155,7 @@ img.user-add {
   flex-grow: 0;
   font-family: "Pretendard";
   font-size: 20px;
-  font-weight: bold;
+  /* font-weight: bold; */
   font-stretch: normal;
   font-style: normal;
   line-height: 1.4;

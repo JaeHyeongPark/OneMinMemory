@@ -2,6 +2,7 @@ import App from "../../../App";
 import "./Output.css";
 import { useEffect, useState, useContext } from "react";
 import PlaylistContext from "../../../shared/context/playlist-context";
+import DiscEdit from "../../assets/discedit.svg";
 
 const EditPermissionButton = () => {
   const playlistCtx = useContext(PlaylistContext);
@@ -36,27 +37,22 @@ const EditPermissionButton = () => {
   }, []);
   if (App.playlistPermissionState === 2) {
     return (
-      <div className="permission_button_group">
-        <button className="permission_button_disable">
-          <label className="permission_label_able">누가 편집중!</label>
-        </button>
-      </div>
+      <button className="EditDisc_disable">
+        <label className="EditDisc_label">누군가 편집중!</label>
+      </button>
     );
   } else if (App.playlistPermissionState === 1) {
     return (
-      <div className="permission_button_group">
-        <button className="permission_button" onClick={releasePermission}>
-          <label className="permission_label_able">편집 완료!</label>
-        </button>
-      </div>
+      <button className="EditDisc_fin" onClick={releasePermission}>
+        <label className="EditDisc_label">편집 완료하기</label>
+      </button>
     );
   } else {
     return (
-      <div className="permission_button_group">
-        <button className="permission_button" onClick={getPermission}>
-          <label className="permission_label_able">playlist Edit</label>
-        </button>
-      </div>
+      <button className="EditDisc" onClick={getPermission}>
+        <img src={DiscEdit} alt="disc edit" />
+        {/* <label className="permission_label_able">playlist Edit</label> */}
+      </button>
     );
   }
 };

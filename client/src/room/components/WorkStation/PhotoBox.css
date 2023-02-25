@@ -1,24 +1,21 @@
 /* 230211 수정 css */
 /* 230224 수정 css */
 .title_and_photobox {
-  width: 35%;
-  height: 100%;
-  flex-grow: 1;
+  width: 500px;
+  align-self: stretch;
+  flex-grow: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  align-items: center;
-  /* padding: 5px; */
-  border-right: rgba(231, 207, 207, 0.1);
-  border-right-width: 1px;
-  border-right-style: solid;
+  align-items: stretch;
+  padding: 40px 20px;
+  background-color: #272731;
 }
 
-.title_mode{
+.title_mode {
   display: flex;
   justify-content: space-evenly;
   width: 100%;
-  padding-top: 9px;
 }
 
 .fileupload_title {
@@ -38,7 +35,7 @@
 
   background: #272833;
   /* 1min/navy */
-  border-bottom: solid 3px #fff
+  border-bottom: solid 3px #fff;
 }
 
 .cloud {
@@ -73,44 +70,37 @@ img.cloud {
 }
 
 .PhotoBox {
-  width: 100%;
-  height: 100%;
+  align-self: stretch;
   flex-grow: 1;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: stretch;
-  border-top: solid 2px rgba(231, 207, 207, 0.1);
-  background-color: #272833;
+  padding: 0;
+  background-color: #272731;
 }
 
 .Photos_and_Button {
-  height: 100%;
   align-self: stretch;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  padding: 0px 15px 15px 15px;
-  gap: 15px;
+  gap: 5px;
+  padding: 0;
 }
 
 .upload_Photos {
-  height: 100%;
   align-self: stretch;
   flex-grow: 1;
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
-  gap: 10px;
+  align-items: stretch;
+  gap: 5px;
   padding: 10px;
-  background-color: rgba(59, 61, 85, 0.306);
-  border: solid 1px rgba(231, 207, 207, 0.1);
-  border-radius: 15px;
-  overflow-y: auto;
-  flex-wrap: wrap;
+  background-color: #1c1c26;
 }
 
 .upload_Photos_layout {
@@ -159,31 +149,27 @@ img.cloud {
 }
 
 .PhotoBox-Button {
-  height: 48px;
+  height: 60px;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px 20px;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0;
   border-radius: 15px;
-  border: solid 1px #272833;
+  background-color: #272731;
 }
 
 .upload_button {
-  width: 40%;
-  height: 38px;
-  flex-grow: 0;
-  background: linear-gradient(to bottom right, #0c57e4, white);
+  align-self: stretch;
+  flex-grow: 1;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  /* border-radius: 30px; */
-  cursor: pointer;
+  padding: 0;
+  border: solid 1px #565656;
 }
 
 .uploadinput {
@@ -191,15 +177,15 @@ img.cloud {
   display: none;
 }
 
-img.software-upload {
-  width: 24px;
-  height: 24px;
+/* img.software-upload {
+  width: 48px;
+  height: 48px;
   flex-grow: 0;
   object-fit: contain;
   transform: rotate(-180deg);
-}
+} */
 
-.delete_label {
+/* .delete_label {
   width: 56px;
   height: 28px;
   flex-grow: 0;
@@ -212,7 +198,7 @@ img.software-upload {
   letter-spacing: normal;
   text-align: center;
   color: #fff;
-}
+} */
 
 img.trash {
   width: 24px;
@@ -223,21 +209,16 @@ img.trash {
 }
 
 .delete_button {
-  width: 40%;
-  height: 38px;
-  flex-grow: 0;
+  align-self: stretch;
+  flex-grow: 1;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  border-radius: 30px;
-  border-color: red;
-  cursor: pointer;
+  padding: 0;
 }
 
-.filterButton {
+/* .filterButton {
   width: 250px;
   height: 38px;
   flex-grow: 0;
@@ -249,9 +230,9 @@ img.trash {
   padding: 5px 10px;
   border-radius: 10px;
   background-color: #2b2b2b;
-}
+} */
 
-.filter_label {
+/* .filter_label {
   width: 201px;
   height: 28px;
   flex-grow: 0;
@@ -264,16 +245,16 @@ img.trash {
   letter-spacing: normal;
   text-align: center;
   color: #fff;
-}
+} */
 
-img.filters {
+/* img.filters {
   width: 24px;
   height: 24px;
   flex-grow: 0;
   object-fit: contain;
   transform: rotate(-180deg);
-}
-
+} */
+/* 
 .Work_and_arrow {
   width: 60px;
   align-self: stretch;
@@ -311,15 +292,15 @@ img.filters {
   letter-spacing: normal;
   text-align: center;
   color: #fff;
-}
-
+} */
+/* 
 img.image {
   width: 24px;
   height: 24px;
   flex-grow: 0;
   object-fit: contain;
-}
-
+} */
+/* 
 .Arrow {
   width: 28px;
   align-self: stretch;
@@ -338,8 +319,8 @@ img.Icon-Arrow {
   height: 48px;
   flex-grow: 0;
   object-fit: contain;
-}
-
+} */
+/* 
 .USER_canvan_span {
   width: 191px;
   height: 40px;
@@ -353,4 +334,4 @@ img.Icon-Arrow {
   letter-spacing: normal;
   text-align: center;
   color: #fff;
-}
+} */

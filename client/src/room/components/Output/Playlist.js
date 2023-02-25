@@ -67,7 +67,7 @@ const Playlist = () => {
     });
   }, []);
   return (
-    <div className="playlist_layout">
+    <div className="Tracks">
       <div className="playlist_main">
         {playlistCtx.playlist.map((data, i) => (
           <PlaylistMain
@@ -78,7 +78,7 @@ const Playlist = () => {
             i={i}
           />
         ))}
-        <div className="playlist_space" ref={newplayimg} />
+        <div className="VideoTrack" ref={newplayimg} />
       </div>
       <div className="playlist_transition">
         {playlistCtx.playlist.map((data, i) => (

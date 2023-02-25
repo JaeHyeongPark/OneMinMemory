@@ -56,15 +56,15 @@ export default function InsertMusic() {
           console.log("응답에러");
         }
       });
-      setOpen(false)
+    setOpen(false);
   };
   return (
     <div>
-      <Button className="insert_music_button" onClick={handleOpen}>
-        <div className="insert_music_icon">
+      <Button className="Preset" onClick={handleOpen}>
+        <div className="Music">
           <img src={music} alt="insert music" />
         </div>
-        음악넣기
+        <span className="preset_span">프리셋</span>
       </Button>
       <Modal
         open={open}

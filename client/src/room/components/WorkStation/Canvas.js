@@ -8,22 +8,7 @@ import "./Canvas.css";
 import SidebarItem from "./SidebarItem";
 import Effect from "./Effects/Effect";
 import Transition from "./Transitions/Transition";
-// require("dotenv").config();
-
-// const DEFAULT_OPTIONS = [
-//   {
-//     name: "Brighten",
-//   },
-//   {
-//     name: "Sharpen",
-//   },
-//   {
-//     name: "Saturate",
-//   },
-//   {
-//     name: "Grayscale",
-//   },
-// ];
+import App from "../../../App";
 
 const EFFECT_LIST = [
   "zoom_in",
@@ -68,7 +53,6 @@ function Canvas() {
   const [Ctx, setCtx] = useState(null);
   const [x, setX] = useState([]);
   const [y, setY] = useState([]);
-  const [transitionClip, setTransitionClip] = useState(false);
   const roomId = useParams().roomId;
   const ToCanvas = useContext(ImageContext);
 
@@ -168,8 +152,7 @@ function Canvas() {
     formdata.append("imagedata", imagedata);
     formdata.append("originurl", ToCanvas.url);
     formdata.append("roomid", roomId);
-
-    console.log("save 실행");
+    formdata.append("id", App.mainSocket.id)
 
     //checked
     await axios
@@ -230,13 +213,6 @@ function Canvas() {
       .catch((err) => {
         console.log("this is error!!!");
       });
-  };
-
-  const transitionClipUpload = (e) => {
-    setTransitionClip(true);
-    const clipComponent = document.getElementById("transition-clip");
-    clipComponent.src = `/TransitionList/${e.target.className}.mp4`;
-    console.log(e.target);
   };
 
   return (
@@ -344,7 +320,6 @@ function Canvas() {
                     <Transition
                       className={transition}
                       key={index}
-                      onChange={transitionClipUpload}
                     />
                   );
                 })}

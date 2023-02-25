@@ -32,6 +32,7 @@ module.exports = function (io) {
   router.post("/newimage", upload.none(), async (req, res) => {
     console.log("받기 시작함");
     const roomid = req.body.roomid;
+    const id = req.body.id
     const imageurl = req.body.imagedata.split("base64,")[1];
     const s3filename = req.body.originurl.split(`${roomid}/Original/`)[1];
 
@@ -39,7 +40,7 @@ module.exports = function (io) {
     const image = sharp(imgbuffer);
     const imgMeta = await image.metadata();
 
-    const url = `${roomid}/Effect/` + s3filename;
+    const url = `${roomid}/Effect/${id}` + s3filename;
     const params = {
       Bucket: process.env.Bucket_Name,
       Key: url,

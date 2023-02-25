@@ -5,7 +5,6 @@ import Scale from "./Scale";
 import InsertMusic from "./InsertMusic";
 import SoundTrack from "./SoundTrack";
 
-import polaroid from "../../assets/polaroid.svg";
 import "./Output.css";
 
 import EditPermissionButton from "./EditPermissionButton";

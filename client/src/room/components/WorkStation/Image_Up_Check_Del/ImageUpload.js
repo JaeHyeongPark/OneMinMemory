@@ -3,12 +3,10 @@ import { useContext } from "react";
 import ImageContext from "./ImageContext";
 import { useParams } from "react-router-dom";
 import softwareupload from "../../../assets/software-upload.svg";
-import App from "../../../../App.js";
 import Button from "@mui/material/Button";
 // require("dotenv").config();
 
 const ImageUpload = (props) => {
-  const ToCanvas = useContext(ImageContext);
   const roomId = useParams().roomId;
 
   const uploadimage = async (e) => {
@@ -29,7 +27,7 @@ const ImageUpload = (props) => {
         },
       })
       .then((res) => {
-        if (res.data.success != true) {
+        if (res.data.success !== true) {
           console.log("응답에러");
         }
       })
@@ -39,7 +37,12 @@ const ImageUpload = (props) => {
   };
 
   return (
-    <Button className="upload_button" variant="contained" component="label">
+    <Button
+      className="upload_button"
+      variant="contained"
+      component="label"
+      sx={{ width: 180 }}
+    >
       <img src={softwareupload} alt="upload"></img>
       <input
         type="file"

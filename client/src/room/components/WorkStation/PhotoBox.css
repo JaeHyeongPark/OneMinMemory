@@ -150,18 +150,20 @@ img.cloud {
 
 .PhotoBox-Button {
   height: 60px;
+  width: 100%;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
   align-items: stretch;
-  padding: 0;
+  padding: 10px;
   border-radius: 15px;
   background-color: #272731;
 }
-
+/* 
 .upload_button {
+  width: 40%;
   align-self: stretch;
   flex-grow: 1;
   display: flex;
@@ -170,35 +172,12 @@ img.cloud {
   align-items: center;
   padding: 0;
   border: solid 1px #565656;
-}
+} */
 
 .uploadinput {
   opacity: 0;
   display: none;
 }
-
-/* img.software-upload {
-  width: 48px;
-  height: 48px;
-  flex-grow: 0;
-  object-fit: contain;
-  transform: rotate(-180deg);
-} */
-
-/* .delete_label {
-  width: 56px;
-  height: 28px;
-  flex-grow: 0;
-  font-family: "Pretendard";
-  font-size: 20px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.4;
-  letter-spacing: normal;
-  text-align: center;
-  color: #fff;
-} */
 
 img.trash {
   width: 24px;
@@ -207,8 +186,9 @@ img.trash {
   object-fit: contain;
   transform: rotate(-180deg);
 }
-
+/* 
 .delete_button {
+  width: 40%;
   align-self: stretch;
   flex-grow: 1;
   display: flex;
@@ -216,7 +196,7 @@ img.trash {
   justify-content: center;
   align-items: center;
   padding: 0;
-}
+} */
 
 /* .filterButton {
   width: 250px;

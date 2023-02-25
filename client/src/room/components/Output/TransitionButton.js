@@ -33,7 +33,7 @@ const TransitionButton = (props) => {
         roomid: roomId,
       })
       .then((res) => {
-        if (res.data.success != true) {
+        if (res.data.success !== true) {
           console.log("응답에러");
         }
       });
@@ -49,7 +49,7 @@ const TransitionButton = (props) => {
         roomid: roomId,
       })
       .then((res) => {
-        if (res.data.success != true) {
+        if (res.data.success !== true) {
           console.log("응답에러");
         }
       });
@@ -65,6 +65,7 @@ const TransitionButton = (props) => {
         style={{
           width: String((2 * 100) / 60) + "%",
         }}
+        alt="transoff"
       />
     );
   } else {
@@ -78,6 +79,7 @@ const TransitionButton = (props) => {
           cursor: "pointer",
         }}
         onClick={deltransition}
+        alt="transon"
       />
     );
   }

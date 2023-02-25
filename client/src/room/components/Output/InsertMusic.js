@@ -1,16 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import PlaylistContext from "../../../shared/context/playlist-context";
 
 import music from "../../assets/music.svg";
 import Music from "./Sound/Music";
 import axios from "axios";
-import App from "../../../App";
 // require("dotenv").config();
 
 const style = {
@@ -33,7 +31,6 @@ const musicItemStyle = {
 };
 
 export default function InsertMusic() {
-  const playlistCtx = useContext(PlaylistContext);
   const roomId = useParams().roomId;
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);

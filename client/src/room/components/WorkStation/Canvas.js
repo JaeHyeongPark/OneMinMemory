@@ -10,20 +10,20 @@ import Effect from "./Effects/Effect";
 import Transition from "./Transitions/Transition";
 // require("dotenv").config();
 
-const DEFAULT_OPTIONS = [
-  {
-    name: "Brighten",
-  },
-  {
-    name: "Sharpen",
-  },
-  {
-    name: "Saturate",
-  },
-  {
-    name: "Grayscale",
-  },
-];
+// const DEFAULT_OPTIONS = [
+//   {
+//     name: "Brighten",
+//   },
+//   {
+//     name: "Sharpen",
+//   },
+//   {
+//     name: "Saturate",
+//   },
+//   {
+//     name: "Grayscale",
+//   },
+// ];
 
 const EFFECT_LIST = [
   "zoom_in",
@@ -71,6 +71,7 @@ function Canvas() {
   const [transitionClip, setTransitionClip] = useState(false);
   const roomId = useParams().roomId;
   const ToCanvas = useContext(ImageContext);
+
   const [{ isover }, drop] = useDrop(() => ({
     accept: ["image"],
     drop: (item) => imageToCanvas(item.url),
@@ -176,7 +177,7 @@ function Canvas() {
         },
       })
       .then((res) => {
-        if (res.data.success != true) {
+        if (res.data.success !== true) {
           console.log("응답에러");
           return;
         }
@@ -240,7 +241,7 @@ function Canvas() {
     <React.Fragment>
       <div className="Username_and_canvas">
         <div className="EditButtons">
-          {DEFAULT_OPTIONS.map((option, index) => {
+          {/* {DEFAULT_OPTIONS.map((option, index) => {
             return (
               <SidebarItem
                 key={index}
@@ -249,32 +250,89 @@ function Canvas() {
                 handleClick={() => selectedOptionApply(index, option.name)}
               />
             );
-          })}
-          <button
-            className="sidebar-item"
-            onClick={() => setPaintMode(PaintMode ? false : true)}
-          >
-            PaintMode-{PaintMode ? "ON" : "OFF"}
-          </button>
-          <button
+          })} */}
+          <SidebarItem
+            key={0}
+            name="Brighten"
+            active={0 === selectedOptionIndex}
+            handleClick={() => selectedOptionApply(0, "Brighten")}
+          />
+          <SidebarItem
+            key={1}
+            name="Sharpen"
+            active={1 === selectedOptionIndex}
+            handleClick={() => selectedOptionApply(1, "Sharpen")}
+          />
+          <SidebarItem
+            key={2}
+            name="Saturate"
+            active={2 === selectedOptionIndex}
+            handleClick={() => selectedOptionApply(2, "Saturate")}
+          />
+          <SidebarItem
+            key={3}
+            name="Grayscale"
+            active={3 === selectedOptionIndex}
+            handleClick={() => selectedOptionApply(3, "Grayscale")}
+          />
+          <SidebarItem
+            key={4}
+            name="Paint Mode"
+            active={4 === selectedOptionIndex}
+            // className="sidebar-item"
+            handleClick={() => {
+              setPaintMode(PaintMode ? false : true);
+              selectedOptionApply(4, "Paint Mode");
+            }}
+          />
+          {/* PaintMode-{PaintMode ? "ON" : "OFF"}
+          </button> */}
+          <SidebarItem
+            key={5}
+            name="Text Mode"
+            active={5 === selectedOptionIndex}
+            handleClick={() => {
+              setTextMode(TextMode ? false : true);
+              selectedOptionApply(5, "Text Mode");
+            }}
+          />
+          {/* <button
             className="sidebar-item"
             onClick={() => {
               setTextMode(TextMode ? false : true);
             }}
           >
             Text Mode-{TextMode ? "END" : "Write"}
-          </button>
-          <button
+          </button> */}
+          <SidebarItem
+            key={6}
+            name="Transition/Effect"
+            active={6 === selectedOptionIndex}
+            handleClick={() => {
+              setTransitionModal(!transitionModal);
+              selectedOptionApply(6, "Transition/Effect");
+            }}
+          />
+          {/* <button
             className="sidebar-item"
             onClick={() => {
               setTransitionModal(!transitionModal);
             }}
           >
             Transition / Effect
-          </button>
-          <button className="sidebar-item" onClick={newImage}>
+          </button> */}
+          <SidebarItem
+            key={7}
+            name="Save"
+            active={7 === selectedOptionIndex}
+            handleClick={() => {
+              newImage();
+              selectedOptionApply(7, "Save");
+            }}
+          />
+          {/* <button className="sidebar-item" onClick={newImage}>
             저장하기
-          </button>
+          </button> */}
         </div>
 
         <div className="container">

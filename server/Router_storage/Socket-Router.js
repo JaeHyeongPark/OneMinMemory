@@ -106,7 +106,8 @@ module.exports = function socketRouter(io) {
           "SET",
           data.roomId + "/playlistPermissionState",
           "true",
-          "NX",
+          // 개발자모드
+          // "NX",
         ]);
         if (AmIFirst === "OK") {
           console.log("첫번쨰 사람 입장!");
@@ -129,7 +130,7 @@ module.exports = function socketRouter(io) {
         const numUserLeft = await redis.v4.lLen(socket.roomId + "/user");
         if (numUserLeft === 0) {
           console.log("방파괴!!!");
-          redis.v4.del(socket.roomId + "");
+          // redis.v4.del(socket.roomId + "");
         }
       } catch (e) {
         console.log(e);

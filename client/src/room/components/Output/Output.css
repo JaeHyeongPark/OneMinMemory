@@ -233,7 +233,7 @@
 } */
 
 .ROOM-FOOTER-TEST {
-  width: 1560px;
+  width: 85%;
   align-self: stretch;
   flex-grow: 1;
   display: flex;
@@ -280,7 +280,7 @@
 }
 
 .ROOM-FOOTER-BUTTONS {
-  width: 280px;
+  width: 15%;
   align-self: stretch;
   flex-grow: 0;
   display: flex;

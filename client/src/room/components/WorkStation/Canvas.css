@@ -1,17 +1,21 @@
 .Username_and_canvas {
-  align-self: stretch;
+  position: relative;
+
+  width: 65%;
+  height: 100%;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
+  align-self: stretch;
   align-items: center;
-  gap: 30px;
-  padding: 40px 80px;
   background-color: #1c1c26;
 }
 
 .EditButtons {
-  height: 90px;
+  position: relative;
+  top: -40px;
+  height: 80px;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
@@ -62,21 +66,6 @@
   height: 1px;
   background-color: hsl(265, 100%, 46%);
 } */
-
-.USER_canvas_span {
-  width: 191px;
-  height: 40px;
-  flex-grow: 0;
-  font-family: Pretendard;
-  font-size: 28.4px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.4;
-  letter-spacing: normal;
-  text-align: center;
-  color: #174291;
-}
 
 /* .canvas {
   width: 100%;

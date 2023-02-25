@@ -16,14 +16,14 @@ const Picture = (props) => {
   );
 
   const selectimage = async (url) => {
-    if (props.mode === "Original"){
-      const origin = {...ToCanvas.origin}
-      origin[url] = origin[url] ? 0 : 1
-      ToCanvas.setorigin(origin)
-    }else{
-      const effect = {...ToCanvas.effect}
-      effect[url] = effect[url] ? 0 : 1
-      ToCanvas.seteffect(effect)
+    if (props.mode === "Original") {
+      const origin = { ...ToCanvas.origin };
+      origin[url] = origin[url] ? 0 : 1;
+      ToCanvas.setorigin(origin);
+    } else {
+      const effect = { ...ToCanvas.effect };
+      effect[url] = effect[url] ? 0 : 1;
+      ToCanvas.seteffect(effect);
     }
   };
 
@@ -34,7 +34,7 @@ const Picture = (props) => {
       className={props.className}
       src={props.url}
       alt="a"
-      style={{ border: isDragging && "5px solid pink" }}
+      style={{ border: isDragging && "5px solid yellow" }}
       onClick={() => selectimage(props.url)}
     />
   );

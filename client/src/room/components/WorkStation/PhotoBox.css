@@ -1,21 +1,25 @@
 /* 230211 수정 css */
 /* 230224 수정 css */
 .title_and_photobox {
-  width: 500px;
-  align-self: stretch;
-  flex-grow: 0;
+  width: 35%;
+  height: 100%;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  align-items: stretch;
-  padding: 40px 20px;
+  align-items: center;
+  padding: 10px 20px;
   background-color: #272731;
+  border-right: rgba(231, 207, 207, 0.1);
+  border-right-width: 1px;
+  border-right-style: solid;
 }
 
 .title_mode {
   display: flex;
   justify-content: space-evenly;
   width: 100%;
+  padding-top: 9px;
 }
 
 .fileupload_title {
@@ -70,49 +74,49 @@ img.cloud {
 }
 
 .PhotoBox {
-  align-self: stretch;
+  width: 100%;
+  height: 80%;
   flex-grow: 1;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: stretch;
-  padding: 0;
-  background-color: #272731;
+  border-top: solid 2px rgba(231, 207, 207, 0.1);
+  background-color: #272833;
 }
 
 .Photos_and_Button {
+  height: 100%;
+  width: 100%;
   align-self: stretch;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  gap: 5px;
-  padding: 0;
+  padding: 0px 15px 15px 15px;
+  gap: 15px;
 }
 
 .upload_Photos {
+  height: 100%;
+  width: 100%;
   align-self: stretch;
   flex-grow: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
-  gap: 5px;
-  padding: 10px;
-  background-color: #1c1c26;
-}
-
-.upload_Photos_layout {
-  width: 549px;
-  height: 80px;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 25px;
-  padding: 0;
+  gap: 10px;
+  padding: 10px;
+  background-color: #1c1c26;
+  /* background-color: rgba(59, 61, 85, 0.306); */
+  /* border-radius: 15px; */
+  overflow-y: auto;
+  flex-wrap: wrap;
+}
+
+.upload_Photos::-webkit-scrollbar {
+  display: none;
 }
 
 .upload_img {
@@ -156,29 +160,24 @@ img.cloud {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  align-items: stretch;
-  padding: 10px;
+  align-items: center;
+  padding: 5px 20px;
   border-radius: 15px;
   background-color: #272731;
 }
-/* 
-.upload_button {
-  width: 40%;
-  align-self: stretch;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  border: solid 1px #565656;
-} */
 
 .uploadinput {
   opacity: 0;
   display: none;
 }
 
+img.software-upload {
+  width: 24px;
+  height: 24px;
+  flex-grow: 0;
+  object-fit: contain;
+  transform: rotate(-180deg);
+}
 img.trash {
   width: 24px;
   height: 24px;

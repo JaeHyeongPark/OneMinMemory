@@ -160,7 +160,7 @@ function Canvas() {
   };
 
   const newImage = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     const imagedata = await canvasRef.current.toDataURL(
       "image/" + ToCanvas.type
     );
@@ -168,6 +168,8 @@ function Canvas() {
     formdata.append("imagedata", imagedata);
     formdata.append("originurl", ToCanvas.url);
     formdata.append("roomid", roomId);
+
+    console.log("save 실행");
 
     //checked
     await axios
@@ -281,8 +283,8 @@ function Canvas() {
             active={4 === selectedOptionIndex}
             // className="sidebar-item"
             handleClick={() => {
+              // selectedOptionApply(4, "Paint Mode");
               setPaintMode(PaintMode ? false : true);
-              selectedOptionApply(4, "Paint Mode");
             }}
           />
           {/* PaintMode-{PaintMode ? "ON" : "OFF"}
@@ -292,8 +294,8 @@ function Canvas() {
             name="Text Mode"
             active={5 === selectedOptionIndex}
             handleClick={() => {
+              // selectedOptionApply(5, "Text Mode");
               setTextMode(TextMode ? false : true);
-              selectedOptionApply(5, "Text Mode");
             }}
           />
           {/* <button
@@ -309,8 +311,8 @@ function Canvas() {
             name="Transition/Effect"
             active={6 === selectedOptionIndex}
             handleClick={() => {
+              // selectedOptionApply(6, "Transition/Effect");
               setTransitionModal(!transitionModal);
-              selectedOptionApply(6, "Transition/Effect");
             }}
           />
           {/* <button
@@ -326,8 +328,8 @@ function Canvas() {
             name="Save"
             active={7 === selectedOptionIndex}
             handleClick={() => {
+              // selectedOptionApply(7, "Save");
               newImage();
-              selectedOptionApply(7, "Save");
             }}
           />
           {/* <button className="sidebar-item" onClick={newImage}>

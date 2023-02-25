@@ -4,8 +4,14 @@ import ImageContext from "./Image_Up_Check_Del/ImageContext";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
+import Button from "@mui/material/Button";
+import AutoFixNormalOutlinedIcon from "@mui/icons-material/AutoFixNormalOutlined";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import TextFieldsOutlinedIcon from "@mui/icons-material/TextFieldsOutlined";
+import AddLinkIcon from "@mui/icons-material/AddLink";
+import SaveIcon from "@mui/icons-material/Save";
+
 import "./Canvas.css";
-import SidebarItem from "./SidebarItem";
 import Effect from "./Effects/Effect";
 import Transition from "./Transitions/Transition";
 // require("dotenv").config();
@@ -56,7 +62,6 @@ const TRANSITION_LIST = [
 ];
 
 function Canvas() {
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
   const canvasRef = useRef(null);
   const [TextMode, setTextMode] = useState(false);
   const [inputShow, setinputShow] = useState(false);
@@ -69,6 +74,8 @@ function Canvas() {
   const [x, setX] = useState([]);
   const [y, setY] = useState([]);
   const [transitionClip, setTransitionClip] = useState(false);
+  const [showEffectItems, setShowEffectItems] = useState(false);
+  const effectItemsRef = useRef(null);
   const roomId = useParams().roomId;
   const ToCanvas = useContext(ImageContext);
 
@@ -194,9 +201,7 @@ function Canvas() {
       });
   };
 
-  const selectedOptionApply = async (index, name) => {
-    setSelectedOptionIndex(index);
-    console.log("index:", index);
+  const selectedOptionApply = async (name) => {
     console.log("name:", name);
     const canvas = canvasRef.current;
     const imageData = canvas.toDataURL("image/" + ToCanvas.type);
@@ -243,98 +248,85 @@ function Canvas() {
     <React.Fragment>
       <div className="Username_and_canvas">
         <div className="EditButtons">
-          {/* {DEFAULT_OPTIONS.map((option, index) => {
-            return (
-              <SidebarItem
-                key={index}
-                name={option.name}
-                active={index === selectedOptionIndex}
-                handleClick={() => selectedOptionApply(index, option.name)}
-              />
-            );
-          })} */}
-          <SidebarItem
-            key={0}
-            name="Brighten"
-            active={0 === selectedOptionIndex}
-            handleClick={() => selectedOptionApply(0, "Brighten")}
-          />
-          <SidebarItem
-            key={1}
-            name="Sharpen"
-            active={1 === selectedOptionIndex}
-            handleClick={() => selectedOptionApply(1, "Sharpen")}
-          />
-          <SidebarItem
-            key={2}
-            name="Saturate"
-            active={2 === selectedOptionIndex}
-            handleClick={() => selectedOptionApply(2, "Saturate")}
-          />
-          <SidebarItem
-            key={3}
-            name="Grayscale"
-            active={3 === selectedOptionIndex}
-            handleClick={() => selectedOptionApply(3, "Grayscale")}
-          />
-          <SidebarItem
-            key={4}
+          <Button
+            className="sidebar-item"
+            name="Canvas Effect"
+            onClick={() => setShowEffectItems(!showEffectItems)}
+            startIcon={<AutoFixNormalOutlinedIcon style={{ fontSize: 35 }} />}
+          ></Button>
+          {showEffectItems ? (
+            <ul className="canvaseffect__items" ref={effectItemsRef}>
+              <li>
+                <Button
+                  className="sidebar-item"
+                  name="Brighten"
+                  onClick={() => selectedOptionApply("Brighten")}
+                >
+                  Brighten
+                </Button>
+              </li>
+              <li>
+                <Button
+                  className="sidebar-item"
+                  name="Sharpen"
+                  onClick={() => selectedOptionApply("Sharpen")}
+                >
+                  Sharpen
+                </Button>
+              </li>
+              <li>
+                <Button
+                  className="sidebar-item"
+                  name="Saturate"
+                  onClick={() => selectedOptionApply("Saturate")}
+                >
+                  Saturate
+                </Button>
+              </li>
+              <li>
+                <Button
+                  className="sidebar-item"
+                  name="Grayscale"
+                  onClick={() => selectedOptionApply("Grayscale")}
+                >
+                  Grayscale
+                </Button>
+              </li>
+            </ul>
+          ) : (
+            <></>
+          )}
+
+          <Button
+            className="sidebar-item"
             name="Paint Mode"
-            active={4 === selectedOptionIndex}
-            // className="sidebar-item"
-            handleClick={() => {
-              // selectedOptionApply(4, "Paint Mode");
+            onClick={() => {
               setPaintMode(PaintMode ? false : true);
             }}
-          />
-          {/* PaintMode-{PaintMode ? "ON" : "OFF"}
-          </button> */}
-          <SidebarItem
-            key={5}
+            startIcon={<BorderColorOutlinedIcon style={{ fontSize: 35 }} />}
+          ></Button>
+          <Button
+            className="sidebar-item"
             name="Text Mode"
-            active={5 === selectedOptionIndex}
-            handleClick={() => {
-              // selectedOptionApply(5, "Text Mode");
-              setTextMode(TextMode ? false : true);
-            }}
-          />
-          {/* <button
-            className="sidebar-item"
             onClick={() => {
               setTextMode(TextMode ? false : true);
             }}
-          >
-            Text Mode-{TextMode ? "END" : "Write"}
-          </button> */}
-          <SidebarItem
-            key={6}
+            startIcon={<TextFieldsOutlinedIcon style={{ fontSize: 35 }} />}
+          ></Button>
+          <Button
+            className="sidebar-item"
             name="Transition/Effect"
-            active={6 === selectedOptionIndex}
-            handleClick={() => {
-              // selectedOptionApply(6, "Transition/Effect");
-              setTransitionModal(!transitionModal);
-            }}
-          />
-          {/* <button
-            className="sidebar-item"
             onClick={() => {
               setTransitionModal(!transitionModal);
             }}
-          >
-            Transition / Effect
-          </button> */}
-          <SidebarItem
-            key={7}
+            startIcon={<AddLinkIcon style={{ fontSize: 35 }} />}
+          ></Button>
+          <Button
+            className="sidebar-item"
+            onClick={newImage}
             name="Save"
-            active={7 === selectedOptionIndex}
-            handleClick={() => {
-              // selectedOptionApply(7, "Save");
-              newImage();
-            }}
-          />
-          {/* <button className="sidebar-item" onClick={newImage}>
-            저장하기
-          </button> */}
+            startIcon={<SaveIcon style={{ fontSize: 35 }} />}
+          ></Button>
         </div>
 
         <div className="container">

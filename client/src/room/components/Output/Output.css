@@ -1,15 +1,182 @@
-.ROOM-FOOTER {
-  width: 100%;
-  height: 35%;
-  align-self: stretch;
-  flex-grow: 0;
+/* 2302225 정근 수정 */
+.Preset {
+  box-sizing: border-box;
+
+  /* Auto layout */
+
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 0;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 20px;
+
+  width: 180px;
+  height: 66.67px;
 }
-.permission_button_group {
+
+.Music {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+
+  width: 40px;
+  height: 40px;
+}
+
+.preset_span {
+  width: 74px;
+  height: 40px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 28.4px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #e1e1e1;
+}
+
+.Rendering {
+  /* Auto layout */
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 20px;
+  width: 180px;
+  height: 66.67px;
+}
+
+.render_span {
+  width: 74px;
+  height: 40px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 28.4px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #e1e1e1;
+}
+
+.RenderIcon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+
+  width: 40px;
+  height: 40px;
+}
+
+.EditDisc {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 20px;
+
+  width: 200px;
+  height: 66.67px;
+
+  /* blue/700 */
+
+  background: #174291;
+  /* blue/800 */
+
+  border: 2px solid #102c60;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.EditDisc_fin {
+  /* Auto layout */
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 20px;
+
+  position: relative;
+  width: 200px;
+  height: 66.67px;
+
+  /* green/600 */
+
+  background: #036d3a;
+  /* green/700 */
+
+  border: 2px solid #02522b;
+  border-radius: 10px;
+}
+
+.EditDisc_disable {
+  /* Auto layout */
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 20px;
+
+  position: relative;
+  width: 200px;
+  height: 66.67px;
+
+  /* red/700 */
+
+  background: #870f00;
+  /* red/800 */
+
+  border: 2px solid #5a0a00;
+  border-radius: 10px;
+}
+
+.EditDisc_label {
+  height: 40px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 28.43px;
+  font-weight: 700;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #ffffff;
+  cursor: pointer;
+}
+/* 2302225 정근 수정 */
+
+.ROOM-FOOTER {
+  width: 1920px;
+  height: 300px;
+  align-self: stretch;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0 40px 40px;
+  background-color: #17171e;
+}
+
+/* .permission_button_group {
   width: 190px;
   height: 30px;
   flex-grow: 0;
@@ -18,10 +185,11 @@
   justify-content: center;
   align-items: center;
   padding: 0;
-}
-.permission_button_disable {
-  width: 190px;
-  height: 30px;
+} */
+
+/* .permission_button_disable {
+  width: 200px;
+  height: 66.67px;
   flex-grow: 0;
   display: flex;
   flex-direction: row;
@@ -34,8 +202,8 @@
   background-color: #e74733;
 }
 .permission_button {
-  width: 190px;
-  height: 30px;
+  width: 200px;
+  height: 66.67px;
   flex-grow: 0;
   display: flex;
   flex-direction: row;
@@ -47,9 +215,9 @@
   border: solid 2px #e74733;
   background-color: #ffc043;
   cursor: pointer;
-}
+} */
 
-.permission_label_able {
+/* .permission_label_able {
   height: 28px;
   flex-grow: 0;
   font-family: "Pretendard";
@@ -62,19 +230,18 @@
   text-align: center;
   color: black;
   cursor: pointer;
-}
+} */
 
 .ROOM-FOOTER-TEST {
-  width: 80%;
-  height: 70%;
+  width: 1560px;
+  align-self: stretch;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  padding: 5px 20px;
-  border: groove 5px rgba(231, 207, 207, 0.1);
-  background-color: #272833;
+  padding: 0 20px;
+  background-color: #17171e;
 }
 
 .insert_music_button {
@@ -113,78 +280,28 @@
 }
 
 .ROOM-FOOTER-BUTTONS {
-  width: 10%;
-  height: 70%;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
-  border: solid 1px #d9e8ef;
-  background-color: #272833;
-}
-
-.finished_layout {
-  height: 142px;
+  width: 280px;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  gap: 8px;
-  padding: 10px;
-}
-
-.preview_button_group {
-  width: 123px;
-  height: 38px;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  align-items: stretch;
   padding: 0;
+  background-color: #17171e;
 }
 
-.preview_button {
-  width: 123px;
-  height: 38px;
-  flex-grow: 0;
+.finished_layout {
+  height: 260px;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  border-radius: 10px;
-  background-color: #ed7566;
+  padding: 20px 40px;
+  gap: 10px;
 }
 
-.preview_label {
-  width: 74px;
-  height: 28px;
-  flex-grow: 0;
-  font-family: "Pretendard";
-  font-size: 20px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.4;
-  letter-spacing: normal;
-  text-align: center;
-  color: #fff;
-}
-
-img.polaroid {
-  width: 24px;
-  height: 24px;
-  flex-grow: 0;
-  object-fit: contain;
-  transform: rotate(-180deg);
-}
-
-.render_button_group {
+/* .render_button_group {
   width: 116px;
   height: 44px;
   flex-grow: 0;
@@ -193,7 +310,7 @@ img.polaroid {
   justify-content: center;
   align-items: center;
   padding: 0;
-}
+} */
 
 .render_button {
   width: 116px;
@@ -210,13 +327,13 @@ img.polaroid {
   background-color: #ffc043;
 }
 
-img.infinity {
+/* img.infinity {
   width: 24px;
   height: 24px;
   flex-grow: 0;
   object-fit: contain;
   transform: rotate(-180deg);
-}
+} */
 
 .render_label {
   width: 67px;
@@ -278,7 +395,7 @@ img.infinity {
   line-height: 1.6;
   letter-spacing: normal;
   text-align: center;
-  color: #000;
+  color: #e1e1e1;
 }
 
 .end {
@@ -293,7 +410,7 @@ img.infinity {
   line-height: 1.6;
   letter-spacing: normal;
   text-align: center;
-  color: #000;
+  color: #e1e1e1;
 }
 .SoundTrack {
   max-width: calc(100% - 40px);

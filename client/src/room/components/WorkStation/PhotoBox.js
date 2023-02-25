@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 
 import Cloud from "../../assets/cloud.svg";
+import Editedcloud from "../../assets/editedcloud.svg";
 import ImageShow from "./Image_Up_Check_Del/ImageShow";
 import ImageUpload from "./Image_Up_Check_Del/ImageUpload";
 import ImageDel from "./Image_Up_Check_Del/ImageDel";
@@ -12,6 +13,7 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import "./PhotoBox.css";
 
 import App from "../../../App.js";
+// require("dotenv").config();
 
 const PhotoBox = (props) => {
   const [cloud, setcloud] = useState(true);
@@ -23,7 +25,7 @@ const PhotoBox = (props) => {
   // 처음 방에 들어오면 해당 방에 대한 정보를 싸악 받는다.
   useEffect(() => {
     axios
-      .post("http://localhost:5000/photoBox/sendimage", {
+      .post(process.env.REACT_APP_expressURL + "/photoBox/sendimage", {
         roomid: roomId,
       })
       .then((res) => {
@@ -47,8 +49,12 @@ const PhotoBox = (props) => {
     }
   }, [ToCanvas.origin, cloud, ToCanvas.effect]);
 
-  const CloudChange = () => {
-    setcloud(cloud ? false : true);
+  const Cloudtrue = () => {
+    setcloud(true);
+  };
+
+  const Cloudfalse = () => {
+    setcloud(false);
   };
 
   App.mainSocket.removeAllListeners("upload");
@@ -67,13 +73,37 @@ const PhotoBox = (props) => {
   return (
     <React.Fragment>
       <div className="title_and_photobox">
-        <div className="fileupload_title">
-          <div className="cloud">
-            <img src={Cloud} className="img.cloud" alt="" />
+        <div className="title_mode">
+          <div
+            className="fileupload_title"
+            style={cloud ? {} : { borderBottom: "3px solid #272833" }}
+          >
+            <div className="cloud">
+              <img src={Cloud} className="img.cloud" alt="" />
+            </div>
+            <span
+              className="cloud_span"
+              style={cloud ? { color: "skyblue" } : { color: "gray" }}
+              onClick={Cloudtrue}
+            >
+              Original
+            </span>
           </div>
-          <span className="cloud_span" onClick={CloudChange}>
-            {cloud ? "CLOUD - Original" : "CLOUD - Effect"}
-          </span>
+          <div
+            className="fileupload_title"
+            style={cloud ? { borderBottom: "3px solid #272833" } : {}}
+          >
+            <div className="cloud">
+              <img src={Editedcloud} className="img.cloud" alt="" />
+            </div>
+            <span
+              className="cloud_span"
+              style={cloud ? { color: "gray" } : { color: "skyblue" }}
+              onClick={Cloudfalse}
+            >
+              Edited
+            </span>
+          </div>
         </div>
         <div className="PhotoBox">
           <div className="Photos_and_Button">

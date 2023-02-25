@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useParams } from "react-router";
 
-import RoomCodeContext from "../../../shared/context/roomcode-context";
 import "./RoomCode.css";
 
 const RoomCode = () => {
-  const roomcodeCtx = useContext(RoomCodeContext);
+const roomid = useParams().roomId
 
-  return <span className="room_number">{roomcodeCtx}</span>;
+  return <span className="room_number">{roomid}</span>;
 };
 
 export default RoomCode;

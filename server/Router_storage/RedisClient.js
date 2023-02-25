@@ -17,6 +17,6 @@ client.on("error", (err) => {
 });
 
 client.connect();
-const redis = client
+const redis = client;
 
-module.exports = redis
+module.exports = redis;

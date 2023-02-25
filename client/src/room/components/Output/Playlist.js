@@ -8,6 +8,7 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import PlaylistMain from "./PlaylistMain";
 import PlaylistTrans from "./PlaylistTrans";
 import App from "../../../App";
+// require("dotenv").config();
 
 const Playlist = () => {
   const playlistCtx = useContext(PlaylistContext);
@@ -28,7 +29,7 @@ const Playlist = () => {
       return;
     }
     axios
-      .post("http://localhost:5000/output/inputnewplay", {
+      .post(process.env.REACT_APP_expressURL + "/output/inputnewplay", {
         url: url,
         roomid: roomId,
       })
@@ -66,7 +67,7 @@ const Playlist = () => {
     });
   }, []);
   return (
-    <div className="playlist_layout">
+    <div className="Tracks">
       <div className="playlist_main">
         {playlistCtx.playlist.map((data, i) => (
           <PlaylistMain
@@ -77,7 +78,7 @@ const Playlist = () => {
             i={i}
           />
         ))}
-        <div className="playlist_space" ref={newplayimg} />
+        <div className="VideoTrack" ref={newplayimg} />
       </div>
       <div className="playlist_transition">
         {playlistCtx.playlist.map((data, i) => (

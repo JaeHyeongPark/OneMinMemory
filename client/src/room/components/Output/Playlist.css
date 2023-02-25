@@ -1,3 +1,28 @@
+/* 230225 정근 추가 */
+.VideoTrack {
+  align-self: stretch;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0;
+  border: solid 2px #272731;
+  background-color: #1c1c28;
+}
+
+.Tracks {
+  align-self: stretch;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  /* gap: 10px; */
+  padding: 0;
+}
+/* 230225 정근 추가 */
+
 .toplay_img {
   height: 100%;
   flex-grow: 0;
@@ -6,13 +31,15 @@
   justify-content: flex-start;
   align-items: stretch;
   padding: 0;
+  object-fit: contain;
+
   row-gap: 0px;
   border: solid 1px #b180e9;
   border-radius: 1em;
   background-color: #3b3c48;
 }
-.toplay_img img{
-  position:absolute;
+.toplay_img img {
+  position: absolute;
   object-fit: cover;
   width: 40px;
   height: 35px;
@@ -46,8 +73,8 @@
   font-size: 16px;
   cursor: pointer;
 }
-.selecttoplay_img img{
-  position:absolute;
+.selecttoplay_img img {
+  position: absolute;
   object-fit: cover;
   width: 40px;
   height: 35px;
@@ -80,7 +107,7 @@
   align-items: stretch;
   padding: 0;
   row-gap: 0px;
-  border: solid 0px #000; 
+  border: solid 0px #000;
 }
 .toplay_transOn {
   flex-grow: 0;
@@ -125,14 +152,14 @@
 }
 
 .playlist_layout {
-  height: 60%;
+  /* height: 60%; */
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: left;
   align-items: stretch;
   /* gap: 5px; */
-  padding: 0px 20px 10px 20px;
+  /* padding: 0px 20px 10px 20px; */
   /* border-radius: 15px; */
   /* border: solid 2px #272833; */
 }
@@ -172,7 +199,7 @@
   justify-content: center;
   align-items: center;
 }
-.modal-content video{
+.modal-content video {
   width: 80rem;
 }
 

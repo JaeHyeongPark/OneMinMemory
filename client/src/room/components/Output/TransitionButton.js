@@ -5,8 +5,8 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import { useParams } from "react-router-dom";
 import App from "../../../App";
 
-import trans_off from "../../assets/transition_off.png"
-import trans_on from "../../assets/transition_on.png"
+import trans_off from "../../assets/transition_off.png";
+import trans_on from "../../assets/transition_on.png";
 
 const TransitionButton = (props) => {
   const playlistCtx = useContext(PlaylistContext);
@@ -27,7 +27,7 @@ const TransitionButton = (props) => {
       return;
     }
     axios
-      .post("http://localhost:5000/output/transition", {
+      .post(process.env.REACT_APP_expressURL + "/output/transition", {
         transition,
         idx: props.idx,
         roomid: roomId,
@@ -44,7 +44,7 @@ const TransitionButton = (props) => {
     }
     e.preventDefault();
     axios
-      .post("http://localhost:5000/output/deltransition", {
+      .post(process.env.REACT_APP_expressURL + "/output/deltransition", {
         idx: props.idx,
         roomid: roomId,
       })

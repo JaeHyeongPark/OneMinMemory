@@ -8,6 +8,7 @@ const Canvas_router = require("./Router_storage/Canvas-Router");
 const Output_router = require("./Router_storage/Output-Router");
 const MainPage_router = require("./Router_storage/MainPage-Router");
 const Socket_router = require("./Router_storage/Socket-Router");
+const dotenv = require("dotenv");
 
 // ==============클러스터 관련 모듈=================================
 // const { setupMaster, setupWorker } = require("@socket.io/sticky");
@@ -22,7 +23,7 @@ const httpServer = http.createServer(app);
 const io = new socketio.Server(httpServer, {
   path: "/mainsocket",
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.AccessAllowURL,
     credentials: true,
     methods: ["GET", "POST", "OPTIONS"],
   },

@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
+// require("dotenv").config();
 
 function LoginPage() {
   const AuthCtx = useContext(AuthContext);
@@ -29,7 +30,7 @@ function LoginPage() {
   // 방생성으로 방의 난수를 받는다.(아직 DB에 저장 X)
   const handleOpen = (e) => {
     e.preventDefault();
-    axios.get("http://localhost:5000/home/roomid").then((res) => {
+    axios.get(process.env.REACT_APP_expressURL + "/home/roomid").then((res) => {
       AuthCtx.changeid(res.data);
     });
     setOpen(true);
@@ -39,7 +40,9 @@ function LoginPage() {
   const makeroom = async (e) => {
     e.preventDefault();
     await axios
-      .post("http://localhost:5000/home/makeroom", { id: AuthCtx.rooomId })
+      .post(process.env.REACT_APP_expressURL + "/home/makeroom", {
+        id: AuthCtx.rooomId,
+      })
       .then((res) => {
         const url = `/room/${AuthCtx.rooomId}`;
         navigate(url);
@@ -71,7 +74,7 @@ function LoginPage() {
             아래 URL를 통해 친구들을 초대하세요!
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {`http://localhost:3000/room/${AuthCtx.rooomId}`}
+            {process.env.REACT_APP_myURL + `/room/${AuthCtx.rooomId}`}
           </Typography>
           <span style={{ cursor: "pointer" }} onClick={makeroom}>
             시작하기

@@ -11,6 +11,7 @@ import music from "../../assets/music.svg";
 import Music from "./Sound/Music";
 import axios from "axios";
 import App from "../../../App";
+// require("dotenv").config();
 
 const style = {
   position: "absolute",
@@ -45,7 +46,7 @@ export default function InsertMusic() {
       return;
     }
     axios
-      .post(`http://localhost:5000/output/playlistpreset`, {
+      .post(process.env.REACT_APP_expressURL + `/output/playlistpreset`, {
         idx: idx,
         src: src,
         roomid: roomId,
@@ -55,15 +56,15 @@ export default function InsertMusic() {
           console.log("응답에러");
         }
       });
-      setOpen(false)
+    setOpen(false);
   };
   return (
     <div>
-      <Button className="insert_music_button" onClick={handleOpen}>
-        <div className="insert_music_icon">
+      <Button className="Preset" onClick={handleOpen}>
+        <div className="Music">
           <img src={music} alt="insert music" />
         </div>
-        음악넣기
+        <span className="preset_span">프리셋</span>
       </Button>
       <Modal
         open={open}

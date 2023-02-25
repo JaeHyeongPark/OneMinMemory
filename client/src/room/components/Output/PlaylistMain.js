@@ -36,7 +36,7 @@ const PlaylistMain = (props) => {
       return;
     }
     axios
-      .post("http://localhost:5000/output/postplaylist", {
+      .post(process.env.REACT_APP_expressURL + "/output/postplaylist", {
         url: url,
         idx: props.i,
         roomid: roomid,
@@ -56,7 +56,7 @@ const PlaylistMain = (props) => {
     e.preventDefault();
     App.check = false;
     axios
-      .post("http://localhost:5000/output/deleteplayurl", {
+      .post(process.env.REACT_APP_expressURL + "/output/deleteplayurl", {
         idx: props.i,
         roomid: roomid,
       })
@@ -75,7 +75,7 @@ const PlaylistMain = (props) => {
     e.preventDefault();
     if (!App.check) return;
     axios
-      .post("http://localhost:5000/output/clickimg", {
+      .post(process.env.REACT_APP_expressURL + "/output/clickimg", {
         idx: props.i,
         roomid: roomid,
       })
@@ -92,7 +92,7 @@ const PlaylistMain = (props) => {
       return;
     }
     axios
-      .post("http://localhost:5000/output/effect", {
+      .post(process.env.REACT_APP_expressURL + "/output/effect", {
         effect,
         idx: props.i,
         roomid: roomid,

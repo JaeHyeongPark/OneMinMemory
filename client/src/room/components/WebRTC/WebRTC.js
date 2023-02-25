@@ -42,14 +42,17 @@ const RTC_config = {
     { urls: "stun:stun4.l.google.com:19302" },
     {
       urls: [
-        "stun:15.165.18.173:3478",
-        "turn:15.165.18.173:3478?transport=udp",
+        "stun:" + process.env.REACT_APP_TurnIP1 + ":3478",
+        "turn:" + process.env.REACT_APP_TurnIP1 + ":3478?transport=udp",
       ],
       username: "choongil",
       credential: "Lee",
     },
     {
-      urls: ["stun:43.201.60.133", "turn:43.201.60.133:3478?transport=udp"],
+      urls: [
+        "stun:" + process.env.REACT_APP_TurnIP2 + ":3478",
+        "turn:" + process.env.REACT_APP_TurnIP2 + ":3478?transport=udp",
+      ],
       username: "choongil",
       credential: "Lee",
     },
@@ -373,7 +376,7 @@ const WebRTC = () => {
             id="peersFace1"
             autoPlay
             playsInline
-            height="180px"
+            height="150px"
             width="240px"
           ></video>
           <div className="name_layout">
@@ -386,7 +389,7 @@ const WebRTC = () => {
             id="peersFace2"
             autoPlay
             playsInline
-            height="180px"
+            height="150px"
             width="240px"
           ></video>
           <div className="name_layout">
@@ -399,7 +402,7 @@ const WebRTC = () => {
             id="peersFace3"
             autoPlay
             playsInline
-            height="180px"
+            height="150px"
             width="240px"
           ></video>
           <div className="name_layout">
@@ -412,7 +415,7 @@ const WebRTC = () => {
             id="peersFace4"
             autoPlay
             playsInline
-            height="180px"
+            height="150px"
             width="240px"
           ></video>
           <div className="name_layout">

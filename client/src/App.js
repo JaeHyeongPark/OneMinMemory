@@ -5,8 +5,9 @@ import MainPage from "./MainScreen/M-MainPage";
 import Room from "./room/pages/Room";
 
 import { io } from "socket.io-client";
+// require("dotenv").config();
 
-const mainSocket = io("http://localhost:5000", {
+const mainSocket = io(process.env.REACT_APP_expressURL, {
   path: "/mainsocket",
   withCredentials: true,
 });

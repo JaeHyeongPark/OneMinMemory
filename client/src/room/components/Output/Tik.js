@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import lineA from "../../assets/LineA.svg";
 import lineB from "../../assets/LineB.svg";
 import lineC from "../../assets/LineC.svg";
+// require("dotenv").config();
 
 import App from "../../../App";
 
@@ -53,7 +54,7 @@ const Tik = (props) => {
       return;
     }
     axios
-      .post("http://localhost:5000/output/changetime", {
+      .post(process.env.REACT_APP_expressURL + "/output/changetime", {
         time: props.time - time,
         idx: idx,
         roomid: roomId,

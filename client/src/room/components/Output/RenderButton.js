@@ -3,8 +3,10 @@ import axios from "axios";
 import FileDownload from "js-file-download";
 import { useParams } from "react-router-dom";
 import infinity from "../../assets/infinity.svg";
+import RenderIcon from "../../assets/rendericon.svg";
+import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import loadGif from "../../assets/RenderLoading.gif"
+import loadGif from "../../assets/RenderLoading.gif";
 import Modal from "@mui/material/Modal";
 import App from "../../../App";
 // require("dotenv").config();
@@ -78,11 +80,13 @@ const RenderButton = () => {
   }, []);
 
   return (
-    <div className="render_button_group">
-      <button className="render_button" onClick={merge}>
-        <img src={infinity} className="img.infinity" alt="video rendering" />
-        <label className="render_label">렌더링</label>
-      </button>
+    <div>
+      <Button className="Rendering" onClick={merge}>
+        <div className="RenderIcon">
+          <img src={RenderIcon} alt="video rendering" />
+        </div>
+        <span className="render_span">렌더링</span>
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}

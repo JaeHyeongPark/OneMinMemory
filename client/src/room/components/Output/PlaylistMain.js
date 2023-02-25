@@ -42,7 +42,7 @@ const PlaylistMain = (props) => {
         roomid: roomid,
       })
       .then((res) => {
-        if (res.data.success != true) {
+        if (res.data.success !== true) {
           console.log("응답에러");
         }
       });
@@ -61,7 +61,7 @@ const PlaylistMain = (props) => {
         roomid: roomid,
       })
       .then((res) => {
-        if (res.data.success != true) {
+        if (res.data.success !== true) {
           console.log("응답에러");
         }
       });
@@ -80,7 +80,7 @@ const PlaylistMain = (props) => {
         roomid: roomid,
       })
       .then((res) => {
-        if (res.data.success != true) {
+        if (res.data.success !== true) {
           console.log("응답에러");
         }
       });
@@ -98,7 +98,7 @@ const PlaylistMain = (props) => {
         roomid: roomid,
       })
       .then((res) => {
-        if (res.data.success != true) {
+        if (res.data.success !== true) {
           console.log("응답에러");
         }
       });
@@ -144,7 +144,7 @@ const PlaylistMain = (props) => {
       {props.effect ? (
         <img src={effectOn} onClick={deleffect} style={{cursor:"pointer"}} />
       ) : (
-        <img src={effectOff} />
+        <img src={effectOff} alt="effectoff" />
       )}
     </div>
   );

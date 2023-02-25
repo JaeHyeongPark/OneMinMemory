@@ -5,7 +5,7 @@ import Wavedata from "./Sound/wavedata.json";
 
 const SoundTrack = () => {
   const playlistCtx = useContext(PlaylistContext);
-  const [newidx, setNewIdx] = useState(0);
+  const [newidx, setNewIdx] = useState("0");
   const [newsrc, setNewSrc] = useState("");
   const canvasRef = useRef(null);
   const layoutRef = useRef(null);
@@ -84,6 +84,7 @@ const SoundTrack = () => {
       <audio ref={audioRef} src={newsrc} id="myAudio"></audio>
       <canvas
         className="soundtrack_canvas"
+        width={1520}
         height={70}
         ref={canvasRef}
       ></canvas>

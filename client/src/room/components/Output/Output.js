@@ -5,7 +5,6 @@ import Scale from "./Scale";
 import InsertMusic from "./InsertMusic";
 import SoundTrack from "./SoundTrack";
 
-import polaroid from "../../assets/polaroid.svg";
 import "./Output.css";
 
 import EditPermissionButton from "./EditPermissionButton";
@@ -29,16 +28,6 @@ const Output = () => {
       <div className="ROOM-FOOTER-BUTTONS">
         <div className="finished_layout">
           <InsertMusic />
-          <div className="preview_button_group">
-            <div className="preview_button">
-              <img
-                src={polaroid}
-                className="img.polaroid"
-                alt="video preview"
-              />
-              <label className="preview_label">미리보기</label>
-            </div>
-          </div>
           <RenderButton />
           <EditPermissionButton />
         </div>

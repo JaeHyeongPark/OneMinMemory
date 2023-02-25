@@ -8,13 +8,14 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  /* padding: 5px; */
+  padding: 10px 20px;
+  background-color: #272731;
   border-right: rgba(231, 207, 207, 0.1);
   border-right-width: 1px;
   border-right-style: solid;
 }
 
-.title_mode{
+.title_mode {
   display: flex;
   justify-content: space-evenly;
   width: 100%;
@@ -38,7 +39,7 @@
 
   background: #272833;
   /* 1min/navy */
-  border-bottom: solid 3px #fff
+  border-bottom: solid 3px #fff;
 }
 
 .cloud {
@@ -74,7 +75,7 @@ img.cloud {
 
 .PhotoBox {
   width: 100%;
-  height: 100%;
+  height: 80%;
   flex-grow: 1;
   display: flex;
   flex-direction: row;
@@ -86,6 +87,7 @@ img.cloud {
 
 .Photos_and_Button {
   height: 100%;
+  width: 100%;
   align-self: stretch;
   flex-grow: 1;
   display: flex;
@@ -98,31 +100,23 @@ img.cloud {
 
 .upload_Photos {
   height: 100%;
+  width: 100%;
   align-self: stretch;
   flex-grow: 1;
   display: flex;
-  /* flex-direction: column; */
   justify-content: flex-start;
   align-items: flex-start;
   gap: 10px;
   padding: 10px;
-  background-color: rgba(59, 61, 85, 0.306);
-  border: solid 1px rgba(231, 207, 207, 0.1);
-  border-radius: 15px;
+  background-color: #1c1c26;
+  /* background-color: rgba(59, 61, 85, 0.306); */
+  /* border-radius: 15px; */
   overflow-y: auto;
   flex-wrap: wrap;
 }
 
-.upload_Photos_layout {
-  width: 549px;
-  height: 80px;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 25px;
-  padding: 0;
+.upload_Photos::-webkit-scrollbar {
+  display: none;
 }
 
 .upload_img {
@@ -159,31 +153,17 @@ img.cloud {
 }
 
 .PhotoBox-Button {
-  height: 48px;
+  height: 60px;
+  width: 100%;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   padding: 5px 20px;
   border-radius: 15px;
-  border: solid 1px #272833;
-}
-
-.upload_button {
-  width: 40%;
-  height: 38px;
-  flex-grow: 0;
-  background: linear-gradient(to bottom right, #0c57e4, white);
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  /* border-radius: 30px; */
-  cursor: pointer;
+  background-color: #272731;
 }
 
 .uploadinput {
@@ -198,22 +178,6 @@ img.software-upload {
   object-fit: contain;
   transform: rotate(-180deg);
 }
-
-.delete_label {
-  width: 56px;
-  height: 28px;
-  flex-grow: 0;
-  font-family: "Pretendard";
-  font-size: 20px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.4;
-  letter-spacing: normal;
-  text-align: center;
-  color: #fff;
-}
-
 img.trash {
   width: 24px;
   height: 24px;
@@ -221,23 +185,19 @@ img.trash {
   object-fit: contain;
   transform: rotate(-180deg);
 }
-
+/* 
 .delete_button {
   width: 40%;
-  height: 38px;
-  flex-grow: 0;
+  align-self: stretch;
+  flex-grow: 1;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  border-radius: 30px;
-  border-color: red;
-  cursor: pointer;
-}
+  padding: 0;
+} */
 
-.filterButton {
+/* .filterButton {
   width: 250px;
   height: 38px;
   flex-grow: 0;
@@ -249,9 +209,9 @@ img.trash {
   padding: 5px 10px;
   border-radius: 10px;
   background-color: #2b2b2b;
-}
+} */
 
-.filter_label {
+/* .filter_label {
   width: 201px;
   height: 28px;
   flex-grow: 0;
@@ -264,16 +224,16 @@ img.trash {
   letter-spacing: normal;
   text-align: center;
   color: #fff;
-}
+} */
 
-img.filters {
+/* img.filters {
   width: 24px;
   height: 24px;
   flex-grow: 0;
   object-fit: contain;
   transform: rotate(-180deg);
-}
-
+} */
+/* 
 .Work_and_arrow {
   width: 60px;
   align-self: stretch;
@@ -311,15 +271,15 @@ img.filters {
   letter-spacing: normal;
   text-align: center;
   color: #fff;
-}
-
+} */
+/* 
 img.image {
   width: 24px;
   height: 24px;
   flex-grow: 0;
   object-fit: contain;
-}
-
+} */
+/* 
 .Arrow {
   width: 28px;
   align-self: stretch;
@@ -338,8 +298,8 @@ img.Icon-Arrow {
   height: 48px;
   flex-grow: 0;
   object-fit: contain;
-}
-
+} */
+/* 
 .USER_canvan_span {
   width: 191px;
   height: 40px;
@@ -353,4 +313,4 @@ img.Icon-Arrow {
   letter-spacing: normal;
   text-align: center;
   color: #fff;
-}
+} */

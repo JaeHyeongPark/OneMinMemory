@@ -376,7 +376,7 @@ const WebRTC = () => {
             id="peersFace1"
             autoPlay
             playsInline
-            height="180px"
+            height="150px"
             width="240px"
           ></video>
           <div className="name_layout">
@@ -389,7 +389,7 @@ const WebRTC = () => {
             id="peersFace2"
             autoPlay
             playsInline
-            height="180px"
+            height="150px"
             width="240px"
           ></video>
           <div className="name_layout">
@@ -402,7 +402,7 @@ const WebRTC = () => {
             id="peersFace3"
             autoPlay
             playsInline
-            height="180px"
+            height="150px"
             width="240px"
           ></video>
           <div className="name_layout">
@@ -415,7 +415,7 @@ const WebRTC = () => {
             id="peersFace4"
             autoPlay
             playsInline
-            height="180px"
+            height="150px"
             width="240px"
           ></video>
           <div className="name_layout">

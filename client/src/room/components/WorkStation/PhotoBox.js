@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 
 import Cloud from "../../assets/cloud.svg";
+import Editedcloud from "../../assets/editedcloud.svg";
 import ImageShow from "./Image_Up_Check_Del/ImageShow";
 import ImageUpload from "./Image_Up_Check_Del/ImageUpload";
 import ImageDel from "./Image_Up_Check_Del/ImageDel";
@@ -93,7 +94,7 @@ const PhotoBox = (props) => {
             style={cloud ? { borderBottom: "3px solid #272833" } : {}}
           >
             <div className="cloud">
-              <img src={Cloud} className="img.cloud" alt="" />
+              <img src={Editedcloud} className="img.cloud" alt="" />
             </div>
             <span
               className="cloud_span"

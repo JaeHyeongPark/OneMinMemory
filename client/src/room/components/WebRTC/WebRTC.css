@@ -1,75 +1,58 @@
 .ROOM-BODY-WebRTC {
-  width: 10%;
-  height: 100%;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  /* padding: 20px; */
-  border: solid 1px #d9e8ef;
-  background-color: #272833;
-}
-
-.CAMs {
-  width: 240px;
-  height: 862px;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 10px;
-  padding: 0;
-  background-color: #272833;
-}
-
-.CamFrame {
-  width: 240px;
-  height: 208px;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-
-img.component-cans {
-  width: 240px;
-  height: 180px;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  object-fit: contain;
-  background-color: #40c0e7;
-}
-
-.name_layout {
-  height: 28px;
+  width: 15%;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: stretch;
+  padding: 5px 0;
+  background-color: #272731;
+}
+
+.CAMs {
+  width: 100%;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+}
+
+.CamFrame {
+  width: 100%;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: stretch;
+  padding: 0;
+  border: solid 1px #565656;
+}
+
+.name_layout {
+  height: 20px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
   padding: 0;
 }
 
 .name_span {
-  width: 53px;
-  height: 28px;
+  /* height: 20px; */
   flex-grow: 0;
   font-family: "Pretendard";
   font-size: 20px;
-  font-weight: normal;
+  font-weight: 100;
   font-stretch: normal;
   font-style: normal;
-  line-height: 1.4;
+  /* line-height: 1.4; */
   letter-spacing: normal;
-  text-align: left;
-  color: #a6a6a6;
+  text-align: center;
+  color: #ffffff;
 }

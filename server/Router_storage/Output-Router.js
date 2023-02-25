@@ -301,9 +301,9 @@ const AddS3 = async (Path, VideoKey) => {
 
 // 최종 완성본 다운로드 버튼
 router.post("/download", (req, res, next) => {
-  const roomid = req.body.roomid
-  res.download(`./Router_storage/output/oneminute_${roomid}.mp4`)
-})
+  const roomid = req.body.roomid;
+  res.download(`./Router_storage/output/oneminute_${roomid}.mp4`);
+});
 
 module.exports = function (io) {
   const presets = [
@@ -439,8 +439,10 @@ module.exports = function (io) {
     const VideoKey = `${roomid}/Final/oneminute_${roomid}.mp4`;
     await AddS3(finishedPath, VideoKey);
     console.log("영상 S3 저장 완료");
-    
-    res.send("https://oneminutememory.s3.ap-northeast-2.amazonaws.com/" + VideoKey)
+
+    res.send(
+      "https://oneminutememory.s3.ap-northeast-2.amazonaws.com/" + VideoKey
+    );
   });
 
   // effect효과 playlist에 넣기

@@ -17,7 +17,6 @@ import TranEffect from "./Canvas_Effect/TranEffect";
 function Canvas() {
   // 캔버스 관련 훅
   const [Ctx, setCtx] = useState(null);
-  const [checkitem, setcheckitem] = useState(null);
   const canvasRef = useRef(null);
   const ToCanvas = useContext(ImageContext);
   const roomId = useParams().roomId;

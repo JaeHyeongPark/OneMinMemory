@@ -102,7 +102,7 @@ const RenderButton = () => {
               ) : (
                 <>
                   <img src={loadGif} />
-                  현재 {percent} % 진행중..
+                  현재 {percent} / 4 진행중..
                 </>
               )}
             </div>

@@ -14,22 +14,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import "./Canvas.css";
 import Effect from "./Effects/Effect";
 import Transition from "./Transitions/Transition";
-// require("dotenv").config();
-
-// const DEFAULT_OPTIONS = [
-//   {
-//     name: "Brighten",
-//   },
-//   {
-//     name: "Sharpen",
-//   },
-//   {
-//     name: "Saturate",
-//   },
-//   {
-//     name: "Grayscale",
-//   },
-// ];
+import App from "../../../App";
 
 const EFFECT_LIST = [
   "zoom_in",
@@ -118,13 +103,13 @@ function Canvas() {
     image.onload = () => {
       Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
       Ctx.lineJoin = "round";
-      Ctx.lineWidth = 4;
+      Ctx.lineWidth = 6;
     };
   }, [ToCanvas.url, Ctx, modalcheck]);
 
   const drawing = (e) => {
-    const x = e.nativeEvent.offsetX;
-    const y = e.nativeEvent.offsetY;
+    const x = e.nativeEvent.offsetX * (1280 / 768);
+    const y = e.nativeEvent.offsetY * (720 / 432);
     if (Paint && PaintMode) {
       Ctx.lineTo(x, y);
       Ctx.stroke();
@@ -149,8 +134,8 @@ function Canvas() {
     const x = e.nativeEvent.offsetX;
     const y = e.nativeEvent.offsetY;
     const z = canvasRef.current.getBoundingClientRect();
-    setX([x - 4, z.x + x - 4]);
-    setY([y - 4, z.y + y - 4]);
+    setX([x * (1280 / 768), z.x + x]);
+    setY([y * (720 / 432), z.y + y - 12]);
     setinputShow(true);
   };
 
@@ -159,7 +144,7 @@ function Canvas() {
     if (code === 13) {
       Ctx.textBaseline = "top";
       Ctx.textAlign = "left";
-      Ctx.font = "25px fantasy";
+      Ctx.font = "35px fantasy";
       Ctx.fillText(e.target.value, x[0], y[0]);
       setinputShow(false);
       setTextMode(false);
@@ -175,8 +160,7 @@ function Canvas() {
     formdata.append("imagedata", imagedata);
     formdata.append("originurl", ToCanvas.url);
     formdata.append("roomid", roomId);
-
-    console.log("save 실행");
+    formdata.append("id", App.mainSocket.id);
 
     //checked
     await axios
@@ -235,13 +219,6 @@ function Canvas() {
       .catch((err) => {
         console.log("this is error!!!");
       });
-  };
-
-  const transitionClipUpload = (e) => {
-    setTransitionClip(true);
-    const clipComponent = document.getElementById("transition-clip");
-    clipComponent.src = `/TransitionList/${e.target.className}.mp4`;
-    console.log(e.target);
   };
 
   return (
@@ -334,8 +311,8 @@ function Canvas() {
             <div className="uploaded-image" ref={drop}>
               <canvas
                 ref={canvasRef}
-                width={768}
-                height={432}
+                width={1280}
+                height={720}
                 onClick={(e) => addinput(e)}
                 onMouseDown={() => ChangePaint(true)}
                 onMouseUp={() => ChangePaint(false)}
@@ -368,26 +345,10 @@ function Canvas() {
               </div>
               <div className="transition-list">
                 {TRANSITION_LIST.map((transition, index) => {
-                  return (
-                    <Transition
-                      className={transition}
-                      key={index}
-                      onChange={transitionClipUpload}
-                    />
-                  );
+                  return <Transition className={transition} key={index} />;
                 })}
               </div>
               <hr></hr>
-              <div className="transition-clip">
-                {transitionClip && (
-                  <video
-                    id="transition-clip"
-                    width="300"
-                    height="200"
-                    controls
-                  ></video>
-                )}
-              </div>
             </div>
           )}
         </div>

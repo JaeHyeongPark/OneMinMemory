@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDrag } from "react-dnd";
 import "./Effect.css";
 
 const Effect = ({ className }) => {
+  const [check, setcheck] = useState(false)
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: "effect",
     item: { className, type: "effect" },
@@ -16,10 +17,12 @@ const Effect = ({ className }) => {
       id="effect"
       className={className}
       style={{ opacity: isDragging ? "0.3" : "1" }}
+      onMouseOver={() => setcheck(true)}
+      onMouseOut={() => setcheck(false)}
     >
       <img
         className={className}
-        src="/EffectList/Effect.jpg"
+        src= {check ? `/EffectList/${className}.gif` : "/EffectList/Effect.jpg"}
         alt="effect"
       />
       <div className="effect-title">{className}</div>

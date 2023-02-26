@@ -130,7 +130,7 @@ const PlaylistMain = (props) => {
         width: String((props.duration * 100) / 60) + "%",
         height: "auto",
         backgroundImage: `url(${props.url})`,
-        backgroundSize: "contain",
+        backgroundSize: props.duration <= 6 ? "cover" : "contain",
         backgroundRepeat: "repeat-x",
       }}
       key={props.url}
@@ -142,7 +142,7 @@ const PlaylistMain = (props) => {
         </ClearIcon>
       )}
       {props.effect ? (
-        <img src={effectOn} onClick={deleffect} alt="effecton" />
+        <img src={effectOn} onClick={deleffect} style={{cursor:"pointer"}} />
       ) : (
         <img src={effectOff} alt="effectoff" />
       )}

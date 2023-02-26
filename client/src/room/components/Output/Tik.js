@@ -72,32 +72,37 @@ const Tik = (props) => {
     content = (
       <div
         ref={nowtime}
-        style={{
-          height: "43px",
-          backgroundColor: "red",
-          cursor: "col-resize",
-        }}
+        style={{color:"red",cursor: "col-resize"}}
       >
-        |
+      ▼
       </div>
     );
   } else {
     if (props.src === "A") {
       content = (
         <div className="timediv" ref={choicetime}>
-          <img src={lineA} alt="A" />
+          {!isover && <img src={lineA} alt="A" />}
+          {isover && (
+            <span style={{ width: "40px", color: "white" }}>{props.time}</span>
+          )}
         </div>
       );
     } else if (props.src === "B") {
       content = (
         <div className="timediv" ref={choicetime}>
-          <img src={lineB} alt="B" />
+          {!isover && <img src={lineB} alt="B" />}
+          {isover && (
+            <span style={{ width: "40px", color: "white" }}>{props.time}</span>
+          )}
         </div>
       );
     } else {
       content = (
         <div className="timediv" ref={choicetime}>
-          <img src={lineC} alt="C" />
+          {!isover && <img src={lineC} alt="C" />}
+          {isover && (
+            <span style={{ width: "40px", color: "white" }}>{props.time}</span>
+          )}
         </div>
       );
     }

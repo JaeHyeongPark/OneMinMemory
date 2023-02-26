@@ -4,11 +4,16 @@ import FileDownload from "js-file-download";
 import { useParams } from "react-router-dom";
 import infinity from "../../assets/infinity.svg";
 import RenderIcon from "../../assets/rendericon.svg";
+import CopyIcon from "../../assets/copy_icon.png";
+import ExitIcon from "../../assets/logout.png";
+import DownIcon from "../../assets/downloading-file.png";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import loadGif from "../../assets/RenderLoading.gif";
 import Modal from "@mui/material/Modal";
 import App from "../../../App";
+import "./RenderButton.css";
+
 // require("dotenv").config();
 
 const style = {
@@ -18,8 +23,10 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: "75%",
   height: "75%",
-  bgcolor: "gainsboro",
-  border: "2px solid #000",
+  bgcolor: "#272731",
+  // border: "2px solid #000",
+  borderRadius: "25px",
+  outline: "none",
   boxShadow: 24,
   p: 4,
 };
@@ -95,8 +102,7 @@ const RenderButton = () => {
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={style}>
           <div className="modal">
             <div className="video-player"></div>
@@ -104,16 +110,48 @@ const RenderButton = () => {
               {loading ? (
                 <video src={finalUrl} controls />
               ) : (
-                <>
-                  <img src={loadGif} />
-                  현재 {percent} / 4 진행중..
-                </>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "40px",
+                  }}>
+                  <img src={loadGif} style={{ width: "400px" }} />
+                  <div
+                    style={{
+                      fontSize: "30px",
+                      color: "#989898",
+                      fontFamily: "Pretendard",
+                      fontWeight: "bold",
+                      fontStretch: "normal",
+                      fontStyle: "normal",
+                    }}>
+                    {percent}
+                  </div>
+                </div>
               )}
             </div>
-            <div className="button-container">
-              <button onClick={download}>다운로드</button>
-              <button onClick={CopyLink}>링크</button>
-              <button onClick={() => setOpen(false)}>나가기</button>
+            <div
+              className="button-container"
+              style={{
+                paddingLeft: "500px",
+                paddingRight: "500px",
+                paddingTop: "10px",
+              }}>
+              <Button variant="contained" onClick={download}>
+                <img
+                  className="Render-icon"
+                  src={DownIcon}
+                  alt="downloadIcon"
+                />
+              </Button>
+              <Button variant="contained" onClick={CopyLink}>
+                <img className="Render-icon" src={CopyIcon} alt="CopyIcon" />
+              </Button>
+              <Button variant="contained" onClick={() => setOpen(false)}>
+                <img className="Render-icon" src={ExitIcon} alt="CopyIcon" />
+              </Button>
             </div>
           </div>
         </Box>

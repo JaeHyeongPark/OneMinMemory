@@ -96,53 +96,52 @@ function addEffects(inputPath, durations, effects, transitions) {
       const effectedPath = `./Router_storage/input/effects${i}.mp4`;
       if (effects[i]) {
         effects[i] = effectFilters[effects[i]];
-        if (transitions[i]){
+        if (transitions[i]) {
           ffmpeg(inputPath[i])
-          // .size("1280x720")
-          .loop(durations[i] + 1)
-          .outputOptions(effects[i])
-          .on("start", function (commandLine) {
-            console.log("Spawned Ffmpeg with command: " + commandLine);
-          })
-          .on("error", function (err) {
-            console.log("An error occurred: " + err.message);
-            reject(err);
-          })
-          .on("end", function () {
-            durations[i] += 1
-            console.log(`Processing ${effectedPath} finished !`);
-            effectedVideos[i] = effectedPath;
-            cnt += 1;
-            if (cnt === inputPath.length) {
-              resolve({effectedVideos, durations});
-            }
-          })
-          .save(effectedPath);
+            // .size("1280x720")
+            .loop(durations[i] + 1)
+            .outputOptions(effects[i])
+            .on("start", function (commandLine) {
+              console.log("Spawned Ffmpeg with command: " + commandLine);
+            })
+            .on("error", function (err) {
+              console.log("An error occurred: " + err.message);
+              reject(err);
+            })
+            .on("end", function () {
+              durations[i] += 1;
+              console.log(`Processing ${effectedPath} finished !`);
+              effectedVideos[i] = effectedPath;
+              cnt += 1;
+              if (cnt === inputPath.length) {
+                resolve({ effectedVideos, durations });
+              }
+            })
+            .save(effectedPath);
         } else {
           ffmpeg(inputPath[i])
-          // .size("1280x720")
-          .loop(durations[i])
-          .outputOptions(effects[i])
-          .on("start", function (commandLine) {
-            console.log("Spawned Ffmpeg with command: " + commandLine);
-          })
-          .on("error", function (err) {
-            console.log("An error occurred: " + err.message);
-            reject(err);
-          })
-          .on("end", function () {
-            console.log(`Processing ${effectedPath} finished !`);
-            effectedVideos[i] = effectedPath;
-            cnt += 1;
-            if (cnt === inputPath.length) {
-              resolve({effectedVideos, durations});
-            }
-          })
-          .save(effectedPath);
+            // .size("1280x720")
+            .loop(durations[i])
+            .outputOptions(effects[i])
+            .on("start", function (commandLine) {
+              console.log("Spawned Ffmpeg with command: " + commandLine);
+            })
+            .on("error", function (err) {
+              console.log("An error occurred: " + err.message);
+              reject(err);
+            })
+            .on("end", function () {
+              console.log(`Processing ${effectedPath} finished !`);
+              effectedVideos[i] = effectedPath;
+              cnt += 1;
+              if (cnt === inputPath.length) {
+                resolve({ effectedVideos, durations });
+              }
+            })
+            .save(effectedPath);
         }
-
       } else {
-        if (transitions[i]){
+        if (transitions[i]) {
           ffmpeg(inputPath[i])
             .loop(durations[i] + 1)
             .on("start", function (commandLine) {
@@ -154,33 +153,33 @@ function addEffects(inputPath, durations, effects, transitions) {
             })
             .on("end", function () {
               console.log(`Processing ${effectedPath} finished !`);
-              durations[i] = durations[i] + 1
+              durations[i] = durations[i] + 1;
               effectedVideos[i] = effectedPath;
               cnt += 1;
               if (cnt === inputPath.length) {
-                resolve({effectedVideos, durations});
+                resolve({ effectedVideos, durations });
               }
             })
             .save(effectedPath);
         } else {
           ffmpeg(inputPath[i])
-          .loop(durations[i])
-          .on("start", function (commandLine) {
-            console.log("Spawned Ffmpeg with command: " + commandLine);
-          })
-          .on("error", function (err) {
-            console.log("An error occurred: " + err.message);
-            reject(err);
-          })
-          .on("end", function () {
-            console.log(`Processing ${effectedPath} finished !`);
-            effectedVideos[i] = effectedPath;
-            cnt += 1;
-            if (cnt === inputPath.length) {
-              resolve({effectedVideos, durations});
-            }
-          })
-          .save(effectedPath);
+            .loop(durations[i])
+            .on("start", function (commandLine) {
+              console.log("Spawned Ffmpeg with command: " + commandLine);
+            })
+            .on("error", function (err) {
+              console.log("An error occurred: " + err.message);
+              reject(err);
+            })
+            .on("end", function () {
+              console.log(`Processing ${effectedPath} finished !`);
+              effectedVideos[i] = effectedPath;
+              cnt += 1;
+              if (cnt === inputPath.length) {
+                resolve({ effectedVideos, durations });
+              }
+            })
+            .save(effectedPath);
         }
       }
     }
@@ -247,7 +246,7 @@ function ffmpegSyncMerge(prev_video, input, transedPath) {
 function mergeTransitions(inputPath, durations, transitions) {
   console.log("mergeTransitions 함수 호출");
   return new Promise(async (resolve, reject) => {
-    console.log(inputPath)
+    console.log(inputPath);
     let prev_duration = durations[0];
     let prev_video = inputPath[0];
     let flag = true;
@@ -447,7 +446,9 @@ module.exports = function (io) {
 
     const images = await getImages(imageUrls, 1280, 720);
     // 25퍼 진행됐음을 클라이언트에 알림
-    io.to(req.body.roomid).emit("renderingProgress", { progress: 1 });
+    io.to(req.body.roomid).emit("renderingProgress", {
+      progress: "랜더링 초기세팅중 & Effect효과 적용중 (1/4)",
+    });
     let end1 = new Date();
     console.log("이미지 다운 완료:", images);
     let result = end1.getTime() - start.getTime();
@@ -455,9 +456,11 @@ module.exports = function (io) {
     // resolve {effectedVideos, durations}
     // const {effectedPaths, tmp_durations} = await addEffects(images, durations, effects, transitions);
     const tmp = await addEffects(images, durations, effects, transitions);
-    console.log(tmp)
+    console.log(tmp);
     // 50퍼 진행됐음을 클라이언트에 알림
-    io.to(req.body.roomid).emit("renderingProgress", { progress: 2 });
+    io.to(req.body.roomid).emit("renderingProgress", {
+      progress: "Transition 효과 적용중 (2/4)",
+    });
     let end2 = new Date();
     console.log("이펙트 비디오로 변환 완료, 변환된 비디오:", tmp.effectedPaths);
     result = end2.getTime() - start.getTime();
@@ -470,7 +473,9 @@ module.exports = function (io) {
       transitions
     );
     // 75퍼 진행됐음을 클라이언트에 알림
-    io.to(req.body.roomid).emit("renderingProgress", { progress: 3 });
+    io.to(req.body.roomid).emit("renderingProgress", {
+      progress: "오디오 삽입 시작 (3/4)",
+    });
     let end3 = new Date();
     console.log("비디오 트랜지션 완료, 오디오 삽입 시작");
     result = end3.getTime() - start.getTime();
@@ -478,7 +483,9 @@ module.exports = function (io) {
 
     const finishedPath = await addAudio(transedPath, roomid);
     // 100퍼 진행됐음을 클라이언트에 알림
-    io.to(req.body.roomid).emit("renderingProgress", { progress: 4 });
+    io.to(req.body.roomid).emit("renderingProgress", {
+      progress: "동영상 랜더링 완료!! 저장중... (4/4)",
+    });
     let end4 = new Date();
     console.log(
       "오디오 삽입 및 최종 렌더링 완료, 완료된 비디오:",

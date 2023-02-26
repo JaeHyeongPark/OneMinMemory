@@ -32,6 +32,10 @@ const RenderButton = () => {
   const [finalUrl, setfinalUrl] = useState("");
   const handleClose = () => setOpen(false);
 
+  useEffect(() => {
+    App.mainSocket.on("startRendering", (data) => {});
+  }, []);
+
   const merge = (e) => {
     e.preventDefault();
     setOpen(true);

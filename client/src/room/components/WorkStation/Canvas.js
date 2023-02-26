@@ -60,15 +60,15 @@ function Canvas() {
   const [inputShow, setinputShow] = useState(false);
   const [x, setX] = useState([]);
   const [y, setY] = useState([]);
-  const [textSize, settextSize] = useState(30)
-  const [textfont, settextfont] = useState("fantasy")
-  const [textColor, settextColor] = useState('black')
+  const [textSize, settextSize] = useState(30);
+  const [textfont, settextfont] = useState("fantasy");
+  const [textColor, settextColor] = useState("black");
 
   // paint 관련 훅
   const [PaintMode, setPaintMode] = useState(false);
   const [Paint, setPaint] = useState(false);
-  const [PaintPx, setPaintPX] = useState(5)
-  const [PaintColor, setPaintColor] = useState("black")
+  const [PaintPx, setPaintPX] = useState(5);
+  const [PaintColor, setPaintColor] = useState("black");
 
   // effect, transition 관련 훅(없어질 예정?)
   const [modalcheck, setmodalcheck] = useState(true);
@@ -127,7 +127,7 @@ function Canvas() {
     if (Paint && PaintMode) {
       Ctx.lineJoin = "round";
       Ctx.lineWidth = PaintPx;
-      Ctx.strokeStyle = PaintColor
+      Ctx.strokeStyle = PaintColor;
       Ctx.lineTo(x, y);
       Ctx.stroke();
     } else {
@@ -162,7 +162,7 @@ function Canvas() {
       Ctx.textBaseline = "top";
       Ctx.textAlign = "left";
       Ctx.font = `${textSize}px ${textfont}`;
-      Ctx.fillStyle = textColor
+      Ctx.fillStyle = textColor;
       Ctx.fillText(e.target.value, x[0], y[0]);
       setinputShow(false);
       setTextMode(false);
@@ -193,8 +193,8 @@ function Canvas() {
           return;
         }
         // 수정한 사진 저장후 같은 사진을 또 작업할 수 있게 캔버스 url초기화
-        ToCanvas.Changeurl('')
-        
+        ToCanvas.Changeurl("");
+
         // 수정한 사진 저장하면 새로운 캔버스를 깔아준다.
         const canvas = canvasRef.current;
         canvas.style = {};
@@ -294,8 +294,21 @@ function Canvas() {
           ) : (
             <></>
           )}
-          <Painting paintmode={PaintMode} mode={setPaintMode} px={setPaintPX} color={setPaintColor} PC={PaintColor}/>
-          <Text textmode={TextMode} mode={setTextMode} px={settextSize} color={settextColor} font={settextfont} TC={textColor}/>
+          <Painting
+            paintmode={PaintMode}
+            mode={setPaintMode}
+            px={setPaintPX}
+            color={setPaintColor}
+            PC={PaintColor}
+          />
+          <Text
+            textmode={TextMode}
+            mode={setTextMode}
+            px={settextSize}
+            color={settextColor}
+            font={settextfont}
+            TC={textColor}
+          />
           <Button
             className="sidebar-item"
             name="Transition/Effect"

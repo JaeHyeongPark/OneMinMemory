@@ -30,7 +30,6 @@ const Painting = (props) => {
       {props.paintmode && (
         <ul className="canvaseffect__items">
           <li>
-            <span style={{ color: "white" }}>1px</span>
             <input
               type="range"
               min="1"
@@ -41,10 +40,15 @@ const Painting = (props) => {
                 props.px(linePx);
               }}
             />
-            <span style={{ color: "white" }}>10px</span>
+            <span style={{ color: "white" }}>{`${linePx}px`}</span>
           </li>
-          <li >
-            <input type="color" value="red" ref={lineColor} onChange={changecolor} />
+          <li>
+            <input
+              type="color"
+              value="red"
+              ref={lineColor}
+              onChange={changecolor}
+            />
           </li>
         </ul>
       )}

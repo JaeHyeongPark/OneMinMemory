@@ -43,7 +43,6 @@ const Text = (props) => {
       {props.textmode && (
         <ul className="canvaseffect__items">
           <li>
-            <span style={{ color: "white" }}>1px</span>
             <input
               type="range"
               min="1"
@@ -54,7 +53,7 @@ const Text = (props) => {
                 props.px(linePx);
               }}
             />
-            <span style={{ color: "white" }}>50px</span>
+            <span style={{ color: "white" }}>{`${linePx}px`}</span>
           </li>
           <li>
             <FormControl sx={{ m: 1, minWidth: 100 }} size="small">

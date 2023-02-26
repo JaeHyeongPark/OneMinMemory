@@ -15,6 +15,8 @@ import "./Canvas.css";
 import Effect from "./Effects/Effect";
 import Transition from "./Transitions/Transition";
 import App from "../../../App";
+import Painting from "./Canvas_Effect/Painting";
+import Text from "./Canvas_Effect/Text";
 
 const EFFECT_LIST = [
   "zoom_in",
@@ -47,22 +49,35 @@ const TRANSITION_LIST = [
 ];
 
 function Canvas() {
+  // 캔버스 관련 훅
   const canvasRef = useRef(null);
+  const [Ctx, setCtx] = useState(null);
+  const ToCanvas = useContext(ImageContext);
+  const roomId = useParams().roomId;
+
+  // text 관련 훅
   const [TextMode, setTextMode] = useState(false);
   const [inputShow, setinputShow] = useState(false);
+  const [x, setX] = useState([]);
+  const [y, setY] = useState([]);
+  const [textSize, settextSize] = useState(30)
+  const [textfont, settextfont] = useState("fantasy")
+  const [textColor, settextColor] = useState('black')
+
+  // paint 관련 훅
   const [PaintMode, setPaintMode] = useState(false);
   const [Paint, setPaint] = useState(false);
+  const [PaintPx, setPaintPX] = useState(5)
+  const [PaintColor, setPaintColor] = useState("black")
+
+  // effect, transition 관련 훅(없어질 예정?)
   const [modalcheck, setmodalcheck] = useState(true);
   const [effectModal, setEffectModal] = useState(false);
   const [transitionModal, setTransitionModal] = useState(false);
-  const [Ctx, setCtx] = useState(null);
-  const [x, setX] = useState([]);
-  const [y, setY] = useState([]);
   const [showEffectItems, setShowEffectItems] = useState(false);
   const effectItemsRef = useRef(null);
-  const roomId = useParams().roomId;
-  const ToCanvas = useContext(ImageContext);
 
+  // 캔버스 드롭존
   const [{ isover }, drop] = useDrop(() => ({
     accept: ["image"],
     drop: (item) => imageToCanvas(item.url),
@@ -70,6 +85,8 @@ function Canvas() {
       isover: monitor.isOver(),
     }),
   }));
+
+  // 트랜지션 드롭존(없어질 예정?)
   const [{ isOver }, modal] = useDrop(() => ({
     accept: ["image"],
     drop: (item) => changeModalToCanvas(item.url),
@@ -101,8 +118,6 @@ function Canvas() {
     image.crossOrigin = "*";
     image.onload = () => {
       Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-      Ctx.lineJoin = "round";
-      Ctx.lineWidth = 6;
     };
   }, [ToCanvas.url, Ctx, modalcheck]);
 
@@ -110,6 +125,9 @@ function Canvas() {
     const x = e.nativeEvent.offsetX * (1280 / 768);
     const y = e.nativeEvent.offsetY * (720 / 432);
     if (Paint && PaintMode) {
+      Ctx.lineJoin = "round";
+      Ctx.lineWidth = PaintPx;
+      Ctx.strokeStyle = PaintColor
       Ctx.lineTo(x, y);
       Ctx.stroke();
     } else {
@@ -143,7 +161,8 @@ function Canvas() {
     if (code === 13) {
       Ctx.textBaseline = "top";
       Ctx.textAlign = "left";
-      Ctx.font = "35px fantasy";
+      Ctx.font = `${textSize}px ${textfont}`;
+      Ctx.fillStyle = textColor
       Ctx.fillText(e.target.value, x[0], y[0]);
       setinputShow(false);
       setTextMode(false);
@@ -275,23 +294,8 @@ function Canvas() {
           ) : (
             <></>
           )}
-
-          <Button
-            className="sidebar-item"
-            name="Paint Mode"
-            onClick={() => {
-              setPaintMode(PaintMode ? false : true);
-            }}
-            startIcon={<BorderColorOutlinedIcon style={{ fontSize: 35 }} />}
-          ></Button>
-          <Button
-            className="sidebar-item"
-            name="Text Mode"
-            onClick={() => {
-              setTextMode(TextMode ? false : true);
-            }}
-            startIcon={<TextFieldsOutlinedIcon style={{ fontSize: 35 }} />}
-          ></Button>
+          <Painting paintmode={PaintMode} mode={setPaintMode} px={setPaintPX} color={setPaintColor} PC={PaintColor}/>
+          <Text textmode={TextMode} mode={setTextMode} px={settextSize} color={settextColor} font={settextfont} TC={textColor}/>
           <Button
             className="sidebar-item"
             name="Transition/Effect"

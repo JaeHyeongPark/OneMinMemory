@@ -196,6 +196,11 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.album_image {
+  display: flex;
+  height: 50px;
+}
 /* 2302225 정근 수정 */
 
 .ROOM-FOOTER {

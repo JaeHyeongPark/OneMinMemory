@@ -5,10 +5,14 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { createTheme } from "@mui/material/styles";
 
 import music from "../../assets/music.svg";
 import Music from "./Sound/Music";
 import axios from "axios";
+import ditto_album from "../../assets/ditto_album.jpg";
+import runbacktoyou_album from "../../assets/runbacktoyou_album.jpg";
+import yellow_album from "../../assets/yellow_album.jpg";
 // require("dotenv").config();
 
 const style = {
@@ -19,24 +23,26 @@ const style = {
   left: "50%",
   justifyContent: "center",
   transform: "translate(-50%, -50%)",
-  width: 800,
+  width: 700,
   bgcolor: "#272731",
   border: "2px solid #000",
   boxShadow: 24,
-  gap: "20px",
-  p: 4,
+  gap: "10px",
+  p: 5,
 };
 
 const musicItemStyle = {
-  borderTop: "1px solid gray",
+  border: "1px solid gray",
   display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
+  flexDirection: "row",
+  // color: "#171717",
+  justifyContent: "flex-start",
+  gap: "15px",
 };
 
-const selectstyle = {
-  color: "272731",
-};
+// const selectstyle = {
+//   color: "272731",
+// };
 
 export default function InsertMusic() {
   const roomId = useParams().roomId;
@@ -95,6 +101,13 @@ export default function InsertMusic() {
                 setSelectedMusicIdx("1");
               }}
             >
+              <div className="album_image">
+                <img
+                  src={runbacktoyou_album}
+                  className="album_image"
+                  alt="album"
+                />
+              </div>
               <div className="music-item-title">
                 Hoang - Run Back to You (feat.Alisa)
               </div>
@@ -108,6 +121,9 @@ export default function InsertMusic() {
                 setSelectedMusicIdx("2");
               }}
             >
+              <div className="album_image">
+                <img src={ditto_album} className="album_image" alt="album" />
+              </div>
               <div className="music-item-title">Newjeans - Ditto</div>
             </Button>
             <Button
@@ -119,13 +135,16 @@ export default function InsertMusic() {
                 setSelectedMusicIdx("3");
               }}
             >
+              <div className="album_image">
+                <img src={yellow_album} className="album_image" alt="album" />
+              </div>
               <div className="music-item-title">Coldplay - Yellow</div>
             </Button>
             <p></p>
             <div className="action-box">
               <Button
                 variant="contained"
-                style={selectstyle}
+                // style={selectstyle}
                 onClick={() => {
                   getPresetbyIndex(selectedMusicIdx, selectedMusicSrc);
                 }}

@@ -210,6 +210,9 @@ module.exports = function socketRouter(io) {
         console.log(e);
       }
     });
+    socket.on("speakingState", (data) => {
+      socket.to(data.roomId).emit("speakingState", data);
+    });
   });
   return router;
 };

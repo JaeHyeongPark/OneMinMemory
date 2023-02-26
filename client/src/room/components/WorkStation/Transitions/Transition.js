@@ -3,7 +3,7 @@ import { useDrag } from "react-dnd";
 import "./Transition.css";
 
 const Transition = ({ className, onChange }) => {
-  const [check, setcheck] = useState(false)
+  const [check, setcheck] = useState(false);
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: "transition",
     item: { className },
@@ -11,7 +11,7 @@ const Transition = ({ className, onChange }) => {
       isDragging: monitor.isDragging(),
     }),
   }));
-  
+
   return (
     <div
       ref={dragRef}
@@ -23,7 +23,11 @@ const Transition = ({ className, onChange }) => {
     >
       <img
         className={className}
-        src= {check ? `/TransitionList/${className}.gif` : "/TransitionList/profile.jpeg"}
+        src={
+          check
+            ? `/TransitionList/${className}.gif`
+            : "/TransitionList/profile.jpeg"
+        }
         alt="transition"
       />
       <div className="transition-title">{className}</div>

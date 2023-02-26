@@ -35,15 +35,15 @@
   object-fit: contain;
 
   row-gap: 0px;
-  border: solid 1px #b180e9;
-  border-radius: 1em;
+  border: solid 1px #1976d2;
+  border-radius: 10px;
   background-color: #3b3c48;
 }
 .toplay_img img {
   position: absolute;
-  object-fit: cover;
-  width: 40px;
-  height: 35px;
+  object-fit: contain;
+  width: 30px;
+  height: 25px;
   margin: 5px;
 }
 .playlist_space {
@@ -60,8 +60,8 @@
   align-items: stretch;
   padding: 0;
   row-gap: 0px;
-  border: solid 2px #e2e447;
-  border-radius: 1em;
+  border: solid 2px #e2f01d;
+  border-radius: 10px;
   background-color: #3b3c48;
 }
 .selecttoplay_img .del {
@@ -75,9 +75,9 @@
 }
 .selecttoplay_img img {
   position: absolute;
-  object-fit: cover;
-  width: 40px;
-  height: 35px;
+  object-fit:contain;
+  width: 30px;
+  height: 25px;
   margin: 5px;
 }
 

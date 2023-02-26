@@ -24,8 +24,8 @@ router.get("/roomid", async (req, res, next) => {
     "C",
     "D",
     "E",
-    "F"
-  ]; 
+    "F",
+  ];
   for (let i = 0; i < 6; i++) {
     const num = Math.floor(Math.random() * 16);
     roomid += random[num];
@@ -34,14 +34,12 @@ router.get("/roomid", async (req, res, next) => {
   res.send(roomid);
 });
 
-
 // 위에서 생성된 넘버로 실제 방 생성
 router.post("/makeroom", async (req, res, next) => {
   const roomid = req.body.id;
   await redis.v4.set(`${roomid}`, "ture");
   res.send("완료");
 });
-
 
 // 해당 방이 정식적으로 존재하는지 확인
 router.post("/check", async (req, res, next) => {

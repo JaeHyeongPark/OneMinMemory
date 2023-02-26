@@ -18,8 +18,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0px 80px;
-
+  padding-top: 0px;
+  padding-right: 5px;
+  padding-bottom: 0px;
+  padding-left: 80px;
+  width: 1920px;
   width: 1920px;
   height: 60px;
 }
@@ -105,42 +108,42 @@
   color: #fff;
 }
 
-.invite_layout {
-  width: 123px;
+.call_control_layout {
+  width: 270px;
   height: 38px;
   flex-grow: 0;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
 }
 
-.invite_button_group {
-  width: 123px;
-  height: 38px;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 0;
+.audio_button:hover {
+  cursor: pointer;
 }
-
-.invite_button {
-  width: 123px;
+.video_button {
+  width: 120px;
   height: 38px;
-  flex-grow: 0;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
+  /* gap: 5px; */
   padding: 5px 10px;
   border-radius: 10px;
   background-color: #0070d2;
 }
-
+.video_button:hover {
+  cursor: pointer;
+}
+.audio_button {
+  width: 120px;
+  height: 38px;
+  /* gap: 5px; */
+  margin-right: 28px;
+  border-radius: 10px;
+  padding-top: 5px;
+  padding-left: 60px;
+  background-color: #0070d2;
+}
+.audioIcon {
+  font-size: large;
+  color: white;
+}
 img.user-add {
   width: 24px;
   height: 24px;

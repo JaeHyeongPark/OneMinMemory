@@ -11,6 +11,7 @@ const ImageContext = createContext({
   view: {},
   origin: {},
   effect: {},
+  Changeurl:() => {},
   setorigin: (urllist) => {},
   seteffect: (urllist) => {},
   sendurl: (url) => {},
@@ -44,6 +45,9 @@ export const TocanvasProvider = (props) => {
   const Changeeffect = (newView) => {
     seteffect(newView);
   };
+  const Changeurl = (url) => {
+    seturl(url)
+  }
 
   const imagetocanvas = {
     url: url,
@@ -53,6 +57,7 @@ export const TocanvasProvider = (props) => {
     effect: effect,
     setorigin,
     Changeorigin,
+    Changeurl:Changeurl,
     seteffect: Changeeffect,
     sendurl: sendurl,
     setView: ChangeView,

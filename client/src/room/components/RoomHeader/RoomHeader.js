@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import RoomCode from "./RoomCode";
-import useradd from "../../assets/user-add.svg";
+
 import photologo from "../../assets/photo-512-white.png";
 import "./RoomHeader.css";
+import VideoCallButton from "./VideoCallButton";
 
 const RoomHeader = (props) => {
   const navigate = useNavigate();
@@ -30,13 +31,8 @@ const RoomHeader = (props) => {
             </div>
           </div>
           <RoomCode />
-          <div className="invite_layout">
-            <div className="invite_button_group">
-              <div className="invite_button">
-                <img src={useradd} className="img.user-add" alt="a" />
-                <label className="invite_label">링크공유</label>
-              </div>
-            </div>
+          <div className="call_control_layout">
+            <VideoCallButton />
           </div>
         </div>
       </div>

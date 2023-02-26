@@ -1,16 +1,14 @@
 import React from "react";
 
-// import cans from "../../assets/cans.svg";
-
+import App from "../../../App";
 import "./WebRTC.css";
 import { useEffect } from "react";
 import { io } from "socket.io-client"; // Client Socket
-import App from "../../../App";
 
 const socket = io("https://chjungle.shop", {
   path: "/sfusocket",
   withCredentials: true,
-  // transports: ["websocket"],
+
   extraHeaders: {
     "my-custom-header": "abcd",
   },
@@ -28,8 +26,6 @@ let sendingConnection;
 
 // 내 비디오를 관리하는 변수들
 let myStream;
-// let mute = false;
-// let cameraOff = false;
 
 // RTC 연결 생성 변수 (추가 설명 필요)
 const RTC_config = {
@@ -70,18 +66,47 @@ async function getMedia(deviceId) {
       facingMode: "user",
     },
   };
-  // const cameraConstraints = {
-  //   audio: true,
-  //   video: {
-  //     width: 320,
-  //     height: 240,
-  //     frameRate: { max: 14 },
-  //     deviceId: { exact: deviceId },
-  //   },
-  // };
   try {
     // 유저의 유저미디어의 stream을 주는 api
     myStream = await navigator.mediaDevices.getUserMedia(initialConstrains);
+    // ==============================자신이 말하고 있을 때 다른사람들에게 알려주기 위한 코드 ====================
+    // Create an audio context
+    const audioContext = new AudioContext();
+
+    // Get the audio track from the sender stream
+    const audioTrack = myStream.getAudioTracks()[0];
+
+    // Create a media stream with the audio track
+    const audioStream = new MediaStream([audioTrack]);
+
+    // Create a media stream source node from the audio stream
+    const audioSourceNode = audioContext.createMediaStreamSource(audioStream);
+
+    // Create an audio worklet node
+    await audioContext.audioWorklet.addModule(
+      "../WebRTC/MyAudioWorkletProcessor.js"
+    );
+    const audioWorkletNode = new AudioWorkletNode(
+      audioContext,
+      "my-audio-worklet-processor"
+    );
+    // Connect the audio source node to the audio worklet node
+    audioSourceNode.connect(audioWorkletNode);
+
+    // Connect the audio worklet node to the audio context destination
+    audioWorkletNode.connect(audioContext.destination);
+
+    // Listen for the "message" event from the audio worklet node
+    audioWorkletNode.port.onmessage = (event) => {
+      const isSpeaking = event.data.isSpeaking;
+      if (isSpeaking) {
+        App.mainSocket.emit("speakingState", {
+          isSpeaking,
+          roomId: App.roomId,
+          speakerId: socket.id,
+        });
+      }
+    };
     // myStream = await navigator.mediaDevices.getUserMedia(
     //   deviceId ? cameraConstraints : initialConstrains
     // );
@@ -97,32 +122,26 @@ async function getMedia(deviceId) {
   }
 }
 
+// mute 버튼
+function handleMuteBtn() {
+  myStream
+    .getAudioTracks()
+    .forEach((track) => (track.enabled = !track.enabled));
+}
+// cameraOff 버튼
+function handleCameraBtn() {
+  myStream
+    .getVideoTracks()
+    .forEach((track) => (track.enabled = !track.enabled));
+}
+
 // 친구들 얼굴이 송출되는 태그
 let peersFace1, peersFace2, peersFace3, peersFace4;
 
+let videoFrame1, videoFrame2, videoFrame3, videoFrame4;
 // 수신되는 비디오를 틀어줄 태그들을 관리할 리스트
 let videos;
 
-// 카메라를 가져오는 함수, 카메라들을 조회하며 카메라 선택 input도 관리한다.
-// async function getCameras() {
-//   try {
-//     const devices = await navigator.mediaDevices.enumerateDevices();
-//     const cameras = devices.filter((devices) => devices.kind === "videoinput");
-//     // 지금 진행중인 비디오 트랙에 대한 정보를 확인할 수 있는 함수
-//     const currentCamera = myStream.getVideoTracks()[0];
-//     cameras.forEach((camera) => {
-//       const option = document.createElement("option");
-//       option.value = camera.deviceId;
-//       option.innerText = camera.label;
-//       if (currentCamera.label === camera.label) {
-//         option.selected = true;
-//       }
-//       cameraSelect.appendChild(option);
-//     });
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
 // 방에 들어오면 실행되는 함수
 // 1. 자신의 스트림을 만든다
 // 2. 자신의 스트림을 서버로 보내줄 연결을 만든다.
@@ -131,21 +150,6 @@ async function startMedia() {
   await getMedia();
   await makeSendingConection();
 }
-
-// const socket = io("https://23f7-1-223-174-170.jp.ngrok.io");
-
-// const socket = io("1.223.174.170:3000", {
-//   withCredentials: true,
-//   transports: ["websocket"],
-//   extraHeaders: {
-//     "my-custom-header": "abcd",
-//   },
-// });
-
-// const socket = io.connect("https://23f7-1-223-174-170.jp.ngrok.io", {
-//   transports: ["websocket"],
-//   // withCredentials: true,
-// });
 
 // 서버에서 sendingConnection에 대한 answer을 주는 소켓
 socket.on("welcome", async (answer) => {
@@ -173,20 +177,28 @@ socket.on("makeNewPeer", (data) => {
     peersFace2 = document.getElementById("peersFace2");
     peersFace3 = document.getElementById("peersFace3");
     peersFace4 = document.getElementById("peersFace4");
+    videoFrame1 = document.getElementById("videoFrame1");
+    videoFrame2 = document.getElementById("videoFrame2");
+    videoFrame3 = document.getElementById("videoFrame3");
+    videoFrame4 = document.getElementById("videoFrame4");
     videos = [
       {
+        videoFrame: videoFrame1,
         videoTag: peersFace1,
         isConnected: false,
       },
       {
+        videoFrame: videoFrame2,
         videoTag: peersFace2,
         isConnected: false,
       },
       {
+        videoFrame: videoFrame3,
         videoTag: peersFace3,
         isConnected: false,
       },
       {
+        videoFrame: videoFrame4,
         videoTag: peersFace4,
         isConnected: false,
       },
@@ -195,7 +207,6 @@ socket.on("makeNewPeer", (data) => {
   }
 
   console.log(sendingConnection.connectionState);
-  // console.log(data.streamId);
   console.log("새로운 친구가 왔을 때 사용되는 소캣");
   streamIdToUser[data.streamId] = data.senderId;
   userInfo[data.senderId] = {};
@@ -288,7 +299,6 @@ async function makeSendingConection() {
     // 내가 받을 때만 의미가 있는 이벤트 리스너라 일단 비활성
     sendingConnection.addEventListener("track", (data) => {
       console.log("트랙이벤트 발생");
-      // console.log(data, data.streams[0].id);
       let userId = streamIdToUser[data.streams[0].id];
       userInfo[userId].video.videoTag.srcObject = data.streams[0];
     });
@@ -360,67 +370,93 @@ async function makeNewConnection() {
   }
 }
 
+let voiceStatus = 0;
+
 const WebRTC = () => {
   roomId = App.roomId;
   useEffect(() => {
     setTimeout(() => {
       return startMedia();
     }, 2000);
+    App.mainSocket.on("speakingState", (data) => {
+      // 테스트용 코드 주석처리 필요
+      videoFrame1 = document.getElementById("videoFrame1");
+      videoFrame1.className = "videoTagSpeaking";
+      setTimeout(() => {
+        videoFrame1.className = "videoTagNotSpeaking";
+      }, 1000);
+      if (userInfo[data.speakerId]) {
+        userInfo[data.speakerId].video.videoFrame.className =
+          "videoTagSpeaking";
+        setTimeout(() => {
+          userInfo[data.speakerId].video.videoFrame.className =
+            "videoTagNotSpeaking";
+        }, 1000);
+      }
+    });
   }, []);
   return (
     <div className="ROOM-BODY-WebRTC">
       <div className="CAMs">
-        <div className="CamFrame">
-          {/* <img src={cans} className="img.component-cans" alt="user cam"  /> */}
+        {/* <div className="CamFrame"> */}
+        <div id="videoFrame1" className="videoTagNotSpeaking">
           <video
             id="peersFace1"
             autoPlay
+            height="152px"
+            width="276px"
             playsInline
-            height="150px"
-            width="240px"
           ></video>
-          <div className="name_layout">
-            <span className="name_span">Name</span>
-          </div>
         </div>
-        <div className="CamFrame">
-          {/* <img src={cans} className="img.component-cans" alt="a" /> */}
+        {/* <img src={cans} className="img.component-cans" alt="user cam"  /> */}
+        {/* <div className="name_layout">
+            <span className="name_span">Name</span>
+          </div> */}
+        {/* </div> */}
+        {/* <div className="CamFrame"> */}
+        {/* <img src={cans} className="img.component-cans" alt="a" /> */}
+        <div id="videoFrame2" className="videoTagNotSpeaking">
           <video
             id="peersFace2"
             autoPlay
             playsInline
-            height="150px"
-            width="240px"
+            height="160px"
+            width="276px"
           ></video>
-          <div className="name_layout">
+          {/* </div> */}
+          {/* <div className="name_layout">
             <span className="name_span">Name</span>
-          </div>
+          </div> */}
         </div>
-        <div className="CamFrame">
-          {/* <img src={cans} className="img.component-cans" alt="a" /> */}
+        {/* <div className="CamFrame"> */}
+        {/* <img src={cans} className="img.component-cans" alt="a" /> */}
+        <div id="videoFrame3" className="videoTagNotSpeaking">
           <video
             id="peersFace3"
             autoPlay
             playsInline
-            height="150px"
-            width="240px"
+            height="152px"
+            width="276px"
           ></video>
-          <div className="name_layout">
+          {/* </div> */}
+          {/* <div className="name_layout">
             <span className="name_span">Name</span>
-          </div>
+          </div> */}
         </div>
-        <div className="CamFrame">
-          {/* <img src={cans} className="img.component-cans" alt="a" /> */}
+        {/* <div className="CamFrame"> */}
+        {/* <img src={cans} className="img.component-cans" alt="a" /> */}
+        <div id="videoFrame4" className="videoTagNotSpeaking">
           <video
             id="peersFace4"
             autoPlay
             playsInline
-            height="150px"
-            width="240px"
+            height="152px"
+            width="276px"
           ></video>
-          <div className="name_layout">
+          {/* </div> */}
+          {/* <div className="name_layout">
             <span className="name_span">Name</span>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
@@ -444,32 +480,7 @@ const WebRTC = () => {
 //     videoSender.replaceTrack(videoTrack);
 //   }
 // }
-// mute 버튼
-// function handleMuteBtn() {
-//   myStream
-//     .getAudioTracks()
-//     .forEach((track) => (track.enabled = !track.enabled));
-//   if (!mute) {
-//     muteBtn.innerText = "Unmute";
-//     mute = true;
-//   } else {
-//     muteBtn.innerText = "Mute";
-//     mute = false;
-//   }
-// }
 
-// cameraOff 버튼
-// function handleCameraBtn() {
-//   myStream
-//     .getVideoTracks()
-//     .forEach((track) => (track.enabled = !track.enabled));
-//   if (cameraOff) {
-//     cameraBtn.innerText = "camera OFF";
-//     cameraOff = false;
-//   } else {
-//     cameraBtn.innerText = "camera ON";
-//     cameraOff = true;
-//   }
-// }
-
+WebRTC.handleMuteBtn = handleMuteBtn;
+WebRTC.handleCameraBtn = handleCameraBtn;
 export default WebRTC;

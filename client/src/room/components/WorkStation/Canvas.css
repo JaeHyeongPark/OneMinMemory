@@ -31,17 +31,6 @@
   background-color: #272731;
 }
 
-/* .container {
-  position: absolute;
-  width: 100%;
-  height: ;
-  top: 200px;
-} */
-
-/* .canvaseffect {
-  position: relative;
-} */
-
 .canvaseffect__items {
   margin: 0;
   position: absolute;
@@ -56,14 +45,6 @@
   z-index: 1;
   opacity: 1;
   transition: all 0.4s cubic-bezier(0.93, 0.88, 0.1, 0.8);
-}
-
-.sidebar {
-  grid-area: sidebar;
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  /* gap: 20px; */
 }
 
 .sidebar-item {

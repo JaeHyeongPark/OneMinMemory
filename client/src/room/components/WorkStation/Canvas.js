@@ -48,6 +48,13 @@ const TRANSITION_LIST = [
   "wiperight",
 ];
 
+const actionButtonList = [
+  "Canvas Effect",
+  "Paint Mode",
+  "Text Mode",
+  "Transition/Effect",
+];
+
 function Canvas() {
   // 캔버스 관련 훅
   const canvasRef = useRef(null);

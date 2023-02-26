@@ -22,16 +22,16 @@ const SoundTrack = () => {
     const canvas = canvasRef.current;
     const layout = layoutRef.current;
     // canvas.width = (Wavedata[newidx].duration / 60) * (layout.offsetWidth - 20);
-    canvas.width = layout.offsetWidth - 20;
+    canvas.width = layout.offsetWidth;
     const context = canvas.getContext("2d");
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     const height = canvas.height;
     const width = canvas.width;
     const actualMusicWidth =
-      (Wavedata[newidx].duration / 60) * (layout.offsetWidth - 20);
+      (Wavedata[newidx].duration / 60) * layout.offsetWidth;
     const centerY = height / 2;
-    context.fillStyle = "rgba(255,0,0,0.5)";
+    context.fillStyle = "rgba(255,255,255,0.1)";
     context.fillRect(0, 0, width, height);
     context.strokeStyle = "white";
     context.lineWidth = 1;

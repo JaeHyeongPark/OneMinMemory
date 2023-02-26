@@ -139,11 +139,11 @@ function Canvas() {
     if (!TextMode) {
       return;
     }
-    const x = e.nativeEvent.offsetX ;
-    const y = e.nativeEvent.offsetY ;
+    const x = e.nativeEvent.offsetX;
+    const y = e.nativeEvent.offsetY;
     const z = canvasRef.current.getBoundingClientRect();
-    setX([x * (1280 / 768) , z.x + x ]);
-    setY([y * (720 / 432) , z.y + y - 12 ]);
+    setX([x * (1280 / 768), z.x + x]);
+    setY([y * (720 / 432), z.y + y - 12]);
     setinputShow(true);
   };
 
@@ -304,16 +304,16 @@ function Canvas() {
         <div className="container">
           {!transitionModal ? (
             <div className="uploaded-image" ref={drop}>
-                <canvas
-                  ref={canvasRef}
-                  width={1280}
-                  height={720}
-                  onClick={(e) => addinput(e)}
-                  onMouseDown={() => ChangePaint(true)}
-                  onMouseUp={() => ChangePaint(false)}
-                  onMouseMove={(e) => drawing(e)}
-                  onMouseLeave={() => ChangePaint(false)}
-                />
+              <canvas
+                ref={canvasRef}
+                width={1280}
+                height={720}
+                onClick={(e) => addinput(e)}
+                onMouseDown={() => ChangePaint(true)}
+                onMouseUp={() => ChangePaint(false)}
+                onMouseMove={(e) => drawing(e)}
+                onMouseLeave={() => ChangePaint(false)}
+              />
               {inputShow && (
                 <input
                   type="text"

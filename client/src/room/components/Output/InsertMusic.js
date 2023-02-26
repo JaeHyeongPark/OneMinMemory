@@ -70,9 +70,9 @@ export default function InsertMusic() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          {/* <Typography id="modal-modal-title" variant="h6" component="h2">
             추천 음원 리스트
-          </Typography>
+          </Typography> */}
           <Typography id="modal-modal-description" sx={{ mt: 3 }}>
             <Music song={selectedMusicSrc} />
           </Typography>
@@ -81,24 +81,35 @@ export default function InsertMusic() {
             index={10001}
             style={musicItemStyle}
             onClick={() => {
-              setSelectedMusicSrc("../music/abc.mp3");
+              setSelectedMusicSrc("../music/Hoang-RunBacktoYou(320kbps).mp3");
               setSelectedMusicIdx("1");
             }}
           >
-            <div className="music-item-title">Run Back to You (feat.Alisa)</div>
-            <div className="music-item-artist">Hoang</div>
+            <div className="music-item-title">
+              Hoang - Run Back to You (feat.Alisa)
+            </div>
           </Button>
           <Button
             className="music-item"
             index={10002}
             style={musicItemStyle}
             onClick={() => {
-              setSelectedMusicSrc("../music/뉴진스.mp3");
+              setSelectedMusicSrc("../music/Newjeans-Ditto(320kbps).mp3");
               setSelectedMusicIdx("2");
             }}
           >
-            <div className="music-item-title">뉴진스 (feat.Alisa)</div>
-            <div className="music-item-artist">hype boy</div>
+            <div className="music-item-title">Newjeans - Ditto</div>
+          </Button>
+          <Button
+            className="music-item"
+            index={10003}
+            style={musicItemStyle}
+            onClick={() => {
+              setSelectedMusicSrc("../music/Coldplay-Yellow(320kbps).mp3");
+              setSelectedMusicIdx("3");
+            }}
+          >
+            <div className="music-item-title">Coldplay - Yellow</div>
           </Button>
           <div className="action-box">
             <Button

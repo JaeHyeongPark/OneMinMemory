@@ -17,14 +17,22 @@ const Painting = (props) => {
     props.color(lineColor.current.value);
   };
 
+  const check = (e) => {
+    e.preventDefault();
+    if (props.paintmode === false) {
+      props.check("PaintMode");
+      props.mode(true);
+    } else {
+      props.mode(false);
+    }
+  };
+
   return (
     <>
       <Button
         className="sidebar-item"
         name="Paint Mode"
-        onClick={() => {
-          props.mode(props.paintmode ? false : true);
-        }}
+        onClick={check}
         startIcon={<BorderColorOutlinedIcon style={{ fontSize: 35 }} />}
       ></Button>
       {props.paintmode && (

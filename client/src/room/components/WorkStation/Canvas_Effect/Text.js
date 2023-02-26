@@ -30,14 +30,22 @@ const Text = (props) => {
     props.color(lineColor.current.value);
   };
 
+  const check = (e) => {
+    e.preventDefault();
+    if (props.textmode === false) {
+      props.check("TextMode");
+      props.mode(true);
+    } else {
+      props.mode(false);
+    }
+  };
+
   return (
     <>
       <Button
         className="sidebar-item"
         name="Text Mode"
-        onClick={() => {
-          props.mode(props.textmode ? false : true);
-        }}
+        onClick={check}
         startIcon={<TextFieldsOutlinedIcon style={{ fontSize: 35 }} />}
       ></Button>
       {props.textmode && (

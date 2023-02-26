@@ -5,60 +5,20 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 import Button from "@mui/material/Button";
-import AutoFixNormalOutlinedIcon from "@mui/icons-material/AutoFixNormalOutlined";
-import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
-import TextFieldsOutlinedIcon from "@mui/icons-material/TextFieldsOutlined";
-import AddLinkIcon from "@mui/icons-material/AddLink";
 import SaveIcon from "@mui/icons-material/Save";
 
 import "./Canvas.css";
-import Effect from "./Effects/Effect";
-import Transition from "./Transitions/Transition";
 import App from "../../../App";
 import Painting from "./Canvas_Effect/Painting";
 import Text from "./Canvas_Effect/Text";
-
-const EFFECT_LIST = [
-  "zoom_in",
-  // "zoom_out",
-  "zoom_top_left",
-  "zoom_top_right",
-  "zoom_bottom_left",
-  "zoom_bottom_right",
-];
-
-const TRANSITION_LIST = [
-  "circlecrop",
-  "diagtl",
-  "dissolve",
-  "distance",
-  "fadeblack",
-  "fadegrays",
-  "fadewhite",
-  "hblur",
-  "hrslice",
-  "pixelize",
-  "radial",
-  "rectcrop",
-  "slidedown",
-  "slideright",
-  "slideup",
-  "vuslice",
-  "wipeleft",
-  "wiperight",
-];
-
-const actionButtonList = [
-  "Canvas Effect",
-  "Paint Mode",
-  "Text Mode",
-  "Transition/Effect",
-];
+import EffectItems from "./Canvas_Effect/EffectItems";
+import TranEffect from "./Canvas_Effect/TranEffect";
 
 function Canvas() {
   // 캔버스 관련 훅
-  const canvasRef = useRef(null);
   const [Ctx, setCtx] = useState(null);
+  const [checkitem, setcheckitem] = useState(null);
+  const canvasRef = useRef(null);
   const ToCanvas = useContext(ImageContext);
   const roomId = useParams().roomId;
 
@@ -77,14 +37,27 @@ function Canvas() {
   const [PaintPx, setPaintPX] = useState(5);
   const [PaintColor, setPaintColor] = useState("black");
 
-  // effect, transition 관련 훅(없어질 예정?)
-  const [modalcheck, setmodalcheck] = useState(true);
-  const [effectModal, setEffectModal] = useState(false);
+  // effectitems, effect, transition 관련 훅
   const [transitionModal, setTransitionModal] = useState(false);
   const [showEffectItems, setShowEffectItems] = useState(false);
-  const effectItemsRef = useRef(null);
 
-  // 캔버스 드롭존
+  // canvas버튼 관리(한번에 1개만 작동)
+  const check = (onitem) => {
+    if (onitem !== "TextMode") {
+      setTextMode(false);
+    }
+    if (onitem !== "PaintMode") {
+      setPaintMode(false);
+    }
+    if (onitem !== "transitionModal") {
+      setTransitionModal(false);
+    }
+    if (onitem !== "showEffectItems") {
+      setShowEffectItems(false);
+    }
+  };
+
+  // 캔버스 드랍존
   const [{ isover }, drop] = useDrop(() => ({
     accept: ["image"],
     drop: (item) => imageToCanvas(item.url),
@@ -93,26 +66,12 @@ function Canvas() {
     }),
   }));
 
-  // 트랜지션 드롭존(없어질 예정?)
-  const [{ isOver }, modal] = useDrop(() => ({
-    accept: ["image"],
-    drop: (item) => changeModalToCanvas(item.url),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
-  }));
-
-  const changeModalToCanvas = (url) => {
-    setEffectModal(false);
-    setTransitionModal(false);
-    ToCanvas.sendurl(url);
-    setmodalcheck(!modalcheck);
-  };
-
+  // 이미지 드래그 드랍으로 캔버스에 이미지 넣기
   const imageToCanvas = (url) => {
     ToCanvas.sendurl(url);
   };
 
+  // 캔버스에 사진 띄우기(초기값 설정)
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -126,8 +85,9 @@ function Canvas() {
     image.onload = () => {
       Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
     };
-  }, [ToCanvas.url, Ctx, modalcheck]);
+  }, [ToCanvas.url, Ctx]);
 
+  // 캔버스 페인팅 작업 함수
   const drawing = (e) => {
     const x = e.nativeEvent.offsetX * (1280 / 768);
     const y = e.nativeEvent.offsetY * (720 / 432);
@@ -142,6 +102,7 @@ function Canvas() {
       Ctx.moveTo(x, y);
     }
   };
+  // 페인팅 작업 조건 판단
   const ChangePaint = (check) => {
     if (!PaintMode) return;
     if (check) {
@@ -151,6 +112,7 @@ function Canvas() {
     }
   };
 
+  // 텍스트 모드에서 마우스 클릭시 해당 위치에 input창 띄우기
   const addinput = (e) => {
     if (!TextMode) {
       return;
@@ -163,6 +125,7 @@ function Canvas() {
     setinputShow(true);
   };
 
+  // 텍스트 입력 완료시 호출(엔터키 누르면 작동)
   const handleEnter = (e) => {
     const code = e.keyCode;
     if (code === 13) {
@@ -176,6 +139,7 @@ function Canvas() {
     }
   };
 
+  // 캔버스 작업 후 저장했을때 호출되는 함수
   const newImage = async (e) => {
     e.preventDefault();
     const imagedata = await canvasRef.current.toDataURL(
@@ -213,6 +177,7 @@ function Canvas() {
       });
   };
 
+  // 이미지에 효과 넣어주는 함수
   const selectedOptionApply = async (name) => {
     console.log("name:", name);
     const canvas = canvasRef.current;
@@ -253,60 +218,19 @@ function Canvas() {
     <React.Fragment>
       <div className="Username_and_canvas">
         <div className="EditButtons">
-          <Button
-            className="sidebar-item"
-            name="Canvas Effect"
-            onClick={() => setShowEffectItems(!showEffectItems)}
-            startIcon={<AutoFixNormalOutlinedIcon style={{ fontSize: 35 }} />}
-          ></Button>
-          {showEffectItems ? (
-            <ul className="canvaseffect__items" ref={effectItemsRef}>
-              <li>
-                <Button
-                  className="sidebar-item"
-                  name="Brighten"
-                  onClick={() => selectedOptionApply("Brighten")}
-                >
-                  Brighten
-                </Button>
-              </li>
-              <li>
-                <Button
-                  className="sidebar-item"
-                  name="Sharpen"
-                  onClick={() => selectedOptionApply("Sharpen")}
-                >
-                  Sharpen
-                </Button>
-              </li>
-              <li>
-                <Button
-                  className="sidebar-item"
-                  name="Saturate"
-                  onClick={() => selectedOptionApply("Saturate")}
-                >
-                  Saturate
-                </Button>
-              </li>
-              <li>
-                <Button
-                  className="sidebar-item"
-                  name="Grayscale"
-                  onClick={() => selectedOptionApply("Grayscale")}
-                >
-                  Grayscale
-                </Button>
-              </li>
-            </ul>
-          ) : (
-            <></>
-          )}
+          <EffectItems
+            itemsmode={showEffectItems}
+            mode={setShowEffectItems}
+            apply={selectedOptionApply}
+            check={check}
+          />
           <Painting
             paintmode={PaintMode}
             mode={setPaintMode}
             px={setPaintPX}
             color={setPaintColor}
             PC={PaintColor}
+            check={check}
           />
           <Text
             textmode={TextMode}
@@ -315,34 +239,13 @@ function Canvas() {
             color={settextColor}
             font={settextfont}
             TC={textColor}
+            check={check}
           />
-          <Button
-            className="sidebar-item"
-            name="Transition/Effect"
-            onClick={() => {
-              setTransitionModal(!transitionModal);
-            }}
-            startIcon={<AddLinkIcon style={{ fontSize: 35 }} />}
-          ></Button>
-          {transitionModal ? (
-            <div className="transition-modal" ref={modal}>
-              <div className="effect-modal" ref={modal}>
-                <div className="effect-list">
-                  {EFFECT_LIST.map((effect, index) => {
-                    return <Effect className={effect} key={index} />;
-                  })}
-                </div>
-              </div>
-              <div className="v-line"></div>
-              <div className="transition-list">
-                {TRANSITION_LIST.map((transition, index) => {
-                  return <Transition className={transition} key={index} />;
-                })}
-              </div>
-            </div>
-          ) : (
-            <></>
-          )}
+          <TranEffect
+            traneffect={transitionModal}
+            mode={setTransitionModal}
+            check={check}
+          />
           <Button
             className="sidebar-item"
             onClick={newImage}
@@ -350,7 +253,6 @@ function Canvas() {
             startIcon={<SaveIcon style={{ fontSize: 35 }} />}
           ></Button>
         </div>
-
         <div className="container">
           <div className="uploaded-image" ref={drop}>
             <canvas

@@ -12,14 +12,18 @@ import axios from "axios";
 // require("dotenv").config();
 
 const style = {
+  display: "flex",
+  flexDirection: "column",
   position: "absolute",
   top: "50%",
   left: "50%",
+  justifyContent: "center",
   transform: "translate(-50%, -50%)",
   width: 800,
-  bgcolor: "gainsboro",
+  bgcolor: "#272731",
   border: "2px solid #000",
   boxShadow: 24,
+  gap: "20px",
   p: 4,
 };
 
@@ -28,6 +32,10 @@ const musicItemStyle = {
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
+};
+
+const selectstyle = {
+  color: "272731",
 };
 
 export default function InsertMusic() {
@@ -69,48 +77,64 @@ export default function InsertMusic() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+        <div>
+          <Box sx={style}>
+            {/* <Typography id="modal-modal-title" variant="h6" component="h2">
             추천 음원 리스트
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 3 }}>
-            <Music song={selectedMusicSrc} />
-          </Typography>
-          <Button
-            className="music-item"
-            index={10001}
-            style={musicItemStyle}
-            onClick={() => {
-              setSelectedMusicSrc("../music/abc.mp3");
-              setSelectedMusicIdx("1");
-            }}
-          >
-            <div className="music-item-title">Run Back to You (feat.Alisa)</div>
-            <div className="music-item-artist">Hoang</div>
-          </Button>
-          <Button
-            className="music-item"
-            index={10002}
-            style={musicItemStyle}
-            onClick={() => {
-              setSelectedMusicSrc("../music/뉴진스.mp3");
-              setSelectedMusicIdx("2");
-            }}
-          >
-            <div className="music-item-title">뉴진스 (feat.Alisa)</div>
-            <div className="music-item-artist">hype boy</div>
-          </Button>
-          <div className="action-box">
+          </Typography> */}
+            <Typography id="modal-modal-description" sx={{ mt: 3 }}>
+              <Music song={selectedMusicSrc} />
+            </Typography>
+            <p></p>
             <Button
-              variant="contained"
+              className="music-item"
+              index={10001}
+              style={musicItemStyle}
               onClick={() => {
-                getPresetbyIndex(selectedMusicIdx, selectedMusicSrc);
+                setSelectedMusicSrc("../music/Hoang-RunBacktoYou(320kbps).mp3");
+                setSelectedMusicIdx("1");
               }}
             >
-              선택
+              <div className="music-item-title">
+                Hoang - Run Back to You (feat.Alisa)
+              </div>
             </Button>
-          </div>
-        </Box>
+            <Button
+              className="music-item"
+              index={10002}
+              style={musicItemStyle}
+              onClick={() => {
+                setSelectedMusicSrc("../music/Newjeans-Ditto(320kbps).mp3");
+                setSelectedMusicIdx("2");
+              }}
+            >
+              <div className="music-item-title">Newjeans - Ditto</div>
+            </Button>
+            <Button
+              className="music-item"
+              index={10003}
+              style={musicItemStyle}
+              onClick={() => {
+                setSelectedMusicSrc("../music/Coldplay-Yellow(320kbps).mp3");
+                setSelectedMusicIdx("3");
+              }}
+            >
+              <div className="music-item-title">Coldplay - Yellow</div>
+            </Button>
+            <p></p>
+            <div className="action-box">
+              <Button
+                variant="contained"
+                style={selectstyle}
+                onClick={() => {
+                  getPresetbyIndex(selectedMusicIdx, selectedMusicSrc);
+                }}
+              >
+                <span className="selectmusic_span">선택하기</span>
+              </Button>
+            </div>
+          </Box>
+        </div>
       </Modal>
     </div>
   );

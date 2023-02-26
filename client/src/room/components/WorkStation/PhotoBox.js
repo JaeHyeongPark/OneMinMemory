@@ -49,11 +49,13 @@ const PhotoBox = (props) => {
     }
   }, [ToCanvas.origin, cloud, ToCanvas.effect]);
 
-  const Cloudtrue = () => {
+  const Cloudtrue = (e) => {
+    e.preventDefault()
     setcloud(true);
   };
 
-  const Cloudfalse = () => {
+  const Cloudfalse = (e) => {
+    e.preventDefault()
     setcloud(false);
   };
 
@@ -77,14 +79,14 @@ const PhotoBox = (props) => {
           <div
             className="fileupload_title"
             style={cloud ? {} : { borderBottom: "3px solid #272833" }}
+            onClick={Cloudtrue}
           >
             <div className="cloud">
-              <img src={Cloud} className="img.cloud" alt="" />
+              <img src={Cloud} className="img.cloud" alt=""/>
             </div>
             <span
               className="cloud_span"
               style={cloud ? { color: "skyblue" } : { color: "gray" }}
-              onClick={Cloudtrue}
             >
               Original
             </span>
@@ -92,6 +94,7 @@ const PhotoBox = (props) => {
           <div
             className="fileupload_title"
             style={cloud ? { borderBottom: "3px solid #272833" } : {}}
+            onClick={Cloudfalse}
           >
             <div className="cloud">
               <img src={Editedcloud} className="img.cloud" alt="" />
@@ -99,7 +102,6 @@ const PhotoBox = (props) => {
             <span
               className="cloud_span"
               style={cloud ? { color: "gray" } : { color: "skyblue" }}
-              onClick={Cloudfalse}
             >
               Edited
             </span>

@@ -4,8 +4,14 @@ import ImageContext from "./Image_Up_Check_Del/ImageContext";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
+import Button from "@mui/material/Button";
+import AutoFixNormalOutlinedIcon from "@mui/icons-material/AutoFixNormalOutlined";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import TextFieldsOutlinedIcon from "@mui/icons-material/TextFieldsOutlined";
+import AddLinkIcon from "@mui/icons-material/AddLink";
+import SaveIcon from "@mui/icons-material/Save";
+
 import "./Canvas.css";
-import SidebarItem from "./SidebarItem";
 import Effect from "./Effects/Effect";
 import Transition from "./Transitions/Transition";
 import App from "../../../App";
@@ -41,7 +47,6 @@ const TRANSITION_LIST = [
 ];
 
 function Canvas() {
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
   const canvasRef = useRef(null);
   const [TextMode, setTextMode] = useState(false);
   const [inputShow, setinputShow] = useState(false);
@@ -53,6 +58,8 @@ function Canvas() {
   const [Ctx, setCtx] = useState(null);
   const [x, setX] = useState([]);
   const [y, setY] = useState([]);
+  const [showEffectItems, setShowEffectItems] = useState(false);
+  const effectItemsRef = useRef(null);
   const roomId = useParams().roomId;
   const ToCanvas = useContext(ImageContext);
 
@@ -123,11 +130,11 @@ function Canvas() {
     if (!TextMode) {
       return;
     }
-    const x = e.nativeEvent.offsetX ;
-    const y = e.nativeEvent.offsetY ;
+    const x = e.nativeEvent.offsetX;
+    const y = e.nativeEvent.offsetY;
     const z = canvasRef.current.getBoundingClientRect();
-    setX([x * (1280 / 768) , z.x + x ]);
-    setY([y * (720 / 432) , z.y + y - 12 ]);
+    setX([x * (1280 / 768), z.x + x]);
+    setY([y * (720 / 432), z.y + y - 12]);
     setinputShow(true);
   };
 
@@ -144,7 +151,7 @@ function Canvas() {
   };
 
   const newImage = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     const imagedata = await canvasRef.current.toDataURL(
       "image/" + ToCanvas.type
     );
@@ -152,7 +159,7 @@ function Canvas() {
     formdata.append("imagedata", imagedata);
     formdata.append("originurl", ToCanvas.url);
     formdata.append("roomid", roomId);
-    formdata.append("id", App.mainSocket.id)
+    formdata.append("id", App.mainSocket.id);
 
     //checked
     await axios
@@ -166,6 +173,9 @@ function Canvas() {
           console.log("응답에러");
           return;
         }
+        // 수정한 사진 저장후 같은 사진을 또 작업할 수 있게 캔버스 url초기화
+        ToCanvas.Changeurl('')
+        
         // 수정한 사진 저장하면 새로운 캔버스를 깔아준다.
         const canvas = canvasRef.current;
         canvas.style = {};
@@ -177,9 +187,7 @@ function Canvas() {
       });
   };
 
-  const selectedOptionApply = async (index, name) => {
-    setSelectedOptionIndex(index);
-    console.log("index:", index);
+  const selectedOptionApply = async (name) => {
     console.log("name:", name);
     const canvas = canvasRef.current;
     const imageData = canvas.toDataURL("image/" + ToCanvas.type);
@@ -219,92 +227,80 @@ function Canvas() {
     <React.Fragment>
       <div className="Username_and_canvas">
         <div className="EditButtons">
-          <SidebarItem
-            key={0}
-            name="Brighten"
-            active={0 === selectedOptionIndex}
-            handleClick={() => selectedOptionApply(0, "Brighten")}
-          />
-          <SidebarItem
-            key={1}
-            name="Sharpen"
-            active={1 === selectedOptionIndex}
-            handleClick={() => selectedOptionApply(1, "Sharpen")}
-          />
-          <SidebarItem
-            key={2}
-            name="Saturate"
-            active={2 === selectedOptionIndex}
-            handleClick={() => selectedOptionApply(2, "Saturate")}
-          />
-          <SidebarItem
-            key={3}
-            name="Grayscale"
-            active={3 === selectedOptionIndex}
-            handleClick={() => selectedOptionApply(3, "Grayscale")}
-          />
-          <SidebarItem
-            key={4}
+          <Button
+            className="sidebar-item"
+            name="Canvas Effect"
+            onClick={() => setShowEffectItems(!showEffectItems)}
+            startIcon={<AutoFixNormalOutlinedIcon style={{ fontSize: 35 }} />}
+          ></Button>
+          {showEffectItems ? (
+            <ul className="canvaseffect__items" ref={effectItemsRef}>
+              <li>
+                <Button
+                  className="sidebar-item"
+                  name="Brighten"
+                  onClick={() => selectedOptionApply("Brighten")}
+                >
+                  Brighten
+                </Button>
+              </li>
+              <li>
+                <Button
+                  className="sidebar-item"
+                  name="Sharpen"
+                  onClick={() => selectedOptionApply("Sharpen")}
+                >
+                  Sharpen
+                </Button>
+              </li>
+              <li>
+                <Button
+                  className="sidebar-item"
+                  name="Saturate"
+                  onClick={() => selectedOptionApply("Saturate")}
+                >
+                  Saturate
+                </Button>
+              </li>
+              <li>
+                <Button
+                  className="sidebar-item"
+                  name="Grayscale"
+                  onClick={() => selectedOptionApply("Grayscale")}
+                >
+                  Grayscale
+                </Button>
+              </li>
+            </ul>
+          ) : (
+            <></>
+          )}
+
+          <Button
+            className="sidebar-item"
             name="Paint Mode"
-            active={4 === selectedOptionIndex}
-            handleClick={() => {
+            onClick={() => {
               setPaintMode(PaintMode ? false : true);
             }}
-          />
-          <SidebarItem
-            key={5}
+            startIcon={<BorderColorOutlinedIcon style={{ fontSize: 35 }} />}
+          ></Button>
+          <Button
+            className="sidebar-item"
             name="Text Mode"
-            active={5 === selectedOptionIndex}
-            handleClick={() => {
+            onClick={() => {
               setTextMode(TextMode ? false : true);
             }}
-          />
-          <SidebarItem
-            key={6}
+            startIcon={<TextFieldsOutlinedIcon style={{ fontSize: 35 }} />}
+          ></Button>
+          <Button
+            className="sidebar-item"
             name="Transition/Effect"
-            active={6 === selectedOptionIndex}
-            handleClick={() => {
+            onClick={() => {
               setTransitionModal(!transitionModal);
             }}
-          />
-          <SidebarItem
-            key={7}
-            name="Save"
-            active={7 === selectedOptionIndex}
-            handleClick={() => {
-              newImage();
-            }}
-          />
-        </div>
-
-        <div className="container">
-          {!transitionModal ? (
-            <div className="uploaded-image" ref={drop}>
-                <canvas
-                  ref={canvasRef}
-                  width={1280}
-                  height={720}
-                  onClick={(e) => addinput(e)}
-                  onMouseDown={() => ChangePaint(true)}
-                  onMouseUp={() => ChangePaint(false)}
-                  onMouseMove={(e) => drawing(e)}
-                  onMouseLeave={() => ChangePaint(false)}
-                />
-              {inputShow && (
-                <input
-                  type="text"
-                  style={{
-                    position: "fixed",
-                    left: `${x[1]}px`,
-                    top: `${y[1]}px`,
-                    background: "transparent",
-                    height: "30px",
-                  }}
-                  onKeyDown={handleEnter}
-                />
-              )}
-            </div>
-          ) : (
+            startIcon={<AddLinkIcon style={{ fontSize: 35 }} />}
+          ></Button>
+          {transitionModal ? (
             <div className="transition-modal" ref={modal}>
               <div className="effect-modal" ref={modal}>
                 <div className="effect-list">
@@ -312,21 +308,51 @@ function Canvas() {
                     return <Effect className={effect} key={index} />;
                   })}
                 </div>
-                <hr></hr>
               </div>
+              <div className="v-line"></div>
               <div className="transition-list">
                 {TRANSITION_LIST.map((transition, index) => {
-                  return (
-                    <Transition
-                      className={transition}
-                      key={index}
-                    />
-                  );
+                  return <Transition className={transition} key={index} />;
                 })}
               </div>
-              <hr></hr>
             </div>
+          ) : (
+            <></>
           )}
+          <Button
+            className="sidebar-item"
+            onClick={newImage}
+            name="Save"
+            startIcon={<SaveIcon style={{ fontSize: 35 }} />}
+          ></Button>
+        </div>
+
+        <div className="container">
+          <div className="uploaded-image" ref={drop}>
+            <canvas
+              ref={canvasRef}
+              width={1280}
+              height={720}
+              onClick={(e) => addinput(e)}
+              onMouseDown={() => ChangePaint(true)}
+              onMouseUp={() => ChangePaint(false)}
+              onMouseMove={(e) => drawing(e)}
+              onMouseLeave={() => ChangePaint(false)}
+            />
+            {inputShow && (
+              <input
+                type="text"
+                style={{
+                  position: "fixed",
+                  left: `${x[1]}px`,
+                  top: `${y[1]}px`,
+                  background: "transparent",
+                  height: "30px",
+                }}
+                onKeyDown={handleEnter}
+              />
+            )}
+          </div>
         </div>
       </div>
     </React.Fragment>

@@ -1,30 +1,61 @@
 .Username_and_canvas {
   position: relative;
-
   width: 65%;
   height: 100%;
   flex-grow: 1;
   display: flex;
-  flex-direction: column;
   justify-content: center;
+  flex-direction: column;
+  text-align: center;
   align-self: stretch;
   align-items: center;
   background-color: #1c1c26;
 }
 
 .EditButtons {
-  position: relative;
-  top: -40px;
+  position: absolute;
+  top: 40px;
+  left: 20%;
   height: 80px;
+  width: 60%;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0;
   border-radius: 15px;
   background-color: #272731;
+}
+
+/* .container {
+  position: absolute;
+  width: 100%;
+  height: ;
+  top: 200px;
+} */
+
+/* .canvaseffect {
+  position: relative;
+} */
+
+.canvaseffect__items {
+  margin: 0;
+  position: absolute;
+  left: -40px;
+  top: 80px;
+  width: 100%;
+  list-style: none;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  visibility: visible;
+  z-index: 1;
+  opacity: 1;
+  transition: all 0.4s cubic-bezier(0.93, 0.88, 0.1, 0.8);
 }
 
 .sidebar {
@@ -48,24 +79,13 @@
   background-color: transparent;
 }
 
-.sidebar-item:hover,
-.sidebar-item:focus {
+.sidebar-item:hover {
   background-color: #a6a6a6;
 }
 
-.sidebar-item.active {
+.sidebar-item:active {
   background-color: #a6a6a6;
 }
-
-/* .sidebar-item::after {
-  content: "";
-  position: absolute;
-  width: 80%;
-  left: 10%;
-  bottom: 0;
-  height: 1px;
-  background-color: hsl(265, 100%, 46%);
-} */
 
 /* .canvas {
   width: 100%;
@@ -93,68 +113,87 @@ body {
   margin: 0;
 }
 
-/* .container {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: 1fr auto;
-  grid-template-areas:
-    "image sidebar"
-    "slider sidebar";
-  height: 100%;
-  width: 100%;
-  border-top: solid 2px rgba(231, 207, 207, 0.1);
-  background-color: #272833;
-  padding: 15px;
-} */
-
 .container .uploaded-image {
   width: auto;
   height: auto;
   margin: auto;
 }
-.uploaded-image canvas{
+.uploaded-image canvas {
   width: 768px;
   height: 432px;
 }
-.container .effect-modal {
-  /* overflow: auto y; */
-  width: auto;
-  height: auto;
-  margin: 10px;
-  position: relative;
-}
-.container .effect-list {
-  overflow: auto;
-  width: auto;
-  height: 100%;
-  margin: 10px;
-  position: relative;
+
+.transition-modal {
+  padding: 10px;
+  position: absolute;
+  left: 150px;
+  top: 85px;
+  width: 91%;
+  height: 500px;
+  display: flex;
+  flex-direction: row;
+  z-index: 1;
+  opacity: 1;
+  border-radius: 1em;
+  background-color: rgb(53, 54, 72);
 }
 
-.container .transition-modal {
-  /* overflow: auto y; */
-  width: auto;
-  height: auto;
-  margin: 10px;
-  position: relative;
+.transition-modal .v-line {
+  border-right: solid 1px #a6a6a6;
+  height: 100%;
 }
-.container .transition-list {
+
+.effect-modal {
+  overflow: auto y;
+  flex-basis: 50%;
+  padding: 10px;
+}
+
+.effect-modal::-webkit-scrollbar {
+  display: none;
+}
+
+.effect-list {
+  overflow: auto y;
+  flex-basis: 50%;
+  padding: 10px;
+}
+
+.effect-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* .effect-list {
+  border-right: 1px solid white;
+  padding-right: 10px;
+} */
+.transition-list::-webkit-scrollbar {
+  display: none;
+}
+.effect-list,
+.transition-list {
+  height: 100%;
+  overflow: auto;
+  width: 100%;
+  margin: 10px;
+  /* position: relative; */
+}
+
+/* 일단 잠깐 주석처리 */
+/* .container .transition-list {
   overflow: auto;
   width: auto;
   height: 40%;
   margin: 10px;
   position: relative;
-}
-/* .container .v-line {
-  border-left: thin solid gray;
-  height: auto;
 } */
-.container .transition-clip {
+
+/* .container .transition-clip {
   width: auto;
-  /* height: 60%; */
+  height: 60%;
   margin: 10px;
   position: relative;
-}
+} */
 
 .main-image {
   cursor: pointer;

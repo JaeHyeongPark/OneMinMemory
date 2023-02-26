@@ -41,9 +41,9 @@
 }
 .toplay_img img {
   position: absolute;
-  object-fit: cover;
-  width: 40px;
-  height: 35px;
+  object-fit: contain;
+  width: 30px;
+  height: 25px;
   margin: 5px;
 }
 .playlist_space {
@@ -75,9 +75,9 @@
 }
 .selecttoplay_img img {
   position: absolute;
-  object-fit: cover;
-  width: 40px;
-  height: 35px;
+  object-fit:contain;
+  width: 30px;
+  height: 25px;
   margin: 5px;
 }
 

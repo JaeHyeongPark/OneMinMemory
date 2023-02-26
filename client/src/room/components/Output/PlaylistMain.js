@@ -7,7 +7,6 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import App from "../../../App";
 import ClearIcon from "@mui/icons-material/Clear";
 import effectOn from "../../assets/effect_on.png";
-import effectOff from "../../assets/effect_off.png";
 
 import "./Playlist.css";
 
@@ -141,10 +140,8 @@ const PlaylistMain = (props) => {
           X
         </ClearIcon>
       )}
-      {props.effect ? (
-        <img src={effectOn} onClick={deleffect} style={{cursor:"pointer"}} />
-      ) : (
-        <img src={effectOff} alt="effectoff" />
+      {props.effect && (
+        <img src={effectOn} onClick={deleffect} style={{ cursor: "pointer" }} />
       )}
     </div>
   );

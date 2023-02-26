@@ -161,6 +161,41 @@
   color: #ffffff;
   cursor: pointer;
 }
+
+.selectmusic_span {
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 200;
+  font-size: 20px;
+  line-height: 150%;
+  /* identical to box height, or 30px */
+
+  text-align: center;
+
+  /* Text / White */
+
+  color: #ffffff;
+}
+
+.music-item-title {
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 200;
+  font-size: 20px;
+  line-height: 150%;
+  /* identical to box height, or 30px */
+
+  text-align: center;
+
+  /* Text / White */
+
+  color: #ffffff;
+}
+
+.action-box {
+  display: flex;
+  justify-content: flex-end;
+}
 /* 2302225 정근 수정 */
 
 .ROOM-FOOTER {

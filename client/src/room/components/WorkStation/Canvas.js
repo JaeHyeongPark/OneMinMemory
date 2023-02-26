@@ -58,7 +58,6 @@ function Canvas() {
   const [Ctx, setCtx] = useState(null);
   const [x, setX] = useState([]);
   const [y, setY] = useState([]);
-  const [transitionClip, setTransitionClip] = useState(false);
   const [showEffectItems, setShowEffectItems] = useState(false);
   const effectItemsRef = useRef(null);
   const roomId = useParams().roomId;
@@ -298,6 +297,25 @@ function Canvas() {
             }}
             startIcon={<AddLinkIcon style={{ fontSize: 35 }} />}
           ></Button>
+          {transitionModal ? (
+            <div className="transition-modal" ref={modal}>
+              <div className="effect-modal" ref={modal}>
+                <div className="effect-list">
+                  {EFFECT_LIST.map((effect, index) => {
+                    return <Effect className={effect} key={index} />;
+                  })}
+                </div>
+              </div>
+              <div className="v-line"></div>
+              <div className="transition-list">
+                {TRANSITION_LIST.map((transition, index) => {
+                  return <Transition className={transition} key={index} />;
+                })}
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
           <Button
             className="sidebar-item"
             onClick={newImage}
@@ -307,50 +325,31 @@ function Canvas() {
         </div>
 
         <div className="container">
-          {!transitionModal ? (
-            <div className="uploaded-image" ref={drop}>
-              <canvas
-                ref={canvasRef}
-                width={1280}
-                height={720}
-                onClick={(e) => addinput(e)}
-                onMouseDown={() => ChangePaint(true)}
-                onMouseUp={() => ChangePaint(false)}
-                onMouseMove={(e) => drawing(e)}
-                onMouseLeave={() => ChangePaint(false)}
+          <div className="uploaded-image" ref={drop}>
+            <canvas
+              ref={canvasRef}
+              width={1280}
+              height={720}
+              onClick={(e) => addinput(e)}
+              onMouseDown={() => ChangePaint(true)}
+              onMouseUp={() => ChangePaint(false)}
+              onMouseMove={(e) => drawing(e)}
+              onMouseLeave={() => ChangePaint(false)}
+            />
+            {inputShow && (
+              <input
+                type="text"
+                style={{
+                  position: "fixed",
+                  left: `${x[1]}px`,
+                  top: `${y[1]}px`,
+                  background: "transparent",
+                  height: "30px",
+                }}
+                onKeyDown={handleEnter}
               />
-              {inputShow && (
-                <input
-                  type="text"
-                  style={{
-                    position: "fixed",
-                    left: `${x[1]}px`,
-                    top: `${y[1]}px`,
-                    background: "transparent",
-                    height: "30px",
-                  }}
-                  onKeyDown={handleEnter}
-                />
-              )}
-            </div>
-          ) : (
-            <div className="transition-modal" ref={modal}>
-              <div className="effect-modal" ref={modal}>
-                <div className="effect-list">
-                  {EFFECT_LIST.map((effect, index) => {
-                    return <Effect className={effect} key={index} />;
-                  })}
-                </div>
-                <hr></hr>
-              </div>
-              <div className="transition-list">
-                {TRANSITION_LIST.map((transition, index) => {
-                  return <Transition className={transition} key={index} />;
-                })}
-              </div>
-              <hr></hr>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </React.Fragment>

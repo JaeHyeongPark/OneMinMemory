@@ -13,8 +13,9 @@
 }
 
 .EditButtons {
-  position: relative;
-  top: -70px;
+  position: absolute;
+  top: 40px;
+  left: 20%;
   height: 80px;
   width: 60%;
   align-self: stretch;
@@ -29,6 +30,13 @@
   border-radius: 15px;
   background-color: #272731;
 }
+
+/* .container {
+  position: absolute;
+  width: 100%;
+  height: ;
+  top: 200px;
+} */
 
 /* .canvaseffect {
   position: relative;
@@ -110,46 +118,82 @@ body {
   height: auto;
   margin: auto;
 }
-.uploaded-image canvas{
+.uploaded-image canvas {
   width: 768px;
   height: 432px;
 }
-.container .effect-modal {
-  /* overflow: auto y; */
-  width: auto;
-  height: auto;
-  margin: 10px;
-  position: relative;
-}
-.container .effect-list {
-  overflow: auto;
-  width: auto;
-  height: 100%;
-  margin: 10px;
-  position: relative;
+
+.transition-modal {
+  padding: 10px;
+  position: absolute;
+  left: 150px;
+  top: 85px;
+  width: 91%;
+  height: 500px;
+  display: flex;
+  flex-direction: row;
+  z-index: 1;
+  opacity: 1;
+  border-radius: 1em;
+  background-color: rgb(53, 54, 72);
 }
 
-.container .transition-modal {
-  /* overflow: auto y; */
-  width: auto;
-  height: auto;
-  margin: 10px;
-  position: relative;
+.transition-modal .v-line {
+  border-right: solid 1px #a6a6a6;
+  height: 100%;
 }
-.container .transition-list {
+
+.effect-modal {
+  overflow: auto y;
+  flex-basis: 50%;
+  padding: 10px;
+}
+
+.effect-modal::-webkit-scrollbar {
+  display: none;
+}
+
+.effect-list {
+  overflow: auto y;
+  flex-basis: 50%;
+  padding: 10px;
+}
+
+.effect-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* .effect-list {
+  border-right: 1px solid white;
+  padding-right: 10px;
+} */
+.transition-list::-webkit-scrollbar {
+  display: none;
+}
+.effect-list,
+.transition-list {
+  height: 100%;
+  overflow: auto;
+  width: 100%;
+  margin: 10px;
+  /* position: relative; */
+}
+
+/* 일단 잠깐 주석처리 */
+/* .container .transition-list {
   overflow: auto;
   width: auto;
   height: 40%;
   margin: 10px;
   position: relative;
-}
+} */
 
-.container .transition-clip {
+/* .container .transition-clip {
   width: auto;
-  /* height: 60%; */
+  height: 60%;
   margin: 10px;
   position: relative;
-}
+} */
 
 .main-image {
   cursor: pointer;

@@ -549,7 +549,9 @@ module.exports = function (io) {
 
     const images = await getImages(roomid, imageUrls, 1280, 720);
     // 25퍼 진행됐음을 클라이언트에 알림
-    io.to(req.body.roomid).emit("renderingProgress", { progress: 1 });
+    io.to(req.body.roomid).emit("renderingProgress", {
+      progress: "랜더링 초기세팅중 & Effect효과 적용중 (1/4)",
+    });
     let end1 = new Date();
     console.log("이미지 다운 완료:", images);
     let result = end1.getTime() - start.getTime();
@@ -564,7 +566,9 @@ module.exports = function (io) {
       transitions
     );
     // 50퍼 진행됐음을 클라이언트에 알림
-    io.to(req.body.roomid).emit("renderingProgress", { progress: 2 });
+    io.to(req.body.roomid).emit("renderingProgress", {
+      progress: "Transition 효과 적용중 (2/4)",
+    });
     let end2 = new Date();
     console.log(
       "이펙트 비디오로 변환 완료, 변환된 비디오:",
@@ -581,7 +585,9 @@ module.exports = function (io) {
       transitions
     );
     // 75퍼 진행됐음을 클라이언트에 알림
-    io.to(req.body.roomid).emit("renderingProgress", { progress: 3 });
+    io.to(req.body.roomid).emit("renderingProgress", {
+      progress: "오디오 삽입 시작 (3/4)",
+    });
     let end3 = new Date();
     console.log("비디오 트랜지션 완료, 오디오 삽입 시작");
     result = end3.getTime() - start.getTime();
@@ -593,7 +599,9 @@ module.exports = function (io) {
       MusicAssets[selectedmusic[0]]
     );
     // 100퍼 진행됐음을 클라이언트에 알림
-    io.to(req.body.roomid).emit("renderingProgress", { progress: 4 });
+    io.to(req.body.roomid).emit("renderingProgress", {
+      progress: "동영상 랜더링 완료!! 저장중... (4/4)",
+    });
     let end4 = new Date();
     console.log(
       "오디오 삽입 및 최종 렌더링 완료, 완료된 비디오:",

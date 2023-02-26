@@ -46,6 +46,13 @@ const TRANSITION_LIST = [
   "wiperight",
 ];
 
+const actionButtonList = [
+  "Canvas Effect",
+  "Paint Mode",
+  "Text Mode",
+  "Transition/Effect",
+];
+
 function Canvas() {
   const canvasRef = useRef(null);
   const [TextMode, setTextMode] = useState(false);
@@ -174,8 +181,8 @@ function Canvas() {
           return;
         }
         // 수정한 사진 저장후 같은 사진을 또 작업할 수 있게 캔버스 url초기화
-        ToCanvas.Changeurl('')
-        
+        ToCanvas.Changeurl("");
+
         // 수정한 사진 저장하면 새로운 캔버스를 깔아준다.
         const canvas = canvasRef.current;
         canvas.style = {};

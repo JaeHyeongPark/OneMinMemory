@@ -42,6 +42,9 @@ export const PlaylistContextProvider = (props) => {
 
   const addToPlaylistHandler = (track) => {
     setPlaylist(track);
+    let t = 0
+    track.forEach((data) => t += data.duration)
+    setTT(t)
   };
   const changetime = (time) => {
     settime(time);

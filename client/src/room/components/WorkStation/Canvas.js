@@ -58,7 +58,6 @@ function Canvas() {
   const [Ctx, setCtx] = useState(null);
   const [x, setX] = useState([]);
   const [y, setY] = useState([]);
-  const [transitionClip, setTransitionClip] = useState(false);
   const [showEffectItems, setShowEffectItems] = useState(false);
   const effectItemsRef = useRef(null);
   const roomId = useParams().roomId;
@@ -152,7 +151,7 @@ function Canvas() {
   };
 
   const newImage = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     const imagedata = await canvasRef.current.toDataURL(
       "image/" + ToCanvas.type
     );
@@ -174,6 +173,9 @@ function Canvas() {
           console.log("응답에러");
           return;
         }
+        // 수정한 사진 저장후 같은 사진을 또 작업할 수 있게 캔버스 url초기화
+        ToCanvas.Changeurl('')
+        
         // 수정한 사진 저장하면 새로운 캔버스를 깔아준다.
         const canvas = canvasRef.current;
         canvas.style = {};

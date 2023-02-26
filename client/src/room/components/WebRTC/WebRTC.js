@@ -370,6 +370,8 @@ async function makeNewConnection() {
   }
 }
 
+let voiceStatus = 0;
+
 const WebRTC = () => {
   roomId = App.roomId;
   useEffect(() => {
@@ -382,14 +384,14 @@ const WebRTC = () => {
       videoFrame1.className = "videoTagSpeaking";
       setTimeout(() => {
         videoFrame1.className = "videoTagNotSpeaking";
-      }, 900);
+      }, 1000);
       if (userInfo[data.speakerId]) {
         userInfo[data.speakerId].video.videoFrame.className =
           "videoTagSpeaking";
         setTimeout(() => {
           userInfo[data.speakerId].video.videoFrame.className =
             "videoTagNotSpeaking";
-        }, 900);
+        }, 1000);
       }
     });
   }, []);

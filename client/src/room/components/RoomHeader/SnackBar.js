@@ -14,6 +14,7 @@ function SnackBar() {
   const [roomUrlSuccess, setRoomUrlSuccess] = useState(false);
   const [playlistEditWarning, setPlaylistEditWarning] = useState(false);
   const [renderWarning, setRenderWarning] = useState(false);
+  const [playlistEmptyWarning, setPlaylistEmptyWarning] = useState(false);
   const vertical = "top";
   const horizontal = "center";
   // 주의 : canvas 예외
@@ -22,6 +23,7 @@ function SnackBar() {
     setRoomUrlSuccess(false);
     setPlaylistEditWarning(false);
     setRenderWarning(false);
+    setPlaylistEmptyWarning(false);
   };
   const canvasWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -37,6 +39,7 @@ function SnackBar() {
     setRoomUrlSuccess(true);
     setPlaylistEditWarning(false);
     setRenderWarning(false);
+    setPlaylistEmptyWarning(false);
   };
   const roomUrlSuccessClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -51,6 +54,7 @@ function SnackBar() {
     setRoomUrlSuccess(false);
     setPlaylistEditWarning(true);
     setRenderWarning(false);
+    setPlaylistEmptyWarning(false);
   };
   const playlistEditWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -65,6 +69,7 @@ function SnackBar() {
     setRoomUrlSuccess(false);
     setPlaylistEditWarning(false);
     setRenderWarning(true);
+    setPlaylistEmptyWarning(false);
   };
   const renderWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -73,6 +78,21 @@ function SnackBar() {
     setRenderWarning(false);
   };
   SnackBar.renderWarningOpen = renderWarningOpen;
+  // 주의 : 렌더링 시 플레이리스트 없음
+  const playlistEmptyWarningOpen = () => {
+    setCanvasWarning(false);
+    setRoomUrlSuccess(false);
+    setPlaylistEditWarning(false);
+    setRenderWarning(false);
+    setPlaylistEmptyWarning(true);
+  };
+  const playlistEmptyWarningClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setPlaylistEmptyWarning(false);
+  };
+  SnackBar.playlistEmptyWarningOpen = playlistEmptyWarningOpen;
   return (
     <Stack spacing={2} sx={{ width: "100%" }}>
       {/* 캔버스에 사진이 없는데 저장을 눌렀을 때만 */}
@@ -135,6 +155,21 @@ function SnackBar() {
           sx={{ width: "100%", fontSize: "20px" }}
         >
           먼저 플레이리스트 조작권한을 반납해주세요!
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={playlistEmptyWarning}
+        autoHideDuration={2000}
+        onClose={playlistEmptyWarningClose}
+      >
+        <Alert
+          elevation={6}
+          onClose={playlistEmptyWarningClose}
+          severity="warning"
+          sx={{ width: "100%", fontSize: "20px" }}
+        >
+          플레이리스트가 비어있습니다!
         </Alert>
       </Snackbar>
     </Stack>

@@ -91,29 +91,37 @@ module.exports = function socketRouter(io) {
     // 입장 : 이전 check 대체
     socket.on("joinRoom", async (data) => {
       try {
-        const check = await redis.v4.get(data.roomId);
-        if (check === null) {
+        const playlistPermissionState = await redis.v4.get(
+          data.roomId + "/playlistPermissionState"
+        );
+        if (playlistPermissionState === null) {
           io.to(data.Id).emit("welcome", { ans: "NO" });
           return;
+        }
+        if (playlistPermissionState === "false") {
+          state = 2;
+        } else {
+          state = 0;
         }
         socket.join(data.roomId);
         socket.Id = data.Id;
         socket.roomId = data.roomId;
         redis.v4.set(data.Id + "", data.roomId);
-        redis.v4.rPush(data.roomId + "/user", data.Id + "");
-        console.log("누가 왔어요~", data.roomId, data.Id);
-        let AmIFirst = await redis.v4.sendCommand([
-          "SET",
-          data.roomId + "/playlistPermissionState",
-          "true",
-          // 개발자모드
-          // "NX",
+        let numUsers = await redis.v4.sendCommand([
+          "incr",
+          data.roomId + "/numUser",
         ]);
-        if (AmIFirst === "OK") {
-          console.log("첫번쨰 사람 입장!");
-        } else {
-          console.log("사람하나 추가요~");
-        }
+        console.log(1);
+        let renderVoteState = await redis.v4.get(
+          data.roomId + "/renderVoteState"
+        );
+        socket.to(data.roomId).emit("someoneCame", { numUsers });
+        io.to(data.Id).emit("welcome", {
+          renderVoteState,
+          playlistPermissionState: state,
+          numUsers,
+        });
+        console.log("누가 왔어요~", data.roomId, data.Id);
       } catch (e) {
         console.log(e);
       }
@@ -125,9 +133,36 @@ module.exports = function socketRouter(io) {
           return;
         }
         console.log(socket.Id + "님이 나가셨습니다");
-        redis.lRem(socket.roomId + "/user", 1, socket.Id);
+        let numUserLeft = await redis.v4.sendCommand([
+          "decr",
+          socket.roomId + "/numUser",
+        ]);
         redis.v4.del(socket.Id + "");
-        const numUserLeft = await redis.v4.lLen(socket.roomId + "/user");
+        let permissionUesr = await redis.v4.get(
+          socket.roomId + "playlistPermissionState"
+        );
+        let status = -1;
+        if (permissionUesr === socket.Id) {
+          await redis.v4.set(socket.roomId + "playlistPermissionState", "true");
+          status = 0;
+        }
+        let myVoteState = await redis.v4.get(socket.Id + "/renderVoteState");
+        let renderVoteState;
+        if (myVoteState === "true") {
+          renderVoteState = await redis.v4.sendCommand([
+            "decr",
+            socket.roomId + "/renderVoteState",
+          ]);
+        } else {
+          renderVoteState = await redis.v4.get(
+            socket.roomId + "/renderVoteState"
+          );
+        }
+        socket.to(socket.roomId).emit("welcome", {
+          playlistPermissionState: status,
+          numUsers: numUserLeft,
+          renderVoteState,
+        });
         if (numUserLeft === 0) {
           console.log("방파괴!!!");
           // redis.v4.del(socket.roomId + "");
@@ -136,7 +171,28 @@ module.exports = function socketRouter(io) {
         console.log(e);
       }
     });
-
+    // =======================rendering vote 관련 socket=====================
+    socket.on("IVoted", async (data) => {
+      try {
+        let renderVoteState;
+        if (data.voteState === true) {
+          renderVoteState = await redis.v4.sendCommand([
+            "incr",
+            data.roomId + "/renderVoteState",
+          ]);
+          await redis.v4.set(data.Id + "/renderVoteState", "true");
+        } else {
+          renderVoteState = await redis.v4.sendCommand([
+            "decr",
+            data.roomId + "/renderVoteState",
+          ]);
+          await redis.v4.set(data.Id + "/renderVoteState", "false");
+        }
+        socket.to(data.roomId).emit("someoneVoted", { renderVoteState });
+      } catch (e) {
+        console.log(e);
+      }
+    });
     //===========================playlist 조작 권한 관련 API====================
     socket.on("playlistEditRequest", async (data) => {
       try {
@@ -144,7 +200,7 @@ module.exports = function socketRouter(io) {
           (resolve, reject) => {
             redis.getset(
               data.roomId + "/playlistPermissionState",
-              "false",
+              data.Id,
               (err, result) => {
                 if (err) {
                   reject(err);
@@ -156,7 +212,7 @@ module.exports = function socketRouter(io) {
           }
         );
         console.log("요청왔어요~");
-        if (oldplaylistPermissionState === "true") {
+        if (oldplaylistPermissionState !== "false") {
           socket
             .to(data.roomId)
             .emit("playlistEditResponse", { state: 2, isChanged: false });

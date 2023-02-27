@@ -54,7 +54,7 @@ const Text = (props) => {
             <input
               type="range"
               min="1"
-              max="50"
+              max="150"
               value={linePx}
               onChange={changepx}
               onMouseUp={() => {
@@ -98,6 +98,9 @@ const Text = (props) => {
                 </MenuItem>
                 <MenuItem value={"math"} style={{ fontFamily: "math" }}>
                   math123
+                </MenuItem>
+                <MenuItem value={"Times"} style={{ fontFamily: "Times" }}>
+                  Times123
                 </MenuItem>
               </Select>
             </FormControl>

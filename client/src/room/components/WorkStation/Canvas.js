@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 
 import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Save";
+import SnackBar from "../RoomHeader/SnackBar";
 
 import "./Canvas.css";
 import App from "../../../App";
@@ -20,6 +21,10 @@ function Canvas() {
   const canvasRef = useRef(null);
   const ToCanvas = useContext(ImageContext);
   const roomId = useParams().roomId;
+
+  // 캔버스 ctrl + z 버튼 관련 훅
+  const [HistoryList, setHistoryList] = useState([]);
+  const [Hisidx, setHisidx] = useState(0);
 
   // text 관련 훅
   const [TextMode, setTextMode] = useState(false);
@@ -67,6 +72,8 @@ function Canvas() {
 
   // 이미지 드래그 드랍으로 캔버스에 이미지 넣기
   const imageToCanvas = (url) => {
+    setHistoryList([]);
+    setHisidx(0);
     ToCanvas.sendurl(url);
   };
 
@@ -101,10 +108,12 @@ function Canvas() {
       Ctx.moveTo(x, y);
     }
   };
+
   // 페인팅 작업 조건 판단
-  const ChangePaint = (check) => {
+  const ChangePaint = async (check) => {
     if (!PaintMode) return;
     if (check) {
+      await ctrlStore();
       setPaint(check);
     } else {
       setPaint(check);
@@ -125,14 +134,17 @@ function Canvas() {
   };
 
   // 텍스트 입력 완료시 호출(엔터키 누르면 작동)
-  const handleEnter = (e) => {
+  const handleEnter = async (e) => {
     const code = e.keyCode;
     if (code === 13) {
+      await ctrlStore();
+
       Ctx.textBaseline = "top";
       Ctx.textAlign = "left";
       Ctx.font = `${textSize}px ${textfont}`;
       Ctx.fillStyle = textColor;
       Ctx.fillText(e.target.value, x[0], y[0]);
+
       setinputShow(false);
       setTextMode(false);
     }
@@ -140,11 +152,15 @@ function Canvas() {
 
   // 캔버스 작업 후 저장했을때 호출되는 함수
   const newImage = async (e) => {
+    setHistoryList([]);
+    setHisidx(0);
+
     if (ToCanvas.url === "") {
       SnackBar.canvasWarningOpen();
       return;
     }
     e.preventDefault();
+
     const imagedata = await canvasRef.current.toDataURL(
       "image/" + ToCanvas.type
     );
@@ -184,7 +200,9 @@ function Canvas() {
   const selectedOptionApply = async (name) => {
     console.log("name:", name);
     const canvas = canvasRef.current;
-    const imageData = canvas.toDataURL("image/" + ToCanvas.type);
+    const imageData = await canvas.toDataURL("image/" + ToCanvas.type);
+
+    await ctrlStore();
     // checkpoint!
     const formdata = new FormData();
     formdata.append(`${name}ImageData`, imageData);
@@ -215,6 +233,54 @@ function Canvas() {
       .catch((err) => {
         console.log("this is error!!!");
       });
+  };
+
+  // Ctrl + Z 키 입력시 호출(window를 사용하여 창 전체에서 이벤트를 설정)
+  useEffect(() => {
+    const handleUndo = (e) => {
+      if (e.ctrlKey && e.key === "z") {
+        CtrlZ();
+      }
+      if (e.ctrlKey && e.key === "y") {
+        CtrlY();
+      }
+    };
+    window.addEventListener("keydown", handleUndo);
+    return () => {
+      window.removeEventListener("keydown", handleUndo);
+    };
+  }, [HistoryList, Hisidx]);
+  // Ctrl 훅들 값들이 바로바로 적용되기 위한 useeffect
+  useEffect(() => {}, [HistoryList, Hisidx]);
+
+  // Ctrl + z 키
+  const CtrlZ = () => {
+    if (HistoryList.length !== 0 && Hisidx - 1 >= 0) {
+      Ctx.putImageData(HistoryList[Hisidx - 1], 0, 0);
+      setHisidx(Hisidx - 1);
+    }
+  };
+
+  // Ctrl + y 키
+  const CtrlY = () => {
+    if (HistoryList.length !== 0 && Hisidx + 1 < HistoryList.length) {
+      Ctx.putImageData(HistoryList[Hisidx + 1], 0, 0);
+      setHisidx(Hisidx + 1);
+    }
+  };
+
+  // Ctrl키를 위한 이전 작업 저장
+  const ctrlStore = async () => {
+    const data = await Ctx.getImageData(
+      0,
+      0,
+      canvasRef.current.width,
+      canvasRef.current.height
+    );
+    let list = [...HistoryList];
+    list.push(data);
+    setHistoryList(list);
+    setHisidx(list.length);
   };
 
   return (

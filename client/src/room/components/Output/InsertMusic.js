@@ -10,6 +10,8 @@ import music from "../../assets/music.svg";
 import Music from "./Sound/Music";
 import axios from "axios";
 // require("dotenv").config();
+import App from "../../../App";
+import SnackBar from "../RoomHeader/SnackBar";
 
 const style = {
   position: "absolute",
@@ -40,6 +42,10 @@ export default function InsertMusic() {
 
   const getPresetbyIndex = (idx, src) => {
     if (!selectedMusicIdx) {
+      return;
+    }
+    if (App.playlistPermissionState !== 1) {
+      SnackBar.playlistEditWarningOpen();
       return;
     }
     axios

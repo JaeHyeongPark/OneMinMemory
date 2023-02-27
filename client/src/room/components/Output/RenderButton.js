@@ -10,7 +10,7 @@ import loadGif from "../../assets/RenderLoading.gif";
 import Modal from "@mui/material/Modal";
 import App from "../../../App";
 // require("dotenv").config();
-
+import SnackBar from "../RoomHeader/SnackBar";
 const style = {
   position: "absolute",
   top: "50%",
@@ -37,6 +37,10 @@ const RenderButton = () => {
   }, []);
 
   const merge = (e) => {
+    if (App.playlistPermissionState === 1) {
+      SnackBar.renderWarningOpen();
+      return;
+    }
     e.preventDefault();
     setOpen(true);
     if (finalUrl === "") {

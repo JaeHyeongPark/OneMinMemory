@@ -15,7 +15,7 @@ import "./Canvas.css";
 import Effect from "./Effects/Effect";
 import Transition from "./Transitions/Transition";
 import App from "../../../App";
-
+import SnackBar from "../RoomHeader/SnackBar";
 const EFFECT_LIST = [
   "zoom_in",
   // "zoom_out",
@@ -151,6 +151,10 @@ function Canvas() {
   };
 
   const newImage = async (e) => {
+    if (ToCanvas.url === "") {
+      SnackBar.canvasWarningOpen();
+      return;
+    }
     e.preventDefault();
     const imagedata = await canvasRef.current.toDataURL(
       "image/" + ToCanvas.type
@@ -174,8 +178,8 @@ function Canvas() {
           return;
         }
         // 수정한 사진 저장후 같은 사진을 또 작업할 수 있게 캔버스 url초기화
-        ToCanvas.Changeurl('')
-        
+        ToCanvas.Changeurl("");
+
         // 수정한 사진 저장하면 새로운 캔버스를 깔아준다.
         const canvas = canvasRef.current;
         canvas.style = {};

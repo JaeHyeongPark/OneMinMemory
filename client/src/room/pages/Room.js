@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import RoomHeader from "../components/RoomHeader/RoomHeader";
 import Contents from "./Contents";
 import "./Room.css";
-
+import SnackBar from "../components/RoomHeader/SnackBar";
 import App from "../../App";
 
 const Room = () => {
@@ -28,12 +28,13 @@ const Room = () => {
   });
 
   return (
-      <React.Fragment>
-        <RoomHeader />
-        <main className="main-box">
-          <Contents />
-        </main>
-      </React.Fragment>
+    <React.Fragment>
+      <RoomHeader />
+      <main className="main-box">
+        <Contents />
+        <SnackBar />
+      </main>
+    </React.Fragment>
   );
 };
 export default Room;

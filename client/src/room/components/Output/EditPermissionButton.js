@@ -6,7 +6,6 @@ import DiscEdit from "../../assets/discedit.svg";
 
 const EditPermissionButton = () => {
   const playlistCtx = useContext(PlaylistContext);
-
   const getPermission = () => {
     App.mainSocket.emit("playlistEditRequest", {
       roomId: App.roomId,
@@ -35,6 +34,9 @@ const EditPermissionButton = () => {
       }
     });
   }, []);
+  EditPermissionButton.setRefresh = () => {
+    setRefresh({ ...refresh });
+  };
   if (App.playlistPermissionState === 2) {
     return (
       <button className="EditDisc_disable">

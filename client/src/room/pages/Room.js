@@ -6,7 +6,8 @@ import Contents from "./Contents";
 import "./Room.css";
 import SnackBar from "../components/RoomHeader/SnackBar";
 import App from "../../App";
-
+import RenderVoteState from "../components/Output/RenderVoteState";
+import EditPermissionButton from "../components/Output/EditPermissionButton";
 const Room = () => {
   const navigate = useNavigate();
   const roomId = useParams().roomId;
@@ -20,12 +21,18 @@ const Room = () => {
         roomId: roomId,
       });
     }, 1000);
+    App.mainSocket.on("welcome", (data) => {
+      if (data.ans === "NO") {
+        navigate("/");
+      }
+      RenderVoteState.setVoteState(Number(data.renderVoteState));
+      RenderVoteState.setNumPeople(data.numUsers);
+      if (data.playlistPermissionState !== -1) {
+        App.playlistPermissionState = data.playlistPermissionState;
+        EditPermissionButton.setRefresh();
+      }
+    });
   }, []);
-  App.mainSocket.on("welcome", (data) => {
-    if (data.ans === "NO") {
-      navigate("/");
-    }
-  });
 
   return (
     <React.Fragment>

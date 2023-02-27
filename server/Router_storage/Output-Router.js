@@ -521,6 +521,7 @@ module.exports = function (io) {
   // 랜더링시 호출(각 단계별로 진행되며 이미지로 영상을 추출)
   router.post("/merge", async (req, res, next) => {
     const roomid = req.body.roomid;
+    io.to(roomid).emit("mergeStart", {});
     let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
     let selectedmusic = JSON.parse(await redis.v4.get(`${roomid}/song`));
     if (playlist === null) {
@@ -547,7 +548,7 @@ module.exports = function (io) {
 
     const images = await getImages(roomid, imageUrls, 1280, 720);
     // 25퍼 진행됐음을 클라이언트에 알림
-    io.to(req.body.roomid).emit("renderingProgress", {
+    io.to(roomid).emit("renderingProgress", {
       progress: "랜더링 초기세팅중 & Effect효과 적용중 (1/4)",
     });
     let end1 = new Date();
@@ -564,7 +565,7 @@ module.exports = function (io) {
       transitions
     );
     // 50퍼 진행됐음을 클라이언트에 알림
-    io.to(req.body.roomid).emit("renderingProgress", {
+    io.to(roomid).emit("renderingProgress", {
       progress: "Transition 효과 적용중 (2/4)",
     });
     let end2 = new Date();
@@ -583,7 +584,7 @@ module.exports = function (io) {
       transitions
     );
     // 75퍼 진행됐음을 클라이언트에 알림
-    io.to(req.body.roomid).emit("renderingProgress", {
+    io.to(roomid).emit("renderingProgress", {
       progress: "오디오 삽입 시작 (3/4)",
     });
     let end3 = new Date();
@@ -597,7 +598,7 @@ module.exports = function (io) {
       MusicAssets[selectedmusic[0]]
     );
     // 100퍼 진행됐음을 클라이언트에 알림
-    io.to(req.body.roomid).emit("renderingProgress", {
+    io.to(roomid).emit("renderingProgress", {
       progress: "동영상 랜더링 완료!! 저장중... (4/4)",
     });
     let end4 = new Date();
@@ -615,10 +616,12 @@ module.exports = function (io) {
     const VideoKey = `${roomid}/Final/oneminute_${roomid}.mp4`;
     await AddS3(finishedPath, VideoKey);
     console.log("영상 S3 저장 완료");
+    res.send({ success: true });
 
-    res.send(
-      "https://oneminutememory.s3.ap-northeast-2.amazonaws.com/" + VideoKey
-    );
+    io.to(roomid).emit("mergeFinished", {
+      videoURL:
+        "https://oneminutememory.s3.ap-northeast-2.amazonaws.com/" + VideoKey,
+    });
   });
 
   // effect효과 playlist에 넣기

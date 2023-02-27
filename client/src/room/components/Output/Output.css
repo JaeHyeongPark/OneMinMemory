@@ -50,13 +50,11 @@
   align-items: center;
   padding: 0px;
   gap: 20px;
-  width: 180px;
+  width: 240px;
   height: 66.67px;
 }
 
 .render_span {
-  width: 74px;
-  height: 40px;
   flex-grow: 0;
   font-family: "Pretendard";
   font-size: 28.4px;
@@ -339,7 +337,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 40px;
+  padding: 20px;
   gap: 10px;
 }
 

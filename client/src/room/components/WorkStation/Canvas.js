@@ -14,7 +14,7 @@ import Painting from "./Canvas_Effect/Painting";
 import Text from "./Canvas_Effect/Text";
 import EffectItems from "./Canvas_Effect/EffectItems";
 import TranEffect from "./Canvas_Effect/TranEffect";
-
+import SnackBar from "../RoomHeader/SnackBar";
 function Canvas() {
   // 캔버스 관련 훅
   const [Ctx, setCtx] = useState(null);

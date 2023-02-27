@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import FileDownload from "js-file-download";
 import { useParams } from "react-router-dom";
-import infinity from "../../assets/infinity.svg";
 import RenderIcon from "../../assets/rendericon.svg";
 import CopyIcon from "../../assets/copy_icon.png";
 import ExitIcon from "../../assets/logout.png";
@@ -13,9 +12,12 @@ import loadGif from "../../assets/RenderLoading.gif";
 import Modal from "@mui/material/Modal";
 import App from "../../../App";
 import "./RenderButton.css";
-
+import PlaylistContext from "../../../shared/context/playlist-context";
 // require("dotenv").config();
 import SnackBar from "../RoomHeader/SnackBar";
+import RenderVoteState from "./RenderVoteState";
+import { appBarClasses } from "@mui/material";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -38,18 +40,54 @@ const RenderButton = () => {
   const [percent, setpercent] = useState("");
   const [finalUrl, setfinalUrl] = useState("");
   const handleClose = () => setOpen(false);
+  const playlistCtx = useContext(PlaylistContext);
+  const [myVoteState, setMyVoteState] = useState(false);
 
   useEffect(() => {
     App.mainSocket.on("startRendering", (data) => {});
+    App.mainSocket.on("renderingProgress", (data) => {
+      setpercent(data.progress);
+    });
+    App.mainSocket.on("mergeStart", (data) => {
+      setOpen(true);
+    });
+    App.mainSocket.on("mergeFinished", (data) => {
+      setfinalUrl(data.videoURL);
+      setloading(true);
+    });
   }, []);
-
-  const merge = (e) => {
+  const handleRenderOffButton = () => {
+    setMyVoteState(false);
+    const canIMerge = RenderVoteState.handleRenderOffButton();
+    App.mainSocket.emit("IVoted", {
+      Id: App.mainSocket.id,
+      roomId: App.roomId,
+      voteState: false,
+    });
+  };
+  const handleRenderOnButton = () => {
     if (App.playlistPermissionState === 1) {
       SnackBar.renderWarningOpen();
       return;
     }
-    e.preventDefault();
-    setOpen(true);
+    if (playlistCtx.playlist.length == 0) {
+      SnackBar.playlistEmptyWarningOpen();
+      return;
+    }
+    const canIMerge = RenderVoteState.handleRenderOnButton();
+    console.log(canIMerge);
+    setMyVoteState(true);
+    App.mainSocket.emit("IVoted", {
+      Id: App.mainSocket.id,
+      roomId: App.roomId,
+      voteState: true,
+    });
+    if (canIMerge) {
+      merge();
+    }
+  };
+
+  const merge = () => {
     if (finalUrl === "") {
       axios({
         method: "post",
@@ -58,8 +96,9 @@ const RenderButton = () => {
           roomid: roomId,
         },
       }).then((res) => {
-        setfinalUrl(res.data);
-        setloading(true);
+        if (res.data.success !== true) {
+          console.log("응답에러");
+        }
       });
     }
   };
@@ -74,7 +113,6 @@ const RenderButton = () => {
         roomid: roomId,
       },
     }).then((res) => {
-      console.log(res.data);
       FileDownload(res.data, `oneminute_${Date.now()}.mp4`);
     });
   };
@@ -88,25 +126,38 @@ const RenderButton = () => {
     }
   };
 
-  useEffect(() => {
-    App.mainSocket.on("renderingProgress", (data) => {
-      setpercent(data.progress);
-    });
-  }, []);
-
   return (
     <div>
-      <Button className="Rendering" onClick={merge}>
-        <div className="RenderIcon">
-          <img src={RenderIcon} alt="video rendering" />
-        </div>
-        <span className="render_span">렌더링</span>
-      </Button>
+      {myVoteState ? (
+        <Button
+          sx={{ marginLeft: "auto" }}
+          className="Rendering"
+          onClick={handleRenderOffButton}
+        >
+          <div className="RenderIcon">
+            <img src={RenderIcon} alt="video rendering" />
+          </div>
+          <span className="render_span">요청 취소</span>
+        </Button>
+      ) : (
+        <Button
+          sx={{ marginLeft: "auto" }}
+          className="Rendering"
+          onClick={handleRenderOnButton}
+        >
+          <div className="RenderIcon">
+            <img src={RenderIcon} alt="video rendering" />
+          </div>
+          <span className="render_span">렌더링 요청</span>
+        </Button>
+      )}
+
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={style}>
           <div className="modal">
             <div className="video-player"></div>
@@ -120,7 +171,8 @@ const RenderButton = () => {
                     flexDirection: "column",
                     alignItems: "center",
                     gap: "40px",
-                  }}>
+                  }}
+                >
                   <img src={loadGif} style={{ width: "400px" }} />
                   <div
                     style={{
@@ -130,7 +182,8 @@ const RenderButton = () => {
                       fontWeight: "bold",
                       fontStretch: "normal",
                       fontStyle: "normal",
-                    }}>
+                    }}
+                  >
                     {percent}
                   </div>
                 </div>
@@ -142,7 +195,8 @@ const RenderButton = () => {
                 paddingLeft: "500px",
                 paddingRight: "500px",
                 paddingTop: "10px",
-              }}>
+              }}
+            >
               <Button variant="contained" onClick={download}>
                 <img
                   className="Render-icon"

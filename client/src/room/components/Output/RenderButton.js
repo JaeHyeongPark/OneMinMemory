@@ -11,6 +11,8 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import loadGif from "../../assets/RenderLoading.gif";
 import Modal from "@mui/material/Modal";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 import App from "../../../App";
 import "./RenderButton.css";
 
@@ -31,13 +33,24 @@ const style = {
   p: 4,
 };
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const RenderButton = () => {
   const roomId = useParams().roomId;
   const [open, setOpen] = useState(false);
+  const [openSnack, setOpenSnack] = useState(false);
   const [loading, setloading] = useState(false);
   const [percent, setpercent] = useState("");
   const [finalUrl, setfinalUrl] = useState("");
   const handleClose = () => setOpen(false);
+  const handleClose2 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnack(false);
+  };
 
   useEffect(() => {
     App.mainSocket.on("startRendering", (data) => {});
@@ -79,6 +92,7 @@ const RenderButton = () => {
     e.preventDefault();
     try {
       await navigator.clipboard.writeText(finalUrl);
+      setOpenSnack(true);
     } catch (err) {
       console.error(err);
     }
@@ -149,6 +163,21 @@ const RenderButton = () => {
               <Button variant="contained" onClick={CopyLink}>
                 <img className="Render-icon" src={CopyIcon} alt="CopyIcon" />
               </Button>
+              <Snackbar
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+                open={openSnack}
+                autoHideDuration={2000}
+                onClose={handleClose2}>
+                <Alert
+                  onClose={handleClose2}
+                  severity="success"
+                  sx={{ width: "100%" }}>
+                  동영상 링크 복사 완료
+                </Alert>
+              </Snackbar>
               <Button variant="contained" onClick={() => setOpen(false)}>
                 <img className="Render-icon" src={ExitIcon} alt="CopyIcon" />
               </Button>

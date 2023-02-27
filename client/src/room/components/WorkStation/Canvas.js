@@ -80,7 +80,7 @@ function Canvas() {
   // 캔버스에 사진 띄우기(초기값 설정)
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", {willReadFrequently: true});
     canvas.style = {};
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     setCtx(ctx);

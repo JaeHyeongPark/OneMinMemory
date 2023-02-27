@@ -21,12 +21,10 @@ const Text = (props) => {
   const changepx = (e) => {
     e.preventDefault();
     setlinePx(e.target.value);
-    console.log(e.target.value);
   };
 
   const changecolor = (e) => {
     e.preventDefault();
-    console.log(lineColor.current.value);
     props.color(lineColor.current.value);
   };
 
@@ -101,6 +99,15 @@ const Text = (props) => {
                 </MenuItem>
                 <MenuItem value={"Times"} style={{ fontFamily: "Times" }}>
                   Times123
+                </MenuItem>
+                <MenuItem value={"굴림 "} style={{ fontFamily: "굴림" }}>
+                  굴림123
+                </MenuItem>
+                <MenuItem value={"바탕 "} style={{ fontFamily: "바탕" }}>
+                  바탕123
+                </MenuItem>
+                <MenuItem value={"궁서 "} style={{ fontFamily: "궁서" }}>
+                  궁서123
                 </MenuItem>
               </Select>
             </FormControl>

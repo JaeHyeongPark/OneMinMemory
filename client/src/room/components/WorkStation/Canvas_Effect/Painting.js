@@ -53,7 +53,6 @@ const Painting = (props) => {
           <li>
             <input
               type="color"
-              value="red"
               ref={lineColor}
               onChange={changecolor}
             />

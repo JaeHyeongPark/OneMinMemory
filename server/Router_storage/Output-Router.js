@@ -631,8 +631,14 @@ module.exports = function (io) {
     const effect = req.body.effect;
     const idx = req.body.idx;
     playlist[idx].effect = effect;
-    await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-    await redis.v4.expire(`${roomid}/playlist`, 21600)
+    await redis.v4.sendCommand([
+      "SET",
+      `${roomid}/playlist`,
+      JSON.stringify(playlist),
+      "EX",
+      "21600",
+    ]);
+
     res.send({ success: true });
     io.to(roomid).emit("playlistChangedBasic", { playlist });
   });
@@ -644,9 +650,13 @@ module.exports = function (io) {
 
     let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
     playlist[idx].effect = "";
-
-    await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-    await redis.v4.expire(`${roomid}/playlist`, 21600)
+    await redis.v4.sendCommand([
+      "SET",
+      `${roomid}/playlist`,
+      JSON.stringify(playlist),
+      "EX",
+      "21600",
+    ]);
     res.send({ success: true });
     io.to(roomid).emit("playlistChangedBasic", { playlist });
   });
@@ -660,8 +670,13 @@ module.exports = function (io) {
     const idx = req.body.idx;
     playlist[idx].transition = transition;
 
-    await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-    await redis.v4.expire(`${roomid}/playlist`, 21600)
+    await redis.v4.sendCommand([
+      "SET",
+      `${roomid}/playlist`,
+      JSON.stringify(playlist),
+      "EX",
+      "21600",
+    ]);
     res.send({ success: true });
     io.to(roomid).emit("playlistChangedBasic", { playlist });
   });
@@ -673,9 +688,13 @@ module.exports = function (io) {
 
     const idx = req.body.idx;
     playlist[idx].transition = "";
-
-    await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-    await redis.v4.expire(`${roomid}/playlist`, 21600)
+    await redis.v4.sendCommand([
+      "SET",
+      `${roomid}/playlist`,
+      JSON.stringify(playlist),
+      "EX",
+      "21600",
+    ]);
     res.send({ success: true });
     io.to(roomid).emit("playlistChangedBasic", { playlist });
   });
@@ -697,10 +716,21 @@ module.exports = function (io) {
     const roomid = req.body.roomid;
 
     playlist = presets[idx];
-    await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-    await redis.v4.set(`${roomid}/song`, JSON.stringify([idx, src]));
-    await redis.v4.expire(`${roomid}/playlist`, 21600)
-    await redis.v4.expire(`${roomid}/song`, 21600)
+    await redis.v4.sendCommand([
+      "SET",
+      `${roomid}/playlist`,
+      JSON.stringify(playlist),
+      "EX",
+      "21600",
+    ]);
+    await redis.v4.sendCommand([
+      "SET",
+      `${roomid}/song`,
+      JSON.stringify([idx, src]),
+      "EX",
+      "21600",
+    ]);
+
     res.send({ success: true });
     io.to(roomid).emit("playlistpreset", { playlist, src, idx });
   });
@@ -715,9 +745,14 @@ module.exports = function (io) {
     const url = req.body.url;
     const idx = req.body.idx;
     playlist[idx].url = url;
+    await redis.v4.sendCommand([
+      "SET",
+      `${roomid}/playlist`,
+      JSON.stringify(playlist),
+      "EX",
+      "21600",
+    ]);
 
-    await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-    await redis.v4.expire(`${roomid}/playlist`, 21600)
     res.send({ success: true });
     io.to(roomid).emit("playlistChangedBasic", { playlist });
   });
@@ -733,9 +768,13 @@ module.exports = function (io) {
         return data;
       }
     });
-
-    await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-    await redis.v4.expire(`${roomid}/playlist`, 21600)
+    await redis.v4.sendCommand([
+      "SET",
+      `${roomid}/playlist`,
+      JSON.stringify(playlist),
+      "EX",
+      "21600",
+    ]);
     res.send({ success: true });
     io.to(roomid).emit("playlistChangeDelete", { playlist });
   });
@@ -769,20 +808,35 @@ module.exports = function (io) {
       playlist[check].url = url;
       playlist[idx].select = false;
       playlist[check].select = false;
-      await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-      await redis.v4.expire(`${roomid}/playlist`, 21600)
+      await redis.v4.sendCommand([
+        "SET",
+        `${roomid}/playlist`,
+        JSON.stringify(playlist),
+        "EX",
+        "21600",
+      ]);
       res.send({ success: true });
       io.to(roomid).emit("playlistChangeClick", { playlist });
     } else if (playlist[idx].select) {
       playlist[idx].select = false;
-      await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-      await redis.v4.expire(`${roomid}/playlist`, 21600)
+      await redis.v4.sendCommand([
+        "SET",
+        `${roomid}/playlist`,
+        JSON.stringify(playlist),
+        "EX",
+        "21600",
+      ]);
       res.send({ success: true });
       io.to(roomid).emit("playlistChangeClick", { playlist });
     } else {
       playlist[idx].select = true;
-      await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-      await redis.v4.expire(`${roomid}/playlist`, 21600)
+      await redis.v4.sendCommand([
+        "SET",
+        `${roomid}/playlist`,
+        JSON.stringify(playlist),
+        "EX",
+        "21600",
+      ]);
       res.send({ success: true });
       io.to(roomid).emit("playlistChangeClick", {
         playlist,
@@ -814,8 +868,13 @@ module.exports = function (io) {
     }
     playlist.push(newimage);
 
-    await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-    await redis.v4.expire(`${roomid}/playlist`, 21600)
+    await redis.v4.sendCommand([
+      "SET",
+      `${roomid}/playlist`,
+      JSON.stringify(playlist),
+      "EX",
+      "21600",
+    ]);
     res.send({ success: true });
     io.to(roomid).emit("playlistChangedBasic", { playlist });
   });
@@ -830,8 +889,13 @@ module.exports = function (io) {
     playlist[idx].select = false;
     playlist[idx].duration += time;
 
-    await redis.v4.set(`${roomid}/playlist`, JSON.stringify(playlist));
-    await redis.v4.expire(`${roomid}/playlist`, 21600)
+    await redis.v4.sendCommand([
+      "SET",
+      `${roomid}/playlist`,
+      JSON.stringify(playlist),
+      "EX",
+      "21600",
+    ]);
     res.json({ success: true });
     io.to(roomid).emit("playlistChangedTime", {
       playlist,

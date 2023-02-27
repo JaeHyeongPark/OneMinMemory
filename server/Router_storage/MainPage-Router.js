@@ -39,8 +39,16 @@ router.post("/makeroom", async (req, res, next) => {
     "SET",
     roomid + "/playlistPermissionState",
     "true",
+    "EX",
+    "21600",
   ]);
-  await redis.v4.sendCommand(["SET", roomid + "/renderVoteState", "0"]);
+  await redis.v4.sendCommand([
+    "SET",
+    roomid + "/renderVoteState",
+    "0",
+    "EX",
+    "21600",
+  ]);
   res.send("완료");
 });
 

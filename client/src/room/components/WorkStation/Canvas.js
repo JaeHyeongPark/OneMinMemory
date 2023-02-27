@@ -14,7 +14,7 @@ import Painting from "./Canvas_Effect/Painting";
 import Text from "./Canvas_Effect/Text";
 import EffectItems from "./Canvas_Effect/EffectItems";
 import TranEffect from "./Canvas_Effect/TranEffect";
-import SnackBar from "../RoomHeader/SnackBar";
+
 function Canvas() {
   // 캔버스 관련 훅
   const [Ctx, setCtx] = useState(null);
@@ -80,7 +80,7 @@ function Canvas() {
   // 캔버스에 사진 띄우기(초기값 설정)
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d", {willReadFrequently: true});
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
     canvas.style = {};
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     setCtx(ctx);
@@ -129,7 +129,7 @@ function Canvas() {
     const y = e.nativeEvent.offsetY;
     const z = canvasRef.current.getBoundingClientRect();
     setX([x * (1280 / 768), z.x + x]);
-    setY([y * (720 / 432) - (textSize/2), z.y + y - (textSize/2)]);
+    setY([y * (720 / 432) - textSize / 2, z.y + y - textSize / 2]);
     setinputShow(true);
   };
 

@@ -81,6 +81,7 @@ module.exports = function (io) {
           upimg.forEach(async (url) => {
             await redis.v4.rPush(`${roomid}/origin`, url);
           });
+          await redis.v4.expire(`${roomid}/origin`, 21600)
           res.status(200).send({ success: true });
           io.to(roomid).emit("upload", { upimg });
         })

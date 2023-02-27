@@ -99,8 +99,10 @@ module.exports = function socketRouter(io) {
         socket.join(data.roomId);
         socket.Id = data.Id;
         socket.roomId = data.roomId;
+        // 이거 아이디 왜 넣는거임?
         redis.v4.set(data.Id + "", data.roomId);
         redis.v4.rPush(data.roomId + "/user", data.Id + "");
+        redis.v4.expire(`${data.roomId}/user`, 21600)
         console.log("누가 왔어요~", data.roomId, data.Id);
         let AmIFirst = await redis.v4.sendCommand([
           "SET",
@@ -153,6 +155,7 @@ module.exports = function socketRouter(io) {
                 }
               }
             );
+            redis.v4.expire(`${data.roomId}/playlistPermissionState`, 21600)
           }
         );
         console.log("요청왔어요~");
@@ -178,6 +181,7 @@ module.exports = function socketRouter(io) {
       try {
         console.log("편집끝났데요~");
         await redis.v4.set(data.roomId + "/playlistPermissionState", "true");
+        await redis.v4.expire(`${data.roomId}/playlistPermissionState`, 21600)
         let playlist = JSON.parse(
           await redis.v4.get(`${data.roomId}/playlist`)
         );
@@ -205,6 +209,7 @@ module.exports = function socketRouter(io) {
             `${data.roomId}/playlist`,
             JSON.stringify(playlist)
           );
+          await redis.v4.expire(`${roomid}/playlist`, 21600)
         }
       } catch (e) {
         console.log(e);

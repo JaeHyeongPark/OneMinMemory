@@ -55,6 +55,7 @@ module.exports = function (io) {
       `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
         url
     );
+    await redis.v4.expire(`${roomid}/effect`, 21600)
 
     await s3.putObject(params).promise();
     res.send({ success: true });

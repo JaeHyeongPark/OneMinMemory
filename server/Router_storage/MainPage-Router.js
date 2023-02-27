@@ -1,12 +1,10 @@
 const express = require("express");
 const redis = require("./RedisClient");
-const uuid = require("uuid");
 
 const router = express.Router();
 
 // 방 넘버 생성
 router.get("/roomid", async (req, res, next) => {
-  //   const roomid = uuid.v4();
   let roomid = "";
   const random = [
     "0",
@@ -38,6 +36,7 @@ router.get("/roomid", async (req, res, next) => {
 router.post("/makeroom", async (req, res, next) => {
   const roomid = req.body.id;
   await redis.v4.set(`${roomid}`, "ture");
+  await redis.v4.expire(`${roomid}`, 21600)
   res.send("완료");
 });
 

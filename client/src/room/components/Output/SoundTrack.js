@@ -6,6 +6,7 @@ import Wavedata from "./Sound/wavedata.json";
 const SoundTrack = () => {
   const playlistCtx = useContext(PlaylistContext);
   const [newidx, setNewIdx] = useState("0");
+  const [clickidx, setClickIdx] = useState(0);
   const [newsrc, setNewSrc] = useState("");
   const canvasRef = useRef(null);
   const layoutRef = useRef(null);
@@ -17,6 +18,49 @@ const SoundTrack = () => {
       setNewIdx(playlistCtx.musicidx);
     }
   }, [playlistCtx.musicidx]);
+
+  // useEffect(() => {
+  //   const canvas = canvasRef.current;
+  //   // const layout = layoutRef.current;
+  //   const context = canvas.getContext("2d");
+  //   const centerY = canvas.height / 2;
+  //   const duration = Wavedata[newidx].duration;
+  //   const height = canvas.height;
+  //   const width = canvas.width;
+
+  //   context.strokeStyle = "yellow";
+  //   context.beginPath();
+  //   context.lineWidth = 1;
+
+  //   Wavedata[newidx].peaks.forEach((peak, index) => {
+  //     const x =
+  //       (index / (Wavedata[newidx].peaks.length * (60 / duration))) * width;
+  //     const y = peak * (height / 2) + centerY;
+  //     if (index === 0) {
+  //       context.moveTo(x, y);
+  //     } else if (index < clickidx) {
+  //       context.lineTo(x, y);
+  //     } else {
+  //       return false;
+  //     }
+  //   });
+
+  //   context.stroke();
+
+  //   for (let i = clickidx; i <= Wavedata[newidx].peaks.length; ) {
+  //     const x = (i / (Wavedata[newidx].peaks.length * (60 / duration))) * width;
+  //     const y = Wavedata[newidx].peaks[i] * (height / 2) + centerY;
+  //     context.beginPath();
+  //     context.strokeStyle = "white";
+  //     if (i === clickidx) {
+  //       context.moveTo(x, y);
+  //     } else {
+  //       context.lineTo(x, y);
+  //     }
+  //   }
+
+  //   context.stroke();
+  // }, [clickidx]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -54,6 +98,47 @@ const SoundTrack = () => {
     function handleClick(event) {
       const rect = canvas.getBoundingClientRect();
       const x = event.clientX - rect.left;
+      const thatIdx =
+        (x * (Wavedata[newidx].peaks.length * 60)) / (duration * width);
+      setClickIdx(Math.round(thatIdx));
+      // 여기부터 파형 색칠
+      context.beginPath();
+      context.strokeStyle = "yellow";
+      context.lineWidth = 1;
+
+      Wavedata[newidx].peaks.forEach((peak, index) => {
+        const x =
+          (index / (Wavedata[newidx].peaks.length * (60 / duration))) * width;
+        const y = peak * (height / 2) + centerY;
+        if (index === 0) {
+          context.moveTo(x, y);
+        } else if (index < Math.round(thatIdx)) {
+          context.lineTo(x, y);
+        } else {
+          return false;
+        }
+      });
+      context.stroke();
+
+      context.beginPath();
+      context.strokeStyle = "white";
+      context.lineWidth = 1;
+
+      let tempIdx = Math.round(thatIdx);
+
+      for (let i = tempIdx; i < Wavedata[newidx].peaks.length; i++) {
+        const x =
+          (i / (Wavedata[newidx].peaks.length * (60 / duration))) * width;
+        const y = Wavedata[newidx].peaks[i] * (height / 2) + centerY;
+        if (i === tempIdx) {
+          context.moveTo(x, y);
+        } else {
+          context.lineTo(x, y);
+        }
+      }
+
+      context.stroke();
+      //여기까지
       const proportion = x / actualMusicWidth;
       const myAudio = audioRef.current;
       myAudio.currentTime = Wavedata[newidx].duration * proportion;

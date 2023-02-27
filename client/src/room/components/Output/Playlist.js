@@ -9,7 +9,7 @@ import PlaylistMain from "./PlaylistMain";
 import PlaylistTrans from "./PlaylistTrans";
 import App from "../../../App";
 // require("dotenv").config();
-
+import SnackBar from "../RoomHeader/SnackBar";
 const Playlist = () => {
   const playlistCtx = useContext(PlaylistContext);
   const roomId = useParams().roomId;
@@ -26,6 +26,7 @@ const Playlist = () => {
   // 새로운 사진을 재생목록에 추가(프리셋 말고)
   const inputnewplay = (url) => {
     if (App.playlistPermissionState !== 1) {
+      SnackBar.playlistEditWarningOpen();
       return;
     }
     axios

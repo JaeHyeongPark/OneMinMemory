@@ -7,7 +7,7 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import App from "../../../App";
 import ClearIcon from "@mui/icons-material/Clear";
 import effectOn from "../../assets/effect_on.png";
-
+import SnackBar from "../RoomHeader/SnackBar";
 import "./Playlist.css";
 
 const PlaylistMain = (props) => {
@@ -32,6 +32,7 @@ const PlaylistMain = (props) => {
   // 이미지 드랍으로 이미지를 재생목록에 추가
   const sendTourl = (url) => {
     if (App.playlistPermissionState !== 1) {
+      SnackBar.playlistEditWarningOpen();
       return;
     }
     axios
@@ -50,6 +51,7 @@ const PlaylistMain = (props) => {
   // 클릭후 삭제 버튼
   const deleteimg = (e) => {
     if (App.playlistPermissionState !== 1) {
+      SnackBar.playlistEditWarningOpen();
       return;
     }
     e.preventDefault();
@@ -69,6 +71,7 @@ const PlaylistMain = (props) => {
   // 재생목록 사진 클릭시 상황에 맞게 이벤트
   const Clickimg = (e) => {
     if (App.playlistPermissionState !== 1) {
+      SnackBar.playlistEditWarningOpen();
       return;
     }
     e.preventDefault();
@@ -88,6 +91,7 @@ const PlaylistMain = (props) => {
   // 드래그로 effect 적용
   const sendToeffect = (effect) => {
     if (App.playlistPermissionState !== 1) {
+      SnackBar.playlistEditWarningOpen();
       return;
     }
     axios
@@ -105,6 +109,10 @@ const PlaylistMain = (props) => {
 
   // effect 삭제
   const deleffect = (e) => {
+    if (App.playlistPermissionState !== 1) {
+      SnackBar.playlistEditWarningOpen();
+      return;
+    }
     // 상위 태그의 이벤트가 실행되는걸 방지
     e.stopPropagation();
     e.preventDefault();

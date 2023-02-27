@@ -140,6 +140,10 @@ function Canvas() {
 
   // 캔버스 작업 후 저장했을때 호출되는 함수
   const newImage = async (e) => {
+    if (ToCanvas.url === "") {
+      SnackBar.canvasWarningOpen();
+      return;
+    }
     e.preventDefault();
     const imagedata = await canvasRef.current.toDataURL(
       "image/" + ToCanvas.type

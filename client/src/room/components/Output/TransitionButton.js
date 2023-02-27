@@ -4,7 +4,7 @@ import { useContext } from "react";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import { useParams } from "react-router-dom";
 import App from "../../../App";
-
+import SnackBar from "../RoomHeader/SnackBar";
 import trans_off from "../../assets/transition_off.png";
 import trans_on from "../../assets/transition_on.png";
 
@@ -24,6 +24,7 @@ const TransitionButton = (props) => {
 
   const sendTotransition = (transition) => {
     if (App.playlistPermissionState !== 1) {
+      SnackBar.playlistEditWarningOpen();
       return;
     }
     axios
@@ -40,6 +41,7 @@ const TransitionButton = (props) => {
   };
   const deltransition = (e) => {
     if (App.playlistPermissionState !== 1) {
+      SnackBar.playlistEditWarningOpen();
       return;
     }
     e.preventDefault();

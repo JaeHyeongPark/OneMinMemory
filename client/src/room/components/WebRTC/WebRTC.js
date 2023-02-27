@@ -380,11 +380,11 @@ const WebRTC = () => {
     }, 2000);
     App.mainSocket.on("speakingState", (data) => {
       // 테스트용 코드 주석처리 필요
-      videoFrame1 = document.getElementById("videoFrame1");
-      videoFrame1.className = "videoTagSpeaking";
-      setTimeout(() => {
-        videoFrame1.className = "videoTagNotSpeaking";
-      }, 1000);
+      // videoFrame1 = document.getElementById("videoFrame1");
+      // videoFrame1.className = "videoTagSpeaking";
+      // setTimeout(() => {
+      //   videoFrame1.className = "videoTagNotSpeaking";
+      // }, 1000);
       if (userInfo[data.speakerId]) {
         userInfo[data.speakerId].video.videoFrame.className =
           "videoTagSpeaking";
@@ -403,7 +403,7 @@ const WebRTC = () => {
           <video
             id="peersFace1"
             autoPlay
-            height="152px"
+            height="177.5px"
             width="276px"
             playsInline
           ></video>
@@ -420,7 +420,7 @@ const WebRTC = () => {
             id="peersFace2"
             autoPlay
             playsInline
-            height="160px"
+            height="177.5px"
             width="276px"
           ></video>
           {/* </div> */}
@@ -435,7 +435,7 @@ const WebRTC = () => {
             id="peersFace3"
             autoPlay
             playsInline
-            height="152px"
+            height="177.5px"
             width="276px"
           ></video>
           {/* </div> */}
@@ -450,7 +450,7 @@ const WebRTC = () => {
             id="peersFace4"
             autoPlay
             playsInline
-            height="152px"
+            height="177.5px"
             width="276px"
           ></video>
           {/* </div> */}

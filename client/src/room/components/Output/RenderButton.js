@@ -15,7 +15,7 @@ import App from "../../../App";
 import "./RenderButton.css";
 
 // require("dotenv").config();
-
+import SnackBar from "../RoomHeader/SnackBar";
 const style = {
   position: "absolute",
   top: "50%",
@@ -44,6 +44,10 @@ const RenderButton = () => {
   }, []);
 
   const merge = (e) => {
+    if (App.playlistPermissionState === 1) {
+      SnackBar.renderWarningOpen();
+      return;
+    }
     e.preventDefault();
     setOpen(true);
     if (finalUrl === "") {

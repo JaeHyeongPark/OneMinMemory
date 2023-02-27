@@ -8,7 +8,7 @@ import lineA from "../../assets/LineA.svg";
 import lineB from "../../assets/LineB.svg";
 import lineC from "../../assets/LineC.svg";
 // require("dotenv").config();
-
+import SnackBar from "../RoomHeader/SnackBar";
 import App from "../../../App";
 
 const Tik = (props) => {
@@ -51,6 +51,8 @@ const Tik = (props) => {
       return;
     }
     if (App.playlistPermissionState !== 1) {
+      SnackBar.playlistEditWarningOpen();
+
       return;
     }
     axios
@@ -70,11 +72,8 @@ const Tik = (props) => {
 
   if (props.time === playlistCtx.selecttime && playlistCtx.selecttime !== 0) {
     content = (
-      <div
-        ref={nowtime}
-        style={{color:"red",cursor: "col-resize"}}
-      >
-      ▼
+      <div ref={nowtime} style={{ color: "red", cursor: "col-resize" }}>
+        ▼
       </div>
     );
   } else {

@@ -129,7 +129,7 @@ function Canvas() {
     const y = e.nativeEvent.offsetY;
     const z = canvasRef.current.getBoundingClientRect();
     setX([x * (1280 / 768), z.x + x]);
-    setY([y * (720 / 432), z.y + y - 12]);
+    setY([y * (720 / 432) - (textSize/2), z.y + y - (textSize/2)]);
     setinputShow(true);
   };
 
@@ -342,7 +342,7 @@ function Canvas() {
                   left: `${x[1]}px`,
                   top: `${y[1]}px`,
                   background: "transparent",
-                  height: "30px",
+                  height: `${textSize}px`,
                 }}
                 onKeyDown={handleEnter}
               />

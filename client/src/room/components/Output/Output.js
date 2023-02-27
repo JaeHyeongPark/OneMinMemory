@@ -1,4 +1,4 @@
-import React,{useState,useContext, useRef} from "react";
+import React, { useState, useContext, useRef } from "react";
 import Playlist from "./Playlist";
 import RenderButton from "./RenderButton";
 import Scale from "./Scale";
@@ -10,33 +10,33 @@ import "./Output.css";
 import EditPermissionButton from "./EditPermissionButton";
 
 const Output = () => {
-  const playlistCtx = useContext(PlaylistContext)
-  const tagRef = useRef(null)
+  const playlistCtx = useContext(PlaylistContext);
+  const tagRef = useRef(null);
   const [sliderValue, setSliderValue] = useState(1);
-  const [showimg, setshowimg] = useState(false)
-  const [imgleft, setimgleft] = useState(0)
-  const [imgurl, setimgurl] = useState('')
+  const [showimg, setshowimg] = useState(false);
+  const [imgleft, setimgleft] = useState(0);
+  const [imgurl, setimgurl] = useState("");
 
   function handleSliderChange(event) {
-    if (event.target.value > playlistCtx.totaltime || !showimg){
-      return
+    if (event.target.value > playlistCtx.totaltime || !showimg) {
+      return;
     }
     setSliderValue(event.target.value);
-    setimgleft(tagRef.current.offsetWidth / 60 * (event.target.value-1))
-    geturl(event.target.value)
+    setimgleft((tagRef.current.offsetWidth / 60) * (event.target.value - 1));
+    geturl(event.target.value);
   }
 
   const geturl = (time) => {
-    const playlist = playlistCtx.playlist
-    let check = 0
-    for (let i=0; i < playlist.length; i++){
-      check += playlist[i].duration
-      if (time <= check){
-        setimgurl(playlist[i].url)
-        break
+    const playlist = playlistCtx.playlist;
+    let check = 0;
+    for (let i = 0; i < playlist.length; i++) {
+      check += playlist[i].duration;
+      if (time <= check) {
+        setimgurl(playlist[i].url);
+        break;
       }
     }
-  }
+  };
 
   return (
     <div className="ROOM-FOOTER">
@@ -44,7 +44,13 @@ const Output = () => {
         <div className="TimeandBar">
           <div className="time">
             <div class="slidecontainer" ref={tagRef}>
-              {showimg && <img style={{left:`${imgleft}px`}} src={imgurl} />}
+              {showimg && (
+                <img
+                  style={{ left: `${imgleft}px` }}
+                  src={imgurl}
+                  alt="preview"
+                />
+              )}
               <input
                 type="range"
                 min="1"

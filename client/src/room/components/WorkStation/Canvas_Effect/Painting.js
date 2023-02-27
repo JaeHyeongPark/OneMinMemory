@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 
 import Button from "@mui/material/Button";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import { Tooltip } from "@mui/material";
 
 const Painting = (props) => {
   const lineColor = useRef(props.PC);
@@ -29,14 +30,17 @@ const Painting = (props) => {
 
   return (
     <>
-      <Button
-        className="sidebar-item"
-        name="Paint Mode"
-        onClick={check}
-        startIcon={<BorderColorOutlinedIcon style={{ fontSize: 35 }} />}
-      ></Button>
+      <Tooltip title="그리기" placement="top" arrow>
+        <Button
+          className="sidebar-item"
+          name="Paint Mode"
+          onClick={check}
+          startIcon={<BorderColorOutlinedIcon style={{ fontSize: 35 }} />}
+        ></Button>
+      </Tooltip>
       {props.paintmode && (
-        <ul className="canvaseffect__items">
+        <div className="canvaseffect__items__painting">
+          {/* <ul className="canvaseffect__items"> */}
           <li>
             <input
               type="range"
@@ -48,7 +52,7 @@ const Painting = (props) => {
                 props.px(linePx);
               }}
             />
-            <span style={{ color: "white" }}>{`${linePx}px`}</span>
+            <span style={{ color: "white" }}>{` ${linePx}px`}</span>
           </li>
           <li>
             <input
@@ -58,7 +62,8 @@ const Painting = (props) => {
               onChange={changecolor}
             />
           </li>
-        </ul>
+          {/* </ul> */}
+        </div>
       )}
     </>
   );

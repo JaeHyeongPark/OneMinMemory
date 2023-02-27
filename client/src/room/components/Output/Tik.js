@@ -60,7 +60,7 @@ const Tik = (props) => {
         roomid: roomId,
       })
       .then((res) => {
-        if (res.data.success != true) {
+        if (res.data.success !== true) {
           console.log("응답에러");
         }
       });
@@ -70,11 +70,8 @@ const Tik = (props) => {
 
   if (props.time === playlistCtx.selecttime && playlistCtx.selecttime !== 0) {
     content = (
-      <div
-        ref={nowtime}
-        style={{color:"red",cursor: "col-resize"}}
-      >
-      ▼
+      <div ref={nowtime} style={{ color: "red", cursor: "col-resize" }}>
+        ▼
       </div>
     );
   } else {

@@ -14,7 +14,7 @@
 
 .EditButtons {
   position: absolute;
-  top: 40px;
+  top: 20px;
   left: 20%;
   height: 80px;
   width: 60%;
@@ -47,6 +47,14 @@
   transition: all 0.4s cubic-bezier(0.93, 0.88, 0.1, 0.8);
 }
 
+.sidebar {
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  /* gap: 20px; */
+}
+
 .sidebar-item {
   width: 100%;
   height: 100%;
@@ -56,33 +64,16 @@
   padding: 1rem;
   position: relative;
   border-radius: 10px;
-  /* transition: background-color 150ms; */
   background-color: transparent;
 }
 
 .sidebar-item:hover {
-  background-color: #a6a6a6;
+  background-color: #d0cece;
 }
 
 .sidebar-item:active {
   background-color: #a6a6a6;
 }
-
-/* .canvas {
-  width: 100%;
-  height: 75%;
-  align-self: stretch;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: stretch;
-  padding: 0;
-  border-radius: 15px;
-  border: solid 2px #272833;
-} */
-
-/* 230211 재형 작업 CSS 추가 */
 
 *,
 *::before,
@@ -95,10 +86,14 @@ body {
 }
 
 .container .uploaded-image {
+  position: absolute;
+  top: 25%;
+  left: 12%;
   width: auto;
   height: auto;
   margin: auto;
 }
+
 .uploaded-image canvas {
   width: 768px;
   height: 432px;
@@ -159,22 +154,6 @@ body {
   margin: 10px;
   /* position: relative; */
 }
-
-/* 일단 잠깐 주석처리 */
-/* .container .transition-list {
-  overflow: auto;
-  width: auto;
-  height: 40%;
-  margin: 10px;
-  position: relative;
-} */
-
-/* .container .transition-clip {
-  width: auto;
-  height: 60%;
-  margin: 10px;
-  position: relative;
-} */
 
 .main-image {
   cursor: pointer;

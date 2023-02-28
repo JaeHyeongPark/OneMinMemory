@@ -137,7 +137,6 @@ module.exports = function socketRouter(io) {
           "decr",
           socket.roomId + "/numUser",
         ]);
-        redis.v4.expire(data.roomId + "/numUser", 21600);
         let permissionUesr = await redis.v4.get(
           socket.roomId + "playlistPermissionState"
         );

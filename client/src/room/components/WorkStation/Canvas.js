@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Save";
 import SnackBar from "../RoomHeader/SnackBar";
+import { Tooltip } from "@mui/material";
 
 import "./Canvas.css";
 import App from "../../../App";
@@ -313,12 +314,14 @@ function Canvas() {
             mode={setTransitionModal}
             check={check}
           />
-          <Button
-            className="sidebar-item"
-            onClick={newImage}
-            name="Save"
-            startIcon={<SaveIcon style={{ fontSize: 35 }} />}
-          ></Button>
+          <Tooltip title="저장하기" placement="top" arrow>
+            <Button
+              className="sidebar-item"
+              onClick={newImage}
+              name="Save"
+              startIcon={<SaveIcon style={{ fontSize: 35 }} />}
+            ></Button>
+          </Tooltip>
         </div>
         <div className="container">
           <div className="uploaded-image" ref={drop}>

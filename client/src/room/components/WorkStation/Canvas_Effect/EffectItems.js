@@ -1,5 +1,6 @@
 import Button from "@mui/material/Button";
 import AutoFixNormalOutlinedIcon from "@mui/icons-material/AutoFixNormalOutlined";
+import { Tooltip } from "@mui/material";
 
 const EffectItems = (props) => {
   const check = (e) => {
@@ -13,18 +14,30 @@ const EffectItems = (props) => {
   };
   return (
     <>
-      <Button
-        className="sidebar-item"
-        name="Canvas Effect"
-        onClick={check}
-        startIcon={<AutoFixNormalOutlinedIcon style={{ fontSize: 35 }} />}
-      ></Button>
+      <Tooltip title="사진 효과" placement="top" arrow>
+        <Button
+          className="sidebar-item"
+          name="Canvas Effect"
+          onClick={check}
+          startIcon={<AutoFixNormalOutlinedIcon style={{ fontSize: 35 }} />}
+        ></Button>
+      </Tooltip>
       {props.itemsmode && (
         <ul className="canvaseffect__items">
           <li>
             <Button
               className="sidebar-item"
               name="Brighten"
+              sx={{
+                bgcolor: "#272731",
+                ":hover": {
+                  bgcolor: "#30303d",
+                  color: "white",
+                },
+                ":active": {
+                  bgcolor: "darkgray",
+                },
+              }}
               onClick={() => props.apply("Brighten")}
             >
               Brighten
@@ -35,6 +48,16 @@ const EffectItems = (props) => {
               className="sidebar-item"
               name="Sharpen"
               onClick={() => props.apply("Sharpen")}
+              sx={{
+                bgcolor: "#272731",
+                ":hover": {
+                  bgcolor: "#30303d",
+                  color: "white",
+                },
+                ":active": {
+                  bgcolor: "darkgray",
+                },
+              }}
             >
               Sharpen
             </Button>
@@ -44,6 +67,16 @@ const EffectItems = (props) => {
               className="sidebar-item"
               name="Saturate"
               onClick={() => props.apply("Saturate")}
+              sx={{
+                bgcolor: "#272731",
+                ":hover": {
+                  bgcolor: "#30303d",
+                  color: "white",
+                },
+                ":active": {
+                  bgcolor: "darkgray",
+                },
+              }}
             >
               Saturate
             </Button>
@@ -53,6 +86,16 @@ const EffectItems = (props) => {
               className="sidebar-item"
               name="Grayscale"
               onClick={() => props.apply("Grayscale")}
+              sx={{
+                bgcolor: "#272731",
+                ":hover": {
+                  bgcolor: "#30303d",
+                  color: "white",
+                },
+                ":active": {
+                  bgcolor: "darkgray",
+                },
+              }}
             >
               Grayscale
             </Button>

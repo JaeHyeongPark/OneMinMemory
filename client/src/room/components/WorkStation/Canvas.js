@@ -257,36 +257,55 @@ function Canvas() {
   useEffect(() => {}, [HistoryList, Hisidx]);
 
   // Ctrl + z 키
-  const CtrlZ = () => {
+  const CtrlZ = async () => {
     if (HistoryList.length !== 0 && Hisidx - 1 >= 0) {
       Ctx.putImageData(HistoryList[Hisidx - 1], 0, 0);
       setHisidx(Hisidx - 1);
+      const imageData = await canvasRef.current.toDataURL(
+        "image/" + ToCanvas.type
+      );
+      App.mainSocket.emit("myCanvas", { imageData });
     }
   };
 
   // Ctrl + y 키
-  const CtrlY = () => {
-    if (HistoryList.length !== 0 && Hisidx + 1 < HistoryList.length) {
-      Ctx.putImageData(HistoryList[Hisidx + 1], 0, 0);
-      setHisidx(Hisidx + 1);
+  const CtrlY = async () => {
+    try {
+      if (HistoryList.length !== 0 && Hisidx + 1 < HistoryList.length) {
+        Ctx.putImageData(HistoryList[Hisidx + 1], 0, 0);
+        setHisidx(Hisidx + 1);
+        const imageData = await canvasRef.current.toDataURL(
+          "image/" + ToCanvas.type
+        );
+        App.mainSocket.emit("myCanvas", { imageData });
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
   // Ctrl키를 위한 이전 작업 저장
   const ctrlStore = async () => {
-    const data = await Ctx.getImageData(
-      0,
-      0,
-      canvasRef.current.width,
-      canvasRef.current.height
-    );
-    let list = HistoryList.slice(0,Hisidx);
-    list.push(data);
-    setHistoryList(list);
-    setHisidx(list.length);
-    
-    // 현재 작업물의 base64데이터 URL
-    const imageData = await canvasRef.current.toDataURL("image/" + ToCanvas.type);
+    try {
+      const data = await Ctx.getImageData(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
+      let list = HistoryList.slice(0,Hisidx);
+      list.push(data);
+      setHistoryList(list);
+      setHisidx(list.length);
+
+      // 현재 작업물의 base64데이터 URL
+      const imageData = await canvasRef.current.toDataURL(
+        "image/" + ToCanvas.type
+      );
+      App.mainSocket.emit("myCanvas", { imageData });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

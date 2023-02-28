@@ -20,7 +20,23 @@
   align-items: center;
   padding: 0;
 }
-
+.videoTag {
+  height: 177.5px;
+  width: 276px;
+  position: absolute;
+}
+.imgTagOn {
+  height: 177.5px;
+  width: 276px;
+  position: absolute;
+  z-index: 2;
+}
+.imgTagOff {
+  height: 177.5px;
+  width: 276px;
+  position: absolute;
+  z-index: -1;
+}
 /* .CamFrame {
   width: 100%;
   display: flex;
@@ -31,20 +47,24 @@
   border: solid 1px #565656;
 } */
 .videoTagSpeaking {
-  width: 100%;
+  height: 177.5px;
+  width: 276px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   padding: 0;
   box-shadow: 0 0 0 3px skyblue inset;
+  position: relative;
 }
 .videoTagNotSpeaking {
-  width: 100%;
+  height: 177.5px;
+  width: 276px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   padding: 0;
   box-shadow: 0 0 0 1px #565656 inset;
+  position: relative;
 }
 
 .name_layout {

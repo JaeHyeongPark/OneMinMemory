@@ -13,6 +13,7 @@ const socket = io("https://chjungle.shop", {
     "my-custom-header": "abcd",
   },
 });
+
 let roomId;
 
 // streamId to user
@@ -403,10 +404,10 @@ const WebRTC = () => {
           <video
             id="peersFace1"
             autoPlay
-            height="177.5px"
-            width="276px"
+            className="videoTag"
             playsInline
           ></video>
+          <img className="imgTagOff"></img>
         </div>
         {/* <img src={cans} className="img.component-cans" alt="user cam"  /> */}
         {/* <div className="name_layout">
@@ -420,8 +421,7 @@ const WebRTC = () => {
             id="peersFace2"
             autoPlay
             playsInline
-            height="177.5px"
-            width="276px"
+            className="videoTag"
           ></video>
           {/* </div> */}
           {/* <div className="name_layout">
@@ -435,8 +435,7 @@ const WebRTC = () => {
             id="peersFace3"
             autoPlay
             playsInline
-            height="177.5px"
-            width="276px"
+            className="videoTag"
           ></video>
           {/* </div> */}
           {/* <div className="name_layout">
@@ -450,8 +449,7 @@ const WebRTC = () => {
             id="peersFace4"
             autoPlay
             playsInline
-            height="177.5px"
-            width="276px"
+            className="videoTag"
           ></video>
           {/* </div> */}
           {/* <div className="name_layout">
@@ -483,4 +481,5 @@ const WebRTC = () => {
 
 WebRTC.handleMuteBtn = handleMuteBtn;
 WebRTC.handleCameraBtn = handleCameraBtn;
+WebRTC.socketId = socket.id;
 export default WebRTC;

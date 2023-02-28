@@ -137,7 +137,9 @@ module.exports = function socketRouter(io) {
           "decr",
           socket.roomId + "/numUser",
         ]);
-        redis.v4.expire(data.roomId + "/numUser", 21600);
+        if (numUserLeft != 0) {
+          redis.v4.expire(socket.roomId + "/numUser", 21600);
+        }
         let permissionUesr = await redis.v4.get(
           socket.roomId + "playlistPermissionState"
         );
@@ -159,7 +161,7 @@ module.exports = function socketRouter(io) {
             "decr",
             socket.roomId + "/renderVoteState",
           ]);
-          redis.v4.expire(data.roomId + "/renderVoteState", 21600);
+          redis.v4.expire(socket.roomId + "/renderVoteState", 21600);
         } else {
           renderVoteState = await redis.v4.get(
             socket.roomId + "/renderVoteState"

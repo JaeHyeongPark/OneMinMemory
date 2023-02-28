@@ -88,19 +88,19 @@ const RenderButton = () => {
   };
 
   const merge = () => {
-    if (finalUrl === "") {
-      axios({
-        method: "post",
-        url: process.env.REACT_APP_expressURL + "/output/merge",
-        data: {
-          roomid: roomId,
-        },
-      }).then((res) => {
-        if (res.data.success !== true) {
-          console.log("응답에러");
-        }
-      });
-    }
+    // if (finalUrl === "") {
+    //   axios({
+    //     method: "post",
+    //     url: process.env.REACT_APP_expressURL + "/output/merge",
+    //     data: {
+    //       roomid: roomId,
+    //     },
+    //   }).then((res) => {
+    //     if (res.data.success !== true) {
+    //       console.log("응답에러");
+    //     }
+    //   });
+    // }
   };
 
   const download = (e) => {

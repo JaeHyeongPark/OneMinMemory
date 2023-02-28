@@ -1,14 +1,19 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 
 import music from "../../assets/music.svg";
 import Music from "./Sound/Music";
 import axios from "axios";
+import ditto_album from "../../assets/ditto_album.jpg";
+import runbacktoyou_album from "../../assets/runbacktoyou_album.jpg";
+import yellow_album from "../../assets/yellow_album.jpg";
 // require("dotenv").config();
 import App from "../../../App";
 import SnackBar from "../RoomHeader/SnackBar";
@@ -21,23 +26,31 @@ const style = {
   left: "50%",
   justifyContent: "center",
   transform: "translate(-50%, -50%)",
-  width: 800,
+  width: 700,
   bgcolor: "#272731",
   border: "2px solid #000",
   boxShadow: 24,
-  gap: "20px",
-  p: 4,
+  gap: "10px",
+  p: 5,
 };
+
+const mytheme = createTheme({
+  palette: {
+    primary: {
+      main: "#1976d2",
+    },
+    secondary: {
+      main: "#404040",
+    },
+  },
+});
 
 const musicItemStyle = {
-  borderTop: "1px solid gray",
+  border: "1px solid gray",
   display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-};
-
-const selectstyle = {
-  color: "272731",
+  flexDirection: "row",
+  justifyContent: "flex-start",
+  gap: "15px",
 };
 
 export default function InsertMusic() {
@@ -47,6 +60,7 @@ export default function InsertMusic() {
   const handleClose = () => setOpen(false);
   const [selectedMusicSrc, setSelectedMusicSrc] = useState(null);
   const [selectedMusicIdx, setSelectedMusicIdx] = useState("0");
+  const [isPlayingMusic, setIsPlayingMusic] = useState(false);
 
   const getPresetbyIndex = (idx, src) => {
     if (!selectedMusicIdx) {
@@ -69,6 +83,13 @@ export default function InsertMusic() {
       });
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (!open) {
+      setIsPlayingMusic(false);
+    }
+  }, [open]);
+
   return (
     <div>
       <Button className="Preset" onClick={handleOpen}>
@@ -84,62 +105,98 @@ export default function InsertMusic() {
         aria-describedby="modal-modal-description"
       >
         <div>
-          <Box sx={style}>
-            {/* <Typography id="modal-modal-title" variant="h6" component="h2">
+          <ThemeProvider theme={mytheme}>
+            <Box sx={style}>
+              {/* <Typography id="modal-modal-title" variant="h6" component="h2">
             추천 음원 리스트
           </Typography> */}
-            <Typography id="modal-modal-description" sx={{ mt: 3 }}>
-              <Music song={selectedMusicSrc} />
-            </Typography>
-            <p></p>
-            <Button
-              className="music-item"
-              index={10001}
-              style={musicItemStyle}
-              onClick={() => {
-                setSelectedMusicSrc("../music/Hoang-RunBacktoYou(320kbps).mp3");
-                setSelectedMusicIdx("1");
-              }}
-            >
-              <div className="music-item-title">
-                Hoang - Run Back to You (feat.Alisa)
+              <Typography id="modal-modal-description" sx={{ mt: 3 }}>
+                <Music song={selectedMusicSrc} isPlaying={isPlayingMusic} />
+              </Typography>
+              <div className="music_buttons">
+                <Button
+                  className="music-item"
+                  color="secondary"
+                  variant="contained"
+                  index={10001}
+                  style={musicItemStyle}
+                  onClick={() => {
+                    setSelectedMusicSrc(
+                      "../music/Hoang-RunBacktoYou(320kbps).mp3"
+                    );
+                    setSelectedMusicIdx("1");
+                    setIsPlayingMusic(true);
+                  }}
+                >
+                  <div className="album_image">
+                    <img
+                      src={runbacktoyou_album}
+                      className="album_image"
+                      alt="album"
+                    />
+                  </div>
+                  <div className="music-item-title">
+                    Hoang - Run Back to You (feat.Alisa)
+                  </div>
+                </Button>
+                <Button
+                  className="music-item"
+                  color="secondary"
+                  variant="contained"
+                  index={10002}
+                  style={musicItemStyle}
+                  onClick={() => {
+                    setSelectedMusicSrc("../music/Newjeans-Ditto(320kbps).mp3");
+                    setSelectedMusicIdx("2");
+                    setIsPlayingMusic(true);
+                  }}
+                >
+                  <div className="album_image">
+                    <img
+                      src={ditto_album}
+                      className="album_image"
+                      alt="album"
+                    />
+                  </div>
+                  <div className="music-item-title">Newjeans - Ditto</div>
+                </Button>
+                <Button
+                  className="music-item"
+                  color="secondary"
+                  variant="contained"
+                  index={10003}
+                  style={musicItemStyle}
+                  onClick={() => {
+                    setSelectedMusicSrc(
+                      "../music/Coldplay-Yellow(320kbps).mp3"
+                    );
+                    setSelectedMusicIdx("3");
+                    setIsPlayingMusic(true);
+                  }}
+                >
+                  <div className="album_image">
+                    <img
+                      src={yellow_album}
+                      className="album_image"
+                      alt="album"
+                    />
+                  </div>
+                  <div className="music-item-title">Coldplay - Yellow</div>
+                </Button>
               </div>
-            </Button>
-            <Button
-              className="music-item"
-              index={10002}
-              style={musicItemStyle}
-              onClick={() => {
-                setSelectedMusicSrc("../music/Newjeans-Ditto(320kbps).mp3");
-                setSelectedMusicIdx("2");
-              }}
-            >
-              <div className="music-item-title">Newjeans - Ditto</div>
-            </Button>
-            <Button
-              className="music-item"
-              index={10003}
-              style={musicItemStyle}
-              onClick={() => {
-                setSelectedMusicSrc("../music/Coldplay-Yellow(320kbps).mp3");
-                setSelectedMusicIdx("3");
-              }}
-            >
-              <div className="music-item-title">Coldplay - Yellow</div>
-            </Button>
-            <p></p>
-            <div className="action-box">
-              <Button
-                variant="contained"
-                style={selectstyle}
-                onClick={() => {
-                  getPresetbyIndex(selectedMusicIdx, selectedMusicSrc);
-                }}
-              >
-                <span className="selectmusic_span">선택하기</span>
-              </Button>
-            </div>
-          </Box>
+              <div className="action-box">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    getPresetbyIndex(selectedMusicIdx, selectedMusicSrc);
+                  }}
+                >
+                  <span className="selectmusic_span">선택하기</span>
+                </Button>
+              </div>
+            </Box>
+          </ThemeProvider>
         </div>
       </Modal>
     </div>

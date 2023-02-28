@@ -76,6 +76,7 @@ function Canvas() {
     setHistoryList([]);
     setHisidx(0);
     ToCanvas.sendurl(url);
+    ctrlStore()
   };
 
   // 캔버스에 사진 띄우기(초기값 설정)
@@ -190,6 +191,7 @@ function Canvas() {
         const canvas = canvasRef.current;
         canvas.style = {};
         Ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctrlStore()
       })
       .catch((err) => {
         console.log(err);
@@ -278,7 +280,7 @@ function Canvas() {
       canvasRef.current.width,
       canvasRef.current.height
     );
-    let list = [...HistoryList];
+    let list = HistoryList.slice(0,Hisidx);
     list.push(data);
     setHistoryList(list);
     setHisidx(list.length);

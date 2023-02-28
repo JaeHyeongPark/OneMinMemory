@@ -7,7 +7,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
-// require("dotenv").config();
+import enterArrow from "../room/assets/roomenter.png";
+import clipboard from "../room/assets/copyLink.png";
 
 function LoginPage() {
   const AuthCtx = useContext(AuthContext);
@@ -16,13 +17,14 @@ function LoginPage() {
   const navigate = useNavigate();
 
   const style = {
-    position: "absolute",
+    position: "relative",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 800,
-    bgcolor: "gainsboro",
-    border: "2px solid #000",
+    width: 600,
+    bgcolor: "#17171e",
+    // border: "1px solid #1976d2",
+    borderRadius: 5,
     boxShadow: 24,
     p: 4,
   };
@@ -49,6 +51,17 @@ function LoginPage() {
       });
   };
 
+  const copyurl = async (e) => {
+    e.preventDefault();
+    try {
+      await navigator.clipboard.writeText(
+        process.env.REACT_APP_myURL + `/room/${AuthCtx.rooomId}`
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className={css.logininner}>
       <div className={css.description}>
@@ -70,14 +83,38 @@ function LoginPage() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            style={{ color: "white" }}
+          >
             아래 URL를 통해 친구들을 초대하세요!
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {process.env.REACT_APP_myURL + `/room/${AuthCtx.rooomId}`}
+          <Typography
+            id="modal-modal-description"
+            sx={{ mt: 2 }}
+            style={{ color: "whitesmoke" }}
+          >
+            {"URL : " +
+              process.env.REACT_APP_myURL +
+              `/room/${AuthCtx.rooomId}`}
+            <img
+              src={clipboard}
+              style={{ width: "15px", margin: "3px", cursor:"pointer"}}
+              onClick={copyurl}
+            />
           </Typography>
-          <span style={{ cursor: "pointer" }} onClick={makeroom}>
-            시작하기
+          <span
+            style={{
+              cursor: "pointer",
+              position: "absolute",
+              bottom: "25px",
+              right: "30px",
+            }}
+            onClick={makeroom}
+          >
+            <img src={enterArrow} />
           </span>
         </Box>
       </Modal>

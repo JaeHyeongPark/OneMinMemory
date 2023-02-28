@@ -282,6 +282,9 @@ function Canvas() {
     list.push(data);
     setHistoryList(list);
     setHisidx(list.length);
+    
+    // 현재 작업물의 base64데이터 URL
+    const imageData = await canvasRef.current.toDataURL("image/" + ToCanvas.type);
   };
 
   return (

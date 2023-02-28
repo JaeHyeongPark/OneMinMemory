@@ -6,6 +6,7 @@ import RenderIcon from "../../assets/rendericon.svg";
 import CopyIcon from "../../assets/copy_icon.png";
 import ExitIcon from "../../assets/logout.png";
 import DownIcon from "../../assets/downloading-file.png";
+import fullScreen from "../../assets/full-screen.png";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import loadGif from "../../assets/RenderLoading.gif";
@@ -126,6 +127,12 @@ const RenderButton = () => {
     }
   };
 
+  const openmodal = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setOpen(true)
+  }
+
   return (
     <div>
       {myVoteState ? (
@@ -135,7 +142,7 @@ const RenderButton = () => {
           onClick={handleRenderOffButton}
         >
           <div className="RenderIcon">
-            <img src={RenderIcon} alt="video rendering" />
+            <img src={fullScreen} onClick={openmodal} alt="video rendering" />
           </div>
           <span className="render_span">요청 취소</span>
         </Button>
@@ -146,11 +153,12 @@ const RenderButton = () => {
           onClick={handleRenderOnButton}
         >
           <div className="RenderIcon">
-            <img src={RenderIcon} alt="video rendering" />
+            <img src={fullScreen} onClick={openmodal} alt="video rendering" />
           </div>
           <span className="render_span">렌더링 요청</span>
         </Button>
       )}
+      
 
       <Modal
         open={open}

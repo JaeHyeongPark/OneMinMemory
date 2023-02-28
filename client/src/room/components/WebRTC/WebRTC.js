@@ -104,7 +104,7 @@ async function getMedia(deviceId) {
         App.mainSocket.emit("speakingState", {
           isSpeaking,
           roomId: App.roomId,
-          speakerId: socket.id,
+          speakerId: App.mainSocket.id,
         });
       }
     };
@@ -140,6 +140,7 @@ function handleCameraBtn() {
 let peersFace1, peersFace2, peersFace3, peersFace4;
 
 let videoFrame1, videoFrame2, videoFrame3, videoFrame4;
+let imgTag1, imgTag2, imgTag3, imgTag4;
 // 수신되는 비디오를 틀어줄 태그들을 관리할 리스트
 let videos;
 
@@ -182,23 +183,31 @@ socket.on("makeNewPeer", (data) => {
     videoFrame2 = document.getElementById("videoFrame2");
     videoFrame3 = document.getElementById("videoFrame3");
     videoFrame4 = document.getElementById("videoFrame4");
+    imgTag1 = document.getElementById("imgTag1");
+    imgTag2 = document.getElementById("imgTag2");
+    imgTag3 = document.getElementById("imgTag3");
+    imgTag4 = document.getElementById("imgTag4");
     videos = [
       {
+        imgTag: imgTag1,
         videoFrame: videoFrame1,
         videoTag: peersFace1,
         isConnected: false,
       },
       {
+        imgTag: imgTag2,
         videoFrame: videoFrame2,
         videoTag: peersFace2,
         isConnected: false,
       },
       {
+        imgTag: imgTag3,
         videoFrame: videoFrame3,
         videoTag: peersFace3,
         isConnected: false,
       },
       {
+        imgTag: imgTag4,
         videoFrame: videoFrame4,
         videoTag: peersFace4,
         isConnected: false,
@@ -223,7 +232,7 @@ socket.on("makeNewPeer", (data) => {
   }
   socket.emit("readyForGettingStream", {
     roomId,
-    receiverId: socket.id,
+    receiverId: App.mainSocket.id,
     senderId: data.senderId,
   });
 });
@@ -237,7 +246,7 @@ socket.on("handleNegotiation", async (data) => {
     socket.emit("answerForNegotiation", {
       roomId,
       answer,
-      receiverId: socket.id,
+      receiverId: App.mainSocket.id,
     });
   } catch (e) {
     console.log(e);
@@ -250,7 +259,7 @@ socket.on("someoneReconnected", (data) => {
   userInfo[data.senderId].streamId = data.streamId;
   socket.emit("readyForGettingStream", {
     roomId,
-    receiverId: socket.id,
+    receiverId: App.mainSocket.id,
     senderId: data.senderId,
   });
 });
@@ -283,7 +292,7 @@ async function makeSendingConection() {
       if (data.candidate != null) {
         socket.emit("iceForSending", {
           ice: data.candidate,
-          Id: socket.id,
+          Id: App.mainSocket.id,
           roomId,
         });
         console.log("i got sending Ice and sent to server");
@@ -316,7 +325,7 @@ async function makeSendingConection() {
     socket.emit("joinRoom", {
       roomId,
       sendingOffer: sendingOffer,
-      Id: socket.id,
+      Id: App.mainSocket.id,
     });
   } catch (e) {
     console.log(e);
@@ -332,7 +341,7 @@ async function makeNewConnection() {
       if (data.candidate != null) {
         socket.emit("iceForSending", {
           ice: data.candidate,
-          Id: socket.id,
+          Id: App.mainSocket.id,
           roomId,
         });
         console.log("i got sending Ice and sent to server");
@@ -364,7 +373,7 @@ async function makeNewConnection() {
     socket.emit("reconnectOffer", {
       roomId,
       sendingOffer: sendingOffer,
-      Id: socket.id,
+      Id: App.mainSocket.id,
     });
   } catch (e) {
     console.log(e);
@@ -407,7 +416,7 @@ const WebRTC = () => {
             className="videoTag"
             playsInline
           ></video>
-          <img className="imgTagOff"></img>
+          <img id="imgTag1" className="imgTagOff"></img>
         </div>
         {/* <img src={cans} className="img.component-cans" alt="user cam"  /> */}
         {/* <div className="name_layout">
@@ -423,6 +432,7 @@ const WebRTC = () => {
             playsInline
             className="videoTag"
           ></video>
+          <img id="imgTag1" className="imgTagOff"></img>
           {/* </div> */}
           {/* <div className="name_layout">
             <span className="name_span">Name</span>
@@ -437,6 +447,7 @@ const WebRTC = () => {
             playsInline
             className="videoTag"
           ></video>
+          <img id="imgTag1" className="imgTagOff"></img>
           {/* </div> */}
           {/* <div className="name_layout">
             <span className="name_span">Name</span>
@@ -451,6 +462,7 @@ const WebRTC = () => {
             playsInline
             className="videoTag"
           ></video>
+          <img id="imgTag1" className="imgTagOff"></img>
           {/* </div> */}
           {/* <div className="name_layout">
             <span className="name_span">Name</span>
@@ -481,5 +493,4 @@ const WebRTC = () => {
 
 WebRTC.handleMuteBtn = handleMuteBtn;
 WebRTC.handleCameraBtn = handleCameraBtn;
-WebRTC.socketId = socket.id;
 export default WebRTC;

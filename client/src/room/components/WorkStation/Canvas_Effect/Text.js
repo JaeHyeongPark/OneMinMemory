@@ -10,7 +10,7 @@ import TextFieldsOutlinedIcon from "@mui/icons-material/TextFieldsOutlined";
 const Text = (props) => {
   const [font, setFont] = useState("");
   const [linePx, setlinePx] = useState(30);
-  const lineColor = useRef(props.TC);
+  const lineColor = useRef('black');
 
   const handleChange = (e) => {
     e.preventDefault();

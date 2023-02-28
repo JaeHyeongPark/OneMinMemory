@@ -115,7 +115,6 @@ const Text = (props) => {
           <li>
             <input
               type="color"
-              value={lineColor}
               ref={lineColor}
               onChange={changecolor}
             />

@@ -298,7 +298,6 @@ function Canvas() {
             mode={setPaintMode}
             px={setPaintPX}
             color={setPaintColor}
-            PC={PaintColor}
             check={check}
           />
           <Text
@@ -307,7 +306,6 @@ function Canvas() {
             px={settextSize}
             color={settextColor}
             font={settextfont}
-            TC={textColor}
             check={check}
           />
           <TranEffect

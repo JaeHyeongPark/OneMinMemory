@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 
 const Painting = (props) => {
-  const lineColor = useRef(props.PC);
+  const lineColor = useRef('black');
   const [linePx, setlinePx] = useState(5);
 
   const changepx = (e) => {

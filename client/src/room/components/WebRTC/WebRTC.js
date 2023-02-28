@@ -4,7 +4,7 @@ import App from "../../../App";
 import "./WebRTC.css";
 import { useEffect } from "react";
 import { io } from "socket.io-client"; // Client Socket
-
+import { useState } from "react";
 const socket = io("https://chjungle.shop", {
   path: "/sfusocket",
   withCredentials: true,
@@ -383,9 +383,18 @@ async function makeNewConnection() {
 let voiceStatus = 0;
 
 const WebRTC = () => {
-  roomId = App.roomId;
   useEffect(() => {
+    roomId = App.roomId;
     setTimeout(() => {
+      // 서버가 보낸 다른사람의 그림 데이터
+      App.mainSocket.on("myCanvas", (data) => {
+        if (userInfo[data.senderId]) {
+          userInfo[data.senderId].imgTag.src = data.imageData;
+        }
+        // 테스트용 코드
+        // imgTag1 = document.getElementById("imgTag1");
+        // imgTag1.src = data.imageData;
+      });
       return startMedia();
     }, 2000);
     App.mainSocket.on("speakingState", (data) => {
@@ -405,6 +414,15 @@ const WebRTC = () => {
       }
     });
   }, []);
+  const imgTagOnOff = (idx, isOn) => {
+    if (videos) {
+      if (isOn) {
+        videos[idx].imgTag.className = "imgTagOn";
+      } else {
+        videos[idx].imgTag.className = "imgTagOff";
+      }
+    }
+  };
   return (
     <div className="ROOM-BODY-WebRTC">
       <div className="CAMs">
@@ -415,8 +433,17 @@ const WebRTC = () => {
             autoPlay
             className="videoTag"
             playsInline
+            onClick={() => {
+              imgTagOnOff(0, false);
+            }}
           ></video>
-          <img id="imgTag1" className="imgTagOff"></img>
+          <img
+            id="imgTag1"
+            className="imgTagOff"
+            onClick={() => {
+              imgTagOnOff(0, true);
+            }}
+          ></img>
         </div>
         {/* <img src={cans} className="img.component-cans" alt="user cam"  /> */}
         {/* <div className="name_layout">
@@ -431,8 +458,17 @@ const WebRTC = () => {
             autoPlay
             playsInline
             className="videoTag"
+            onClick={() => {
+              imgTagOnOff(1, false);
+            }}
           ></video>
-          <img id="imgTag1" className="imgTagOff"></img>
+          <img
+            onClick={() => {
+              imgTagOnOff(1, true);
+            }}
+            id="imgTag1"
+            className="imgTagOff"
+          ></img>
           {/* </div> */}
           {/* <div className="name_layout">
             <span className="name_span">Name</span>
@@ -446,8 +482,17 @@ const WebRTC = () => {
             autoPlay
             playsInline
             className="videoTag"
+            onClick={() => {
+              imgTagOnOff(2, false);
+            }}
           ></video>
-          <img id="imgTag1" className="imgTagOff"></img>
+          <img
+            onClick={() => {
+              imgTagOnOff(2, true);
+            }}
+            id="imgTag1"
+            className="imgTagOff"
+          ></img>
           {/* </div> */}
           {/* <div className="name_layout">
             <span className="name_span">Name</span>
@@ -461,8 +506,17 @@ const WebRTC = () => {
             autoPlay
             playsInline
             className="videoTag"
+            onClick={() => {
+              imgTagOnOff(3, false);
+            }}
           ></video>
-          <img id="imgTag1" className="imgTagOff"></img>
+          <img
+            onClick={() => {
+              imgTagOnOff(3, true);
+            }}
+            id="imgTag1"
+            className="imgTagOff"
+          ></img>
           {/* </div> */}
           {/* <div className="name_layout">
             <span className="name_span">Name</span>

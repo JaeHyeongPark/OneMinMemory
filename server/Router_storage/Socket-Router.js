@@ -311,6 +311,12 @@ module.exports = function socketRouter(io) {
     socket.on("speakingState", (data) => {
       socket.to(data.roomId).emit("speakingState", data);
     });
+    // ===========================작업중인 사진 공유 ======================
+    socket.on("myCanvas", (data) => {
+      socket
+        .to(socket.roomId)
+        .emit("myCanvas", { ...data, senderId: socket.Id });
+    });
   });
   return router;
 };

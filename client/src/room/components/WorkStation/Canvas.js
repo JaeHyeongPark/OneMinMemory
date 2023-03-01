@@ -123,13 +123,13 @@ function Canvas() {
   // 페인팅 작업 조건 판단
   const ChangePaint = async (check) => {
     if (!PaintMode) return;
+    if (Paint && !check) {
+      await ctrlStore();
+    }
     if (check) {
       setPaint(check);
     } else {
       setPaint(check);
-    }
-    if (Paint && !check) {
-      await ctrlStore();
     }
   };
 
@@ -254,7 +254,7 @@ function Canvas() {
       if ((e.ctrlKey && e.key === "z") || (e.metaKey && e.key === "z")) {
         CtrlZ();
       }
-      if ((e.ctrlKey && e.key === "y") || (e.metaKey && e.key === "y")) {
+      if ((e.ctrlKey && e.key === "y") || (e.metaKey && e.key === "z" && e.shiftKey)) {
         CtrlY();
       }
     };

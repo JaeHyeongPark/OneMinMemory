@@ -420,14 +420,14 @@ const WebRTC = () => {
         if (videos[idx].videoTag.srcObject) {
           // videos[idx].videoTag.srcObject.getVideoTracks()[0].muted = true;
           // videos[idx].videoTag.visibility = "visible";
-          videos[idx].videoTag.className = "videoTag";
+          videos[idx].videoTag.className = "videoTagOff";
         }
       } else {
         videos[idx].imgTag.className = "imgTagOff";
         if (videos[idx].videoTag.srcObject) {
           // videos[idx].videoTag.srcObject.getVideoTracks()[0].muted = false;
           // videos[idx].videoTag.visibility = "hidden";
-          videos[idx].videoTag.className = "videoTagOff";
+          videos[idx].videoTag.className = "videoTag";
         }
       }
     }

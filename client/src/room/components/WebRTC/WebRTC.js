@@ -4,7 +4,7 @@ import App from "../../../App";
 import "./WebRTC.css";
 import { useEffect } from "react";
 import { io } from "socket.io-client"; // Client Socket
-import { useState } from "react";
+
 const socket = io("https://chjungle.shop", {
   path: "/sfusocket",
   withCredentials: true,
@@ -381,8 +381,8 @@ let voiceStatus = 0;
 
 const WebRTC = () => {
   useEffect(() => {
-    roomId = App.roomId;
     setTimeout(() => {
+      roomId = App.roomId;
       initialSetting();
       // 서버가 보낸 다른사람의 그림 데이터
       App.mainSocket.on("myCanvas", (data) => {
@@ -416,8 +416,14 @@ const WebRTC = () => {
     if (videos) {
       if (isOn) {
         videos[idx].imgTag.className = "imgTagOn";
+        if (videos[idx].videoTag.srcObject) {
+          videos[idx].videoTag.srcObject.getVideoTracks()[0].muted = true;
+        }
       } else {
         videos[idx].imgTag.className = "imgTagOff";
+        if (videos[idx].videoTag.srcObject) {
+          videos[idx].videoTag.srcObject.getVideoTracks()[0].muted = false;
+        }
       }
     }
   };
@@ -432,14 +438,14 @@ const WebRTC = () => {
             className="videoTag"
             playsInline
             onClick={() => {
-              imgTagOnOff(0, false);
+              imgTagOnOff(0, true);
             }}
           ></video>
           <img
             id="imgTag1"
             className="imgTagOff"
             onClick={() => {
-              imgTagOnOff(0, true);
+              imgTagOnOff(0, false);
             }}
           ></img>
         </div>
@@ -457,14 +463,14 @@ const WebRTC = () => {
             playsInline
             className="videoTag"
             onClick={() => {
-              imgTagOnOff(1, false);
+              imgTagOnOff(1, true);
             }}
           ></video>
           <img
             onClick={() => {
-              imgTagOnOff(1, true);
+              imgTagOnOff(1, false);
             }}
-            id="imgTag1"
+            id="imgTag2"
             className="imgTagOff"
           ></img>
           {/* </div> */}
@@ -481,14 +487,14 @@ const WebRTC = () => {
             playsInline
             className="videoTag"
             onClick={() => {
-              imgTagOnOff(2, false);
+              imgTagOnOff(2, true);
             }}
           ></video>
           <img
             onClick={() => {
-              imgTagOnOff(2, true);
+              imgTagOnOff(2, false);
             }}
-            id="imgTag1"
+            id="imgTag3"
             className="imgTagOff"
           ></img>
           {/* </div> */}
@@ -505,14 +511,14 @@ const WebRTC = () => {
             playsInline
             className="videoTag"
             onClick={() => {
-              imgTagOnOff(3, false);
+              imgTagOnOff(3, true);
             }}
           ></video>
           <img
             onClick={() => {
-              imgTagOnOff(3, true);
+              imgTagOnOff(3, false);
             }}
-            id="imgTag1"
+            id="imgTag4"
             className="imgTagOff"
           ></img>
           {/* </div> */}

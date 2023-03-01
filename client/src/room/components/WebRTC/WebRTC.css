@@ -9,6 +9,12 @@
   padding: 5px 0;
   background-color: #272731;
 }
+.videoTagOff {
+  height: 177.5px;
+  width: 276px;
+  position: absolute;
+  visibility: hidden;
+}
 
 .CAMs {
   width: 100%;

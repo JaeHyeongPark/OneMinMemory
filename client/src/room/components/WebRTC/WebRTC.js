@@ -419,13 +419,15 @@ const WebRTC = () => {
         videos[idx].imgTag.className = "imgTagOn";
         if (videos[idx].videoTag.srcObject) {
           // videos[idx].videoTag.srcObject.getVideoTracks()[0].muted = true;
-          videos[idx].videoTag.visibility = "visible";
+          // videos[idx].videoTag.visibility = "visible";
+          videos[idx].videoTag.className = "videoTag";
         }
       } else {
         videos[idx].imgTag.className = "imgTagOff";
         if (videos[idx].videoTag.srcObject) {
           // videos[idx].videoTag.srcObject.getVideoTracks()[0].muted = false;
-          videos[idx].videoTag.visibility = "hidden";
+          // videos[idx].videoTag.visibility = "hidden";
+          videos[idx].videoTag.className = "videoTagOff";
         }
       }
     }

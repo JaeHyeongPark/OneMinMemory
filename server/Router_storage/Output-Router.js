@@ -24,29 +24,62 @@ const upload = multer();
 dotenv.config();
 
 const effectFilters = {
-  zoom_in: [
-    "-filter_complex",
-    "scale=12800x7200,zoompan=z=pzoom+0.0025:x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1280x720:fps=25",
-  ],
-  // zoom_out: [
+  // zoom_in: [
   //   "-filter_complex",
-  //   "zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0023))':x='max(1,iw/2-(iw/zoom/2))':y='max(1,ih/2-(ih/zoom/2))':d=300:s=hd1080",
+  //   "scale=6400x3600,zoompan=z=pzoom+0.0025:x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1280x720:fps=25",
   // ],
-  zoom_top_left: [
-    "-filter_complex",
-    "scale=12800x7200,zoompan=z=pzoom+0.0015:d=1:s=1280x720:fps=25",
+  // zoom_top_left: [
+  //   "-filter_complex",
+  //   "scale=6400x3600,zoompan=z=pzoom+0.0015:d=1:s=1280x720:fps=25",
+  // ],
+  // zoom_top_right: [
+  //   "-filter_complex",
+  //   "scale=6400x3600,zoompan=z=pzoom+0.0015:x='iw/2+iw/zoom/2':y=y:d=1:s=1280x720:fps=25",
+  // ],
+  // zoom_bottom_left: [
+  //   "-filter_complex",
+  //   "scale=6400x3600,zoompan=z=pzoom+0.0015:y=7200:d=1:s=1280x720:fps=25",
+  // ],
+  // zoom_bottom_right: [
+  //   "-filter_complex",
+  //   "scale=6400x3600,zoompan=z=pzoom+0.0015:x='iw/2+iw/zoom/2':y=7200:d=1:s=1280x720:fps=25",
+  // ],
+  ZoomIn_Center: [
+    "-vf",
+    "scale=6400x3600,zoompan=z='zoom+0.0025':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2):d=300:s=hd720:fps=25",
   ],
-  zoom_top_right: [
-    "-filter_complex",
-    "scale=12800x7200,zoompan=z=pzoom+0.0015:x='iw/2+iw/zoom/2':y=y:d=1:s=1280x720:fps=25",
+  ZoomIn_TopLeft: ["-vf", "zoompan=z='zoom+0.0015':d=300:s=hd720:fps=25"],
+  ZoomIn_TopRight: [
+    "-vf",
+    "scale=6400x3600,zoompan=z='zoom+0.0015':x='x+iw/zoom':d=300:s=hd720:fps=25",
   ],
-  zoom_bottom_left: [
-    "-filter_complex",
-    "scale=12800x7200,zoompan=z=pzoom+0.0015:y=7200:d=1:s=1280x720:fps=25",
+  ZoomIn_BottomLeft: [
+    "-vf",
+    "scale=6400x3600,zoompan=z='zoom+0.0015':y=1836:d=300:s=hd720:fps=25",
   ],
-  zoom_bottom_right: [
-    "-filter_complex",
-    "scale=12800x7200,zoompan=z=pzoom+0.0015:x='iw/2+iw/zoom/2':y=7200:d=1:s=1280x720:fps=25",
+  ZoomIn_BottomRight: [
+    "-vf",
+    "scale=6400x3600,zoompan=z='zoom+0.0015':x='x+iw/zoom':y=1836:d=300:s=hd720:fps=25",
+  ],
+  ZoomOut_Center: [
+    "-vf",
+    "scale=6400x3600,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0023))':x='max(1,iw/2-(iw/zoom/2))':y='max(1,ih/2-(ih/zoom/2))':d=500:s=hd720:fps=25",
+  ],
+  ZoomOut_TopLeft: [
+    "-vf",
+    "scale=6400x3600,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0022))':d=500:s=hd720:fps=25",
+  ],
+  ZoomOut_TopRight: [
+    "-vf",
+    "scale=6400x3600,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0028))':x='if(eq(x,0),0.5*iw,max(1,iw/zoom/2))':d=500:s=hd720:fps=25",
+  ],
+  ZoomOut_BottomLeft: [
+    "-vf",
+    "scale=6400x3600,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0024))':y=ih:d=500:s=hd720:fps=25",
+  ],
+  ZoomOut_BottomRight: [
+    "-vf",
+    "scale=6400x3600,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0023))':x='if(eq(x,0),0.5*iw,max(1,iw/zoom/2))':y='if(eq(y,0),0.5*ih,max(1,ih/zoom/2))':d=500:s=hd720:fps=25",
   ],
 };
 
@@ -549,7 +582,7 @@ module.exports = function (io) {
     const images = await getImages(roomid, imageUrls, 1280, 720);
     // 25퍼 진행됐음을 클라이언트에 알림
     io.to(roomid).emit("renderingProgress", {
-      progress: "랜더링 초기세팅중 & Effect효과 적용중 (1/4)",
+      progress: "Video로 변환 & Effect 적용중 (1/4)",
     });
     let end1 = new Date();
     console.log("이미지 다운 완료:", images);
@@ -585,7 +618,7 @@ module.exports = function (io) {
     );
     // 75퍼 진행됐음을 클라이언트에 알림
     io.to(roomid).emit("renderingProgress", {
-      progress: "오디오 삽입 시작 (3/4)",
+      progress: "오디오 삽입중 (3/4)",
     });
     let end3 = new Date();
     console.log("비디오 트랜지션 완료, 오디오 삽입 시작");
@@ -599,7 +632,7 @@ module.exports = function (io) {
     );
     // 100퍼 진행됐음을 클라이언트에 알림
     io.to(roomid).emit("renderingProgress", {
-      progress: "동영상 랜더링 완료!! 저장중... (4/4)",
+      progress: "렌더링 완료!! 저장중.. (4/4)",
     });
     let end4 = new Date();
     console.log(

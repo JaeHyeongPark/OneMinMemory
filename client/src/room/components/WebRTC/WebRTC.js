@@ -4,7 +4,6 @@ import App from "../../../App";
 import "./WebRTC.css";
 import { useEffect } from "react";
 import { io } from "socket.io-client"; // Client Socket
-
 const socket = io("https://chjungle.shop", {
   path: "/sfusocket",
   withCredentials: true,

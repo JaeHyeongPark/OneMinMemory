@@ -5,12 +5,22 @@ import Button from "@mui/material/Button";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 
 const EFFECT_LIST = [
-  "zoom_in",
+  // "zoom_in",
   // "zoom_out",
-  "zoom_top_left",
-  "zoom_top_right",
-  "zoom_bottom_left",
-  "zoom_bottom_right",
+  // "zoom_top_left",
+  // "zoom_top_right",
+  // "zoom_bottom_left",
+  // "zoom_bottom_right",
+  "ZoomIn_Center",
+  "ZoomIn_TopLeft",
+  "ZoomIn_TopRight",
+  "ZoomIn_BottomLeft",
+  "ZoomIn_BottomRight",
+  "ZoomOut_Center",
+  "ZoomOut_TopLeft",
+  "ZoomOut_TopRight",
+  "ZoomOut_BottomLeft",
+  "ZoomOut_BottomRight",
 ];
 
 const TRANSITION_LIST = [

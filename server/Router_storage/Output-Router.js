@@ -63,23 +63,23 @@ const effectFilters = {
   ],
   ZoomOut_Center: [
     "-vf",
-    "scale=6400x3600,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0023))':x='max(1,iw/2-(iw/zoom/2))':y='max(1,ih/2-(ih/zoom/2))':d=300:s=hd720:fps=25",
+    "scale=6400x3600,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0023))':x='max(1,iw/2-(iw/zoom/2))':y='max(1,ih/2-(ih/zoom/2))':d=500:s=hd720:fps=25",
   ],
   ZoomOut_TopLeft: [
     "-vf",
-    "scale=6400x3600,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0022))':d=300:s=hd720:fps=25",
+    "scale=6400x3600,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0022))':d=500:s=hd720:fps=25",
   ],
   ZoomOut_TopRight: [
     "-vf",
-    "scale=6400x3600,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0028))':x='if(eq(x,0),0.5*iw,max(1,iw/zoom/2))':d=300:s=hd720:fps=25",
+    "scale=6400x3600,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0028))':x='if(eq(x,0),0.5*iw,max(1,iw/zoom/2))':d=500:s=hd720:fps=25",
   ],
   ZoomOut_BottomLeft: [
     "-vf",
-    "scale=6400x3600,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0024))':y=ih:d=300:s=hd720:fps=25",
+    "scale=6400x3600,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0024))':y=ih:d=500:s=hd720:fps=25",
   ],
   ZoomOut_BottomRight: [
     "-vf",
-    "scale=6400x3600,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0023))':x='if(eq(x,0),0.5*iw,max(1,iw/zoom/2))':y='if(eq(y,0),0.5*ih,max(1,ih/zoom/2))':d=300:s=hd720:fps=25",
+    "scale=6400x3600,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0023))':x='if(eq(x,0),0.5*iw,max(1,iw/zoom/2))':y='if(eq(y,0),0.5*ih,max(1,ih/zoom/2))':d=500:s=hd720:fps=25",
   ],
 };
 

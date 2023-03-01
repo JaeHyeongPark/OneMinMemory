@@ -98,9 +98,7 @@ function Canvas() {
       );
       setHistoryList([data]);
       setHisidx(1);
-      const imageData = canvasRef.current.toDataURL(
-        "image/" + ToCanvas.type
-      );
+      const imageData = canvasRef.current.toDataURL("image/" + ToCanvas.type);
       App.mainSocket.emit("myCanvas", { imageData });
     };
   }, [ToCanvas.url, Ctx]);
@@ -111,7 +109,7 @@ function Canvas() {
     const y = e.nativeEvent.offsetY * (720 / 432);
     if (Paint && PaintMode) {
       Ctx.lineJoin = "bevel";
-      Ctx.lineCap = "round"
+      Ctx.lineCap = "round";
       Ctx.lineWidth = PaintPx;
       Ctx.strokeStyle = PaintColor;
       Ctx.lineTo(x, y);
@@ -130,7 +128,7 @@ function Canvas() {
     } else {
       setPaint(check);
     }
-    if (Paint && !check){
+    if (Paint && !check) {
       await ctrlStore();
     }
   };
@@ -152,13 +150,12 @@ function Canvas() {
   const handleEnter = async (e) => {
     const code = e.keyCode;
     if (code === 13) {
-      
       Ctx.textBaseline = "top";
       Ctx.textAlign = "left";
       Ctx.font = `${textSize}px ${textfont}`;
       Ctx.fillStyle = textColor;
       Ctx.fillText(e.target.value, x[0], y[0]);
-      
+
       await ctrlStore();
       setinputShow(false);
       setTextMode(false);
@@ -204,7 +201,7 @@ function Canvas() {
         // 사진을 저장후 빈 캔버스의 상태를 상대방에게 전송
         setHistoryList([]);
         setHisidx(0);
-        ctrlStore()
+        ctrlStore();
       })
       .catch((err) => {
         console.log(err);
@@ -223,18 +220,18 @@ function Canvas() {
     formdata.append(`${name}ImageData`, imageData);
     formdata.append("roomid", roomId);
     await axios
-    .post(
-      process.env.REACT_APP_expressURL + `/canvas/image/${name}`,
-      formdata,
-      {
-        headers: {
+      .post(
+        process.env.REACT_APP_expressURL + `/canvas/image/${name}`,
+        formdata,
+        {
+          headers: {
             "content-type": "multipart/form-data",
           },
         }
       )
       .then((res) => {
         console.log("this is res", res);
-        
+
         const effectedImageData = res.data.effectedImageData;
         if (effectedImageData) {
           const image = new Image();
@@ -254,10 +251,10 @@ function Canvas() {
   // Ctrl + Z 키 입력시 호출(window를 사용하여 창 전체에서 이벤트를 설정)
   useEffect(() => {
     const handleUndo = (e) => {
-      if (e.ctrlKey && e.key === "z") {
+      if ((e.ctrlKey && e.key === "z") || (e.metaKey && e.key === "z")) {
         CtrlZ();
       }
-      if (e.ctrlKey && e.key === "y") {
+      if ((e.ctrlKey && e.key === "y") || (e.metaKey && e.key === "y")) {
         CtrlY();
       }
     };
@@ -271,13 +268,17 @@ function Canvas() {
 
   // Ctrl + z 키
   const CtrlZ = async () => {
-    if (HistoryList.length !== 0 && Hisidx - 1 >= 0) {
-      Ctx.putImageData(HistoryList[Hisidx - 1], 0, 0);
-      setHisidx(Hisidx - 1);
-      const imageData = await canvasRef.current.toDataURL(
-        "image/" + ToCanvas.type
-      );
-      App.mainSocket.emit("myCanvas", { imageData });
+    try {
+      if (HistoryList.length !== 0 && Hisidx - 2 >= 0) {
+        Ctx.putImageData(HistoryList[Hisidx - 2], 0, 0);
+        setHisidx(Hisidx - 1);
+        const imageData = await canvasRef.current.toDataURL(
+          "image/" + ToCanvas.type
+        );
+        App.mainSocket.emit("myCanvas", { imageData });
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -306,7 +307,7 @@ function Canvas() {
         canvasRef.current.width,
         canvasRef.current.height
       );
-      let list = HistoryList.slice(0,Hisidx);
+      let list = HistoryList.slice(0, Hisidx);
       list.push(data);
       setHistoryList(list);
       setHisidx(list.length);

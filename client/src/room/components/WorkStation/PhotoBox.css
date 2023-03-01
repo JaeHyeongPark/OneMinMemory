@@ -81,7 +81,7 @@ img.cloud {
   flex-direction: row;
   justify-content: center;
   align-items: stretch;
-  border-top: solid 2px rgba(231, 207, 207, 0.1);
+  /* border-top: solid 2px rgba(231, 207, 207, 0.1); */
   background-color: #272833;
 }
 
@@ -111,6 +111,7 @@ img.cloud {
   background-color: #1c1c26;
   overflow-y: auto;
   flex-wrap: wrap;
+  border-top: solid 2px rgba(231, 207, 207, 0.1);
 }
 
 .upload_Photos::-webkit-scrollbar {

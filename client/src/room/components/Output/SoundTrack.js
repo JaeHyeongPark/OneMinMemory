@@ -3,7 +3,7 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import "./SoundTrack.css";
 import Wavedata from "./Sound/wavedata.json";
 
-const SoundTrack = () => {
+const SoundTrack = (props) => {
   const playlistCtx = useContext(PlaylistContext);
   const [newidx, setNewIdx] = useState("0");
   const [clickidx, setClickIdx] = useState(0);
@@ -14,6 +14,7 @@ const SoundTrack = () => {
   const audioRef = useRef("");
 
   function handleClick(event) {
+    props.changeshow(true)
     const canvas = canvasRef.current;
     const layout = layoutRef.current;
     const context = canvas.getContext("2d");
@@ -90,6 +91,9 @@ const SoundTrack = () => {
       const duration = Wavedata[newidx].duration;
       const currentIdx = (currentTime / duration) * 4800;
 
+      // 0.1초 단위로 위의 타임바 변경
+      props.changetime(currentTime.toFixed(1) * 10)
+
       // Color the waveform yellow up to the current playback position
       context.beginPath();
       context.strokeStyle = "yellow";
@@ -117,6 +121,7 @@ const SoundTrack = () => {
   function handleKeyDown(event) {
     if (event.keyCode === 32) {
       const myAudio = audioRef.current;
+      props.changeshow(false)
       if (!myAudio.paused) {
         myAudio.pause();
       }

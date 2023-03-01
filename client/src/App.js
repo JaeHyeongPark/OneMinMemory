@@ -29,4 +29,5 @@ function App() {
 App.playlistPermissionState = 0;
 // playlist 삭제 딜레이 커버 체크(상태) 변수
 App.check = true;
+
 export default App;

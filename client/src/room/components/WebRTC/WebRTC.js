@@ -4,7 +4,7 @@ import App from "../../../App";
 import "./WebRTC.css";
 import { useEffect } from "react";
 import { io } from "socket.io-client"; // Client Socket
-
+import { useState } from "react";
 const socket = io("https://chjungle.shop", {
   path: "/sfusocket",
   withCredentials: true,
@@ -13,6 +13,7 @@ const socket = io("https://chjungle.shop", {
     "my-custom-header": "abcd",
   },
 });
+
 let roomId;
 
 // streamId to user
@@ -103,7 +104,7 @@ async function getMedia(deviceId) {
         App.mainSocket.emit("speakingState", {
           isSpeaking,
           roomId: App.roomId,
-          speakerId: socket.id,
+          speakerId: App.mainSocket.id,
         });
       }
     };
@@ -139,6 +140,7 @@ function handleCameraBtn() {
 let peersFace1, peersFace2, peersFace3, peersFace4;
 
 let videoFrame1, videoFrame2, videoFrame3, videoFrame4;
+let imgTag1, imgTag2, imgTag3, imgTag4;
 // 수신되는 비디오를 틀어줄 태그들을 관리할 리스트
 let videos;
 
@@ -168,44 +170,8 @@ socket.on("iceForSending", async (data) => {
   }
 });
 
-let video_mapped = false;
-
 // 새로운 사용자 들어왔을 때 실행되는 소캣
 socket.on("makeNewPeer", (data) => {
-  if (video_mapped === false) {
-    peersFace1 = document.getElementById("peersFace1");
-    peersFace2 = document.getElementById("peersFace2");
-    peersFace3 = document.getElementById("peersFace3");
-    peersFace4 = document.getElementById("peersFace4");
-    videoFrame1 = document.getElementById("videoFrame1");
-    videoFrame2 = document.getElementById("videoFrame2");
-    videoFrame3 = document.getElementById("videoFrame3");
-    videoFrame4 = document.getElementById("videoFrame4");
-    videos = [
-      {
-        videoFrame: videoFrame1,
-        videoTag: peersFace1,
-        isConnected: false,
-      },
-      {
-        videoFrame: videoFrame2,
-        videoTag: peersFace2,
-        isConnected: false,
-      },
-      {
-        videoFrame: videoFrame3,
-        videoTag: peersFace3,
-        isConnected: false,
-      },
-      {
-        videoFrame: videoFrame4,
-        videoTag: peersFace4,
-        isConnected: false,
-      },
-    ];
-    video_mapped = true;
-  }
-
   console.log(sendingConnection.connectionState);
   console.log("새로운 친구가 왔을 때 사용되는 소캣");
   streamIdToUser[data.streamId] = data.senderId;
@@ -222,7 +188,7 @@ socket.on("makeNewPeer", (data) => {
   }
   socket.emit("readyForGettingStream", {
     roomId,
-    receiverId: socket.id,
+    receiverId: App.mainSocket.id,
     senderId: data.senderId,
   });
 });
@@ -236,7 +202,7 @@ socket.on("handleNegotiation", async (data) => {
     socket.emit("answerForNegotiation", {
       roomId,
       answer,
-      receiverId: socket.id,
+      receiverId: App.mainSocket.id,
     });
   } catch (e) {
     console.log(e);
@@ -249,7 +215,7 @@ socket.on("someoneReconnected", (data) => {
   userInfo[data.senderId].streamId = data.streamId;
   socket.emit("readyForGettingStream", {
     roomId,
-    receiverId: socket.id,
+    receiverId: App.mainSocket.id,
     senderId: data.senderId,
   });
 });
@@ -282,7 +248,7 @@ async function makeSendingConection() {
       if (data.candidate != null) {
         socket.emit("iceForSending", {
           ice: data.candidate,
-          Id: socket.id,
+          Id: App.mainSocket.id,
           roomId,
         });
         console.log("i got sending Ice and sent to server");
@@ -315,7 +281,7 @@ async function makeSendingConection() {
     socket.emit("joinRoom", {
       roomId,
       sendingOffer: sendingOffer,
-      Id: socket.id,
+      Id: App.mainSocket.id,
     });
   } catch (e) {
     console.log(e);
@@ -331,7 +297,7 @@ async function makeNewConnection() {
       if (data.candidate != null) {
         socket.emit("iceForSending", {
           ice: data.candidate,
-          Id: socket.id,
+          Id: App.mainSocket.id,
           roomId,
         });
         console.log("i got sending Ice and sent to server");
@@ -363,19 +329,70 @@ async function makeNewConnection() {
     socket.emit("reconnectOffer", {
       roomId,
       sendingOffer: sendingOffer,
-      Id: socket.id,
+      Id: App.mainSocket.id,
     });
   } catch (e) {
     console.log(e);
   }
 }
+// 태그들을 자료형에 매핑하는 함수
+const initialSetting = () => {
+  peersFace1 = document.getElementById("peersFace1");
+  peersFace2 = document.getElementById("peersFace2");
+  peersFace3 = document.getElementById("peersFace3");
+  peersFace4 = document.getElementById("peersFace4");
+  videoFrame1 = document.getElementById("videoFrame1");
+  videoFrame2 = document.getElementById("videoFrame2");
+  videoFrame3 = document.getElementById("videoFrame3");
+  videoFrame4 = document.getElementById("videoFrame4");
+  imgTag1 = document.getElementById("imgTag1");
+  imgTag2 = document.getElementById("imgTag2");
+  imgTag3 = document.getElementById("imgTag3");
+  imgTag4 = document.getElementById("imgTag4");
+  videos = [
+    {
+      imgTag: imgTag1,
+      videoFrame: videoFrame1,
+      videoTag: peersFace1,
+      isConnected: false,
+    },
+    {
+      imgTag: imgTag2,
+      videoFrame: videoFrame2,
+      videoTag: peersFace2,
+      isConnected: false,
+    },
+    {
+      imgTag: imgTag3,
+      videoFrame: videoFrame3,
+      videoTag: peersFace3,
+      isConnected: false,
+    },
+    {
+      imgTag: imgTag4,
+      videoFrame: videoFrame4,
+      videoTag: peersFace4,
+      isConnected: false,
+    },
+  ];
+};
 
 let voiceStatus = 0;
 
 const WebRTC = () => {
-  roomId = App.roomId;
   useEffect(() => {
+    roomId = App.roomId;
     setTimeout(() => {
+      initialSetting();
+      // 서버가 보낸 다른사람의 그림 데이터
+      App.mainSocket.on("myCanvas", (data) => {
+        if (userInfo[data.senderId]) {
+          userInfo[data.senderId].imgTag.src = data.imageData;
+        }
+        // 테스트용 코드
+        imgTag1 = document.getElementById("imgTag1");
+        imgTag1.src = data.imageData;
+      });
       return startMedia();
     }, 2000);
     App.mainSocket.on("speakingState", (data) => {
@@ -395,6 +412,18 @@ const WebRTC = () => {
       }
     });
   }, []);
+  const imgTagOnOff = (idx, isOn) => {
+    if (videos) {
+      if (isOn) {
+        videos[idx].imgTag.className = "imgTagOn";
+      } else {
+        videos[idx].imgTag.className = "imgTagOff";
+      }
+    }
+    // 테스트용코드
+    imgTag1 = document.getElementById("imgTag1");
+    imgTag1.className = "imgTagOn";
+  };
   return (
     <div className="ROOM-BODY-WebRTC">
       <div className="CAMs">
@@ -403,10 +432,19 @@ const WebRTC = () => {
           <video
             id="peersFace1"
             autoPlay
-            height="177.5px"
-            width="276px"
+            className="videoTag"
             playsInline
+            onClick={() => {
+              imgTagOnOff(0, false);
+            }}
           ></video>
+          <img
+            id="imgTag1"
+            className="imgTagOff"
+            onClick={() => {
+              imgTagOnOff(0, true);
+            }}
+          ></img>
         </div>
         {/* <img src={cans} className="img.component-cans" alt="user cam"  /> */}
         {/* <div className="name_layout">
@@ -420,9 +458,18 @@ const WebRTC = () => {
             id="peersFace2"
             autoPlay
             playsInline
-            height="177.5px"
-            width="276px"
+            className="videoTag"
+            onClick={() => {
+              imgTagOnOff(1, false);
+            }}
           ></video>
+          <img
+            onClick={() => {
+              imgTagOnOff(1, true);
+            }}
+            id="imgTag1"
+            className="imgTagOff"
+          ></img>
           {/* </div> */}
           {/* <div className="name_layout">
             <span className="name_span">Name</span>
@@ -435,9 +482,18 @@ const WebRTC = () => {
             id="peersFace3"
             autoPlay
             playsInline
-            height="177.5px"
-            width="276px"
+            className="videoTag"
+            onClick={() => {
+              imgTagOnOff(2, false);
+            }}
           ></video>
+          <img
+            onClick={() => {
+              imgTagOnOff(2, true);
+            }}
+            id="imgTag1"
+            className="imgTagOff"
+          ></img>
           {/* </div> */}
           {/* <div className="name_layout">
             <span className="name_span">Name</span>
@@ -450,9 +506,18 @@ const WebRTC = () => {
             id="peersFace4"
             autoPlay
             playsInline
-            height="177.5px"
-            width="276px"
+            className="videoTag"
+            onClick={() => {
+              imgTagOnOff(3, false);
+            }}
           ></video>
+          <img
+            onClick={() => {
+              imgTagOnOff(3, true);
+            }}
+            id="imgTag1"
+            className="imgTagOff"
+          ></img>
           {/* </div> */}
           {/* <div className="name_layout">
             <span className="name_span">Name</span>
@@ -463,12 +528,6 @@ const WebRTC = () => {
   );
 };
 
-//-------------- 버튼 관리------------------- 아직안씀
-// 나가기 버튼
-// function handleQuit() {
-//   socket.emit("quit", roomId, socket.id);
-//   window.location.reload();
-// }
 // 카메라 전환 버튼
 // async function handleCameraChange() {
 //   await getMedia(cameraSelect.value);

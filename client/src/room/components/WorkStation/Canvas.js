@@ -73,8 +73,6 @@ function Canvas() {
 
   // 이미지 드래그 드랍으로 캔버스에 이미지 넣기
   const imageToCanvas = (url) => {
-    setHistoryList([]);
-    setHisidx(0);
     ToCanvas.sendurl(url);
   };
 
@@ -91,6 +89,19 @@ function Canvas() {
     image.crossOrigin = "*";
     image.onload = () => {
       Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      // 새로운 그림을 작업할때 다른 사람에게 상태 전송
+      const data = ctx.getImageData(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
+      setHistoryList([data]);
+      setHisidx(1);
+      const imageData = canvasRef.current.toDataURL(
+        "image/" + ToCanvas.type
+      );
+      App.mainSocket.emit("myCanvas", { imageData });
     };
   }, [ToCanvas.url, Ctx]);
 
@@ -99,7 +110,8 @@ function Canvas() {
     const x = e.nativeEvent.offsetX * (1280 / 768);
     const y = e.nativeEvent.offsetY * (720 / 432);
     if (Paint && PaintMode) {
-      Ctx.lineJoin = "round";
+      Ctx.lineJoin = "bevel";
+      Ctx.lineCap = "round"
       Ctx.lineWidth = PaintPx;
       Ctx.strokeStyle = PaintColor;
       Ctx.lineTo(x, y);
@@ -114,10 +126,12 @@ function Canvas() {
   const ChangePaint = async (check) => {
     if (!PaintMode) return;
     if (check) {
-      await ctrlStore();
       setPaint(check);
     } else {
       setPaint(check);
+    }
+    if (Paint && !check){
+      await ctrlStore();
     }
   };
 
@@ -138,14 +152,14 @@ function Canvas() {
   const handleEnter = async (e) => {
     const code = e.keyCode;
     if (code === 13) {
-      await ctrlStore();
-
+      
       Ctx.textBaseline = "top";
       Ctx.textAlign = "left";
       Ctx.font = `${textSize}px ${textfont}`;
       Ctx.fillStyle = textColor;
       Ctx.fillText(e.target.value, x[0], y[0]);
-
+      
+      await ctrlStore();
       setinputShow(false);
       setTextMode(false);
     }
@@ -153,9 +167,6 @@ function Canvas() {
 
   // 캔버스 작업 후 저장했을때 호출되는 함수
   const newImage = async (e) => {
-    setHistoryList([]);
-    setHisidx(0);
-
     if (ToCanvas.url === "") {
       SnackBar.canvasWarningOpen();
       return;
@@ -190,6 +201,10 @@ function Canvas() {
         const canvas = canvasRef.current;
         canvas.style = {};
         Ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // 사진을 저장후 빈 캔버스의 상태를 상대방에게 전송
+        setHistoryList([]);
+        setHisidx(0);
+        ctrlStore()
       })
       .catch((err) => {
         console.log(err);
@@ -203,24 +218,23 @@ function Canvas() {
     const canvas = canvasRef.current;
     const imageData = await canvas.toDataURL("image/" + ToCanvas.type);
 
-    await ctrlStore();
     // checkpoint!
     const formdata = new FormData();
     formdata.append(`${name}ImageData`, imageData);
     formdata.append("roomid", roomId);
     await axios
-      .post(
-        process.env.REACT_APP_expressURL + `/canvas/image/${name}`,
-        formdata,
-        {
-          headers: {
+    .post(
+      process.env.REACT_APP_expressURL + `/canvas/image/${name}`,
+      formdata,
+      {
+        headers: {
             "content-type": "multipart/form-data",
           },
         }
       )
       .then((res) => {
         console.log("this is res", res);
-
+        
         const effectedImageData = res.data.effectedImageData;
         if (effectedImageData) {
           const image = new Image();
@@ -228,6 +242,7 @@ function Canvas() {
           image.crossOrigin = "*";
           image.onload = () => {
             Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+            ctrlStore();
           };
         }
       })
@@ -255,33 +270,55 @@ function Canvas() {
   useEffect(() => {}, [HistoryList, Hisidx]);
 
   // Ctrl + z 키
-  const CtrlZ = () => {
+  const CtrlZ = async () => {
     if (HistoryList.length !== 0 && Hisidx - 1 >= 0) {
       Ctx.putImageData(HistoryList[Hisidx - 1], 0, 0);
       setHisidx(Hisidx - 1);
+      const imageData = await canvasRef.current.toDataURL(
+        "image/" + ToCanvas.type
+      );
+      App.mainSocket.emit("myCanvas", { imageData });
     }
   };
 
   // Ctrl + y 키
-  const CtrlY = () => {
-    if (HistoryList.length !== 0 && Hisidx + 1 < HistoryList.length) {
-      Ctx.putImageData(HistoryList[Hisidx + 1], 0, 0);
-      setHisidx(Hisidx + 1);
+  const CtrlY = async () => {
+    try {
+      if (HistoryList.length !== 0 && Hisidx < HistoryList.length) {
+        Ctx.putImageData(HistoryList[Hisidx], 0, 0);
+        setHisidx(Hisidx + 1);
+        const imageData = await canvasRef.current.toDataURL(
+          "image/" + ToCanvas.type
+        );
+        App.mainSocket.emit("myCanvas", { imageData });
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
   // Ctrl키를 위한 이전 작업 저장
   const ctrlStore = async () => {
-    const data = await Ctx.getImageData(
-      0,
-      0,
-      canvasRef.current.width,
-      canvasRef.current.height
-    );
-    let list = [...HistoryList];
-    list.push(data);
-    setHistoryList(list);
-    setHisidx(list.length);
+    try {
+      const data = await Ctx.getImageData(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
+      let list = HistoryList.slice(0,Hisidx);
+      list.push(data);
+      setHistoryList(list);
+      setHisidx(list.length);
+
+      // 현재 작업물의 base64데이터 URL
+      const imageData = await canvasRef.current.toDataURL(
+        "image/" + ToCanvas.type
+      );
+      App.mainSocket.emit("myCanvas", { imageData });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

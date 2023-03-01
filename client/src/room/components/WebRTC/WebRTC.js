@@ -1,5 +1,5 @@
 import React from "react";
-
+import { useNavigate, useParams } from "react-router-dom";
 import App from "../../../App";
 import "./WebRTC.css";
 import { useEffect } from "react";
@@ -102,7 +102,7 @@ async function getMedia(deviceId) {
       if (isSpeaking) {
         App.mainSocket.emit("speakingState", {
           isSpeaking,
-          roomId: App.roomId,
+          roomId,
           speakerId: App.mainSocket.id,
         });
       }
@@ -379,9 +379,9 @@ const initialSetting = () => {
 let voiceStatus = 0;
 
 const WebRTC = () => {
+  roomId = useParams().roomId;
   useEffect(() => {
     setTimeout(() => {
-      roomId = App.roomId;
       initialSetting();
       // 서버가 보낸 다른사람의 그림 데이터
       App.mainSocket.on("myCanvas", (data) => {

@@ -121,6 +121,15 @@ module.exports = function socketRouter(io) {
           playlistPermissionState: state,
           numUsers,
         });
+        // socket 주소 번역용
+        // console.log(data.SFUId);
+        // redis.v4.sendCommand([
+        //   "SET",
+        //   data.Id + "/SFUId",
+        //   data.SFUId,
+        //   "EX",
+        //   21600,
+        // ]);
         console.log("누가 왔어요~", data.roomId, data.Id);
       } catch (e) {
         console.log(e);
@@ -137,7 +146,9 @@ module.exports = function socketRouter(io) {
           "decr",
           socket.roomId + "/numUser",
         ]);
-        redis.v4.expire(data.roomId + "/numUser", 21600);
+        if (numUserLeft != 0) {
+          redis.v4.expire(socket.roomId + "/numUser", 21600);
+        }
         let permissionUesr = await redis.v4.get(
           socket.roomId + "playlistPermissionState"
         );
@@ -159,7 +170,7 @@ module.exports = function socketRouter(io) {
             "decr",
             socket.roomId + "/renderVoteState",
           ]);
-          redis.v4.expire(data.roomId + "/renderVoteState", 21600);
+          redis.v4.expire(socket.roomId + "/renderVoteState", 21600);
         } else {
           renderVoteState = await redis.v4.get(
             socket.roomId + "/renderVoteState"
@@ -299,6 +310,12 @@ module.exports = function socketRouter(io) {
     });
     socket.on("speakingState", (data) => {
       socket.to(data.roomId).emit("speakingState", data);
+    });
+    // ===========================작업중인 사진 공유 ======================
+    socket.on("myCanvas", (data) => {
+      socket
+        .to(socket.roomId)
+        .emit("myCanvas", { ...data, senderId: socket.Id });
     });
   });
   return router;

@@ -6,6 +6,7 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import TextFieldsOutlinedIcon from "@mui/icons-material/TextFieldsOutlined";
+import { Tooltip } from "@mui/material";
 
 const Text = (props) => {
   const [font, setFont] = useState("");
@@ -40,14 +41,16 @@ const Text = (props) => {
 
   return (
     <>
-      <Button
-        className="sidebar-item"
-        name="Text Mode"
-        onClick={check}
-        startIcon={<TextFieldsOutlinedIcon style={{ fontSize: 35 }} />}
-      ></Button>
+      <Tooltip title="텍스트 넣기" placement="top" arrow>
+        <Button
+          className="sidebar-item"
+          name="Text Mode"
+          onClick={check}
+          startIcon={<TextFieldsOutlinedIcon style={{ fontSize: 35 }} />}
+        ></Button>
+      </Tooltip>
       {props.textmode && (
-        <ul className="canvaseffect__items">
+        <div className="canvaseffect__items__text">
           <li>
             <input
               type="range"
@@ -63,7 +66,9 @@ const Text = (props) => {
           </li>
           <li>
             <FormControl sx={{ m: 1, minWidth: 100 }} size="small">
-              <InputLabel id="demo-select-small">Font</InputLabel>
+              <InputLabel id="demo-select-small" style={{ color: "skyblue" }}>
+                Font
+              </InputLabel>
               <Select
                 labelId="demo-select-small"
                 id="demo-select-small"
@@ -119,7 +124,7 @@ const Text = (props) => {
               onChange={changecolor}
             />
           </li>
-        </ul>
+        </div>
       )}
     </>
   );

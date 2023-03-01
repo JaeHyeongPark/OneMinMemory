@@ -3,6 +3,7 @@ import Transition from "../Transitions/Transition";
 
 import Button from "@mui/material/Button";
 import AddLinkIcon from "@mui/icons-material/AddLink";
+import { Tooltip } from "@mui/material";
 
 const EFFECT_LIST = [
   // "zoom_in",
@@ -57,12 +58,14 @@ const TranEffect = (props) => {
 
   return (
     <>
-      <Button
-        className="sidebar-item"
-        name="Transition/Effect"
-        onClick={check}
-        startIcon={<AddLinkIcon style={{ fontSize: 35 }} />}
-      ></Button>
+      <Tooltip title="영상 효과" placement="top" arrow>
+        <Button
+          className="sidebar-item"
+          name="Transition/Effect"
+          onClick={check}
+          startIcon={<AddLinkIcon style={{ fontSize: 35 }} />}
+        ></Button>
+      </Tooltip>
       {props.traneffect && (
         <div className="transition-modal">
           <div className="effect-modal">

@@ -8,6 +8,7 @@ import SnackBar from "../components/RoomHeader/SnackBar";
 import App from "../../App";
 import RenderVoteState from "../components/Output/RenderVoteState";
 import EditPermissionButton from "../components/Output/EditPermissionButton";
+import WebRTC from "../components/WebRTC/WebRTC";
 const Room = () => {
   const navigate = useNavigate();
   const roomId = useParams().roomId;
@@ -19,6 +20,7 @@ const Room = () => {
       App.mainSocket.emit("joinRoom", {
         Id: App.mainSocket.id,
         roomId: roomId,
+        SFUId: WebRTC.socketId,
       });
     }, 1000);
     App.mainSocket.on("welcome", (data) => {

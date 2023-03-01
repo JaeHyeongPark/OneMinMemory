@@ -107,6 +107,7 @@ img.cloud {
   padding: 10px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-rows: repeat(6, minmax(100px, 1fr));
   padding-left: 25px;
   background-color: #1c1c26;
   overflow-y: auto;

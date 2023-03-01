@@ -4,6 +4,7 @@ import ImageContext from "./ImageContext";
 import { useParams } from "react-router-dom";
 import softwareupload from "../../../assets/software-upload.svg";
 import Button from "@mui/material/Button";
+import { height } from "@mui/system";
 // require("dotenv").config();
 
 const ImageUpload = (props) => {
@@ -41,7 +42,7 @@ const ImageUpload = (props) => {
       className="upload_button"
       variant="contained"
       component="label"
-      sx={{ width: 180 }}
+      sx={{ width: 180, height: 36 }}
     >
       <img src={softwareupload} alt="upload"></img>
       <input

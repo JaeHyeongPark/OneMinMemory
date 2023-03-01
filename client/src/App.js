@@ -7,7 +7,8 @@ import Room from "./room/pages/Room";
 import { io } from "socket.io-client";
 // require("dotenv").config();
 
-const mainSocket = io(process.env.REACT_APP_expressURL, {
+// const mainSocket = io(process.env.REACT_APP_expressURL, {
+const mainSocket = io("http://localhost:8080", {
   path: "/mainsocket",
   withCredentials: true,
 });

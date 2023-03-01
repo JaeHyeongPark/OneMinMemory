@@ -89,7 +89,7 @@ function Canvas() {
     image.crossOrigin = "*";
     image.onload = () => {
       Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
+      // 새로운 그림을 작업할때 다른 사람에게 상태 전송
       const data = ctx.getImageData(
         0,
         0,
@@ -131,7 +131,6 @@ function Canvas() {
       setPaint(check);
     }
     if (Paint && !check){
-      console.log(1)
       await ctrlStore();
     }
   };
@@ -202,6 +201,7 @@ function Canvas() {
         const canvas = canvasRef.current;
         canvas.style = {};
         Ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // 사진을 저장후 빈 캔버스의 상태를 상대방에게 전송
         setHistoryList([]);
         setHisidx(0);
         ctrlStore()

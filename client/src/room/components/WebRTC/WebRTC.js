@@ -388,7 +388,7 @@ const WebRTC = () => {
       // 서버가 보낸 다른사람의 그림 데이터
       App.mainSocket.on("myCanvas", (data) => {
         if (userInfo[data.senderId]) {
-          userInfo[data.senderId].imgTag.src = data.imageData;
+          userInfo[data.senderId].video.imgTag.src = data.imageData;
         }
         // 테스트용 코드
         // imgTag1 = document.getElementById("imgTag1");

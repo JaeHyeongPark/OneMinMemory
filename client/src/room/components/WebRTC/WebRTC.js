@@ -1,10 +1,9 @@
 import React from "react";
-
+import { useNavigate, useParams } from "react-router-dom";
 import App from "../../../App";
 import "./WebRTC.css";
 import { useEffect } from "react";
 import { io } from "socket.io-client"; // Client Socket
-import { useState } from "react";
 const socket = io("https://chjungle.shop", {
   path: "/sfusocket",
   withCredentials: true,
@@ -103,7 +102,7 @@ async function getMedia(deviceId) {
       if (isSpeaking) {
         App.mainSocket.emit("speakingState", {
           isSpeaking,
-          roomId: App.roomId,
+          roomId,
           speakerId: App.mainSocket.id,
         });
       }
@@ -170,8 +169,51 @@ socket.on("iceForSending", async (data) => {
   }
 });
 
+let initialSet = false;
+
 // 새로운 사용자 들어왔을 때 실행되는 소캣
 socket.on("makeNewPeer", (data) => {
+  if (initialSet === false) {
+    peersFace1 = document.getElementById("peersFace1");
+    peersFace2 = document.getElementById("peersFace2");
+    peersFace3 = document.getElementById("peersFace3");
+    peersFace4 = document.getElementById("peersFace4");
+    videoFrame1 = document.getElementById("videoFrame1");
+    videoFrame2 = document.getElementById("videoFrame2");
+    videoFrame3 = document.getElementById("videoFrame3");
+    videoFrame4 = document.getElementById("videoFrame4");
+    imgTag1 = document.getElementById("imgTag1");
+    imgTag2 = document.getElementById("imgTag2");
+    imgTag3 = document.getElementById("imgTag3");
+    imgTag4 = document.getElementById("imgTag4");
+    videos = [
+      {
+        imgTag: imgTag1,
+        videoFrame: videoFrame1,
+        videoTag: peersFace1,
+        isConnected: false,
+      },
+      {
+        imgTag: imgTag2,
+        videoFrame: videoFrame2,
+        videoTag: peersFace2,
+        isConnected: false,
+      },
+      {
+        imgTag: imgTag3,
+        videoFrame: videoFrame3,
+        videoTag: peersFace3,
+        isConnected: false,
+      },
+      {
+        imgTag: imgTag4,
+        videoFrame: videoFrame4,
+        videoTag: peersFace4,
+        isConnected: false,
+      },
+    ];
+    initialSet = true;
+  }
   console.log(sendingConnection.connectionState);
   console.log("새로운 친구가 왔을 때 사용되는 소캣");
   streamIdToUser[data.streamId] = data.senderId;
@@ -180,6 +222,7 @@ socket.on("makeNewPeer", (data) => {
   let i = 0;
   while (i < 4) {
     if (videos[i].isConnected === false) {
+      console.log("여기");
       videos[i].isConnected = true;
       userInfo[data.senderId].video = videos[i];
       break;
@@ -336,62 +379,19 @@ async function makeNewConnection() {
   }
 }
 // 태그들을 자료형에 매핑하는 함수
-const initialSetting = () => {
-  peersFace1 = document.getElementById("peersFace1");
-  peersFace2 = document.getElementById("peersFace2");
-  peersFace3 = document.getElementById("peersFace3");
-  peersFace4 = document.getElementById("peersFace4");
-  videoFrame1 = document.getElementById("videoFrame1");
-  videoFrame2 = document.getElementById("videoFrame2");
-  videoFrame3 = document.getElementById("videoFrame3");
-  videoFrame4 = document.getElementById("videoFrame4");
-  imgTag1 = document.getElementById("imgTag1");
-  imgTag2 = document.getElementById("imgTag2");
-  imgTag3 = document.getElementById("imgTag3");
-  imgTag4 = document.getElementById("imgTag4");
-  videos = [
-    {
-      imgTag: imgTag1,
-      videoFrame: videoFrame1,
-      videoTag: peersFace1,
-      isConnected: false,
-    },
-    {
-      imgTag: imgTag2,
-      videoFrame: videoFrame2,
-      videoTag: peersFace2,
-      isConnected: false,
-    },
-    {
-      imgTag: imgTag3,
-      videoFrame: videoFrame3,
-      videoTag: peersFace3,
-      isConnected: false,
-    },
-    {
-      imgTag: imgTag4,
-      videoFrame: videoFrame4,
-      videoTag: peersFace4,
-      isConnected: false,
-    },
-  ];
-};
-
-let voiceStatus = 0;
 
 const WebRTC = () => {
+  roomId = useParams().roomId;
   useEffect(() => {
-    roomId = App.roomId;
     setTimeout(() => {
-      initialSetting();
       // 서버가 보낸 다른사람의 그림 데이터
       App.mainSocket.on("myCanvas", (data) => {
         if (userInfo[data.senderId]) {
           userInfo[data.senderId].imgTag.src = data.imageData;
         }
         // 테스트용 코드
-        imgTag1 = document.getElementById("imgTag1");
-        imgTag1.src = data.imageData;
+        // imgTag1 = document.getElementById("imgTag1");
+        // imgTag1.src = data.imageData;
       });
       return startMedia();
     }, 2000);
@@ -416,13 +416,19 @@ const WebRTC = () => {
     if (videos) {
       if (isOn) {
         videos[idx].imgTag.className = "imgTagOn";
+        if (videos[idx].videoTag.srcObject) {
+          videos[idx].videoTag.srcObject.getVideoTracks()[0].muted = true;
+        }
       } else {
         videos[idx].imgTag.className = "imgTagOff";
+        if (videos[idx].videoTag.srcObject) {
+          videos[idx].videoTag.srcObject.getVideoTracks()[0].muted = false;
+        }
       }
     }
     // 테스트용코드
-    imgTag1 = document.getElementById("imgTag1");
-    imgTag1.className = "imgTagOn";
+    // imgTag1 = document.getElementById("imgTag1");
+    // imgTag1.className = "imgTagOn";
   };
   return (
     <div className="ROOM-BODY-WebRTC">
@@ -435,14 +441,14 @@ const WebRTC = () => {
             className="videoTag"
             playsInline
             onClick={() => {
-              imgTagOnOff(0, false);
+              imgTagOnOff(0, true);
             }}
           ></video>
           <img
             id="imgTag1"
             className="imgTagOff"
             onClick={() => {
-              imgTagOnOff(0, true);
+              imgTagOnOff(0, false);
             }}
           ></img>
         </div>
@@ -460,14 +466,14 @@ const WebRTC = () => {
             playsInline
             className="videoTag"
             onClick={() => {
-              imgTagOnOff(1, false);
+              imgTagOnOff(1, true);
             }}
           ></video>
           <img
             onClick={() => {
-              imgTagOnOff(1, true);
+              imgTagOnOff(1, false);
             }}
-            id="imgTag1"
+            id="imgTag2"
             className="imgTagOff"
           ></img>
           {/* </div> */}
@@ -484,14 +490,14 @@ const WebRTC = () => {
             playsInline
             className="videoTag"
             onClick={() => {
-              imgTagOnOff(2, false);
+              imgTagOnOff(2, true);
             }}
           ></video>
           <img
             onClick={() => {
-              imgTagOnOff(2, true);
+              imgTagOnOff(2, false);
             }}
-            id="imgTag1"
+            id="imgTag3"
             className="imgTagOff"
           ></img>
           {/* </div> */}
@@ -508,14 +514,14 @@ const WebRTC = () => {
             playsInline
             className="videoTag"
             onClick={() => {
-              imgTagOnOff(3, false);
+              imgTagOnOff(3, true);
             }}
           ></video>
           <img
             onClick={() => {
-              imgTagOnOff(3, true);
+              imgTagOnOff(3, false);
             }}
-            id="imgTag1"
+            id="imgTag4"
             className="imgTagOff"
           ></img>
           {/* </div> */}

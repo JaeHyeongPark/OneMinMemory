@@ -389,8 +389,8 @@ const WebRTC = () => {
           userInfo[data.senderId].imgTag.src = data.imageData;
         }
         // 테스트용 코드
-        imgTag1 = document.getElementById("imgTag1");
-        imgTag1.src = data.imageData;
+        // imgTag1 = document.getElementById("imgTag1");
+        // imgTag1.src = data.imageData;
       });
       return startMedia();
     }, 2000);
@@ -426,8 +426,8 @@ const WebRTC = () => {
       }
     }
     // 테스트용코드
-    imgTag1 = document.getElementById("imgTag1");
-    imgTag1.className = "imgTagOn";
+    // imgTag1 = document.getElementById("imgTag1");
+    // imgTag1.className = "imgTagOn";
   };
   return (
     <div className="ROOM-BODY-WebRTC">

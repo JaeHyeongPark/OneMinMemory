@@ -29,7 +29,7 @@ const Output = () => {
   }
   useEffect(() => {
     if (sliderValue > playlistCtx.totaltime * 10 || !showimg) {
-      setshowimg(false)
+      setshowimg(false);
       return;
     }
     setSliderValue(sliderValue);
@@ -58,7 +58,7 @@ const Output = () => {
       <div className="ROOM-FOOTER-TEST">
         <div className="TimeandBar">
           <div className="time">
-            <div class="slidecontainer" ref={tagRef}>
+            <div className="slidecontainer" ref={tagRef}>
               {showimg && <img style={{ left: `${imgleft}px` }} src={imgurl} />}
               <input
                 type="range"

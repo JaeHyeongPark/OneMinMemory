@@ -179,6 +179,7 @@ socket.on("makeNewPeer", (data) => {
   let i = 0;
   while (i < 4) {
     if (videos[i].isConnected === false) {
+      console.log("여기");
       videos[i].isConnected = true;
       userInfo[data.senderId].video = videos[i];
       break;

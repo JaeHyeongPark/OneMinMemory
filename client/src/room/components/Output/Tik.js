@@ -47,7 +47,7 @@ const Tik = (props) => {
   }));
 
   const changemovie = (time, idx, DT, TT) => {
-    if (props.time < time - DT + 2 || TT + (props.time - time) > 60) {
+    if (props.time < time - DT + 1 || TT + (props.time - time) > 60) {
       return;
     }
     if (App.playlistPermissionState !== 1) {

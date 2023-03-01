@@ -176,47 +176,6 @@ let initialSet = false;
 
 // 새로운 사용자 들어왔을 때 실행되는 소캣
 socket.on("makeNewPeer", (data) => {
-  if (initialSet === false) {
-    peersFace1 = document.getElementById("peersFace1");
-    peersFace2 = document.getElementById("peersFace2");
-    peersFace3 = document.getElementById("peersFace3");
-    peersFace4 = document.getElementById("peersFace4");
-    videoFrame1 = document.getElementById("videoFrame1");
-    videoFrame2 = document.getElementById("videoFrame2");
-    videoFrame3 = document.getElementById("videoFrame3");
-    videoFrame4 = document.getElementById("videoFrame4");
-    imgTag1 = document.getElementById("imgTag1");
-    imgTag2 = document.getElementById("imgTag2");
-    imgTag3 = document.getElementById("imgTag3");
-    imgTag4 = document.getElementById("imgTag4");
-    videos = [
-      {
-        imgTag: imgTag1,
-        videoFrame: videoFrame1,
-        videoTag: peersFace1,
-        isConnected: false,
-      },
-      {
-        imgTag: imgTag2,
-        videoFrame: videoFrame2,
-        videoTag: peersFace2,
-        isConnected: false,
-      },
-      {
-        imgTag: imgTag3,
-        videoFrame: videoFrame3,
-        videoTag: peersFace3,
-        isConnected: false,
-      },
-      {
-        imgTag: imgTag4,
-        videoFrame: videoFrame4,
-        videoTag: peersFace4,
-        isConnected: false,
-      },
-    ];
-    initialSet = true;
-  }
   console.log(sendingConnection.connectionState);
   console.log("새로운 친구가 왔을 때 사용되는 소캣");
   streamIdToUser[data.streamId] = data.senderId;

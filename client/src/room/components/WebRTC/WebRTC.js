@@ -325,6 +325,7 @@ async function makeSendingConection() {
       roomId,
       sendingOffer: sendingOffer,
       Id: App.mainSocket.id,
+      RTCId: socket.id,
     });
   } catch (e) {
     console.log(e);

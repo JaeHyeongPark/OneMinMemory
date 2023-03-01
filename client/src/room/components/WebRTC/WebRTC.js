@@ -69,6 +69,9 @@ async function getMedia(deviceId) {
   try {
     // 유저의 유저미디어의 stream을 주는 api
     myStream = await navigator.mediaDevices.getUserMedia(initialConstrains);
+    if (myStream.getVideoTracks().length === 0) {
+      return;
+    }
     // ==============================자신이 말하고 있을 때 다른사람들에게 알려주기 위한 코드 ====================
     // Create an audio context
     const audioContext = new AudioContext();

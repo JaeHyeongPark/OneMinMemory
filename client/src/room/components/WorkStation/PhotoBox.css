@@ -103,14 +103,12 @@ img.cloud {
   width: 100%;
   align-self: stretch;
   flex-grow: 1;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
   gap: 10px;
   padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  padding-left: 25px;
   background-color: #1c1c26;
-  /* background-color: rgba(59, 61, 85, 0.306); */
-  /* border-radius: 15px; */
   overflow-y: auto;
   flex-wrap: wrap;
 }

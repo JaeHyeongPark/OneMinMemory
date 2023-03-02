@@ -65,6 +65,7 @@ async function getMedia(deviceId) {
       codec: "H264",
       frameRate: { max: 14 },
       facingMode: "user",
+      maxBitrate: 500000,
     },
   };
   try {
@@ -278,18 +279,6 @@ async function makeSendingConection() {
     // 스트림 내에 모든 트랙들을 접근하는 함수를 이용하여 myPeercon
     await myStream.getTracks().forEach(async (track) => {
       await sendingConnection.addTrack(track, myStream);
-    });
-
-    let encodingParams = new RTCRtpEncodingParameters({
-      rid: "low",
-      maxBitrate: 300000, // set the maximum bitrate to 300 kbps
-      // other encoding parameters here
-    });
-
-    // add the encoding to an RTCRtpTransceiver
-    let transceiver = sendingConnection.addTransceiver("video", {
-      direction: "sendrecv",
-      sendEncodings: [encodingParams],
     });
 
     // SendingConnection을 위한 offer 생성 후 서버에 전달

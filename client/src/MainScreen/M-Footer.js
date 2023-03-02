@@ -8,7 +8,7 @@ function MainFooter() {
     <div className={css.footercontainer}>
       <div className={css.footertag}>
         <div className={css.tags}>
-          <a href="https://github.com/JaeHyeongPark/namanmoo">
+          {/* <a href="https://github.com/JaeHyeongPark/namanmoo">
             <BsGithub size={40} color="#ffffff" />
           </a>
           <a href="https://www.youtube.com/premium">
@@ -16,12 +16,12 @@ function MainFooter() {
           </a>
           <a href="https://www.instagram.com/">
             <BsInstagram size={40} color="#ffffff" />
-          </a>
+          </a> */}
         </div>
         <p>
-          <span>Design : HTML5</span>
+          {/* <span>Design : HTML5</span>
           <span>Frontend : React</span>
-          <span>Backend : Node.js Express</span>
+          <span>Backend : Node.js Express</span> */}
         </p>
       </div>
     </div>

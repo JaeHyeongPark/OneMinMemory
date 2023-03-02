@@ -1,5 +1,5 @@
 import css from "./header.module.css";
-import minlogo from "../room/assets/1minlogo_black.svg";
+import minlogo from "./photo-512-white.png";
 
 function MainHeader() {
   return (
@@ -11,9 +11,9 @@ function MainHeader() {
             <img src={minlogo} className={css.logo_black} alt="a" />
           </div>
         </div>
-        <div className={css.feedback_button}>
+        {/* <div className={css.feedback_button}>
           <span className={css.feedback_span}>Feedback</span>
-        </div>
+        </div> */}
       </div>
       <hr />
     </div>

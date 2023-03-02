@@ -69,6 +69,7 @@ module.exports = function (io) {
           ContentType: file.mimetype,
           // CacheControl: "no-store",
         };
+        // cors 방법 변경(나중에 문제 생길시 복구)
         // upimg.push(
         //   `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
         //     key

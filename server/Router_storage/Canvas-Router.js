@@ -59,6 +59,7 @@ module.exports = function (io) {
 
     await s3.putObject(params).promise();
     res.send({ success: true });
+    // cors 방법 변경(나중에 문제 생길시 복구)
     // io.to(roomid).emit("edit", {
     //   editedUrl:
     //     `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +

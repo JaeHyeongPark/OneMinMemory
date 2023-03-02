@@ -8,6 +8,7 @@ const Canvas_router = require("./Router_storage/Canvas-Router");
 const Output_router = require("./Router_storage/Output-Router");
 const MainPage_router = require("./Router_storage/MainPage-Router");
 const Socket_router = require("./Router_storage/Socket-Router");
+const FFmpeg_router = require("./Router_storage/FFmpeg-Router")
 const dotenv = require("dotenv");
 
 // ==============클러스터 관련 모듈=================================
@@ -32,15 +33,14 @@ app.use(cors());
 app.use(bodyParser.json());
 // socket 라우터는 여기로~ by 충일
 app.use("/mainsocket", Socket_router(io));
-// const s3 = new AWS.S3()
-
-// app.use(morgan("combined"));
 // photoBox 라우터는 다 여기로 슝슝~~
 app.use("/photoBox", AWS_S3_router(io));
 // canvas 라우터는 여기로~~
 app.use("/canvas", Canvas_router(io));
 // output 라우터는 일루~
 app.use("/output", Output_router(io));
+// FFmpeg 라우터는 here~
+app.use("/FFmpeg", FFmpeg_router(io))
 // MainPage 라우터는 여기로~~~
 app.use("/home", MainPage_router);
 

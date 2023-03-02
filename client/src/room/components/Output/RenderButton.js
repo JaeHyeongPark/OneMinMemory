@@ -92,7 +92,7 @@ const RenderButton = () => {
     if (finalUrl === "") {
       axios({
         method: "post",
-        url: process.env.REACT_APP_expressURL + "/output/merge",
+        url: process.env.REACT_APP_expressURL + "/FFmpeg/merge",
         data: {
           roomid: roomId,
         },
@@ -108,7 +108,7 @@ const RenderButton = () => {
     e.preventDefault();
     axios({
       method: "post",
-      url: process.env.REACT_APP_expressURL + "/output/download",
+      url: process.env.REACT_APP_expressURL + "/FFmpeg/download",
       responseType: "blob",
       data: {
         roomid: roomId,

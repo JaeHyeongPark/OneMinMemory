@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import copylink from "../../assets/copyLink.png";
 import "./RoomCode.css";
 import SnackBar from "./SnackBar";
+
 const RoomCode = () => {
   const roomid = useParams().roomId;
 

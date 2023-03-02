@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import { Mic, MicOff, VideocamOff, Videocam } from "@mui/icons-material";
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import WebRTC from "../WebRTC/WebRTC";
 
 const VideoCallButton = (props) => {

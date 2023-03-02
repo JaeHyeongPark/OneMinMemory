@@ -40,7 +40,6 @@ const Painting = (props) => {
       </Tooltip>
       {props.paintmode && (
         <div className="canvaseffect__items__painting">
-          {/* <ul className="canvaseffect__items"> */}
           <li>
             <input
               type="range"
@@ -61,7 +60,6 @@ const Painting = (props) => {
               onChange={changecolor}
             />
           </li>
-          {/* </ul> */}
         </div>
       )}
     </>

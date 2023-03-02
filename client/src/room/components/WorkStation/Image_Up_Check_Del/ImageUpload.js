@@ -1,10 +1,7 @@
 import axios from "axios";
-import { useContext } from "react";
-import ImageContext from "./ImageContext";
 import { useParams } from "react-router-dom";
 import softwareupload from "../../../assets/software-upload.svg";
 import Button from "@mui/material/Button";
-import { height } from "@mui/system";
 // require("dotenv").config();
 
 const ImageUpload = (props) => {

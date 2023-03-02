@@ -1,22 +1,22 @@
 import { createContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-// require("dotenv").config();
 
+// 재생목록 관련 훅을 모아두는 컨텍스트
 const PlaylistContext = createContext({
   playlist: [],
   selecttime: "",
   selectDT: "",
   totaltime: 0,
   selectidx: "",
+  musicidx: "",
+  musicsrc: "",
   changeidx: () => {},
   changeTT: () => {},
   changeDT: () => {},
   changetime: () => {},
   addToPlaylist: () => {},
-  musicidx: "",
   changemusicidx: () => {},
-  musicsrc: "",
   selectmusicsrc: () => {},
 });
 
@@ -72,14 +72,14 @@ export const PlaylistContextProvider = (props) => {
     selectDT: DT,
     totaltime: TT,
     selectidx: idx,
+    musicidx: musicIdx,
+    musicsrc: musicSrc,
     changeidx: changeidx,
     changeTT: changeTT,
     changeDT: changeDT,
     changetime: changetime,
     addToPlaylist: addToPlaylistHandler,
-    musicidx: musicIdx,
     changemusicidx: changemusicidx,
-    musicsrc: musicSrc,
     selectmusicsrc: selectmusicsrc,
   };
 

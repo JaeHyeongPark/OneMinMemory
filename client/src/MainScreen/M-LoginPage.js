@@ -1,4 +1,3 @@
-import Startimage from "./kakaostart.png";
 import { useContext, useState } from "react";
 import { AuthContext } from "../shared/context/auth-context";
 import { useNavigate } from "react-router-dom";

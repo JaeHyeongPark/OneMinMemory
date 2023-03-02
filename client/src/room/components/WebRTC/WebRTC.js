@@ -280,11 +280,17 @@ async function makeSendingConection() {
       await sendingConnection.addTrack(track, myStream);
     });
 
-    let senders = sendingConnection.getSenders();
-    let videoSender = senders.find((sender) => sender.track.kind === "video");
-    let parameters = videoSender.getParameters();
-    parameters.encodings[0].maxBitrate = 300000;
-    videoSender.setParameters(parameters);
+    let encodingParams = new RTCRtpEncodingParameters({
+      rid: "low",
+      maxBitrate: 300000, // set the maximum bitrate to 300 kbps
+      // other encoding parameters here
+    });
+
+    // add the encoding to an RTCRtpTransceiver
+    let transceiver = sendingConnection.addTransceiver("video", {
+      direction: "sendrecv",
+      sendEncodings: [encodingParams],
+    });
 
     // SendingConnection을 위한 offer 생성 후 서버에 전달
     const sendingOffer = await sendingConnection.createOffer();

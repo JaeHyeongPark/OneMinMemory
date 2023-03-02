@@ -67,10 +67,14 @@ module.exports = function (io) {
           ACL: "public-read",
           Body: file.buffer,
           ContentType: file.mimetype,
-          CacheControl: "no-store",
+          // CacheControl: "no-store",
         };
+        // upimg.push(
+        //   `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
+        //     key
+        // );
         upimg.push(
-          `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
+          `https://d1vnetyz8ckxw7.cloudfront.net/` +
             key
         );
         return s3.upload(params).promise();

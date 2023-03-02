@@ -85,8 +85,9 @@ function Canvas() {
     setCtx(ctx);
 
     const image = new Image();
-    image.src = ToCanvas.url;
+    // image origin을 먼저 열어주고 src에서 이미지를 받는다.
     image.crossOrigin = "*";
+    image.src = ToCanvas.url;
     image.onload = () => {
       Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
       // 새로운 그림을 작업할때 다른 사람에게 상태 전송

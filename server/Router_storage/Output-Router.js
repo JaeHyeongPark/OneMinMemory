@@ -101,7 +101,8 @@ function getImages(roomid, inputPath, width, height) {
   return new Promise((resolve, reject) => {
     const promises = [];
     for (let i = 0; i < inputPath.length; i++) {
-      const imageKey = inputPath[i].split("com/")[1];
+      // const imageKey = inputPath[i].split("com/")[1];
+      const imageKey = inputPath[i].split("net/")[1];
       const s3Params = {
         Bucket: process.env.Bucket_Name,
         Key: imageKey,

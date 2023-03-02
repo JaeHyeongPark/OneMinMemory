@@ -94,3 +94,8 @@
       format("woff2"),
     url("./assets/fonts/woff-subset/Pretendard-Thin.subset.woff") format("woff");
 }
+
+@font-face {
+  font-family: "komi";
+  src: url("./assets/fonts/KNPSKkomi.ttf");
+}

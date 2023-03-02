@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import RoomHeader from "../components/RoomHeader/RoomHeader";
 import Contents from "./Contents";
-import "./Room.css";
 import SnackBar from "../components/RoomHeader/SnackBar";
 import App from "../../App";
 import RenderVoteState from "../components/Output/RenderVoteState";
@@ -39,7 +38,7 @@ const Room = () => {
   return (
     <React.Fragment>
       <RoomHeader />
-      <main className="main-box">
+      <main>
         <Contents />
         <SnackBar />
       </main>

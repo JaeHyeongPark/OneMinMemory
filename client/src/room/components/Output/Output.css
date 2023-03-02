@@ -209,8 +209,8 @@
 /* 2302225 정근 수정 */
 
 .ROOM-FOOTER {
-  width: 1920px;
-  height: 300px;
+  /* width: 1920px; */
+  /* height: 300px; */
   align-self: stretch;
   flex-grow: 1;
   display: flex;

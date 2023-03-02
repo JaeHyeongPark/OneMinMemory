@@ -5,7 +5,7 @@
   align-items: center;
   padding: 0px;
 
-  width: 1920px;
+  /* width: 1920px; */
   height: 60px;
 
   /* 1min/Darkblue/400 */
@@ -16,14 +16,13 @@
 .Container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   padding-top: 0px;
   padding-right: 5px;
   padding-bottom: 0px;
   padding-left: 80px;
-  width: 1920px;
-  width: 1920px;
+  /* width: 1920px; */
   height: 60px;
 }
 
@@ -34,7 +33,7 @@
   align-items: center;
   padding: 10px 0px;
 
-  width: 1760px;
+  /* width: 1760px; */
   height: 60px;
 }
 

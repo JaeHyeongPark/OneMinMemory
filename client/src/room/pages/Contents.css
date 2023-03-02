@@ -1,5 +1,5 @@
 .ROOM-BODY {
-  height: 720px;
+  /* height: 720px; */
   align-self: stretch;
   flex-grow: 1;
   display: flex;

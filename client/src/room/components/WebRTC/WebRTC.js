@@ -276,8 +276,8 @@ async function makeSendingConection() {
     });
 
     // 스트림 내에 모든 트랙들을 접근하는 함수를 이용하여 myPeercon
-    myStream.getTracks().forEach((track) => {
-      sendingConnection.addTrack(track, myStream);
+    await myStream.getTracks().forEach(async (track) => {
+      await sendingConnection.addTrack(track, myStream);
     });
 
     let senders = sendingConnection.getSenders();

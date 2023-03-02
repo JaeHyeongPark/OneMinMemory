@@ -5,6 +5,7 @@ import RoomHeader from "../components/RoomHeader/RoomHeader";
 import Contents from "./Contents";
 import SnackBar from "../components/RoomHeader/SnackBar";
 import App from "../../App";
+import "./Room.css";
 import RenderVoteState from "../components/Output/RenderVoteState";
 import EditPermissionButton from "../components/Output/EditPermissionButton";
 import WebRTC from "../components/WebRTC/WebRTC";
@@ -37,11 +38,13 @@ const Room = () => {
 
   return (
     <React.Fragment>
-      <RoomHeader />
-      <main>
-        <Contents />
-        <SnackBar />
-      </main>
+      <div className="ROOM-MAIN">
+        <RoomHeader />
+        <main className="ROOM-BODYandFOOTER">
+          <Contents />
+          <SnackBar />
+        </main>
+      </div>
     </React.Fragment>
   );
 };

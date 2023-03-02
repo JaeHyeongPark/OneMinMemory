@@ -130,8 +130,8 @@ const RenderButton = () => {
   const openmodal = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   return (
     <div>
@@ -155,10 +155,9 @@ const RenderButton = () => {
           <div className="RenderIcon">
             <img src={fullScreen} onClick={openmodal} alt="video rendering" />
           </div>
-          <span className="render_span">렌더링 요청</span>
+          <span className="render_span">EXPORT</span>
         </Button>
       )}
-      
 
       <Modal
         open={open}

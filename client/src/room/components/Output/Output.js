@@ -81,16 +81,14 @@ const Output = () => {
         <SoundTrack changetime={changeTime} changeshow={setshowimg} />
       </div>
       <div className="ROOM-FOOTER-BUTTONS">
-        <div className="finished_layout">
-          <InsertMusic />
-          <Box sx={{ alignContent: "center" }}>
-            <Stepper>
-              <RenderVoteState />
-            </Stepper>
-          </Box>
-          <RenderButton />
-          <EditPermissionButton />
-        </div>
+        <InsertMusic />
+        <Box sx={{ alignContent: "center" }}>
+          <Stepper>
+            <RenderVoteState />
+          </Stepper>
+        </Box>
+        <RenderButton />
+        <EditPermissionButton />
       </div>
     </div>
   );

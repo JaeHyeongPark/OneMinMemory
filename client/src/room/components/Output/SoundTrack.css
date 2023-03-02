@@ -1,5 +1,6 @@
 .soundtrack_layout {
   /* border-color: azure; */
+  height: 30%;
   align-self: stretch;
   display: flex;
   flex-direction: row;

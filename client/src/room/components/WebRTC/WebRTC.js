@@ -62,6 +62,7 @@ async function getMedia(deviceId) {
     video: {
       width: 320,
       height: 240,
+      codec: "H264",
       frameRate: { max: 14 },
       facingMode: "user",
     },
@@ -278,6 +279,12 @@ async function makeSendingConection() {
     myStream.getTracks().forEach((track) => {
       sendingConnection.addTrack(track, myStream);
     });
+
+    let senders = sendingConnection.getSenders();
+    let videoSender = senders.find((sender) => sender.track.kind === "video");
+    let parameters = videoSender.getParameters();
+    parameters.encodings[0].maxBitrate = 300000;
+    videoSender.setParameters(parameters);
 
     // SendingConnection을 위한 offer 생성 후 서버에 전달
     const sendingOffer = await sendingConnection.createOffer();

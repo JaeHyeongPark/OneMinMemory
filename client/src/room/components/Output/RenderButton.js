@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import FileDownload from "js-file-download";
 import { useParams } from "react-router-dom";
-import RenderIcon from "../../assets/rendericon.svg";
 import CopyIcon from "../../assets/copy_icon.png";
 import ExitIcon from "../../assets/logout.png";
 import DownIcon from "../../assets/downloading-file.png";
@@ -16,10 +15,9 @@ import MuiAlert from "@mui/material/Alert";
 import App from "../../../App";
 import "./RenderButton.css";
 import PlaylistContext from "../../../shared/context/playlist-context";
-// require("dotenv").config();
 import SnackBar from "../RoomHeader/SnackBar";
 import RenderVoteState from "./RenderVoteState";
-import { appBarClasses } from "@mui/material";
+
 
 const style = {
   position: "absolute",
@@ -93,6 +91,12 @@ const RenderButton = () => {
     if (canIMerge) {
       merge();
     }
+  };
+  const handleClose2 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnack(false);
   };
 
   const merge = () => {

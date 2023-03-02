@@ -9,12 +9,13 @@
   text-align: center;
   align-self: stretch;
   align-items: center;
+  gap: 5%;
   background-color: #1c1c26;
 }
 
 .EditButtons {
-  position: absolute;
-  top: 20px;
+  position: relative;
+  /* top: 20px; */
   left: 20%;
   height: 80px;
   width: 60%;
@@ -24,8 +25,8 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-left: auto;
-  margin-right: auto;
+  /* margin-left: auto; */
+  /* margin-right: auto; */
   padding: 0;
   border-radius: 15px;
   background-color: #272731;
@@ -143,17 +144,20 @@ body {
   margin: 0;
 }
 
-.container .uploaded-image {
-  position: absolute;
+/* .container .uploaded-image { */
+/* position: absolute;
   top: 25%;
   left: 12%;
   width: auto;
   height: auto;
-  margin: auto;
-}
+  margin: auto; */
+/* } */
 .uploaded-image canvas {
   width: 768px;
   height: 432px;
+
+  /* width: 60%;
+  height: 60%; */
 }
 
 .transition-modal {

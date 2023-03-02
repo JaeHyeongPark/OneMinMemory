@@ -132,6 +132,12 @@ function Canvas() {
     } else {
       setPaint(check);
     }
+<<<<<<< HEAD
+=======
+    if (Paint && !check) {
+      await ctrlStore();
+    }
+>>>>>>> feature/mpeg_effect
   };
 
   // 텍스트 모드에서 마우스 클릭시 해당 위치에 input창 띄우기

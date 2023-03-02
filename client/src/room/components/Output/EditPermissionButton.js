@@ -39,22 +39,28 @@ const EditPermissionButton = () => {
   };
   if (App.playlistPermissionState === 2) {
     return (
-      <button className="EditDisc_disable">
-        <label className="EditDisc_label">누군가 편집중!</label>
-      </button>
+      <div className="EditDisc_div">
+        <button className="EditDisc_disable">
+          <label className="EditDisc_label">누군가 편집중!</label>
+        </button>
+      </div>
     );
   } else if (App.playlistPermissionState === 1) {
     return (
-      <button className="EditDisc_fin" onClick={releasePermission}>
-        <label className="EditDisc_label">편집 완료하기</label>
-      </button>
+      <div className="EditDisc_div">
+        <button className="EditDisc_fin" onClick={releasePermission}>
+          <label className="EditDisc_label">편집 완료하기</label>
+        </button>
+      </div>
     );
   } else {
     return (
-      <button className="EditDisc" onClick={getPermission}>
-        <img src={DiscEdit} alt="disc edit" />
-        {/* <label className="permission_label_able">playlist Edit</label> */}
-      </button>
+      <div className="EditDisc_div">
+        <button className="EditDisc" onClick={getPermission}>
+          <img src={DiscEdit} alt="disc edit" className="EditDisc_img" />
+          {/* <label className="permission_label_able">playlist Edit</label> */}
+        </button>
+      </div>
     );
   }
 };

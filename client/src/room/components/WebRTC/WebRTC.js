@@ -62,13 +62,18 @@ async function getMedia(deviceId) {
     video: {
       width: 320,
       height: 240,
+      codec: "H264",
       frameRate: { max: 14 },
       facingMode: "user",
+      maxBitrate: 300000,
     },
   };
   try {
     // 유저의 유저미디어의 stream을 주는 api
     myStream = await navigator.mediaDevices.getUserMedia(initialConstrains);
+    if (myStream.getVideoTracks().length === 0) {
+      return;
+    }
     // ==============================자신이 말하고 있을 때 다른사람들에게 알려주기 위한 코드 ====================
     // Create an audio context
     const audioContext = new AudioContext();
@@ -169,51 +174,8 @@ socket.on("iceForSending", async (data) => {
   }
 });
 
-let initialSet = false;
-
 // 새로운 사용자 들어왔을 때 실행되는 소캣
 socket.on("makeNewPeer", (data) => {
-  if (initialSet === false) {
-    peersFace1 = document.getElementById("peersFace1");
-    peersFace2 = document.getElementById("peersFace2");
-    peersFace3 = document.getElementById("peersFace3");
-    peersFace4 = document.getElementById("peersFace4");
-    videoFrame1 = document.getElementById("videoFrame1");
-    videoFrame2 = document.getElementById("videoFrame2");
-    videoFrame3 = document.getElementById("videoFrame3");
-    videoFrame4 = document.getElementById("videoFrame4");
-    imgTag1 = document.getElementById("imgTag1");
-    imgTag2 = document.getElementById("imgTag2");
-    imgTag3 = document.getElementById("imgTag3");
-    imgTag4 = document.getElementById("imgTag4");
-    videos = [
-      {
-        imgTag: imgTag1,
-        videoFrame: videoFrame1,
-        videoTag: peersFace1,
-        isConnected: false,
-      },
-      {
-        imgTag: imgTag2,
-        videoFrame: videoFrame2,
-        videoTag: peersFace2,
-        isConnected: false,
-      },
-      {
-        imgTag: imgTag3,
-        videoFrame: videoFrame3,
-        videoTag: peersFace3,
-        isConnected: false,
-      },
-      {
-        imgTag: imgTag4,
-        videoFrame: videoFrame4,
-        videoTag: peersFace4,
-        isConnected: false,
-      },
-    ];
-    initialSet = true;
-  }
   console.log(sendingConnection.connectionState);
   console.log("새로운 친구가 왔을 때 사용되는 소캣");
   streamIdToUser[data.streamId] = data.senderId;
@@ -300,8 +262,14 @@ async function makeSendingConection() {
 
     sendingConnection.addEventListener("connectionstatechange", (unused) => {
       if (sendingConnection.connectionState === "disconnected") {
+        streamIdToUser = {};
+        initializeSetting();
         sendingConnection.close();
-        makeNewConnection();
+        makeSendingConection();
+      } else if (sendingConnection.connectionState === "closed") {
+        streamIdToUser = {};
+        initializeSetting();
+        makeSendingConection();
       }
     });
 
@@ -313,8 +281,8 @@ async function makeSendingConection() {
     });
 
     // 스트림 내에 모든 트랙들을 접근하는 함수를 이용하여 myPeercon
-    myStream.getTracks().forEach((track) => {
-      sendingConnection.addTrack(track, myStream);
+    await myStream.getTracks().forEach(async (track) => {
+      await sendingConnection.addTrack(track, myStream);
     });
 
     // SendingConnection을 위한 offer 생성 후 서버에 전달
@@ -379,12 +347,53 @@ async function makeNewConnection() {
     console.log(e);
   }
 }
-// 태그들을 자료형에 매핑하는 함수
 
+// 태그들을 자료형에 매핑하는 함수
+const initializeSetting = () => {
+  peersFace1 = document.getElementById("peersFace1");
+  peersFace2 = document.getElementById("peersFace2");
+  peersFace3 = document.getElementById("peersFace3");
+  peersFace4 = document.getElementById("peersFace4");
+  videoFrame1 = document.getElementById("videoFrame1");
+  videoFrame2 = document.getElementById("videoFrame2");
+  videoFrame3 = document.getElementById("videoFrame3");
+  videoFrame4 = document.getElementById("videoFrame4");
+  imgTag1 = document.getElementById("imgTag1");
+  imgTag2 = document.getElementById("imgTag2");
+  imgTag3 = document.getElementById("imgTag3");
+  imgTag4 = document.getElementById("imgTag4");
+  videos = [
+    {
+      imgTag: imgTag1,
+      videoFrame: videoFrame1,
+      videoTag: peersFace1,
+      isConnected: false,
+    },
+    {
+      imgTag: imgTag2,
+      videoFrame: videoFrame2,
+      videoTag: peersFace2,
+      isConnected: false,
+    },
+    {
+      imgTag: imgTag3,
+      videoFrame: videoFrame3,
+      videoTag: peersFace3,
+      isConnected: false,
+    },
+    {
+      imgTag: imgTag4,
+      videoFrame: videoFrame4,
+      videoTag: peersFace4,
+      isConnected: false,
+    },
+  ];
+};
 const WebRTC = () => {
   roomId = useParams().roomId;
   useEffect(() => {
     setTimeout(() => {
+      initializeSetting();
       // 서버가 보낸 다른사람의 그림 데이터
       App.mainSocket.on("myCanvas", (data) => {
         if (userInfo[data.senderId]) {
@@ -403,7 +412,7 @@ const WebRTC = () => {
       // setTimeout(() => {
       //   videoFrame1.className = "videoTagNotSpeaking";
       // }, 1000);
-      if (userInfo[data.speakerId]) {
+      if (userInfo[data.speakerId] && userInfo[data.speakerId].video) {
         userInfo[data.speakerId].video.videoFrame.className =
           "videoTagSpeaking";
         setTimeout(() => {

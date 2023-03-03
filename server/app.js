@@ -10,6 +10,8 @@ const MainPage_router = require("./Router_storage/MainPage-Router");
 const Socket_router = require("./Router_storage/Socket-Router");
 const FFmpeg_router = require("./Router_storage/FFmpeg-Router")
 const dotenv = require("dotenv");
+const { createAdapter } = require("@socket.io/cluster-adapter");
+const { setupWorker } = require("@socket.io/sticky");
 
 // ==============클러스터 관련 모듈=================================
 // const { setupMaster, setupWorker } = require("@socket.io/sticky");
@@ -29,6 +31,10 @@ const io = new socketio.Server(httpServer, {
     methods: ["GET", "POST", "OPTIONS"],
   },
 });
+
+io.adapter(createAdapter());
+setupWorker(io);
+
 app.use(cors());
 app.use(bodyParser.json());
 // socket 라우터는 여기로~ by 충일

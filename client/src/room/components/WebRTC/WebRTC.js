@@ -345,6 +345,7 @@ async function makeNewConnection() {
     console.log(e);
   }
 }
+
 // 태그들을 자료형에 매핑하는 함수
 const initializeSetting = () => {
   peersFace1 = document.getElementById("peersFace1");
@@ -385,7 +386,6 @@ const initializeSetting = () => {
       isConnected: false,
     },
   ];
-  initialSet = true;
 };
 const WebRTC = () => {
   roomId = useParams().roomId;

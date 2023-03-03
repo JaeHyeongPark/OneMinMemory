@@ -263,9 +263,7 @@ async function makeSendingConection() {
     sendingConnection.addEventListener("connectionstatechange", (unused) => {
       if (sendingConnection.connectionState === "disconnected") {
         streamIdToUser = {};
-        videos.forEach((video) => {
-          video.isConnected = false;
-        });
+        initializeSetting();
         sendingConnection.close();
         makeSendingConection();
       }

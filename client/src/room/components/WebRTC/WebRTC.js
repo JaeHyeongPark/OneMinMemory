@@ -266,6 +266,10 @@ async function makeSendingConection() {
         initializeSetting();
         sendingConnection.close();
         makeSendingConection();
+      } else if (sendingConnection.connectionState === "closed") {
+        streamIdToUser = {};
+        initializeSetting();
+        makeSendingConection();
       }
     });
 

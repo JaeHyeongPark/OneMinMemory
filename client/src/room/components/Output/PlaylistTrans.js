@@ -18,7 +18,7 @@ const PlaylistTrans = (props) => {
               width: String(((props.duration - 1) * 100) / 60) + "%",
             }}
           />
-          {<TransitionButton className="toplay_trans" idx={props.i}/>}
+          {<TransitionButton className="toplay_trans" idx={props.i} />}
         </>
       ) : props.i < playlistView.length - 1 ? (
         <>
@@ -29,7 +29,7 @@ const PlaylistTrans = (props) => {
               width: String(((props.duration - 2) * 100) / 60) + "%",
             }}
           />
-          <TransitionButton className="toplay_trans" idx={props.i}/>
+          <TransitionButton className="toplay_trans" idx={props.i} />
         </>
       ) : (
         <></>

@@ -65,7 +65,7 @@ async function getMedia(deviceId) {
       codec: "H264",
       frameRate: { max: 14 },
       facingMode: "user",
-      maxBitrate: 300000,
+      maxBitrate: 400000,
     },
   };
   try {
@@ -410,7 +410,7 @@ const WebRTC = () => {
       // setTimeout(() => {
       //   videoFrame1.className = "videoTagNotSpeaking";
       // }, 1000);
-      if (userInfo[data.speakerId]) {
+      if (userInfo[data.speakerId] && userInfo[data.speakerId].video) {
         userInfo[data.speakerId].video.videoFrame.className =
           "videoTagSpeaking";
         setTimeout(() => {

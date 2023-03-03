@@ -1,6 +1,7 @@
 import { useDrag } from "react-dnd";
-import { useContext } from "react";
+import { useEffect, useContext } from "react";
 import ImageContext from "./ImageContext";
+import { DraggingContext } from "../../../pages/DraggingContext";
 
 const Picture = (props) => {
   const ToCanvas = useContext(ImageContext);
@@ -14,6 +15,13 @@ const Picture = (props) => {
     }),
     [props.url]
   );
+  // console.log("isDragging : ", isDragging);
+  const { picDrag, ChangePicDrag } = useContext(DraggingContext);
+
+  useEffect(() => {
+    ChangePicDrag(isDragging);
+    console.log("picDrag : ", picDrag);
+  }, [isDragging]);
 
   const selectimage = async (url) => {
     if (props.mode === "Original") {

@@ -10,9 +10,19 @@ export const DraggingProvider = (props) => {
   const [effectDrag, setEffectDrag] = useState(false);
   const [transDrag, setTransDrag] = useState(false);
 
-  const ChangePicDrag = () => setPicDrag((v) => !v);
-  const ChangeEffectDrag = () => setEffectDrag((v) => !v);
-  const ChangeTransDrag = () => setTransDrag((v) => !v);
+  // const ChangePicDrag = () => setPicDrag((v) => !v);
+  // const ChangeEffectDrag = () => setEffectDrag((v) => !v);
+  // const ChangeTransDrag = () => setTransDrag((v) => !v);
+
+  const ChangePicDrag = (v) => {
+    setPicDrag(v);
+  };
+  const ChangeEffectDrag = (v) => {
+    setEffectDrag(v);
+  };
+  const ChangeTransDrag = (v) => {
+    setTransDrag(v);
+  };
 
   const dragtodrop = {
     picDrag,

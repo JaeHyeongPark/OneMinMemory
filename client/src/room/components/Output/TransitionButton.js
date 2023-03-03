@@ -7,10 +7,13 @@ import App from "../../../App";
 import SnackBar from "../RoomHeader/SnackBar";
 import trans_off from "../../assets/transition_off.png";
 import trans_on from "../../assets/transition_on.png";
+import { DraggingContext } from "../../pages/DraggingContext";
 
 const TransitionButton = (props) => {
   const playlistCtx = useContext(PlaylistContext);
   const roomId = useParams().roomId;
+  // DraggingContext
+  const { transDrag } = useContext(DraggingContext);
 
   const [{ isover }, playlist] = useDrop(() => ({
     accept: ["transition"],
@@ -66,6 +69,7 @@ const TransitionButton = (props) => {
         src={trans_off}
         style={{
           width: String((2 * 100) / 60) + "%",
+          border: transDrag && "5px solid yellow",
         }}
         alt="transoff"
       />
@@ -79,6 +83,7 @@ const TransitionButton = (props) => {
         style={{
           width: String((2 * 100) / 60) + "%",
           cursor: "pointer",
+          border: transDrag && "5px solid yellow",
         }}
         onClick={deltransition}
         alt="transon"

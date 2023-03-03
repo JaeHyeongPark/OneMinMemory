@@ -9,6 +9,7 @@ import "./Room.css";
 import RenderVoteState from "../components/Output/RenderVoteState";
 import EditPermissionButton from "../components/Output/EditPermissionButton";
 import WebRTC from "../components/WebRTC/WebRTC";
+import { DraggingProvider } from "./DraggingContext";
 const Room = () => {
   const navigate = useNavigate();
   const roomId = useParams().roomId;
@@ -41,8 +42,10 @@ const Room = () => {
       <div className="ROOM-MAIN">
         <RoomHeader />
         <main className="ROOM-BODYandFOOTER">
-          <Contents />
-          <SnackBar />
+          <DraggingProvider>
+            <Contents />
+            <SnackBar />
+          </DraggingProvider>
         </main>
       </div>
     </React.Fragment>

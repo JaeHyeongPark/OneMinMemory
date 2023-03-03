@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useDrag } from "react-dnd";
 import "./Transition.css";
+import { DraggingContext } from "../../../pages/DraggingContext";
 
 const Transition = ({ className, onChange }) => {
   const [check, setcheck] = useState(false);
@@ -12,6 +13,12 @@ const Transition = ({ className, onChange }) => {
     }),
   }));
 
+  const { transDrag, ChangeTransDrag } = useContext(DraggingContext);
+  useEffect(() => {
+    ChangeTransDrag(isDragging);
+    // console.log("transDrag : ", transDrag);
+  }, [isDragging]);
+
   return (
     <div
       ref={dragRef}
@@ -19,8 +26,7 @@ const Transition = ({ className, onChange }) => {
       className={className}
       style={{ opacity: isDragging ? "0.3" : "1" }}
       onMouseOver={() => setcheck(true)}
-      onMouseOut={() => setcheck(false)}
-    >
+      onMouseOut={() => setcheck(false)}>
       <img
         className={className}
         src={

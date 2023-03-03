@@ -15,6 +15,7 @@ import Painting from "./Canvas_Effect/Painting";
 import Text from "./Canvas_Effect/Text";
 import EffectItems from "./Canvas_Effect/EffectItems";
 import TranEffect from "./Canvas_Effect/TranEffect";
+import { DraggingContext } from "../../pages/DraggingContext";
 
 function Canvas() {
   // 캔버스 관련 훅
@@ -45,6 +46,9 @@ function Canvas() {
   // effectitems, effect, transition 관련 훅
   const [transitionModal, setTransitionModal] = useState(false);
   const [showEffectItems, setShowEffectItems] = useState(false);
+
+  // DraggingContext
+  const { picDrag } = useContext(DraggingContext);
 
   // canvas버튼 관리(한번에 1개만 작동)
   const check = (onitem) => {
@@ -259,7 +263,10 @@ function Canvas() {
       if ((e.ctrlKey && e.key === "z") || (e.metaKey && e.key === "z")) {
         CtrlZ();
       }
-      if ((e.ctrlKey && e.key === "y") || (e.metaKey && e.key === "z" && e.shiftKey)) {
+      if (
+        (e.ctrlKey && e.key === "y") ||
+        (e.metaKey && e.key === "z" && e.shiftKey)
+      ) {
         CtrlY();
       }
     };
@@ -362,12 +369,19 @@ function Canvas() {
               className="sidebar-item"
               onClick={newImage}
               name="Save"
-              startIcon={<SaveIcon style={{ fontSize: 35 }} />}
-            ></Button>
+              startIcon={<SaveIcon style={{ fontSize: 35 }} />}></Button>
           </Tooltip>
         </div>
         <div className="container">
-          <div className="uploaded-image" ref={drop}>
+          <div
+            className="uploaded-image"
+            ref={drop}
+            style={{
+              border: picDrag && "2px solid #1484CD",
+              boxShadow:
+                picDrag &&
+                "0 0 2px #1484CD, 0 0 2px #1484CD, 0 0 20px #1484CD, 0 0 8px #1484CD, 0 0 28px #1484CD, inset 0 0 13px #1484CD",
+            }}>
             <canvas
               ref={canvasRef}
               width={1280}

@@ -8,11 +8,15 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import PlaylistMain from "./PlaylistMain";
 import PlaylistTrans from "./PlaylistTrans";
 import App from "../../../App";
+import { DraggingContext } from "../../pages/DraggingContext";
+
 // require("dotenv").config();
 import SnackBar from "../RoomHeader/SnackBar";
 const Playlist = () => {
   const playlistCtx = useContext(PlaylistContext);
   const roomId = useParams().roomId;
+  // DraggingContext
+  const { picDrag, effectDrag } = useContext(DraggingContext);
 
   // 프리셋 말고 빈 재생목록부분의 드랍존
   const [{ isover }, newplayimg] = useDrop(() => ({
@@ -69,7 +73,14 @@ const Playlist = () => {
   }, []);
   return (
     <div className="Tracks">
-      <div className="playlist_main">
+      <div
+        className="playlist_main"
+        style={{
+          border: (picDrag || effectDrag) && "2px solid #1484CD",
+          boxShadow:
+            (picDrag || effectDrag) &&
+            "0 0 2px #1484CD, 0 0 2px #1484CD, 0 0 20px #1484CD, 0 0 8px #1484CD, 0 0 28px #1484CD, inset 0 0 13px #1484CD",
+        }}>
         {playlistCtx.playlist.map((data, i) => (
           <PlaylistMain
             effect={data.effect}

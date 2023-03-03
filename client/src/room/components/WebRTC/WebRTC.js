@@ -65,7 +65,7 @@ async function getMedia(deviceId) {
       codec: "H264",
       frameRate: { max: 14 },
       facingMode: "user",
-      maxBitrate: 500000,
+      maxBitrate: 300000,
     },
   };
   try {

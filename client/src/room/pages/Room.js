@@ -40,10 +40,13 @@ const Room = () => {
     <React.Fragment>
       <div className="ROOM-MAIN">
         <RoomHeader />
-        <main className="ROOM-BODYandFOOTER">
+        <div
+          className="ROOM-BODYandFOOTER"
+          style={{ height: `calc(100% - 60px)` }}
+        >
           <Contents />
           <SnackBar />
-        </main>
+        </div>
       </div>
     </React.Fragment>
   );

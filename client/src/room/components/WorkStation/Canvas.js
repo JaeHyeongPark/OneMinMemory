@@ -106,8 +106,10 @@ function Canvas() {
 
   // 캔버스 페인팅 작업 함수
   const drawing = (e) => {
-    const x = e.nativeEvent.offsetX * (1280 / 768);
-    const y = e.nativeEvent.offsetY * (720 / 432);
+    const resize_x = canvasRef.current.offsetWidth
+    const resize_y = canvasRef.current.offsetHeight
+    const x = e.nativeEvent.offsetX * (1280 / resize_x);
+    const y = e.nativeEvent.offsetY * (720 / resize_y);
     if (Paint && PaintMode) {
       Ctx.lineJoin = "bevel";
       Ctx.lineCap = "round";
@@ -139,11 +141,13 @@ function Canvas() {
     if (!TextMode) {
       return;
     }
+    const resize_x = canvasRef.current.offsetWidth
+    const resize_y = canvasRef.current.offsetHeight
     const x = e.nativeEvent.offsetX;
     const y = e.nativeEvent.offsetY;
     const z = canvasRef.current.getBoundingClientRect();
-    setX([x * (1280 / 768), z.x + x]);
-    setY([y * (720 / 432) - textSize / 2, z.y + y - textSize / 2]);
+    setX([x * (1280 / resize_x), z.x + x]);
+    setY([y * (720 / resize_y) - textSize / 2, z.y + y - textSize / 2]);
     setinputShow(true);
   };
 
@@ -236,8 +240,8 @@ function Canvas() {
         const effectedImageData = res.data.effectedImageData;
         if (effectedImageData) {
           const image = new Image();
-          image.src = effectedImageData;
           image.crossOrigin = "*";
+          image.src = effectedImageData;
           image.onload = () => {
             Ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
             ctrlStore();

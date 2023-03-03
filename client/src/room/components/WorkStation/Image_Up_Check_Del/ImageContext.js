@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createContext } from "react";
 
 import axios from "axios";
@@ -11,7 +11,7 @@ const ImageContext = createContext({
   view: {},
   origin: {},
   effect: {},
-  Changeurl:() => {},
+  Changeurl: () => {},
   setorigin: (urllist) => {},
   seteffect: (urllist) => {},
   sendurl: (url) => {},
@@ -30,7 +30,7 @@ export const TocanvasProvider = (props) => {
       .post(process.env.REACT_APP_expressURL + "/canvas/imageinfo", {
         url: url,
       })
-      .then(async (res) => {
+      .then((res) => {
         settype(res.data.type);
         seturl(url);
       });
@@ -39,15 +39,13 @@ export const TocanvasProvider = (props) => {
   const ChangeView = (newView) => {
     setView(newView);
   };
-  const Changeorigin = (newView) => {
-    setorigin(newView);
-  };
+
   const Changeeffect = (newView) => {
     seteffect(newView);
   };
   const Changeurl = (url) => {
-    seturl(url)
-  }
+    seturl(url);
+  };
 
   const imagetocanvas = {
     url: url,
@@ -56,12 +54,12 @@ export const TocanvasProvider = (props) => {
     origin: origin,
     effect: effect,
     setorigin,
-    Changeorigin,
-    Changeurl:Changeurl,
+    Changeurl: Changeurl,
     seteffect: Changeeffect,
     sendurl: sendurl,
     setView: ChangeView,
   };
+
   return (
     <ImageContext.Provider value={imagetocanvas}>
       {props.children}

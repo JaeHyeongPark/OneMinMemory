@@ -153,11 +153,10 @@ body {
   margin: auto; */
 /* } */
 .uploaded-image canvas {
-  width: 768px;
-  height: 432px;
+  /* width: 768px;
+  height: 432px; */
 
-  /* width: 60%;
-  height: 60%; */
+  width: 80%;
 }
 
 .transition-modal {

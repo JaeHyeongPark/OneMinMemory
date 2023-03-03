@@ -174,8 +174,6 @@ socket.on("iceForSending", async (data) => {
   }
 });
 
-let initialSet = false;
-
 // 새로운 사용자 들어왔을 때 실행되는 소캣
 socket.on("makeNewPeer", (data) => {
   console.log(sendingConnection.connectionState);
@@ -264,8 +262,12 @@ async function makeSendingConection() {
 
     sendingConnection.addEventListener("connectionstatechange", (unused) => {
       if (sendingConnection.connectionState === "disconnected") {
+        streamIdToUser = {};
+        videos.forEach((video) => {
+          video.isConnected = false;
+        });
         sendingConnection.close();
-        makeNewConnection();
+        makeSendingConection();
       }
     });
 

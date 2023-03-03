@@ -75,7 +75,12 @@ const Playlist = () => {
     <div className="Tracks">
       <div
         className="playlist_main"
-        style={{ border: (picDrag || effectDrag) && "5px solid yellow" }}>
+        style={{
+          border: (picDrag || effectDrag) && "2px solid #1484CD",
+          boxShadow:
+            (picDrag || effectDrag) &&
+            "0 0 2px #1484CD, 0 0 2px #1484CD, 0 0 20px #1484CD, 0 0 8px #1484CD, 0 0 28px #1484CD, inset 0 0 13px #1484CD",
+        }}>
         {playlistCtx.playlist.map((data, i) => (
           <PlaylistMain
             effect={data.effect}

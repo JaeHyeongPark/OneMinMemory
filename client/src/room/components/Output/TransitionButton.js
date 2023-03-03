@@ -69,7 +69,10 @@ const TransitionButton = (props) => {
         src={trans_off}
         style={{
           width: String((2 * 100) / 60) + "%",
-          border: transDrag && "5px solid yellow",
+          border: transDrag && "2px solid #1484CD",
+          boxShadow:
+            transDrag &&
+            "0 0 2px #1484CD, 0 0 2px #1484CD, 0 0 20px #1484CD, 0 0 8px #1484CD, 0 0 28px #1484CD, inset 0 0 13px #1484CD",
         }}
         alt="transoff"
       />
@@ -83,7 +86,10 @@ const TransitionButton = (props) => {
         style={{
           width: String((2 * 100) / 60) + "%",
           cursor: "pointer",
-          border: transDrag && "5px solid yellow",
+          border: transDrag && "2px solid #1484CD",
+          boxShadow:
+            transDrag &&
+            "0 0 2px #1484CD, 0 0 2px #1484CD, 0 0 20px #1484CD, 0 0 8px #1484CD, 0 0 28px #1484CD, inset 0 0 13px #1484CD",
         }}
         onClick={deltransition}
         alt="transon"

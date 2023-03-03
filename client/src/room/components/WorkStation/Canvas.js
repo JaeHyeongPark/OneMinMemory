@@ -372,7 +372,12 @@ function Canvas() {
           <div
             className="uploaded-image"
             ref={drop}
-            style={{ border: picDrag && "5px solid yellow" }}>
+            style={{
+              border: picDrag && "2px solid #1484CD",
+              boxShadow:
+                picDrag &&
+                "0 0 2px #1484CD, 0 0 2px #1484CD, 0 0 20px #1484CD, 0 0 8px #1484CD, 0 0 28px #1484CD, inset 0 0 13px #1484CD",
+            }}>
             <canvas
               ref={canvasRef}
               width={1280}

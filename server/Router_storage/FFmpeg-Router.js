@@ -378,22 +378,16 @@ function addAudio(roomid, inputPath, musicsrc) {
   });
 }
 
+// 랜더링 작업 폴더 삭제
 function deleteFilesInFolder(folderPath) {
-  return new Promise((resolve, reject) => {
-    fs.readdir(folderPath, (err, files) => {
-      if (err) {
-        reject(err);
-      } else {
-        const promises = files.map((file) => {
-          const filePath = path.join(folderPath, file);
-          return fs.promises.unlink(filePath);
-        });
-        Promise.all(promises)
-          .then(() => resolve(console.log("렌더링 임시파일 삭제 완료")))
-          .catch((err) => reject(err));
+    fs.rm(folderPath, {recursive:true}, (err) => {
+      if(err){
+        console.log(err)
+      }else{
+        console.log("작업 folder 삭제 완료")
       }
-    });
-  });
+    })
+
 }
 
 // 최종 완성본 S3 저장
@@ -408,12 +402,6 @@ const AddS3 = async (Path, VideoKey) => {
   };
   return s3.upload(params).promise();
 };
-
-// 최종 완성본 다운로드 버튼
-router.post("/download", (req, res, next) => {
-  const roomid = req.body.roomid;
-  res.download(`./public/render/${roomid}/Final/oneminute_${roomid}.mp4`);
-});
 
 module.exports = function (io) {
   // 랜더링시 호출(각 단계별로 진행되며 이미지로 영상을 추출)
@@ -507,13 +495,15 @@ module.exports = function (io) {
     result = end4.getTime() - start.getTime();
     console.log("소요시간", result);
 
-    // 임시 파일 삭제
-    await deleteFilesInFolder(renderInputPath);
-
     // S3에 영상 저장
     const VideoKey = `${roomid}/Final/oneminute_${roomid}.mp4`;
     await AddS3(finishedPath, VideoKey);
     console.log("영상 S3 저장 완료");
+
+    // 저장후 작업 폴더 삭제
+    deleteFilesInFolder(renderPath);
+
+    // 영상 완료에 대한 응답
     res.send({ success: true });
 
     io.to(roomid).emit("mergeFinished", {

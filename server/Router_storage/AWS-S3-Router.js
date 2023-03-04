@@ -67,7 +67,7 @@ module.exports = function (io) {
           ACL: "public-read",
           Body: file.buffer,
           ContentType: file.mimetype,
-          // CacheControl: "no-store",
+          // CacheControl: "max-age=21600",
         };
         // cors 방법 변경(나중에 문제 생길시 복구)
         // upimg.push(

@@ -99,7 +99,9 @@ const RenderButton = () => {
     setOpenSnack(false);
   };
 
+  // playlist의 이미지들로 영상 제작 요청
   const merge = () => {
+    // 추후 빼야될 코드 다시 랜더링 하기 위해서는
     if (finalUrl === "") {
       axios({
         method: "post",
@@ -115,20 +117,24 @@ const RenderButton = () => {
     }
   };
 
-  const download = (e) => {
+  // 랜더링 완료후 영상 다운로드
+  const download = async (e) => {
     e.preventDefault();
-    axios({
-      method: "post",
-      url: process.env.REACT_APP_expressURL + "/FFmpeg/download",
-      responseType: "blob",
-      data: {
-        roomid: roomId,
-      },
-    }).then((res) => {
-      FileDownload(res.data, `oneminute_${Date.now()}.mp4`);
-    });
+    if(finalUrl === '') return
+    try{
+      const res = await axios.get(finalUrl, {responseType:"blob"})
+      const url = window.URL.createObjectURL(new Blob([res.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute("download", 'omm.mp4')
+      document.body.appendChild(link)
+      link.click()
+    }catch(err){
+      console.log(err)
+    }
   };
 
+  // 랜더링 완료후 영상 URL 클립보드 저장
   const CopyLink = async (e) => {
     e.preventDefault();
     try {

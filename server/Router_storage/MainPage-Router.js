@@ -28,6 +28,7 @@ router.get("/roomid", async (req, res, next) => {
     const num = Math.floor(Math.random() * 16);
     roomid += random[num];
   }
+  // send로 보낼시 클라이언트측에서 타입을 넘버로 오해할수도있다.
   res.json({roomid});
 });
 

@@ -11,7 +11,7 @@ const RoomCode = () => {
     e.preventDefault();
     try {
       await navigator.clipboard.writeText(
-        `http://localhost:3000/room/${roomid}`
+        `https://chjungle.shop/room/${roomid}`
       );
       SnackBar.roomUrlSuccessOpen();
     } catch (err) {

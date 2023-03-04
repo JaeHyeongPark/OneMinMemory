@@ -14,7 +14,7 @@ const SoundTrack = (props) => {
   const audioRef = useRef("");
 
   function handleClick(event) {
-    props.changeshow(true)
+    props.changeshow(true);
     const canvas = canvasRef.current;
     const layout = layoutRef.current;
     const context = canvas.getContext("2d");
@@ -92,7 +92,7 @@ const SoundTrack = (props) => {
       const currentIdx = (currentTime / duration) * 4800;
 
       // 0.1초 단위로 위의 타임바 변경
-      props.changetime(currentTime.toFixed(1) * 10)
+      props.changetime(currentTime.toFixed(1) * 10);
 
       // Color the waveform yellow up to the current playback position
       context.beginPath();
@@ -121,7 +121,7 @@ const SoundTrack = (props) => {
   function handleKeyDown(event) {
     if (event.keyCode === 32) {
       const myAudio = audioRef.current;
-      props.changeshow(false)
+      props.changeshow(false);
       if (!myAudio.paused) {
         myAudio.pause();
       }
@@ -178,12 +178,7 @@ const SoundTrack = (props) => {
   return (
     <div className="soundtrack_layout" ref={layoutRef}>
       <audio ref={audioRef} src={newsrc} id="myAudio"></audio>
-      <canvas
-        className="soundtrack_canvas"
-        width={1520}
-        height={70}
-        ref={canvasRef}
-      ></canvas>
+      <canvas className="soundtrack_canvas" ref={canvasRef}></canvas>
     </div>
   );
 };

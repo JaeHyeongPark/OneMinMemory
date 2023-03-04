@@ -479,7 +479,6 @@
   color: #e1e1e1;
 }
 .SoundTrack {
-  max-width: calc(100% - 40px);
   overflow: auto;
 }
 

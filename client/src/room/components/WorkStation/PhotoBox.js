@@ -84,11 +84,7 @@ const PhotoBox = (props) => {
             onClick={Cloudtrue}
           >
             <div className="cloud">
-              {cloud ? (
-                <img src={Cloud} className="cloud_img" alt="" />
-              ) : (
-                <img src={Cloudx} className="cloud_img" alt="" />
-              )}
+              <img src={cloud ? Cloud : Cloudx} className="cloud_img" alt="" />
             </div>
             <span
               className="cloud_span"
@@ -103,11 +99,11 @@ const PhotoBox = (props) => {
             onClick={Cloudfalse}
           >
             <div className="cloud">
-              {cloud ? (
-                <img src={Editedcloud} className="cloud_img" alt="" />
-              ) : (
-                <img src={Editedcloudx} className="cloud_img" alt="" />
-              )}
+              <img
+                src={cloud ? Editedcloud : Editedcloudx}
+                className="edited_img"
+                alt=""
+              />
             </div>
             <span
               className="cloud_span"

@@ -6,9 +6,7 @@ import InsertMusic from "./InsertMusic";
 import SoundTrack from "./SoundTrack";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import "./Output.css";
-import Stepper from "@mui/material/Stepper";
-import RenderVoteState from "./RenderVoteState";
-import { Box } from "@mui/system";
+
 import EditPermissionButton from "./EditPermissionButton";
 
 const Output = () => {
@@ -82,11 +80,6 @@ const Output = () => {
       </div>
       <div className="ROOM-FOOTER-BUTTONS">
         <InsertMusic />
-        <Box sx={{ alignContent: "center" }}>
-          <Stepper>
-            <RenderVoteState />
-          </Stepper>
-        </Box>
         <RenderButton />
         <EditPermissionButton />
       </div>

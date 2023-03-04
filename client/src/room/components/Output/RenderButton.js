@@ -6,9 +6,13 @@ import CopyIcon from "../../assets/copy_icon.png";
 import ExitIcon from "../../assets/logout.png";
 import DownIcon from "../../assets/downloading-file.png";
 import fullScreen from "../../assets/full-screen.png";
+import openWindow from "../../assets/openwindow.svg";
+import RenderIcon from "../../assets/rendericon.svg";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import loadGif from "../../assets/RenderLoading.gif";
+import Stepper from "@mui/material/Stepper";
+import RenderVoteState from "./RenderVoteState";
 import Modal from "@mui/material/Modal";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
@@ -16,8 +20,6 @@ import App from "../../../App";
 import "./RenderButton.css";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import SnackBar from "../RoomHeader/SnackBar";
-import RenderVoteState from "./RenderVoteState";
-
 
 const style = {
   position: "absolute",
@@ -146,30 +148,51 @@ const RenderButton = () => {
   };
 
   return (
-    <div>
-      {myVoteState ? (
+    <div className="RenderingComponent">
+      <Box sx={{ alignContent: "center" }}>
+        <Stepper>
+          <RenderVoteState />
+        </Stepper>
+      </Box>
+      <div className="RenderingAndOpenmodal">
+        {myVoteState ? (
+          <Button
+            sx={{ marginLeft: "auto" }}
+            className="Rendering"
+            onClick={handleRenderOffButton}
+          >
+            <div className="Render_layout">
+              <img src={RenderIcon} alt="Rendering" className="Render_img" />
+            </div>
+            <span className="render_span">CANCEL</span>
+          </Button>
+        ) : (
+          <Button
+            sx={{ marginLeft: "auto" }}
+            className="Rendering"
+            onClick={handleRenderOnButton}
+          >
+            <div className="Render_layout">
+              <img src={RenderIcon} alt="Rendering" className="Render_img" />
+            </div>
+            {/* <span className="render_span">EXPORT</span> */}
+          </Button>
+        )}
         <Button
           sx={{ marginLeft: "auto" }}
           className="Rendering"
-          onClick={handleRenderOffButton}
+          onClick={openmodal}
         >
-          <div className="RenderIcon">
-            <img src={fullScreen} onClick={openmodal} alt="video rendering" />
+          <div className="OpenModal_layout">
+            <img
+              src={openWindow}
+              alt="Open Render Modal"
+              className="Openwindow_img"
+            />
           </div>
-          <span className="render_span">요청 취소</span>
+          {/* <span className="render_span">STATUS</span> */}
         </Button>
-      ) : (
-        <Button
-          sx={{ marginLeft: "auto" }}
-          className="Rendering"
-          onClick={handleRenderOnButton}
-        >
-          <div className="RenderIcon">
-            <img src={fullScreen} onClick={openmodal} alt="video rendering" />
-          </div>
-          <span className="render_span">EXPORT</span>
-        </Button>
-      )}
+      </div>
 
       <Modal
         open={open}
@@ -233,11 +256,13 @@ const RenderButton = () => {
                 }}
                 open={openSnack}
                 autoHideDuration={2000}
-                onClose={handleClose2}>
+                onClose={handleClose2}
+              >
                 <Alert
                   onClose={handleClose2}
                   severity="success"
-                  sx={{ width: "100%" }}>
+                  sx={{ width: "100%" }}
+                >
                   동영상 링크 복사 완료
                 </Alert>
               </Snackbar>

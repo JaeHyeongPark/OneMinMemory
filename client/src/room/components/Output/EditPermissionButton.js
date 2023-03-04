@@ -3,6 +3,7 @@ import "./Output.css";
 import { useEffect, useState, useContext } from "react";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import DiscEdit from "../../assets/discedit.svg";
+import Button from "@mui/material/Button";
 
 const EditPermissionButton = () => {
   const playlistCtx = useContext(PlaylistContext);

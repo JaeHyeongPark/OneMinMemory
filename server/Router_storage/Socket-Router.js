@@ -106,7 +106,7 @@ module.exports = function socketRouter(io) {
         socket.join(data.roomId);
         socket.Id = data.Id;
         socket.roomId = data.roomId;
-        // 이거 아이디 왜 넣는거임? => 뺼꺼임
+        // 이거 아이디 왜 넣는거임? => 뺼꺼임=> 다시 넣음
         let numUsers = await redis.v4.sendCommand([
           "incr",
           data.roomId + "/numUser",

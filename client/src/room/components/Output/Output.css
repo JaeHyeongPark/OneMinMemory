@@ -429,7 +429,7 @@
 }
 
 .TimeBar {
-  height: 30px;
+  height: 50%;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
@@ -439,7 +439,7 @@
 }
 
 .time {
-  height: 34px;
+  height: 50%;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
@@ -479,7 +479,6 @@
   color: #e1e1e1;
 }
 .SoundTrack {
-  max-width: calc(100% - 40px);
   overflow: auto;
 }
 

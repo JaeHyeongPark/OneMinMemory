@@ -15,3 +15,7 @@
 .soundtrack_layout::-webkit-scrollbar {
   display: none;
 }
+
+.soundtrack_canvas {
+  width: 100%;
+}

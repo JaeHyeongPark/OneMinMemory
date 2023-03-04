@@ -3,7 +3,9 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 
 import Cloud from "../../assets/cloud.svg";
+import Cloudx from "../../assets/cloudfalse.svg";
 import Editedcloud from "../../assets/editedcloud.svg";
+import Editedcloudx from "../../assets/editedcloudfalse.svg";
 import ImageShow from "./Image_Up_Check_Del/ImageShow";
 import ImageUpload from "./Image_Up_Check_Del/ImageUpload";
 import ImageDel from "./Image_Up_Check_Del/ImageDel";
@@ -50,12 +52,12 @@ const PhotoBox = (props) => {
   }, [ToCanvas.origin, cloud, ToCanvas.effect]);
 
   const Cloudtrue = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setcloud(true);
   };
 
   const Cloudfalse = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setcloud(false);
   };
 
@@ -82,7 +84,11 @@ const PhotoBox = (props) => {
             onClick={Cloudtrue}
           >
             <div className="cloud">
-              <img src={Cloud} className="img.cloud" alt=""/>
+              {cloud ? (
+                <img src={Cloud} className="cloud_img" alt="" />
+              ) : (
+                <img src={Cloudx} className="cloud_img" alt="" />
+              )}
             </div>
             <span
               className="cloud_span"
@@ -97,7 +103,11 @@ const PhotoBox = (props) => {
             onClick={Cloudfalse}
           >
             <div className="cloud">
-              <img src={Editedcloud} className="img.cloud" alt="" />
+              {cloud ? (
+                <img src={Editedcloud} className="cloud_img" alt="" />
+              ) : (
+                <img src={Editedcloudx} className="cloud_img" alt="" />
+              )}
             </div>
             <span
               className="cloud_span"

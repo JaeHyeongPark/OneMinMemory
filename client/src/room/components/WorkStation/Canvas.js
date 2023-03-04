@@ -110,8 +110,8 @@ function Canvas() {
 
   // 캔버스 페인팅 작업 함수
   const drawing = (e) => {
-    const resize_x = canvasRef.current.offsetWidth
-    const resize_y = canvasRef.current.offsetHeight
+    const resize_x = canvasRef.current.offsetWidth;
+    const resize_y = canvasRef.current.offsetHeight;
     const x = e.nativeEvent.offsetX * (1280 / resize_x);
     const y = e.nativeEvent.offsetY * (720 / resize_y);
     if (Paint && PaintMode) {
@@ -145,8 +145,8 @@ function Canvas() {
     if (!TextMode) {
       return;
     }
-    const resize_x = canvasRef.current.offsetWidth
-    const resize_y = canvasRef.current.offsetHeight
+    const resize_x = canvasRef.current.offsetWidth;
+    const resize_y = canvasRef.current.offsetHeight;
     const x = e.nativeEvent.offsetX;
     const y = e.nativeEvent.offsetY;
     const z = canvasRef.current.getBoundingClientRect();
@@ -369,43 +369,43 @@ function Canvas() {
               className="sidebar-item"
               onClick={newImage}
               name="Save"
-              startIcon={<SaveIcon style={{ fontSize: 35 }} />}></Button>
+              startIcon={<SaveIcon style={{ fontSize: 35 }} />}
+            ></Button>
           </Tooltip>
         </div>
-        <div className="container">
-          <div
-            className="uploaded-image"
-            ref={drop}
-            style={{
-              border: picDrag && "2px solid #1484CD",
-              boxShadow:
-                picDrag &&
-                "0 0 2px #1484CD, 0 0 2px #1484CD, 0 0 20px #1484CD, 0 0 8px #1484CD, 0 0 28px #1484CD, inset 0 0 13px #1484CD",
-            }}>
-            <canvas
-              ref={canvasRef}
-              width={1280}
-              height={720}
-              onClick={(e) => addinput(e)}
-              onMouseDown={() => ChangePaint(true)}
-              onMouseUp={() => ChangePaint(false)}
-              onMouseMove={(e) => drawing(e)}
-              onMouseLeave={() => ChangePaint(false)}
+        <div
+          className="uploaded-image"
+          ref={drop}
+          style={{
+            border: picDrag && "2px solid #1484CD",
+            boxShadow:
+              picDrag &&
+              "0 0 2px #1484CD, 0 0 2px #1484CD, 0 0 20px #1484CD, 0 0 8px #1484CD, 0 0 28px #1484CD, inset 0 0 13px #1484CD",
+          }}
+        >
+          <canvas
+            ref={canvasRef}
+            width={1280}
+            height={720}
+            onClick={(e) => addinput(e)}
+            onMouseDown={() => ChangePaint(true)}
+            onMouseUp={() => ChangePaint(false)}
+            onMouseMove={(e) => drawing(e)}
+            onMouseLeave={() => ChangePaint(false)}
+          />
+          {inputShow && (
+            <input
+              type="text"
+              style={{
+                position: "fixed",
+                left: `${x[1]}px`,
+                top: `${y[1]}px`,
+                background: "transparent",
+                height: `${textSize}px`,
+              }}
+              onKeyDown={handleEnter}
             />
-            {inputShow && (
-              <input
-                type="text"
-                style={{
-                  position: "fixed",
-                  left: `${x[1]}px`,
-                  top: `${y[1]}px`,
-                  background: "transparent",
-                  height: `${textSize}px`,
-                }}
-                onKeyDown={handleEnter}
-              />
-            )}
-          </div>
+          )}
         </div>
       </div>
     </React.Fragment>

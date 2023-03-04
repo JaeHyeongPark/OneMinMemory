@@ -2,6 +2,7 @@ import { useContext } from "react";
 import ImageContext from "./ImageContext";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
+import trash from "../../../assets/trash-icon.svg";
 
 const ImageDel = (props) => {
   const ToCanvas = useContext(ImageContext);
@@ -34,10 +35,10 @@ const ImageDel = (props) => {
       className="delete_button"
       variant="outlined"
       component="label"
-      sx={{ width: 180 }}
+      sx={{ width: "100%", height: "100%" }}
       onClick={deleteImage}
     >
-      <DeleteIcon />
+      <img src={trash} className="trash-img" alt="delete"></img>
     </Button>
   );
 };

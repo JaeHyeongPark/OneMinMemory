@@ -15,6 +15,7 @@ function SnackBar() {
   const [playlistEditWarning, setPlaylistEditWarning] = useState(false);
   const [renderWarning, setRenderWarning] = useState(false);
   const [playlistEmptyWarning, setPlaylistEmptyWarning] = useState(false);
+  const [playlistUrlWarning, setplaylistUrlWarning] = useState(false);
   const vertical = "top";
   const horizontal = "center";
   // 주의 : canvas 예외
@@ -24,6 +25,7 @@ function SnackBar() {
     setPlaylistEditWarning(false);
     setRenderWarning(false);
     setPlaylistEmptyWarning(false);
+    setplaylistUrlWarning(false);
   };
   const canvasWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -35,6 +37,7 @@ function SnackBar() {
 
   // 성공 : roomUrl 저장 완료 했을 떄
   const roomUrlSuccessOpen = () => {
+    setplaylistUrlWarning(false);
     setCanvasWarning(false);
     setRoomUrlSuccess(true);
     setPlaylistEditWarning(false);
@@ -48,8 +51,25 @@ function SnackBar() {
     setRoomUrlSuccess(false);
   };
   SnackBar.roomUrlSuccessOpen = roomUrlSuccessOpen;
+  // 주의 : playlist에 빈 url이 있을 떄 렌더링 요청
+  const playlistUrlWarningOpen = () => {
+    setCanvasWarning(false);
+    setRoomUrlSuccess(false);
+    setPlaylistEditWarning(false);
+    setRenderWarning(false);
+    setPlaylistEmptyWarning(false);
+    setplaylistUrlWarning(true);
+  };
+  const playlistUrlWarningClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setplaylistUrlWarning(false);
+  };
+  SnackBar.playlistUrlWarningOpen = playlistUrlWarningOpen;
   // 주의 : 권한 없을 때 playlist 조작
   const playlistEditWarningOpen = () => {
+    setplaylistUrlWarning(false);
     setCanvasWarning(false);
     setRoomUrlSuccess(false);
     setPlaylistEditWarning(true);
@@ -65,6 +85,7 @@ function SnackBar() {
   SnackBar.playlistEditWarningOpen = playlistEditWarningOpen;
   // 주의 : 편집 완료를 먼저 누르고 렌더링
   const renderWarningOpen = () => {
+    setplaylistUrlWarning(false);
     setCanvasWarning(false);
     setRoomUrlSuccess(false);
     setPlaylistEditWarning(false);
@@ -80,6 +101,7 @@ function SnackBar() {
   SnackBar.renderWarningOpen = renderWarningOpen;
   // 주의 : 렌더링 시 플레이리스트 없음
   const playlistEmptyWarningOpen = () => {
+    setplaylistUrlWarning(false);
     setCanvasWarning(false);
     setRoomUrlSuccess(false);
     setPlaylistEditWarning(false);
@@ -121,10 +143,25 @@ function SnackBar() {
         <Alert
           elevation={6}
           onClose={roomUrlSuccessClose}
-          severity="success"
+          severity="warning"
           sx={{ width: "100%", fontSize: "20px" }}
         >
           클립보드에 초대 URL이 저장되었습니다!
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={playlistUrlWarning}
+        autoHideDuration={2000}
+        onClose={playlistUrlWarningClose}
+      >
+        <Alert
+          elevation={6}
+          onClose={playlistUrlWarningClose}
+          severity="success"
+          sx={{ width: "100%", fontSize: "20px" }}
+        >
+          플레이리스트를 채워주세요!
         </Alert>
       </Snackbar>
       <Snackbar

@@ -511,5 +511,5 @@ module.exports = function (io) {
         "https://oneminutememory.s3.ap-northeast-2.amazonaws.com/" + VideoKey,
     });
   });
-  return router
+  return router;
 };

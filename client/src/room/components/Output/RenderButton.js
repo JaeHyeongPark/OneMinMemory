@@ -18,7 +18,6 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import SnackBar from "../RoomHeader/SnackBar";
 import RenderVoteState from "./RenderVoteState";
 
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -50,11 +49,11 @@ const RenderButton = () => {
   const [myVoteState, setMyVoteState] = useState(false);
 
   useEffect(() => {
-    App.mainSocket.on("startRendering", (data) => {});
     App.mainSocket.on("renderingProgress", (data) => {
       setpercent(data.progress);
     });
     App.mainSocket.on("mergeStart", (data) => {
+      handleRenderOffButton();
       setOpen(true);
     });
     App.mainSocket.on("mergeFinished", (data) => {
@@ -79,6 +78,13 @@ const RenderButton = () => {
     if (playlistCtx.playlist.length == 0) {
       SnackBar.playlistEmptyWarningOpen();
       return;
+    }
+    for (let i = 0; i < playlistCtx.playlist.length; i++) {
+      console.log(playlistCtx.playlist[i]);
+      if (!playlistCtx.playlist[i].url) {
+        SnackBar.playlistUrlWarningOpen();
+        return;
+      }
     }
     const canIMerge = RenderVoteState.handleRenderOnButton();
     console.log(canIMerge);
@@ -239,11 +245,13 @@ const RenderButton = () => {
                 }}
                 open={openSnack}
                 autoHideDuration={2000}
-                onClose={handleClose2}>
+                onClose={handleClose2}
+              >
                 <Alert
                   onClose={handleClose2}
                   severity="success"
-                  sx={{ width: "100%" }}>
+                  sx={{ width: "100%" }}
+                >
                   동영상 링크 복사 완료
                 </Alert>
               </Snackbar>

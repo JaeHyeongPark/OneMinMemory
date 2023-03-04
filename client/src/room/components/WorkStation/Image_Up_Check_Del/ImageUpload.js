@@ -39,9 +39,13 @@ const ImageUpload = (props) => {
       className="upload_button"
       variant="contained"
       component="label"
-      sx={{ width: 180, height: 36 }}
+      sx={{ width: "100%", height: "100%" }}
     >
-      <img src={softwareupload} alt="upload"></img>
+      <img
+        src={softwareupload}
+        className="software-upload-img"
+        alt="upload"
+      ></img>
       <input
         type="file"
         className="uploadinput"

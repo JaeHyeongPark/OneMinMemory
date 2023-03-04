@@ -32,7 +32,7 @@ function LoginPage() {
   const handleOpen = (e) => {
     e.preventDefault();
     axios.get(process.env.REACT_APP_expressURL + "/home/roomid").then((res) => {
-      AuthCtx.changeid(res.data);
+      AuthCtx.changeid(res.data.roomid);
     });
     setOpen(true);
   };

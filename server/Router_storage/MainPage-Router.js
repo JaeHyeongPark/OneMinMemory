@@ -28,8 +28,7 @@ router.get("/roomid", async (req, res, next) => {
     const num = Math.floor(Math.random() * 16);
     roomid += random[num];
   }
-
-  res.send(roomid);
+  res.json({roomid});
 });
 
 // 위에서 생성된 넘버로 실제 방 생성

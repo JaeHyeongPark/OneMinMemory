@@ -87,7 +87,7 @@ function getImages(roomid, inputPath, width, height) {
         Key: imageKey,
       };
       const imageStream = s3.getObject(s3Params).createReadStream();
-      const localFilePath = `./public/render/${roomid}/input/image${i}.jpg`;
+      const localFilePath = `./public/render/${roomid}/input/image${Date.now()}.jpg`;
       const localFileStream = fs.createWriteStream(localFilePath);
       const promise = new Promise((resolve, reject) => {
         localFileStream.on("finish", () => {
@@ -379,7 +379,7 @@ function addAudio(roomid, inputPath, musicsrc) {
 }
 
 // 랜더링 작업 폴더 삭제
-function deleteFilesInFolder(folderPath) {
+const deleteFilesInFolder = async (folderPath) => {
     fs.rm(folderPath, {recursive:true}, (err) => {
       if(err){
         console.log(err)
@@ -409,6 +409,7 @@ module.exports = function (io) {
     const roomid = req.body.roomid;
     io.to(roomid).emit("mergeStart", {});
     let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+    console.log(playlist)
     let selectedmusic = JSON.parse(await redis.v4.get(`${roomid}/song`));
     if (playlist === null) {
       return console.log("렌더링 불가! 재생목록에 이미지를 넣어주세요.");
@@ -496,12 +497,12 @@ module.exports = function (io) {
     console.log("소요시간", result);
 
     // S3에 영상 저장
-    const VideoKey = `${roomid}/Final/oneminute_${roomid}.mp4`;
+    const VideoKey = `${roomid}/Final/oneminute_${Date.now()}.mp4`;
     await AddS3(finishedPath, VideoKey);
     console.log("영상 S3 저장 완료");
 
     // 저장후 작업 폴더 삭제
-    deleteFilesInFolder(renderPath);
+    await deleteFilesInFolder(renderPath);
 
     // 영상 완료에 대한 응답
     res.send({ success: true });

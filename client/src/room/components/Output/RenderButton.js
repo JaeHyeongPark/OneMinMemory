@@ -20,7 +20,6 @@ import App from "../../../App";
 import "./RenderButton.css";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import SnackBar from "../RoomHeader/SnackBar";
-import RenderVoteState from "./RenderVoteState";
 
 const style = {
   position: "absolute",
@@ -58,6 +57,7 @@ const RenderButton = () => {
     });
     App.mainSocket.on("mergeStart", (data) => {
       handleRenderOffButton();
+      setloading(false)
       setOpen(true);
     });
     App.mainSocket.on("mergeFinished", (data) => {
@@ -65,6 +65,7 @@ const RenderButton = () => {
       setloading(true);
     });
   }, []);
+
   const handleRenderOffButton = () => {
     setMyVoteState(false);
     const canIMerge = RenderVoteState.handleRenderOffButton();
@@ -111,8 +112,6 @@ const RenderButton = () => {
 
   // playlist의 이미지들로 영상 제작 요청
   const merge = () => {
-    // 추후 빼야될 코드 다시 랜더링 하기 위해서는
-    if (finalUrl === "") {
       axios({
         method: "post",
         url: process.env.REACT_APP_expressURL + "/FFmpeg/merge",
@@ -124,7 +123,6 @@ const RenderButton = () => {
           console.log("응답에러");
         }
       });
-    }
   };
 
   // 랜더링 완료후 영상 다운로드

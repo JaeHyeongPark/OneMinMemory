@@ -92,11 +92,15 @@ export default function InsertMusic() {
 
   return (
     <div>
-      <Button className="Preset" onClick={handleOpen}>
+      <Button
+        className="Preset"
+        onClick={handleOpen}
+        // sx={{ width: "50%", height: "50%" }}
+      >
         <div className="Music">
           <img src={music} alt="insert music" className="music_img" />
         </div>
-        <span className="music_span">Preset</span>
+        <span className="music_span">PRESET</span>
       </Button>
       <Modal
         open={open}

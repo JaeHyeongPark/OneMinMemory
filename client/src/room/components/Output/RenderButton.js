@@ -49,11 +49,11 @@ const RenderButton = () => {
   const [myVoteState, setMyVoteState] = useState(false);
 
   useEffect(() => {
-    App.mainSocket.on("startRendering", (data) => {});
     App.mainSocket.on("renderingProgress", (data) => {
       setpercent(data.progress);
     });
     App.mainSocket.on("mergeStart", (data) => {
+      handleRenderOffButton();
       setOpen(true);
     });
     App.mainSocket.on("mergeFinished", (data) => {
@@ -79,8 +79,9 @@ const RenderButton = () => {
       SnackBar.playlistEmptyWarningOpen();
       return;
     }
-    for (let i; i < playlistCtx.playlist.length; i++) {
-      if (playlistCtx.playlist[i].url === "") {
+    for (let i = 0; i < playlistCtx.playlist.length; i++) {
+      console.log(playlistCtx.playlist[i]);
+      if (!playlistCtx.playlist[i].url) {
         SnackBar.playlistUrlWarningOpen();
         return;
       }

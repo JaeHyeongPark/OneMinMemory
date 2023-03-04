@@ -158,7 +158,7 @@ function SnackBar() {
         <Alert
           elevation={6}
           onClose={playlistUrlWarningClose}
-          severity="success"
+          severity="warning"
           sx={{ width: "100%", fontSize: "20px" }}
         >
           플레이리스트를 채워주세요!

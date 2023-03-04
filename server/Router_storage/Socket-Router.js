@@ -220,7 +220,7 @@ module.exports = function socketRouter(io) {
             "21600",
           ]);
         }
-        socket.to(data.roomId).emit("someoneVoted", { renderVoteState });
+        io.to(data.roomId).emit("someoneVoted", { renderVoteState });
       } catch (e) {
         console.log(e);
       }

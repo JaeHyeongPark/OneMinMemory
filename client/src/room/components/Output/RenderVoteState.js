@@ -25,11 +25,7 @@ function RenderVoteState() {
     return activeStep + 1 === numPeople.length;
   };
   RenderVoteState.handleRenderOnButton = handleRenderOnButton;
-  const handleRenderOffButton = () => {
-    setActiveStep(activeStep - 1);
-    return activeStep - 1;
-  };
-  RenderVoteState.handleRenderOffButton = handleRenderOffButton;
+
   const setVoteState = (a) => {
     setActiveStep(a);
   };

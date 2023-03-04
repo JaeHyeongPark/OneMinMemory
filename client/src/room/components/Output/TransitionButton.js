@@ -68,7 +68,7 @@ const TransitionButton = (props) => {
         className="toplay_transOff"
         src={trans_off}
         style={{
-          width: String((2 * 100) / 60) + "%",
+          width: String((1 * 100) / 60) + "%",
           border: transDrag && "2px solid #1484CD",
           boxShadow:
             transDrag &&
@@ -84,7 +84,7 @@ const TransitionButton = (props) => {
         className="toplay_transOn"
         src={trans_on}
         style={{
-          width: String((2 * 100) / 60) + "%",
+          width: String((1 * 100) / 60) + "%",
           cursor: "pointer",
           border: transDrag && "2px solid #1484CD",
           boxShadow:

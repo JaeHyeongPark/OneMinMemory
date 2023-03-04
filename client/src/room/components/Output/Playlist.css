@@ -46,7 +46,7 @@
   object-fit: contain;
   width: 30px;
   height: 25px;
-  margin: 5px;
+  margin: 0px;
 }
 .playlist_space {
   display: flex;
@@ -80,7 +80,7 @@
   object-fit: contain;
   width: 30px;
   height: 25px;
-  margin: 5px;
+  margin: 0px;
 }
 
 .toplay_block {

@@ -68,7 +68,6 @@ const RenderButton = () => {
 
   const handleRenderOffButton = () => {
     setMyVoteState(false);
-    const canIMerge = RenderVoteState.handleRenderOffButton();
     App.mainSocket.emit("IVoted", {
       Id: App.mainSocket.id,
       roomId: App.roomId,
@@ -128,17 +127,17 @@ const RenderButton = () => {
   // 랜더링 완료후 영상 다운로드
   const download = async (e) => {
     e.preventDefault();
-    if(finalUrl === '') return
-    try{
-      const res = await axios.get(finalUrl, {responseType:"blob"})
-      const url = window.URL.createObjectURL(new Blob([res.data]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute("download", 'omm.mp4')
-      document.body.appendChild(link)
-      link.click()
-    }catch(err){
-      console.log(err)
+    if (finalUrl === "") return;
+    try {
+      const res = await axios.get(finalUrl, { responseType: "blob" });
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "omm.mp4");
+      document.body.appendChild(link);
+      link.click();
+    } catch (err) {
+      console.log(err);
     }
   };
 

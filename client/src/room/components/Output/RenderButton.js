@@ -1,17 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import FileDownload from "js-file-download";
 import { useParams } from "react-router-dom";
 import CopyIcon from "../../assets/copy_icon.png";
 import ExitIcon from "../../assets/logout.png";
 import DownIcon from "../../assets/downloading-file.png";
-import fullScreen from "../../assets/full-screen.png";
 import openWindow from "../../assets/openwindow.svg";
 import RenderIcon from "../../assets/rendericon.svg";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import loadGif from "../../assets/RenderLoading.gif";
-import Stepper from "@mui/material/Stepper";
 import RenderVoteState from "./RenderVoteState";
 import Modal from "@mui/material/Modal";
 import Snackbar from "@mui/material/Snackbar";

@@ -17,6 +17,7 @@ function RenderVoteState() {
       setActiveStep(data.renderVoteState);
     });
   }, []);
+  
   const isTrue = (idx) => {
     return idx < activeStep;
   };

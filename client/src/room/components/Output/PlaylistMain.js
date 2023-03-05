@@ -1,9 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useDrop } from "react-dnd";
-import { useContext } from "react";
 import { useParams } from "react-router-dom";
-import PlaylistContext from "../../../shared/context/playlist-context";
 import App from "../../../App";
 import ClearIcon from "@mui/icons-material/Clear";
 import effectOn from "../../assets/effect_on.png";
@@ -11,7 +9,6 @@ import SnackBar from "../RoomHeader/SnackBar";
 import "./Playlist.css";
 
 const PlaylistMain = (props) => {
-  const playlistCtx = useContext(PlaylistContext);
   const roomid = useParams().roomId;
 
   // playlist 드랍존

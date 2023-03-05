@@ -160,49 +160,44 @@ const RenderButton = () => {
 
   return (
     <div className="RenderingComponent">
-      <Box sx={{ alignContent: "center" }}>
-        <Stepper>
-          <RenderVoteState />
-        </Stepper>
-      </Box>
       <div className="RenderingAndOpenmodal">
-        {myVoteState ? (
-          <Button
-            sx={{ marginLeft: "auto" }}
-            className="Rendering"
-            onClick={handleRenderOffButton}
-          >
-            <div className="Render_layout">
-              <img src={RenderIcon} alt="Rendering" className="Render_img" />
-            </div>
-            <span className="render_span">CANCEL</span>
-          </Button>
-        ) : (
-          <Button
-            sx={{ marginLeft: "auto" }}
-            className="Rendering"
-            onClick={handleRenderOnButton}
-          >
-            <div className="Render_layout">
-              <img src={RenderIcon} alt="Rendering" className="Render_img" />
-            </div>
-            {/* <span className="render_span">EXPORT</span> */}
-          </Button>
-        )}
         <Button
-          sx={{ marginLeft: "auto" }}
+          // sx={{ marginLeft: "auto" }}
           className="Rendering"
           onClick={openmodal}
         >
-          <div className="OpenModal_layout">
+          <div className="OpenModal_img_layout">
             <img
               src={openWindow}
               alt="Open Render Modal"
               className="Openwindow_img"
             />
           </div>
-          {/* <span className="render_span">STATUS</span> */}
+          <span className="render_span">STATUS</span>
         </Button>
+        {myVoteState ? (
+          <Button
+            // sx={{ marginLeft: "auto" }}
+            className="Rendering"
+            onClick={handleRenderOffButton}
+          >
+            <div className="Render_img_layout">
+              <img src={RenderIcon} alt="Rendering" className="Render_img" />
+            </div>
+            <span className="render_span">CANCEL</span>
+          </Button>
+        ) : (
+          <Button
+            // sx={{ marginLeft: "auto" }}
+            className="Rendering"
+            onClick={handleRenderOnButton}
+          >
+            <div className="Render_img_layout">
+              <img src={RenderIcon} alt="Rendering" className="Render_img" />
+            </div>
+            <span className="render_span">EXPORT</span>
+          </Button>
+        )}
       </div>
 
       <Modal

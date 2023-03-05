@@ -251,6 +251,7 @@ const RenderButton = () => {
                   </div>
                 )}
               </div>
+
               <div className="vote-container">
                 <Box sx={{ alignContent: "center" }}>
                   <Stepper>
@@ -272,7 +273,7 @@ const RenderButton = () => {
                     <div className="Render_img_layout">
                       <img src={voteO} alt="Rendering" className="Render_img" />
                     </div>
-                    <span className="render_span">Request Rendering</span>
+                    <span className="render_span">READY</span>
                   </Button>
                 )}
               </div>

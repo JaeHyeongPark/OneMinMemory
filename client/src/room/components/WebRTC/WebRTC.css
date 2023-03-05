@@ -11,8 +11,8 @@
   background-color: #272731;
 }
 .videoTagOff {
-  height: 177.5px;
-  width: 276px;
+  height: 100%;
+  width: 100%;
   position: absolute;
   visibility: hidden;
 }
@@ -29,18 +29,18 @@
   padding: 0;
 }
 .videoTag {
-  height: 25%;
+  height: 100%;
   width: 100%;
   position: absolute;
 }
 .imgTagOn {
-  height: 25%;
+  height: 100%;
   width: 100%;
   position: absolute;
   z-index: 2;
 }
 .imgTagOff {
-  height: 25%;
+  height: 100%;
   width: 100%;
   position: absolute;
   z-index: -1;
@@ -55,7 +55,7 @@
   border: solid 1px #565656;
 } */
 .videoTagSpeaking {
-  height: 25%;
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -65,7 +65,7 @@
   position: relative;
 }
 .videoTagNotSpeaking {
-  height: 25%;
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;

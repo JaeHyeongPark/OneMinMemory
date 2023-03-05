@@ -6,7 +6,6 @@ const dotenv = require("dotenv");
 const { spawn } = require("child_process");
 const ffmpeg = require("fluent-ffmpeg");
 const fs = require("fs");
-const uuid4 = require("uuid4");
 const path = require("path");
 
 AWS.config.update({
@@ -88,10 +87,9 @@ function getImages(roomid, inputPath, width, height) {
         Key: imageKey,
       };
       const imageStream = s3.getObject(s3Params).createReadStream();
-      const localFilePath = `./public/render/${roomid}/input/image${uuid4().slice(
-        0,
-        5
-      )}.jpg`;
+      const localFilePath = `./public/render/${roomid}/input/${Math.random()
+        .toString(36)
+        .substring(2, 15)}.jpg`;
       const localFileStream = fs.createWriteStream(localFilePath);
       const promise = new Promise((resolve, reject) => {
         localFileStream.on("finish", () => {

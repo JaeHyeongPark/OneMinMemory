@@ -146,7 +146,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 5vh;
+  height: 4.5vh;
 }
 
 .EditDisc {
@@ -156,57 +156,11 @@
   justify-content: center;
   align-items: center;
   padding: 0px;
-  gap: 5px;
+  gap: 10px;
 }
 
 .EditDisc_img {
   height: 100%;
-}
-
-.EditDisc_fin {
-  /* Auto layout */
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0px;
-  /* gap: 20px; */
-
-  position: relative;
-  width: 50%;
-  height: 100%;
-
-  /* green/600 */
-
-  background: #036d3a;
-  /* green/700 */
-
-  border: 2px solid #02522b;
-  border-radius: 10px;
-}
-
-.EditDisc_disable {
-  /* Auto layout */
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0px;
-  /* gap: 20px; */
-
-  position: relative;
-  width: 50%;
-  height: 100%;
-
-  /* red/700 */
-
-  background: #870f00;
-  /* red/800 */
-
-  border: 2px solid #5a0a00;
-  border-radius: 10px;
 }
 
 .editdisc_span {

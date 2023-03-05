@@ -3,7 +3,24 @@ import "./Output.css";
 import { useEffect, useState, useContext } from "react";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import DiscEdit from "../../assets/discedit.svg";
+import Lock from "../../assets/lock.svg";
+import Unlock from "../../assets/unlock.svg";
 import Button from "@mui/material/Button";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const mytheme = createTheme({
+  palette: {
+    primary: {
+      main: "#1976d2",
+    },
+    secondary: {
+      main: "#048848",
+    },
+    tertiary: {
+      main: "#B41400",
+    },
+  },
+});
 
 const EditPermissionButton = () => {
   const playlistCtx = useContext(PlaylistContext);
@@ -40,19 +57,32 @@ const EditPermissionButton = () => {
   };
   if (App.playlistPermissionState === 2) {
     return (
-      <div className="EditDisc_div">
-        <button className="EditDisc_disable">
-          <label className="EditDisc_label">누군가 편집중!</label>
-        </button>
-      </div>
+      <ThemeProvider theme={mytheme}>
+        <Button className="EditDisc" color="tertiary" variant="contained">
+          <div className="EditDisc_img_layout">
+            <img src={Lock} alt="disc edit" className="EditDisc_img" />
+          </div>
+          <span className="editdisc_span">EDITING NOW..</span>
+          {/* <label className="permission_label_able">playlist Edit</label> */}
+        </Button>
+      </ThemeProvider>
     );
   } else if (App.playlistPermissionState === 1) {
     return (
-      <div className="EditDisc_div">
-        <button className="EditDisc_fin" onClick={releasePermission}>
-          <label className="EditDisc_label">편집 완료하기</label>
-        </button>
-      </div>
+      <ThemeProvider theme={mytheme}>
+        <Button
+          className="EditDisc"
+          variant="contained"
+          color="secondary"
+          onClick={releasePermission}
+        >
+          <div className="EditDisc_img_layout">
+            <img src={Unlock} alt="disc edit" className="EditDisc_img" />
+          </div>
+          <span className="editdisc_span">FINISH EDITING</span>
+          {/* <label className="permission_label_able">playlist Edit</label> */}
+        </Button>
+      </ThemeProvider>
     );
   } else {
     return (

@@ -60,8 +60,10 @@ const RenderButton = () => {
     });
     App.mainSocket.on("mergeFinished", (data) => {
       setfinalUrl(data.videoURL);
+      App.mainSocket.emit("resetMyVoteState", { Id: App.mainSocket.id });
       setloading(true);
-      handleRenderOffButton();
+      setActiveStep(0);
+      setMyVoteState(false);
     });
     App.mainSocket.on("someoneCame", (data) => {
       changeNumPeople(Number(data.numUsers));
@@ -81,7 +83,7 @@ const RenderButton = () => {
     });
   };
   const handleRenderOnButton = () => {
-    console.log(playlistCtx.playlist)
+    console.log(playlistCtx.playlist);
     if (App.playlistPermissionState === 1) {
       SnackBar.renderWarningOpen();
       return;
@@ -131,10 +133,7 @@ const RenderButton = () => {
 
   return (
     <div>
-      <Button
-        className="Rendering"
-        onClick={openmodal}
-      >
+      <Button className="Rendering" onClick={openmodal}>
         <div className="Render_img_layout">
           <img src={RenderIcon} alt="Rendering" className="Render_img" />
         </div>

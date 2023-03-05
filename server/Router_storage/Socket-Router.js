@@ -148,6 +148,15 @@ module.exports = function socketRouter(io) {
         console.log(e);
       }
     });
+    socket.on("resetMyVoteState", (data) => {
+      redis.v4.sendCommand([
+        "SET",
+        data.Id + "/renderVoteState",
+        "false",
+        "EX",
+        "21600",
+      ]);
+    });
     //===========================playlist 조작 권한 관련 API====================
     socket.on("playlistEditRequest", async (data) => {
       try {

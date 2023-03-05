@@ -97,7 +97,7 @@ export default function InsertMusic() {
         onClick={handleOpen}
         // sx={{ width: "50%", height: "50%" }}
       >
-        <div className="Music">
+        <div className="Music_img_layout">
           <img src={music} alt="insert music" className="music_img" />
         </div>
         <span className="music_span">PRESET</span>

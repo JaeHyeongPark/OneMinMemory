@@ -5,6 +5,9 @@ import Scale from "./Scale";
 import InsertMusic from "./InsertMusic";
 import SoundTrack from "./SoundTrack";
 import PlaylistContext from "../../../shared/context/playlist-context";
+import Stepper from "@mui/material/Stepper";
+import RenderVoteState from "./RenderVoteState";
+import Box from "@mui/material/Box";
 import "./Output.css";
 
 import EditPermissionButton from "./EditPermissionButton";
@@ -79,9 +82,18 @@ const Output = () => {
         <SoundTrack changetime={changeTime} changeshow={setshowimg} />
       </div>
       <div className="ROOM-FOOTER-BUTTONS">
-        <InsertMusic />
-        <RenderButton />
-        <EditPermissionButton />
+        <Box sx={{ alignContent: "center" }}>
+          <Stepper>
+            <RenderVoteState />
+          </Stepper>
+        </Box>
+        <div className="FOOTER-ROW">
+          <div className="Preset_and_Edit">
+            <InsertMusic />
+            <EditPermissionButton />
+          </div>
+          <RenderButton />
+        </div>
       </div>
     </div>
   );

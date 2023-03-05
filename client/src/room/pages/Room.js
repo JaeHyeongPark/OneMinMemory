@@ -6,7 +6,7 @@ import Contents from "./Contents";
 import SnackBar from "../components/RoomHeader/SnackBar";
 import App from "../../App";
 import "./Room.css";
-import RenderVoteState from "../components/Output/RenderVoteState";
+import RenderButton from "../components/Output/RenderButton";
 import EditPermissionButton from "../components/Output/EditPermissionButton";
 import WebRTC from "../components/WebRTC/WebRTC";
 import { DraggingProvider } from "./DraggingContext";
@@ -21,15 +21,15 @@ const Room = () => {
       App.mainSocket.emit("joinRoom", {
         Id: App.mainSocket.id,
         roomId: roomId,
-        SFUId: WebRTC.socketId,
       });
     }, 1000);
     App.mainSocket.on("welcome", (data) => {
       if (data.ans === "NO") {
         navigate("/");
       }
-      RenderVoteState.setVoteState(Number(data.renderVoteState));
-      RenderVoteState.setNumPeople(data.numUsers);
+      RenderButton.setActiveStep(Number(data.renderVoteState));
+      console.log(data.numUsers);
+      RenderButton.changeNumPeople(data.numUsers);
       if (data.playlistPermissionState !== -1) {
         App.playlistPermissionState = data.playlistPermissionState;
         EditPermissionButton.setRefresh();

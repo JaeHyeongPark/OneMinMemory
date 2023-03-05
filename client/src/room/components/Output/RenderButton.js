@@ -19,6 +19,7 @@ import App from "../../../App";
 import "./RenderButton.css";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import SnackBar from "../RoomHeader/SnackBar";
+import voteSound from "../../assets/voteSound.mp3";
 
 const style = {
   position: "absolute",
@@ -40,6 +41,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const RenderButton = () => {
+  const votesound = new Audio(voteSound);
   const roomId = useParams().roomId;
   const [open, setOpen] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
@@ -49,19 +51,36 @@ const RenderButton = () => {
   const handleClose = () => setOpen(false);
   const playlistCtx = useContext(PlaylistContext);
   const [myVoteState, setMyVoteState] = useState(false);
-
+  const [activeStep, setActiveStep] = useState(0);
+  const [numPeople, setNumPeople] = useState([1]);
+  const changeNumPeople = (numUsers) => {
+    let newList = [];
+    for (let i = 0; i < numUsers; i++) {
+      newList.push([1]);
+    }
+    setNumPeople(newList);
+  };
+  RenderButton.setActiveStep = setActiveStep;
+  RenderButton.changeNumPeople = changeNumPeople;
   useEffect(() => {
     App.mainSocket.on("renderingProgress", (data) => {
       setpercent(data.progress);
     });
     App.mainSocket.on("mergeStart", (data) => {
-      handleRenderOffButton();
       setloading(false);
       setOpen(true);
     });
     App.mainSocket.on("mergeFinished", (data) => {
       setfinalUrl(data.videoURL);
       setloading(true);
+      handleRenderOffButton();
+    });
+    App.mainSocket.on("someoneCame", (data) => {
+      changeNumPeople(Number(data.numUsers));
+    });
+    App.mainSocket.on("someoneVoted", (data) => {
+      setActiveStep(data.renderVoteState);
+      votesound.play();
     });
   }, []);
 
@@ -89,15 +108,14 @@ const RenderButton = () => {
         return;
       }
     }
-    const canIMerge = RenderVoteState.handleRenderOnButton();
-    console.log(canIMerge);
+    setActiveStep(activeStep + 1);
     setMyVoteState(true);
     App.mainSocket.emit("IVoted", {
       Id: App.mainSocket.id,
       roomId: App.roomId,
       voteState: true,
     });
-    if (canIMerge) {
+    if (activeStep + 1 === numPeople.length) {
       merge();
     }
   };
@@ -253,7 +271,10 @@ const RenderButton = () => {
               <div className="vote-container">
                 <Box sx={{ alignContent: "center" }}>
                   <Stepper>
-                    <RenderVoteState />
+                    <RenderVoteState
+                      numPeople={numPeople}
+                      activeStep={activeStep}
+                    />
                   </Stepper>
                 </Box>
                 {myVoteState ? (

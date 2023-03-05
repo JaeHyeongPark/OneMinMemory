@@ -56,11 +56,11 @@ const EditPermissionButton = () => {
     );
   } else {
     return (
-      <Button className="EditDisc" onClick={getPermission}>
+      <Button className="EditDisc" variant="contained" onClick={getPermission}>
         <div className="EditDisc_img_layout">
           <img src={DiscEdit} alt="disc edit" className="EditDisc_img" />
         </div>
-        <span className="editdisc_span">EDIT</span>
+        <span className="editdisc_span">EDIT PLAYLIST</span>
         {/* <label className="permission_label_able">playlist Edit</label> */}
       </Button>
     );

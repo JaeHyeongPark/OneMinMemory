@@ -4,10 +4,12 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import App from "../../../App";
+import voteSound from "../../assets/voteSound.mp3"
 
 function RenderVoteState() {
   const [activeStep, setActiveStep] = useState(0);
   const [numPeople, setNumPeople] = useState([1]);
+  const votesound = new Audio(voteSound)
 
   useEffect(() => {
     App.mainSocket.on("someoneCame", (data) => {
@@ -15,6 +17,7 @@ function RenderVoteState() {
     });
     App.mainSocket.on("someoneVoted", (data) => {
       setActiveStep(data.renderVoteState);
+      votesound.play()
     });
   }, []);
   

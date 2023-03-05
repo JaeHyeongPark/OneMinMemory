@@ -46,8 +46,10 @@ const RenderButton = () => {
     }
     setNumPeople(newList);
   };
+
   RenderButton.setActiveStep = setActiveStep;
   RenderButton.changeNumPeople = changeNumPeople;
+
   useEffect(() => {
     App.mainSocket.on("renderingProgress", (data) => {
       setpercent(data.progress);
@@ -79,6 +81,7 @@ const RenderButton = () => {
     });
   };
   const handleRenderOnButton = () => {
+    console.log(playlistCtx.playlist)
     if (App.playlistPermissionState === 1) {
       SnackBar.renderWarningOpen();
       return;

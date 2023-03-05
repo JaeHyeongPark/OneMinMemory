@@ -43,14 +43,14 @@ function RenderVoteState(props) {
         </Stepper>
       </Box>
       {props.myVoteState ? (
-        <Button className="Rendervote" onClick={() => props.handleRenderOffButton}>
+        <Button className="Rendervote" onClick={props.handleRenderOffButton}>
           <div className="Render_img_layout">
             <img src={voteX} alt="Rendering" className="Render_img" />
           </div>
           <span className="render_span">CANCEL</span>
         </Button>
       ) : (
-        <Button className="Rendervote" onClick={() => props.handleRenderOnButton}>
+        <Button className="Rendervote" onClick={props.handleRenderOnButton}>
           <div className="Render_img_layout">
             <img src={voteO} alt="Rendering" className="Render_img" />
           </div>

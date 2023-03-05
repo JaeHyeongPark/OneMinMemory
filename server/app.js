@@ -8,10 +8,10 @@ const Canvas_router = require("./Router_storage/Canvas-Router");
 const Output_router = require("./Router_storage/Output-Router");
 const MainPage_router = require("./Router_storage/MainPage-Router");
 const Socket_router = require("./Router_storage/Socket-Router");
-const FFmpeg_router = require("./Router_storage/FFmpeg-Router")
+const FFmpeg_router = require("./Router_storage/FFmpeg-Router");
 const dotenv = require("dotenv");
-// const { createAdapter } = require("@socket.io/cluster-adapter");
-// const { setupWorker } = require("@socket.io/sticky");
+const { createAdapter } = require("@socket.io/cluster-adapter");
+const { setupWorker } = require("@socket.io/sticky");
 
 // ==============클러스터 관련 모듈=================================
 // const { setupMaster, setupWorker } = require("@socket.io/sticky");
@@ -32,8 +32,8 @@ const io = new socketio.Server(httpServer, {
   },
 });
 
-// io.adapter(createAdapter());
-// setupWorker(io);
+io.adapter(createAdapter());
+setupWorker(io);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -46,7 +46,7 @@ app.use("/canvas", Canvas_router(io));
 // output 라우터는 일루~
 app.use("/output", Output_router(io));
 // FFmpeg 라우터는 here~
-app.use("/FFmpeg", FFmpeg_router(io))
+app.use("/FFmpeg", FFmpeg_router(io));
 // MainPage 라우터는 여기로~~~
 app.use("/home", MainPage_router);
 

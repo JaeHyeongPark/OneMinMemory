@@ -83,7 +83,7 @@ const RenderButton = () => {
       SnackBar.renderWarningOpen();
       return;
     }
-    if (playlistCtx.playlist.length == 0) {
+    if (playlistCtx.playlist.length === 0) {
       SnackBar.playlistEmptyWarningOpen();
       return;
     }
@@ -156,8 +156,8 @@ const RenderButton = () => {
                 numPeople={numPeople}
                 activeStep={activeStep}
                 myVoteState={myVoteState}
-                RenderoffButton={handleRenderOffButton}
-                RenderonButton={handleRenderOnButton}
+                handleRenderOffButton={handleRenderOffButton}
+                handleRenderOnButton={handleRenderOnButton}
               />
             </div>
           </div>

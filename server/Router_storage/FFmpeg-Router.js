@@ -87,7 +87,7 @@ function getImages(roomid, inputPath, width, height) {
         Key: imageKey,
       };
       const imageStream = s3.getObject(s3Params).createReadStream();
-      const localFilePath = `./public/render/${roomid}/input/image${Date.now()}.jpg`;
+      const localFilePath = `./public/render/${roomid}/input/image${Date.now()+i}.jpg`;
       const localFileStream = fs.createWriteStream(localFilePath);
       const promise = new Promise((resolve, reject) => {
         localFileStream.on("finish", () => {
@@ -387,7 +387,6 @@ const deleteFilesInFolder = async (folderPath) => {
         console.log("작업 folder 삭제 완료")
       }
     })
-
 }
 
 // 최종 완성본 S3 저장

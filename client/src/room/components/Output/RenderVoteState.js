@@ -9,7 +9,6 @@ import Button from "@mui/material/Button";
 function RenderVoteState(props) {
   const activeStep = props.activeStep;
   const numPeople = props.numPeople;
-  console.log(numPeople);
   const isTrue = (idx) => {
     return idx < activeStep;
   };
@@ -44,14 +43,14 @@ function RenderVoteState(props) {
         </Stepper>
       </Box>
       {props.myVoteState ? (
-        <Button className="Rendervote" onClick={props.RenderoffButton}>
+        <Button className="Rendervote" onClick={() => props.handleRenderOffButton}>
           <div className="Render_img_layout">
             <img src={voteX} alt="Rendering" className="Render_img" />
           </div>
           <span className="render_span">CANCEL</span>
         </Button>
       ) : (
-        <Button className="Rendervote" onClick={props.RenderonButton}>
+        <Button className="Rendervote" onClick={() => props.handleRenderOnButton}>
           <div className="Render_img_layout">
             <img src={voteO} alt="Rendering" className="Render_img" />
           </div>

@@ -6,7 +6,7 @@ const dotenv = require("dotenv");
 const { spawn } = require("child_process");
 const ffmpeg = require("fluent-ffmpeg");
 const fs = require("fs");
-const uuid4 = require("uuid4")
+const uuid4 = require("uuid4");
 const path = require("path");
 
 AWS.config.update({
@@ -88,7 +88,10 @@ function getImages(roomid, inputPath, width, height) {
         Key: imageKey,
       };
       const imageStream = s3.getObject(s3Params).createReadStream();
-      const localFilePath = `./public/render/${roomid}/input/image${uuid4().slice(0,5)}.jpg`;
+      const localFilePath = `./public/render/${roomid}/input/image${uuid4().slice(
+        0,
+        5
+      )}.jpg`;
       const localFileStream = fs.createWriteStream(localFilePath);
       const promise = new Promise((resolve, reject) => {
         localFileStream.on("finish", () => {
@@ -381,14 +384,14 @@ function addAudio(roomid, inputPath, musicsrc) {
 
 // 랜더링 작업 폴더 삭제
 const deleteFilesInFolder = async (folderPath) => {
-    fs.rm(folderPath, {recursive:true}, (err) => {
-      if(err){
-        console.log(err)
-      }else{
-        console.log("작업 folder 삭제 완료")
-      }
-    })
-}
+  fs.rm(folderPath, { recursive: true }, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("작업 folder 삭제 완료");
+    }
+  });
+};
 
 // 최종 완성본 S3 저장
 const AddS3 = async (Path, VideoKey) => {
@@ -408,8 +411,15 @@ module.exports = function (io) {
   router.post("/merge", async (req, res, next) => {
     const roomid = req.body.roomid;
     io.to(roomid).emit("mergeStart", {});
+    await redis.v4.sendCommand([
+      "SET",
+      roomid + "/renderVoteState",
+      "0",
+      "EX",
+      "21600",
+    ]);
     let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
-    console.log(playlist)
+    console.log(playlist);
     let selectedmusic = JSON.parse(await redis.v4.get(`${roomid}/song`));
     if (playlist === null) {
       return console.log("렌더링 불가! 재생목록에 이미지를 넣어주세요.");

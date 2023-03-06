@@ -65,26 +65,3 @@
   box-shadow: 0 0 0 1px #565656 inset;
   position: relative;
 }
-
-.name_layout {
-  height: 20px;
-  align-self: stretch;
-  flex-grow: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-
-.name_span {
-  flex-grow: 0;
-  font-family: "Pretendard";
-  font-size: 20px;
-  font-weight: 100;
-  font-stretch: normal;
-  font-style: normal;
-  letter-spacing: normal;
-  text-align: center;
-  color: #ffffff;
-}

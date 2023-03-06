@@ -7,6 +7,7 @@ import SnackBar from "./SnackBar";
 const RoomCode = () => {
   const roomid = useParams().roomId;
 
+  // 메인화면 초대URL 클립보드 저장
   const copyurl = async (e) => {
     e.preventDefault();
     try {

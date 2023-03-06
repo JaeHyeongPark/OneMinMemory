@@ -18,6 +18,7 @@ const Output = () => {
   const [imgleft, setimgleft] = useState(0);
   const [imgurl, setimgurl] = useState("");
 
+  // 재생목록 시간 조절
   function handleSliderChange(event) {
     if (event.target.value > playlistCtx.totaltime * 10 || !showimg) {
       return;
@@ -26,6 +27,8 @@ const Output = () => {
     setimgleft((tagRef.current.offsetWidth / 600) * (event.target.value - 0.1));
     geturl(event.target.value);
   }
+
+  // 미리보기 조건 판단
   useEffect(() => {
     if (sliderValue > playlistCtx.totaltime * 10 || !showimg) {
       setshowimg(false);
@@ -36,6 +39,7 @@ const Output = () => {
     geturl(sliderValue);
   }, [sliderValue]);
 
+  // 현재 해당 초에 해당하는 이미지 출력
   const geturl = (time) => {
     const playlist = playlistCtx.playlist;
     let check = 0;
@@ -48,6 +52,7 @@ const Output = () => {
     }
   };
 
+  // 재생목록 미리보기 초 변경
   const changeTime = (time) => {
     setSliderValue(time);
   };

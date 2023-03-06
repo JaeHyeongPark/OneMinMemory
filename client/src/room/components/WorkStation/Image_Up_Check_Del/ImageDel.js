@@ -20,7 +20,6 @@ const ImageDel = (props) => {
       ToCanvas.setorigin(origin);
     } else {
       const effect = {};
-      console.log(ToCanvas.effect);
       Object.keys(ToCanvas.effect).filter((url) => {
         if (ToCanvas.effect[url] === 0) {
           effect[url] = 0;

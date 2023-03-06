@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+
 import RenderModal from "./RenderModal";
 import RenderIcon from "../../assets/rendericon.svg";
 import Button from "@mui/material/Button";
@@ -28,18 +29,26 @@ const style = {
 };
 
 const RenderButton = () => {
+  // 룸 번호와 효과음
   const votesound = new Audio(voteSound);
   const roomId = useParams().roomId;
+
+  // 랜더링 모달창 기능 관련
   const [open, setOpen] = useState(false);
   const [loading, setloading] = useState(false);
   const [percent, setpercent] = useState("");
+  const [Allvote, setAllvote] = useState(false)
   const [finalUrl, setfinalUrl] = useState("");
-  const handleClose = () => setOpen(false);
   const playlistCtx = useContext(PlaylistContext);
+
+  // 소켓 관련
   const [myVoteState, setMyVoteState] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [numPeople, setNumPeople] = useState([1]);
-  const [Allvote, setAllvote] = useState(false)
+
+  const handleClose = () => setOpen(false);
+
+  // 현재 유저의 수
   const changeNumPeople = (numUsers) => {
     let newList = [];
     for (let i = 0; i < numUsers; i++) {
@@ -51,6 +60,7 @@ const RenderButton = () => {
   RenderButton.setActiveStep = setActiveStep;
   RenderButton.changeNumPeople = changeNumPeople;
 
+  // 랜더링 관련 소켓
   useEffect(() => {
     App.mainSocket.on("renderingProgress", (data) => {
       setpercent(data.progress);
@@ -76,6 +86,7 @@ const RenderButton = () => {
     });
   }, []);
 
+  // 랜더링 투표 버튼(취소)
   const handleRenderOffButton = () => {
     setMyVoteState(false);
     App.mainSocket.emit("IVoted", {
@@ -84,6 +95,8 @@ const RenderButton = () => {
       voteState: false,
     });
   };
+
+  // 랜더링 투표 버튼(수락)
   const handleRenderOnButton = () => {
     console.log(playlistCtx.playlist);
     if (App.playlistPermissionState === 1) {

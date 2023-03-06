@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext,useEffect } from "react";
 import { useDrop } from "react-dnd";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+
 import "./Playlist.css";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import PlaylistMain from "./PlaylistMain";
@@ -44,6 +44,8 @@ const Playlist = () => {
         }
       });
   };
+
+  // 재생목록 관련 API에 따른 소켓 전송
   useEffect(() => {
     App.mainSocket.on("playlistChangedBasic", (data) => {
       playlistCtx.addToPlaylist(data.playlist);
@@ -71,6 +73,7 @@ const Playlist = () => {
       playlistCtx.addToPlaylist(data.playlist);
     });
   }, []);
+  
   return (
     <div className="Tracks">
       <div

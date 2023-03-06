@@ -79,9 +79,8 @@ const RenderModal = (props) => {
         </div>
       </div>
     );
-  }else if (!props.loading && !props.Allvote){
-    content = <h1>랜더링을 하려면 투표해주세요</h1>
-  }
+  } else if (!props.loading && !props.Allvote) {
+    content = <h1 style={{ color: "#e1e1e1" }}>준비가 모두 완료되면 렌더링을 진행합니다.</h1>}
 
   return (
     <div className="modal-content">
@@ -119,7 +118,9 @@ const RenderModal = (props) => {
             </Button>
           </div>
         </div>
-      ) : content}
+      ) : (
+        content
+      )}
     </div>
   );
 };

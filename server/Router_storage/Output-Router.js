@@ -394,7 +394,6 @@ module.exports = function (io) {
         duration: playlist[idx].duration,
         totaltime: totaltime,
         idx,
-        // url: url,
       });
     }
   });

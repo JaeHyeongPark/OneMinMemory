@@ -68,6 +68,7 @@ const Tik = (props) => {
       });
   };
 
+  // 조건에 따른 다른 랜더링
   let content = "";
 
   if (props.time === playlistCtx.selecttime && playlistCtx.selecttime !== 0) {

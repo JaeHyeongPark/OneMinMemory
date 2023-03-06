@@ -5,7 +5,7 @@ const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const { spawn } = require("child_process");
 const ffmpeg = require("fluent-ffmpeg");
-const Command = ffmpeg.Command;
+// const Command = ffmpeg.Command;
 const fs = require("fs");
 const path = require("path");
 
@@ -16,9 +16,9 @@ const videoCodec = "h264_nvenc";
 // Set the hardware acceleration options for FFmpeg
 ffmpeg.setFfmpegPath(nvencPath);
 ffmpeg.setFfprobePath("/usr/local/bin/ffprobe");
-Command.prototype._getArguments = function (inputs, output) {
-  return ["-hwaccel", "cuvid", "-c:v", videoCodec];
-};
+// Command.prototype._getArguments = function (inputs, output) {
+//   return ["-hwaccel", "cuvid", "-c:v", videoCodec];
+// };
 //======================
 
 AWS.config.update({

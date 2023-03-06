@@ -1,11 +1,6 @@
-// socket IO용 모듈 import
 const socketio = require("socket.io");
-// express 기반 http server 생성과 socket 연결
 const redis = require("./RedisClient");
 const express = require("express");
-
-// 노래 동기화용 자료형
-// const music[]
 const router = express.Router();
 
 module.exports = function socketRouter(io) {
@@ -44,15 +39,6 @@ module.exports = function socketRouter(io) {
           playlistPermissionState: state,
           numUsers,
         });
-        // socket 주소 번역용
-        // console.log(data.SFUId);
-        // redis.v4.sendCommand([
-        //   "SET",
-        //   data.Id + "/SFUId",
-        //   data.SFUId,
-        //   "EX",
-        //   21600,
-        // ]);
         console.log("누가 왔어요~", data.roomId, data.Id);
       } catch (e) {
         console.log(e);

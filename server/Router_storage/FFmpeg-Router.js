@@ -10,12 +10,9 @@ const fs = require("fs");
 const path = require("path");
 
 // =====================GPU 가속 코드
-const nvencPath = "/usr/local/cuda/bin/nvenc";
 // Set the video codec to use NVENC with H.264 profile
 const videoCodec = "h264_nvenc";
 // Set the hardware acceleration options for FFmpeg
-ffmpeg.setFfmpegPath(nvencPath);
-ffmpeg.setFfprobePath("/usr/local/bin/ffprobe");
 // Command.prototype._getArguments = function (inputs, output) {
 //   return ["-hwaccel", "cuvid", "-c:v", videoCodec];
 // };

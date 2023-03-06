@@ -230,7 +230,7 @@ module.exports = function socketRouter(io) {
         if (isChanged) {
           await redis.v4.sendCommand([
             "SET",
-            `${roomid}/playlist`,
+            `${data.roomId}/playlist`,
             JSON.stringify(playlist),
             "EX",
             "21600",

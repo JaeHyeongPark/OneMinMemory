@@ -31,7 +31,7 @@ const Effect = ({ className }) => {
       onMouseOut={() => setcheck(false)}>
       <img
         className={className}
-        src={check ? `/EffectList/${className}.gif` : "/EffectList/Effect.jpg"}
+        src={check ? `/EffectList/gif/${className}.gif` : `/EffectList/image/${className}.jpg`}
         alt="effect"
       />
       <div className="effect-title">{className}</div>

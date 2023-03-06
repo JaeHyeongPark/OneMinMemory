@@ -32,8 +32,8 @@ const Transition = ({ className, onChange }) => {
         className={className}
         src={
           check
-            ? `/TransitionList/${className}.gif`
-            : "/TransitionList/profile.jpeg"
+            ? `/TransitionList/gif/${className}.gif`
+            : `/TransitionList/image/${className}.jpg`
         }
         alt="transition"
       />

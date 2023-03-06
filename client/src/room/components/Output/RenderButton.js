@@ -39,6 +39,7 @@ const RenderButton = () => {
   const [myVoteState, setMyVoteState] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [numPeople, setNumPeople] = useState([1]);
+  const [Allvote, setAllvote] = useState(false)
   const changeNumPeople = (numUsers) => {
     let newList = [];
     for (let i = 0; i < numUsers; i++) {
@@ -57,6 +58,7 @@ const RenderButton = () => {
     App.mainSocket.on("mergeStart", (data) => {
       setloading(false);
       setOpen(true);
+      if(!Allvote) setAllvote(true)
     });
     App.mainSocket.on("mergeFinished", (data) => {
       setfinalUrl(data.videoURL);
@@ -126,6 +128,7 @@ const RenderButton = () => {
     });
   };
 
+  // 랜더링 모달창 열기,닫기 버튼
   const openmodal = (e) => {
     e.preventDefault();
     setOpen(true);
@@ -153,6 +156,7 @@ const RenderButton = () => {
                 finalUrl={finalUrl}
                 percent={percent}
                 setOpen={setOpen}
+                Allvote={Allvote}
               />
               <RenderVoteState
                 numPeople={numPeople}

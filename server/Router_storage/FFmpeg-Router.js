@@ -5,11 +5,11 @@ const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const { spawn } = require("child_process");
 const ffmpeg = require("fluent-ffmpeg");
+const Command = ffmpeg.FfmpegCommand;
 const fs = require("fs");
 const path = require("path");
 
 // =====================GPU 가속 코드
-const { Command } = ffmpeg;
 const nvencPath = "/usr/local/cuda/bin/nvenc";
 // Set the video codec to use NVENC with H.264 profile
 const videoCodec = "h264_nvenc";

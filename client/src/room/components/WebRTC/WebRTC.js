@@ -129,6 +129,7 @@ async function getMedia(deviceId) {
 
 // mute 버튼
 function handleMuteBtn() {
+  console.log(myStream, myStream.getAudioTracks());
   if (myStream.getAudioTracks().length !== 1) {
     return false;
   }

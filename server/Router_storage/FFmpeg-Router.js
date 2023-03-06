@@ -4,7 +4,7 @@ const redis = require("./RedisClient");
 const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const { spawn } = require("child_process");
-const ffmpeg = require("gpu-ffmpeg");
+const ffmpeg = require("fluent-ffmpeg");
 const fs = require("fs");
 const path = require("path");
 

@@ -129,15 +129,23 @@ async function getMedia(deviceId) {
 
 // mute 버튼
 function handleMuteBtn() {
+  if (myStream.getAudioTracks().length === 0) {
+    return false;
+  }
   myStream
     .getAudioTracks()
     .forEach((track) => (track.enabled = !track.enabled));
+  return true;
 }
 // cameraOff 버튼
 function handleCameraBtn() {
+  if (myStream.getVideoTracks().length === 0) {
+    return false;
+  }
   myStream
     .getVideoTracks()
     .forEach((track) => (track.enabled = !track.enabled));
+  return true;
 }
 
 // 친구들 얼굴이 송출되는 태그

@@ -8,12 +8,14 @@ const VideoCallButton = (props) => {
   const [audio, setAudio] = useState(true);
   const [video, setVideo] = useState(true);
   const changeAudioState = () => {
-    setAudio(audio ? false : true);
-    WebRTC.handleMuteBtn();
+    if (WebRTC.handleMuteBtn()) {
+      setAudio(audio ? false : true);
+    }
   };
   const changeVideoState = () => {
-    setVideo(video ? false : true);
-    WebRTC.handleCameraBtn();
+    if (WebRTC.handleCameraBtn()) {
+      setVideo(video ? false : true);
+    }
   };
   return (
     <>

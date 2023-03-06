@@ -5,7 +5,7 @@ const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const { spawn } = require("child_process");
 const ffmpeg = require("fluent-ffmpeg");
-const Command = ffmpeg.FfmpegCommand;
+const Command = ffmpeg.Command;
 const fs = require("fs");
 const path = require("path");
 

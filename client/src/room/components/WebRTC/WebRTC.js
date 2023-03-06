@@ -129,8 +129,7 @@ async function getMedia(deviceId) {
 
 // mute 버튼
 function handleMuteBtn() {
-  console.log(myStream, myStream.getAudioTracks());
-  if (myStream.getAudioTracks().length !== 1) {
+  if (myStream.getAudioTracks().length === 0) {
     return false;
   }
   myStream
@@ -140,7 +139,7 @@ function handleMuteBtn() {
 }
 // cameraOff 버튼
 function handleCameraBtn() {
-  if (myStream.getVideoTracks().length !== 1) {
+  if (myStream.getVideoTracks().length === 0) {
     return false;
   }
   myStream

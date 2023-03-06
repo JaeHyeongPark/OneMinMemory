@@ -8,6 +8,19 @@ const ffmpeg = require("fluent-ffmpeg");
 const fs = require("fs");
 const path = require("path");
 
+// =====================GPU 가속 코드
+const { Command } = ffmpeg;
+const nvencPath = "/usr/local/cuda/bin/nvenc";
+// Set the video codec to use NVENC with H.264 profile
+const videoCodec = "h264_nvenc";
+// Set the hardware acceleration options for FFmpeg
+ffmpeg.setFfmpegPath(nvencPath);
+ffmpeg.setFfprobePath("/usr/local/bin/ffprobe");
+Command.prototype._getArguments = function (inputs, output) {
+  return ["-hwaccel", "cuvid", "-c:v", videoCodec];
+};
+//======================
+
 AWS.config.update({
   region: "ap-northeast-2",
   accessKeyId: process.env.Access_key_ID,
@@ -131,6 +144,7 @@ function addEffects(roomid, inputPath, durations, effects, transitions) {
           ffmpeg(inputPath[i])
             .loop(durations[i] + 1)
             .outputOptions(effects[i])
+            .videoCodec(videoCodec)
             .on("start", function (commandLine) {
               console.log("Spawned Ffmpeg with command: " + commandLine);
             })
@@ -152,6 +166,7 @@ function addEffects(roomid, inputPath, durations, effects, transitions) {
           ffmpeg(inputPath[i])
             .loop(durations[i])
             .outputOptions(effects[i])
+            .videoCodec(videoCodec)
             .on("start", function (commandLine) {
               console.log("Spawned Ffmpeg with command: " + commandLine);
             })
@@ -173,6 +188,7 @@ function addEffects(roomid, inputPath, durations, effects, transitions) {
         if (transitions[i]) {
           ffmpeg(inputPath[i])
             .loop(durations[i] + 1)
+            .videoCodec(videoCodec)
             .on("start", function (commandLine) {
               console.log("Spawned Ffmpeg with command: " + commandLine);
             })
@@ -193,6 +209,7 @@ function addEffects(roomid, inputPath, durations, effects, transitions) {
         } else {
           ffmpeg(inputPath[i])
             .loop(durations[i])
+            .videoCodec(videoCodec)
             .on("start", function (commandLine) {
               console.log("Spawned Ffmpeg with command: " + commandLine);
             })
@@ -234,6 +251,7 @@ function ffmpegSyncTrans(
           prev_duration - 1
         }`
       )
+      .videoCodec(videoCodec)
       .on("start", function (commandLine) {
         console.log("Spawned Ffmpeg with command: " + commandLine);
       })
@@ -256,6 +274,7 @@ function ffmpegSyncMerge(prev_video, input, transedPath) {
     ffmpeg()
       .addInput(prev_video)
       .addInput(input)
+      .videoCodec(videoCodec)
       .on("start", function (commandLine) {
         console.log("Spawned Ffmpeg with command: " + commandLine);
       })
@@ -340,7 +359,7 @@ function addAudio(roomid, inputPath, musicsrc) {
         if (musicsrc === "") {
           console.log("음악 없는 영상 제작");
           ffmpeg(inputPath)
-            .videoCodec("libx264")
+            .videoCodec(videoCodec)
             .size("1280x720")
             .on("start", function (commandLine) {
               console.log("Spawned Ffmpeg with command: " + commandLine);
@@ -356,7 +375,7 @@ function addAudio(roomid, inputPath, musicsrc) {
             .save(finishedVideo);
         } else {
           ffmpeg(inputPath)
-            .videoCodec("libx264")
+            .videoCodec(videoCodec)
             .audioCodec("libmp3lame")
             .size("1280x720")
             .addInput(musicsrc)

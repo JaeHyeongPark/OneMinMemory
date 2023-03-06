@@ -10,17 +10,12 @@ const MainPage_router = require("./Router_storage/MainPage-Router");
 const Socket_router = require("./Router_storage/Socket-Router");
 const FFmpeg_router = require("./Router_storage/FFmpeg-Router");
 const dotenv = require("dotenv");
+// ==============클러스터 관련 모듈=================================
 const { createAdapter } = require("@socket.io/cluster-adapter");
 const { setupWorker } = require("@socket.io/sticky");
-
-// ==============클러스터 관련 모듈=================================
-// const { setupMaster, setupWorker } = require("@socket.io/sticky");
-// const { createAdapter, setupPrimary } = require("@socket.io/cluster-adapter");
-// const recluster = require("recluster");
-// const cluster = require("cluster");
 //=====================================================================
-// router 추가 by 충일
-// express 기반 http server 생성과 socket 연결 by 충일
+
+// express 기반 http server 생성과 socket 연결
 const app = express();
 const httpServer = http.createServer(app);
 const io = new socketio.Server(httpServer, {
@@ -50,17 +45,6 @@ app.use("/FFmpeg", FFmpeg_router(io));
 // MainPage 라우터는 여기로~~~
 app.use("/home", MainPage_router);
 
-//===========클러스터 관련 코드(작업중)=============
-// setupMaster(httpServer, {
-//   loadBalancingMethod: "least-connection",
-// });
-// cluster.setupMaster({
-//   serialization: "advanced",
-// });
-// // setup connections between the workers
-// setupPrimary();
-//=======================================
-
 // socket.io error handling
 io.on("error", (err) => {
   console.error("Socket.IO Error:", err);
@@ -84,7 +68,3 @@ app.use((error, req, res, next) => {
 
 // app.listen에서 httpServer.listen으로 수정 by 충일
 httpServer.listen(5000, () => console.log("서버 연결 성공!"));
-
-// const balancer = recluster(path.join(__dirname, "worker.js"));
-
-// balancer.run();

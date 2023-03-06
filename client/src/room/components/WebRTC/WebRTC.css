@@ -2,7 +2,6 @@
   width: 20%;
   height: 100%;
   align-self: stretch;
-  /* flex-grow: 0; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -45,15 +44,7 @@
   position: absolute;
   z-index: -1;
 }
-/* .CamFrame {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 0;
-  align-items: center;
-  border: solid 1px #565656;
-} */
+
 .videoTagSpeaking {
   height: 100%;
   width: 100%;
@@ -87,14 +78,12 @@
 }
 
 .name_span {
-  /* height: 20px; */
   flex-grow: 0;
   font-family: "Pretendard";
   font-size: 20px;
   font-weight: 100;
   font-stretch: normal;
   font-style: normal;
-  /* line-height: 1.4; */
   letter-spacing: normal;
   text-align: center;
   color: #ffffff;

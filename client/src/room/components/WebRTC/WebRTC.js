@@ -7,7 +7,6 @@ import { io } from "socket.io-client"; // Client Socket
 const socket = io("https://chjungle.shop", {
   path: "/sfusocket",
   withCredentials: true,
-
   extraHeaders: {
     "my-custom-header": "abcd",
   },
@@ -30,9 +29,7 @@ let myStream;
 // RTC 연결 생성 변수 (추가 설명 필요)
 const RTC_config = {
   iceServers: [
-    {
-      urls: "stun:stun.l.google.com:19302",
-    },
+    { urls: "stun:stun.l.google.com:19302" },
     { urls: "stun:stun2.l.google.com:19302" },
     { urls: "stun:stun3.l.google.com:19302" },
     { urls: "stun:stun4.l.google.com:19302" },
@@ -112,16 +109,6 @@ async function getMedia(deviceId) {
         });
       }
     };
-    // myStream = await navigator.mediaDevices.getUserMedia(
-    //   deviceId ? cameraConstraints : initialConstrains
-    // );
-    // console.log(deviceId);
-    // let myVideo = new MediaStream();
-    // myVideo.addTrack(myStream.getVideoTracks()[0]);
-    // myFace.srcObject = myVideo;
-    // if (!deviceId) {
-    //   await getCameras();
-    // }
   } catch (e) {
     console.log(e);
   }
@@ -151,17 +138,20 @@ function handleCameraBtn() {
 // 친구들 얼굴이 송출되는 태그
 let peersFace1, peersFace2, peersFace3, peersFace4;
 
+// 비디오에 해당하는 사람이 말할 때 반짝이는 태두리 태그
 let videoFrame1, videoFrame2, videoFrame3, videoFrame4;
+
+// 비디오에 해당하는 사람읜 캔버스에서 편집중인 사진 img 태그
 let imgTag1, imgTag2, imgTag3, imgTag4;
+
 // 수신되는 비디오를 틀어줄 태그들을 관리할 리스트
 let videos;
 
 // 방에 들어오면 실행되는 함수
-// 1. 자신의 스트림을 만든다
-// 2. 자신의 스트림을 서버로 보내줄 연결을 만든다.
 async function startMedia() {
-  // 미디어를 셋팅하고 peer to peer 연결을 시작해야 하므로 promise함수가 섞인 getMedia()를 await으로 기다린다.
+  // 1. 자신의 스트림을 만든다
   await getMedia();
+  // 2. 자신의 스트림을 서버로 보내줄 연결을 만든다.
   await makeSendingConection();
 }
 
@@ -169,15 +159,13 @@ async function startMedia() {
 socket.on("welcome", async (answer) => {
   try {
     await sendingConnection.setRemoteDescription(answer);
-    console.log("answer입력완료");
   } catch (e) {
     console.log(e);
   }
 });
-
+// server가 자신의 연결 후보 Ice Candidate를 받아 보내주는 socket
 socket.on("iceForSending", async (data) => {
   if (sendingConnection.remoteDescription != null) {
-    console.log("i got ice for sending!");
     await sendingConnection.addIceCandidate(data.ice);
   }
 });
@@ -206,7 +194,7 @@ socket.on("makeNewPeer", (data) => {
   });
 });
 
-// 서버가 보낸 nego 요청
+// 서버가 보낸 협상 요청
 socket.on("handleNegotiation", async (data) => {
   try {
     sendingConnection.setRemoteDescription(data.offer);
@@ -308,54 +296,6 @@ async function makeSendingConection() {
   }
 }
 
-// 연결이 disconnected되었을 떄 실행되는 함수 : 새로운 연결 생성
-async function makeNewConnection() {
-  try {
-    console.log("새로 연결 시도!");
-    sendingConnection = new RTCPeerConnection(RTC_config);
-    sendingConnection.addEventListener("icecandidate", (data) => {
-      if (data.candidate != null) {
-        socket.emit("iceForSending", {
-          ice: data.candidate,
-          Id: App.mainSocket.id,
-          roomId,
-        });
-        console.log("i got sending Ice and sent to server");
-      }
-    });
-
-    sendingConnection.addEventListener("connectionstatechange", (unused) => {
-      if (sendingConnection.connectionState === "disconnected") {
-        sendingConnection.close();
-        makeNewConnection();
-      }
-    });
-
-    // 내가 받을 때만 의미가 있는 이벤트 리스너라 일단 비활성
-    sendingConnection.addEventListener("track", (data) => {
-      console.log("트랙이벤트 발생");
-      let userId = streamIdToUser[data.streams[0].id];
-      userInfo[userId].video.videoTag.srcObject = data.streams[0];
-    });
-
-    // 스트림 내에 모든 트랙들을 접근하는 함수를 이용하여 myPeercon
-    myStream.getTracks().forEach((track) => {
-      sendingConnection.addTrack(track, myStream);
-    });
-
-    // SendingConnection을 위한 offer 생성 후 서버에 전달
-    const sendingOffer = await sendingConnection.createOffer();
-    await sendingConnection.setLocalDescription(sendingOffer);
-    socket.emit("reconnectOffer", {
-      roomId,
-      sendingOffer: sendingOffer,
-      Id: App.mainSocket.id,
-    });
-  } catch (e) {
-    console.log(e);
-  }
-}
-
 // 태그들을 자료형에 매핑하는 함수
 const initializeSetting = () => {
   peersFace1 = document.getElementById("peersFace1");
@@ -402,24 +342,16 @@ const WebRTC = () => {
   useEffect(() => {
     setTimeout(() => {
       initializeSetting();
-      // 서버가 보낸 다른사람의 그림 데이터
+      // 서버가 보낸 다른사람의 그림 데이터를 받는 소캣이벤트
       App.mainSocket.on("myCanvas", (data) => {
         if (userInfo[data.senderId]) {
           userInfo[data.senderId].video.imgTag.src = data.imageData;
         }
-        // 테스트용 코드
-        // imgTag1 = document.getElementById("imgTag1");
-        // imgTag1.src = data.imageData;
       });
       return startMedia();
     }, 2000);
+    // 누군가 말하고 있음을 알리는 소캣 이벤트
     App.mainSocket.on("speakingState", (data) => {
-      // 테스트용 코드 주석처리 필요
-      // videoFrame1 = document.getElementById("videoFrame1");
-      // videoFrame1.className = "videoTagSpeaking";
-      // setTimeout(() => {
-      //   videoFrame1.className = "videoTagNotSpeaking";
-      // }, 1000);
       if (userInfo[data.speakerId] && userInfo[data.speakerId].video) {
         userInfo[data.speakerId].video.videoFrame.className =
           "videoTagSpeaking";
@@ -430,32 +362,25 @@ const WebRTC = () => {
       }
     });
   }, []);
+  // 다른 사람의 비디오를 편집중인 사진으로 바꾸는 함수
   const imgTagOnOff = (idx, isOn) => {
     if (videos) {
       if (isOn) {
         videos[idx].imgTag.className = "imgTagOn";
         if (videos[idx].videoTag.srcObject) {
-          // videos[idx].videoTag.srcObject.getVideoTracks()[0].muted = true;
-          // videos[idx].videoTag.visibility = "visible";
           videos[idx].videoTag.className = "videoTagOff";
         }
       } else {
         videos[idx].imgTag.className = "imgTagOff";
         if (videos[idx].videoTag.srcObject) {
-          // videos[idx].videoTag.srcObject.getVideoTracks()[0].muted = false;
-          // videos[idx].videoTag.visibility = "hidden";
           videos[idx].videoTag.className = "videoTag";
         }
       }
     }
-    // 테스트용코드
-    // imgTag1 = document.getElementById("imgTag1");
-    // imgTag1.className = "imgTagOn";
   };
   return (
     <div className="ROOM-BODY-WebRTC">
       <div className="CAMs">
-        {/* <div className="CamFrame"> */}
         <div id="videoFrame1" className="videoTagNotSpeaking">
           <video
             id="peersFace1"
@@ -474,13 +399,6 @@ const WebRTC = () => {
             }}
           ></img>
         </div>
-        {/* <img src={cans} className="img.component-cans" alt="user cam"  /> */}
-        {/* <div className="name_layout">
-            <span className="name_span">Name</span>
-          </div> */}
-        {/* </div> */}
-        {/* <div className="CamFrame"> */}
-        {/* <img src={cans} className="img.component-cans" alt="a" /> */}
         <div id="videoFrame2" className="videoTagNotSpeaking">
           <video
             id="peersFace2"
@@ -498,13 +416,7 @@ const WebRTC = () => {
             id="imgTag2"
             className="imgTagOff"
           ></img>
-          {/* </div> */}
-          {/* <div className="name_layout">
-            <span className="name_span">Name</span>
-          </div> */}
         </div>
-        {/* <div className="CamFrame"> */}
-        {/* <img src={cans} className="img.component-cans" alt="a" /> */}
         <div id="videoFrame3" className="videoTagNotSpeaking">
           <video
             id="peersFace3"
@@ -522,13 +434,7 @@ const WebRTC = () => {
             id="imgTag3"
             className="imgTagOff"
           ></img>
-          {/* </div> */}
-          {/* <div className="name_layout">
-            <span className="name_span">Name</span>
-          </div> */}
         </div>
-        {/* <div className="CamFrame"> */}
-        {/* <img src={cans} className="img.component-cans" alt="a" /> */}
         <div id="videoFrame4" className="videoTagNotSpeaking">
           <video
             id="peersFace4"
@@ -546,10 +452,6 @@ const WebRTC = () => {
             id="imgTag4"
             className="imgTagOff"
           ></img>
-          {/* </div> */}
-          {/* <div className="name_layout">
-            <span className="name_span">Name</span>
-          </div> */}
         </div>
       </div>
     </div>

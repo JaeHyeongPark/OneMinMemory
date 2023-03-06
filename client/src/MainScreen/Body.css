@@ -7,7 +7,7 @@
 .d1 {
   position: absolute;
   background-image: url("./background.jpg");
-  background-size: 2100px 1400px;
+  background-size: 2400px 1600px;
 
   height: 30%;
   width: 30%;
@@ -24,7 +24,7 @@
 .d2 {
   position: absolute;
   background-image: url("./background.jpg");
-  background-size: 2100px 1400px;
+  background-size: 2400px 1600px;
 
   height: 70%;
   width: 25%;
@@ -41,7 +41,7 @@
 .d3 {
   position: absolute;
   background-image: url("./background.jpg");
-  background-size: 2100px 1400px;
+  background-size: 2400px 1600px;
   overflow: hidden;
 
   height: 100%;
@@ -60,7 +60,7 @@
   position: absolute;
   overflow: hidden;
   background-image: url("./background.jpg");
-  background-size: 2100px 1400px;
+  background-size: 2400px 1600px;
 
   height: 80%;
   width: 25%;

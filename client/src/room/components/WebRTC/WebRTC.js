@@ -427,7 +427,7 @@ const WebRTC = () => {
         setTimeout(() => {
           userInfo[data.speakerId].video.videoFrame.className =
             "videoTagNotSpeaking";
-        }, 1000);
+        }, 1700);
       }
     });
   }, []);

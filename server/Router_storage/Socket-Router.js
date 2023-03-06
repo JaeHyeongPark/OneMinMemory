@@ -72,11 +72,11 @@ module.exports = function socketRouter(io) {
         if (numUserLeft != 0) {
           redis.v4.expire(socket.roomId + "/numUser", 21600);
         }
-        let permissionUesr = await redis.v4.get(
+        let permissionUser = await redis.v4.get(
           socket.roomId + "playlistPermissionState"
         );
         let status = -1;
-        if (permissionUesr === socket.Id) {
+        if (permissionUser === socket.Id) {
           await redis.v4.sendCommand([
             "SET",
             socket.roomId + "playlistPermissionState",
@@ -230,7 +230,7 @@ module.exports = function socketRouter(io) {
         if (isChanged) {
           await redis.v4.sendCommand([
             "SET",
-            `${roomid}/playlist`,
+            `${data.roomId}/playlist`,
             JSON.stringify(playlist),
             "EX",
             "21600",

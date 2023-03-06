@@ -48,6 +48,7 @@ module.exports = function (io) {
     upload(req, res, (err) => {
       if (err) {
         res.status(400).send(err);
+        console.log("upload error!!!!!");
       }
       const roomid = req.body.roomid;
 
@@ -74,10 +75,7 @@ module.exports = function (io) {
         //   `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
         //     key
         // );
-        upimg.push(
-          `https://d1vnetyz8ckxw7.cloudfront.net/` +
-            key
-        );
+        upimg.push(`https://d1vnetyz8ckxw7.cloudfront.net/` + key);
         return s3.upload(params).promise();
       });
       // promise 작업이 끝나면 이후 작업 처리
@@ -86,12 +84,13 @@ module.exports = function (io) {
           upimg.forEach(async (url) => {
             await redis.v4.rPush(`${roomid}/origin`, url);
           });
-          await redis.v4.expire(`${roomid}/origin`, 21600)
+          await redis.v4.expire(`${roomid}/origin`, 21600);
           res.status(200).send({ success: true });
           io.to(roomid).emit("upload", { upimg });
         })
         .catch((err) => {
           res.status(400).send(err);
+          console.log("redis push error!!!!!");
         });
     });
   });

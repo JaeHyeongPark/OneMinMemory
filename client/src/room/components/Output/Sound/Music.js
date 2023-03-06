@@ -63,7 +63,7 @@ const Music = (props) => {
         ref={audioRef}
         onTimeUpdate={getCurrDuration}
         onLoadedData={(e) => {
-          setDuration.apply(e.currentTarget.duration.toFixed(2));
+          setDuration(e.currentTarget.duration.toFixed(2));
         }}
         src={props.song}
       ></audio>

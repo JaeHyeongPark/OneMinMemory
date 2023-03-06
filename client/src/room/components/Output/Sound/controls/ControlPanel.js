@@ -4,7 +4,7 @@ import "./control-panel.css";
 
 function ControlPanel({ play, isPlaying, duration, currentTime }) {
   function secondsToHms(seconds) {
-    if (!seconds) return "00m 00s";
+    if (!seconds) return "00:00";
 
     let duration = seconds;
     let hours = duration / 3600;
@@ -25,9 +25,9 @@ function ControlPanel({ play, isPlaying, duration, currentTime }) {
     if (parseInt(hours, 10) > 0) {
       return `${parseInt(hours, 10)}h ${min}m ${sec}s`;
     } else if (min === 0) {
-      return `00m ${sec}s`;
+      return `00:${sec}`;
     } else {
-      return `${min}m ${sec}s`;
+      return `${min}:${sec}`;
     }
   }
 

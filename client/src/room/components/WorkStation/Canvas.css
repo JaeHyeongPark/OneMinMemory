@@ -174,7 +174,7 @@ body {
   position: absolute;
   left: 20%;
   top: 70px;
-  width: 96%;
+  width: 90%;
   height: 500px;
   display: flex;
   flex-direction: row;
@@ -192,6 +192,7 @@ body {
 .effect-modal {
   overflow: auto y;
   flex-basis: 50%;
+  width: 50%;
   padding: 10px;
 }
 
@@ -232,7 +233,7 @@ body {
 .transition-list {
   height: 100%;
   overflow: auto;
-  width: 100%;
+  width: 50%;
   margin: 10px;
   /* position: relative; */
 }

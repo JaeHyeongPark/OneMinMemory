@@ -2,3 +2,12 @@
   width: 50%;
   /* height: 10%; */
 }
+.ReadyContent{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ReadyContent img{
+  width: 100%;
+}

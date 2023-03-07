@@ -8,8 +8,8 @@ import App from "../../App";
 import "./Room.css";
 import RenderButton from "../components/Output/RenderButton";
 import EditPermissionButton from "../components/Output/EditPermissionButton";
-import WebRTC from "../components/WebRTC/WebRTC";
 import { DraggingProvider } from "./DraggingContext";
+
 const Room = () => {
   const navigate = useNavigate();
   const roomId = useParams().roomId;
@@ -23,13 +23,15 @@ const Room = () => {
         roomId: roomId,
       });
     }, 1000);
+    
     App.mainSocket.on("welcome", (data) => {
       if (data.ans === "NO") {
         navigate("/");
       }
+
       RenderButton.setActiveStep(Number(data.renderVoteState));
-      console.log(data.numUsers);
       RenderButton.changeNumPeople(data.numUsers);
+
       if (data.playlistPermissionState !== -1) {
         App.playlistPermissionState = data.playlistPermissionState;
         EditPermissionButton.setRefresh();

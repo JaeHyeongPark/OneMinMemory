@@ -15,6 +15,7 @@ const TransitionButton = (props) => {
   // DraggingContext
   const { transDrag } = useContext(DraggingContext);
 
+  // transition 드랍존
   const [{ isover }, playlist] = useDrop(() => ({
     accept: ["transition"],
     drop: (item) => sendTotransition(item.className),
@@ -25,6 +26,7 @@ const TransitionButton = (props) => {
 
   const transition = playlistCtx.playlist[props.idx].transition;
 
+  // 해당 위치에 transition 삽입
   const sendTotransition = (transition) => {
     if (App.playlistPermissionState !== 1) {
       SnackBar.playlistEditWarningOpen();
@@ -42,6 +44,8 @@ const TransitionButton = (props) => {
         }
       });
   };
+
+  // transition 삭제
   const deltransition = (e) => {
     if (App.playlistPermissionState !== 1) {
       SnackBar.playlistEditWarningOpen();
@@ -60,6 +64,7 @@ const TransitionButton = (props) => {
       });
   };
 
+  // transition의 유무에 따른 다른 랜더링
   let content;
   if (transition === "") {
     content = (

@@ -5,6 +5,9 @@ import { DraggingContext } from "../../../pages/DraggingContext";
 
 const Picture = (props) => {
   const ToCanvas = useContext(ImageContext);
+  const { picDrag, ChangePicDrag } = useContext(DraggingContext);
+
+  // upload, effect 이미지들 드래그
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: "image",
@@ -15,14 +18,13 @@ const Picture = (props) => {
     }),
     [props.url]
   );
-  // console.log("isDragging : ", isDragging);
-  const { picDrag, ChangePicDrag } = useContext(DraggingContext);
 
   useEffect(() => {
     ChangePicDrag(isDragging);
     console.log("picDrag : ", picDrag);
   }, [isDragging]);
 
+  // 이미지 클릭시 이벤트트
   const selectimage = async (url) => {
     if (props.mode === "Original") {
       const origin = { ...ToCanvas.origin };

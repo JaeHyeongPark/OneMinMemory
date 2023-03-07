@@ -9,14 +9,14 @@ import DownIcon from "../../assets/downloading-file.png";
 import loadGif from "../../assets/RenderLoading.gif";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-
+import Ready from "../../assets/ready.gif";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const RenderModal = (props) => {
-    const [openSnack, setOpenSnack] = useState(false);
+  const [openSnack, setOpenSnack] = useState(false);
 
   // 랜더링 완료후 영상 다운로드
   const download = async (e) => {
@@ -52,6 +52,44 @@ const RenderModal = (props) => {
     }
     setOpenSnack(false);
   };
+
+  // 처음 랜더링 화면 설정
+  let content = "";
+  if (!props.loading && props.Allvote) {
+    content = (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "40px",
+        }}
+      >
+        <img src={loadGif} style={{ width: "30%" }} />
+        <div
+          style={{
+            fontSize: "2rem",
+            color: "#989898",
+            fontFamily: "Pretendard",
+            fontWeight: "bold",
+            fontStretch: "normal",
+            fontStyle: "normal",
+          }}
+        >
+          {props.percent}
+        </div>
+      </div>
+    );
+  } else if (!props.loading && !props.Allvote) {
+    content = (
+      <div className="ReadyContent">
+        <img src={Ready} />
+        <h1 style={{ color: "#e1e1e1" }}>
+          준비가 모두 완료되면 렌더링을 진행합니다.
+        </h1>
+      </div>
+    );
+  }
 
   return (
     <div className="modal-content">
@@ -90,28 +128,7 @@ const RenderModal = (props) => {
           </div>
         </div>
       ) : (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "40px",
-          }}
-        >
-          <img src={loadGif} style={{ width: "30%" }} />
-          <div
-            style={{
-              fontSize: "2rem",
-              color: "#989898",
-              fontFamily: "Pretendard",
-              fontWeight: "bold",
-              fontStretch: "normal",
-              fontStyle: "normal",
-            }}
-          >
-            {props.percent}
-          </div>
-        </div>
+        content
       )}
     </div>
   );

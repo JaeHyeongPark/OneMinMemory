@@ -76,7 +76,7 @@ const Text = (props) => {
                 label="Font"
                 onChange={handleChange}
                 autoWidth
-                style={{ fontFamily: font }}
+                style={{ fontFamily: font, color:"#e1e1e1"}}
               >
                 <MenuItem
                   value={"system-ui"}

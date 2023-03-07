@@ -8,10 +8,13 @@ import "./RoomHeader.css";
 
 const RoomHeader = (props) => {
   const navigate = useNavigate();
+
+  // room에서 좌측 상단 로고 클릭시 메인화면으로 이동
   const Go_to_the_Home = (e) => {
     e.preventDefault();
     navigate("/");
   };
+  
   return (
     <div className="ROOM-HEADER">
       <div className="Container">

@@ -5,6 +5,9 @@ import { DraggingContext } from "../../../pages/DraggingContext";
 
 const Transition = ({ className, onChange }) => {
   const [check, setcheck] = useState(false);
+  const { transDrag, ChangeTransDrag } = useContext(DraggingContext);
+
+  // transition 드래그
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: "transition",
     item: { className },
@@ -13,10 +16,8 @@ const Transition = ({ className, onChange }) => {
     }),
   }));
 
-  const { transDrag, ChangeTransDrag } = useContext(DraggingContext);
   useEffect(() => {
     ChangeTransDrag(isDragging);
-    // console.log("transDrag : ", transDrag);
   }, [isDragging]);
 
   return (
@@ -31,8 +32,8 @@ const Transition = ({ className, onChange }) => {
         className={className}
         src={
           check
-            ? `/TransitionList/${className}.gif`
-            : "/TransitionList/profile.jpeg"
+            ? `/TransitionList/gif/${className}.gif`
+            : `/TransitionList/image/${className}.jpg`
         }
         alt="transition"
       />

@@ -49,10 +49,10 @@ module.exports = function (io) {
       if (err) {
         res.status(400).send(err);
       }
-      const roomid = req.body.roomid;
 
-      // const foldername = "roomNumber"
+      const roomid = req.body.roomid;
       const foldername = `${roomid}/Original/`;
+
       const promises = req.files.map((file, idx) => {
         let fileKey = "";
         if (typeof req.body.lastModified === "string") {
@@ -67,13 +67,7 @@ module.exports = function (io) {
           ACL: "public-read",
           Body: file.buffer,
           ContentType: file.mimetype,
-          // CacheControl: "max-age=21600",
         };
-        // cors 방법 변경(나중에 문제 생길시 복구)
-        // upimg.push(
-        //   `https://${process.env.Bucket_Name}.s3.ap-northeast-2.amazonaws.com/` +
-        //     key
-        // );
         upimg.push(
           `https://d1vnetyz8ckxw7.cloudfront.net/` +
             key

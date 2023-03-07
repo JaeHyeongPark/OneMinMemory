@@ -5,6 +5,9 @@ import { DraggingContext } from "../../../pages/DraggingContext";
 
 const Effect = ({ className }) => {
   const [check, setcheck] = useState(false);
+  const { effectDrag, ChangeEffectDrag } = useContext(DraggingContext);
+
+  // effect 드랍존
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: "effect",
     item: { className, type: "effect" },
@@ -12,11 +15,12 @@ const Effect = ({ className }) => {
       isDragging: monitor.isDragging(),
     }),
   }));
-  const { effectDrag, ChangeEffectDrag } = useContext(DraggingContext);
+
   useEffect(() => {
     ChangeEffectDrag(isDragging);
     // console.log("effectDrag : ", effectDrag);
   }, [isDragging]);
+  
   return (
     <div
       ref={dragRef}
@@ -27,7 +31,7 @@ const Effect = ({ className }) => {
       onMouseOut={() => setcheck(false)}>
       <img
         className={className}
-        src={check ? `/EffectList/${className}.gif` : "/EffectList/Effect.jpg"}
+        src={check ? `/EffectList/gif/${className}.gif` : `/EffectList/image/${className}.jpg`}
         alt="effect"
       />
       <div className="effect-title">{className}</div>

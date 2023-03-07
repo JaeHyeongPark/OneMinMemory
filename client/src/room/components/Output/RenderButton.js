@@ -37,7 +37,7 @@ const RenderButton = () => {
   const [open, setOpen] = useState(false);
   const [loading, setloading] = useState(false);
   const [percent, setpercent] = useState("");
-  const [Allvote, setAllvote] = useState(false)
+  const [Allvote, setAllvote] = useState(false);
   const [finalUrl, setfinalUrl] = useState("");
   const playlistCtx = useContext(PlaylistContext);
 
@@ -68,7 +68,7 @@ const RenderButton = () => {
     App.mainSocket.on("mergeStart", (data) => {
       setloading(false);
       setOpen(true);
-      if(!Allvote) setAllvote(true)
+      setAllvote(true);
     });
     App.mainSocket.on("mergeFinished", (data) => {
       setfinalUrl(data.videoURL);

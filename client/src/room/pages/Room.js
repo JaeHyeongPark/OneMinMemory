@@ -23,7 +23,7 @@ const Room = () => {
         roomId: roomId,
       });
     }, 1000);
-    
+
     App.mainSocket.on("welcome", (data) => {
       if (data.ans === "NO") {
         navigate("/");

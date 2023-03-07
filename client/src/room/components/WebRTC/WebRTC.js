@@ -113,16 +113,6 @@ async function getMedia(deviceId) {
         });
       }
     };
-    // myStream = await navigator.mediaDevices.getUserMedia(
-    //   deviceId ? cameraConstraints : initialConstrains
-    // );
-    // console.log(deviceId);
-    // let myVideo = new MediaStream();
-    // myVideo.addTrack(myStream.getVideoTracks()[0]);
-    // myFace.srcObject = myVideo;
-    // if (!deviceId) {
-    //   await getCameras();
-    // }
   } catch (e) {
     console.log(e);
   }
@@ -462,7 +452,6 @@ const WebRTC = () => {
         arrow
       >
         <div className="CAMs">
-          {/* <div className="CamFrame"> */}
           <div id="videoFrame1" className="videoTagNotSpeaking">
             <video
               id="peersFace1"
@@ -481,13 +470,6 @@ const WebRTC = () => {
               }}
             ></img>
           </div>
-          {/* <img src={cans} className="img.component-cans" alt="user cam"  /> */}
-          {/* <div className="name_layout">
-            <span className="name_span">Name</span>
-          </div> */}
-          {/* </div> */}
-          {/* <div className="CamFrame"> */}
-          {/* <img src={cans} className="img.component-cans" alt="a" /> */}
           <div id="videoFrame2" className="videoTagNotSpeaking">
             <video
               id="peersFace2"
@@ -505,13 +487,7 @@ const WebRTC = () => {
               id="imgTag2"
               className="imgTagOff"
             ></img>
-            {/* </div> */}
-            {/* <div className="name_layout">
-            <span className="name_span">Name</span>
-          </div> */}
           </div>
-          {/* <div className="CamFrame"> */}
-          {/* <img src={cans} className="img.component-cans" alt="a" /> */}
           <div id="videoFrame3" className="videoTagNotSpeaking">
             <video
               id="peersFace3"

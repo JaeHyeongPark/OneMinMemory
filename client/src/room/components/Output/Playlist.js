@@ -1,4 +1,4 @@
-import React, { useContext,useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useDrop } from "react-dnd";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -10,7 +10,6 @@ import PlaylistTrans from "./PlaylistTrans";
 import App from "../../../App";
 import { DraggingContext } from "../../pages/DraggingContext";
 import SnackBar from "../RoomHeader/SnackBar";
-
 
 const Playlist = () => {
   const playlistCtx = useContext(PlaylistContext);
@@ -71,9 +70,10 @@ const Playlist = () => {
       playlistCtx.selectmusicsrc(data.src);
       playlistCtx.changemusicidx(data.idx);
       playlistCtx.addToPlaylist(data.playlist);
+      SnackBar.playlistInstructionOpen();
     });
   }, []);
-  
+
   return (
     <div className="Tracks">
       <div
@@ -83,7 +83,8 @@ const Playlist = () => {
           boxShadow:
             (picDrag || effectDrag) &&
             "0 0 2px #1484CD, 0 0 2px #1484CD, 0 0 20px #1484CD, 0 0 8px #1484CD, 0 0 28px #1484CD, inset 0 0 13px #1484CD",
-        }}>
+        }}
+      >
         {playlistCtx.playlist.map((data, i) => (
           <PlaylistMain
             effect={data.effect}

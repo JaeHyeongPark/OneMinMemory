@@ -80,7 +80,8 @@ function LoginPage() {
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={style}>
           <Typography
             id="modal-modal-title"
@@ -100,7 +101,7 @@ function LoginPage() {
               `/room/${AuthCtx.rooomId}`}
             <img
               src={clipboard}
-              style={{ width: "15px", margin: "3px", cursor:"pointer"}}
+              style={{ width: "15px", margin: "3px", cursor: "pointer" }}
               onClick={copyurl}
             />
           </Typography>

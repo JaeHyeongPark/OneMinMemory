@@ -4,6 +4,7 @@ import { useEffect, useState, useContext } from "react";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import DiscEdit from "../../assets/discedit.svg";
 import Lock from "../../assets/lock.svg";
+import spaceBar from "../../assets/space-button-icon.svg";
 import Unlock from "../../assets/unlock.svg";
 import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";

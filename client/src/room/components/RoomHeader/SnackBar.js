@@ -3,7 +3,9 @@ import { useState } from "react";
 import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import Alarm from "../../assets/alarm.mp3"
+import Alarm from "../../assets/alarm.mp3";
+import spaceBar from "../../assets/space-button-icon.svg";
+import mouseClick from "../../assets/mouseClick.svg";
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -15,9 +17,10 @@ function SnackBar() {
   const [renderWarning, setRenderWarning] = useState(false);
   const [playlistEmptyWarning, setPlaylistEmptyWarning] = useState(false);
   const [playlistUrlWarning, setplaylistUrlWarning] = useState(false);
+  const [playlistInstruction, setPlaylistInstruction] = useState(false);
   const vertical = "top";
   const horizontal = "center";
-  const alarm = new Audio(Alarm)
+  const alarm = new Audio(Alarm);
   // 주의 : canvas 예외
   const canvasWarningOpen = () => {
     setCanvasWarning(true);
@@ -26,7 +29,8 @@ function SnackBar() {
     setRenderWarning(false);
     setPlaylistEmptyWarning(false);
     setplaylistUrlWarning(false);
-    alarm.play()
+    setPlaylistInstruction(false);
+    alarm.play();
   };
   const canvasWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -44,7 +48,8 @@ function SnackBar() {
     setPlaylistEditWarning(false);
     setRenderWarning(false);
     setPlaylistEmptyWarning(false);
-    alarm.play()
+    setPlaylistInstruction(false);
+    alarm.play();
   };
   const roomUrlSuccessClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -61,7 +66,8 @@ function SnackBar() {
     setRenderWarning(false);
     setPlaylistEmptyWarning(false);
     setplaylistUrlWarning(true);
-    alarm.play()
+    setPlaylistInstruction(false);
+    alarm.play();
   };
   const playlistUrlWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -78,7 +84,8 @@ function SnackBar() {
     setPlaylistEditWarning(true);
     setRenderWarning(false);
     setPlaylistEmptyWarning(false);
-    alarm.play()
+    setPlaylistInstruction(false);
+    alarm.play();
   };
   const playlistEditWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -95,7 +102,8 @@ function SnackBar() {
     setPlaylistEditWarning(false);
     setRenderWarning(true);
     setPlaylistEmptyWarning(false);
-    alarm.play()
+    setPlaylistInstruction(false);
+    alarm.play();
   };
   const renderWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -112,7 +120,8 @@ function SnackBar() {
     setPlaylistEditWarning(false);
     setRenderWarning(false);
     setPlaylistEmptyWarning(true);
-    alarm.play()
+    setPlaylistInstruction(false);
+    alarm.play();
   };
   const playlistEmptyWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -121,6 +130,27 @@ function SnackBar() {
     setPlaylistEmptyWarning(false);
   };
   SnackBar.playlistEmptyWarningOpen = playlistEmptyWarningOpen;
+
+  // 정보 : 플레이리스트 음원 재생 정보
+  const playlistInstructionOpen = () => {
+    setCanvasWarning(false);
+    setRoomUrlSuccess(false);
+    setPlaylistEditWarning(false);
+    setRenderWarning(false);
+    setPlaylistEmptyWarning(false);
+    setplaylistUrlWarning(false);
+    setPlaylistInstruction(true);
+    alarm.play();
+  };
+
+  const playlistInstructionClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setPlaylistInstruction(false);
+  };
+  SnackBar.playlistInstructionOpen = playlistInstructionOpen;
+
   return (
     <Stack spacing={2} sx={{ width: "100%" }}>
       {/* 캔버스에 사진이 없는데 저장을 눌렀을 때만 */}
@@ -213,6 +243,32 @@ function SnackBar() {
           sx={{ width: "100%", fontSize: "20px" }}
         >
           플레이리스트가 비어있습니다!
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        open={playlistInstruction}
+        // autoHideDuration={100000}
+        onClose={playlistInstructionClose}
+      >
+        <Alert
+          elevation={6}
+          onClose={playlistInstructionClose}
+          severity="info"
+          sx={{
+            width: "100%",
+            height: "50px",
+            fontSize: "20px",
+            alignItems: "center",
+          }}
+        >
+          <img src={mouseClick} style={{ height: 30 }}></img>
+          <span style={{ marginBottom: 10 }}> : Preview </span>
+          <img
+            src={spaceBar}
+            style={{ marginLeft: 20, height: 30, marginTop: 10 }}
+          ></img>
+          <span> : Pause </span>
         </Alert>
       </Snackbar>
     </Stack>

@@ -210,17 +210,6 @@ socket.on("handleNegotiation", async (data) => {
   }
 });
 
-// 서버가 보낸 다른사람의 재연결 정보
-socket.on("someoneReconnected", (data) => {
-  streamIdToUser[data.streamId] = data.senderId;
-  userInfo[data.senderId].streamId = data.streamId;
-  socket.emit("readyForGettingStream", {
-    roomId,
-    receiverId: App.mainSocket.id,
-    senderId: data.senderId,
-  });
-});
-
 // 누군가 나갔음을 알리는 소캣
 socket.on("someoneLeft", (data) => {
   console.log(data.senderId);

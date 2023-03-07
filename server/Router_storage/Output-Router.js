@@ -6,34 +6,10 @@ module.exports = function (io) {
   const presets = [
     [],
     [
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
-      {
-        url: "",
-        duration: 5,
-        select: false,
-        transition: "",
-        effect: "",
-      },
+      { url: "", duration: 5, select: false, transition: "", effect: "" },
+      { url: "", duration: 5, select: false, transition: "", effect: "" },
+      { url: "", duration: 5, select: false, transition: "", effect: "" },
+      { url: "", duration: 5, select: false, transition: "", effect: "" },
       {
         url: "",
         duration: 5,
@@ -173,14 +149,15 @@ module.exports = function (io) {
       },
     ],
   ];
-  
+
   // effect효과 playlist에 넣기
   router.post("/effect", async (req, res, next) => {
     const roomid = req.body.roomid;
-    let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
-    const effect = req.body.effect;
-    const idx = req.body.idx;
+    const playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+    const { effect, idx } = req.body;
+
     playlist[idx].effect = effect;
+
     await redis.v4.sendCommand([
       "SET",
       `${roomid}/playlist`,
@@ -190,15 +167,16 @@ module.exports = function (io) {
     ]);
 
     res.send({ success: true });
+
     io.to(roomid).emit("playlistChangedBasic", { playlist });
   });
 
   // effect 지우기
   router.post("/deleffect", async (req, res, next) => {
     const roomid = req.body.roomid;
+    const playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
     const idx = req.body.idx;
 
-    let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
     playlist[idx].effect = "";
     await redis.v4.sendCommand([
       "SET",

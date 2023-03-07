@@ -14,6 +14,7 @@ client.on("connect", () => {
 });
 client.on("error", (err) => {
   console.log(err);
+  console.log("RedisClient error!!!!!");
 });
 
 client.connect();

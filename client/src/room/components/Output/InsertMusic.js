@@ -25,7 +25,7 @@ const style = {
   left: "50%",
   justifyContent: "center",
   transform: "translate(-50%, -50%)",
-  width: "50%",
+  width: "40%",
   bgcolor: "#272731",
   borderRadius: "10px",
   boxShadow: 24,

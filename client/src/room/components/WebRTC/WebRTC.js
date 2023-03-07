@@ -371,82 +371,6 @@ const WebRTC = () => {
   };
   return (
     <div className="ROOM-BODY-WebRTC">
-<<<<<<< HEAD
-      <div className="CAMs">
-        <div id="videoFrame1" className="videoTagNotSpeaking">
-          <video
-            id="peersFace1"
-            autoPlay
-            className="videoTag"
-            playsInline
-            onClick={() => {
-              imgTagOnOff(0, true);
-            }}
-          ></video>
-          <img
-            id="imgTag1"
-            className="imgTagOff"
-            onClick={() => {
-              imgTagOnOff(0, false);
-            }}
-          ></img>
-        </div>
-        <div id="videoFrame2" className="videoTagNotSpeaking">
-          <video
-            id="peersFace2"
-            autoPlay
-            playsInline
-            className="videoTag"
-            onClick={() => {
-              imgTagOnOff(1, true);
-            }}
-          ></video>
-          <img
-            onClick={() => {
-              imgTagOnOff(1, false);
-            }}
-            id="imgTag2"
-            className="imgTagOff"
-          ></img>
-        </div>
-        <div id="videoFrame3" className="videoTagNotSpeaking">
-          <video
-            id="peersFace3"
-            autoPlay
-            playsInline
-            className="videoTag"
-            onClick={() => {
-              imgTagOnOff(2, true);
-            }}
-          ></video>
-          <img
-            onClick={() => {
-              imgTagOnOff(2, false);
-            }}
-            id="imgTag3"
-            className="imgTagOff"
-          ></img>
-        </div>
-        <div id="videoFrame4" className="videoTagNotSpeaking">
-          <video
-            id="peersFace4"
-            autoPlay
-            playsInline
-            className="videoTag"
-            onClick={() => {
-              imgTagOnOff(3, true);
-            }}
-          ></video>
-          <img
-            onClick={() => {
-              imgTagOnOff(3, false);
-            }}
-            id="imgTag4"
-            className="imgTagOff"
-          ></img>
-        </div>
-      </div>
-=======
       <Tooltip
         title={"Cam화면을 눌러서 친구의 Canvas를 볼수있습니다."}
         placement="bottom"
@@ -537,7 +461,6 @@ const WebRTC = () => {
           </div>
         </div>
       </Tooltip>
->>>>>>> feature/omm3
     </div>
   );
 };

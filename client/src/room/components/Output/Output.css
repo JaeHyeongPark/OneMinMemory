@@ -549,10 +549,12 @@
   width: 25px; /* Set a specific slider handle width */
   height: 25px; /* Slider handle height */
   cursor: pointer; /* Cursor on hover */
+  color: #ffd166;
 }
 
 .slider::-moz-range-thumb {
   width: 25px; /* Set a specific slider handle width */
   height: 25px; /* Slider handle height */
   cursor: pointer; /* Cursor on hover */
+  color: #ffd166;
 }

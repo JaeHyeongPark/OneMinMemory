@@ -407,15 +407,9 @@ module.exports = function (io) {
   router.post("/merge", async (req, res, next) => {
     const roomid = req.body.roomid;
     io.to(roomid).emit("mergeStart", {});
-    await redis.v4.sendCommand([
-      "SET",
-      roomid + "/renderVoteState",
-      "0",
-      "EX",
-      "21600",
-    ]);
+    await redis.v4.set(roomid + "/renderVoteState","0")
+    await redis.v4.expire(roomid + "/renderVoteState", 21600)
     let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
-    console.log(playlist);
     let selectedmusic = JSON.parse(await redis.v4.get(`${roomid}/song`));
     if (playlist === null) {
       return console.log("렌더링 불가! 재생목록에 이미지를 넣어주세요.");

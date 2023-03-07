@@ -6,6 +6,12 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 
+const btn_hover = {
+  '&:hover':{
+    backgroundColor: '#17171e'
+  }
+}
+
 function RenderVoteState(props) {
   const activeStep = props.activeStep;
   const numPeople = props.numPeople;
@@ -43,14 +49,14 @@ function RenderVoteState(props) {
         </Stepper>
       </Box>
       {props.myVoteState ? (
-        <Button className="Rendervote" onClick={props.handleRenderOffButton}>
+        <Button sx={btn_hover} className="Rendervote" onClick={props.handleRenderOffButton}>
           <div className="Render_img_layout">
             <img src={voteX} alt="Rendering" className="Render_img" />
           </div>
           <span className="render_span">CANCEL</span>
         </Button>
       ) : (
-        <Button className="Rendervote" onClick={props.handleRenderOnButton}>
+        <Button sx={btn_hover} className="Rendervote" onClick={props.handleRenderOnButton}>
           <div className="Render_img_layout">
             <img src={voteO} alt="Rendering" className="Render_img" />
           </div>

@@ -369,7 +369,7 @@ function Canvas() {
               className="sidebar-item"
               onClick={newImage}
               name="Save"
-              startIcon={<SaveIcon style={{ fontSize: 35 }} />}
+              startIcon={<SaveIcon style={{ fontSize: 35, color:"#ffd166"}} />}
             ></Button>
           </Tooltip>
         </div>

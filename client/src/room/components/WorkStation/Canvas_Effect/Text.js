@@ -11,7 +11,7 @@ import { Tooltip } from "@mui/material";
 const Text = (props) => {
   const [font, setFont] = useState("");
   const [linePx, setlinePx] = useState(30);
-  const lineColor = useRef('black');
+  const lineColor = useRef("black");
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -43,10 +43,26 @@ const Text = (props) => {
     <>
       <Tooltip title="텍스트 넣기" placement="top" arrow>
         <Button
+          sx={
+            props.textmode && {
+              bgcolor: "#ffd166",
+              borderRadius: "15px",
+              "&:hover": {
+                backgroundColor: "#ffd166",
+              },
+            }
+          }
           className="sidebar-item"
           name="Text Mode"
           onClick={check}
-          startIcon={<TextFieldsOutlinedIcon style={{ fontSize: 35 }} />}
+          startIcon={
+            <TextFieldsOutlinedIcon
+              style={{
+                fontSize: 35,
+                color: props.textmode ? "#17171e" : "#ffd166",
+              }}
+            />
+          }
         ></Button>
       </Tooltip>
       {props.textmode && (
@@ -66,7 +82,7 @@ const Text = (props) => {
           </li>
           <li>
             <FormControl sx={{ m: 1, minWidth: 100 }} size="small">
-              <InputLabel id="demo-select-small" style={{ color: "skyblue" }}>
+              <InputLabel id="demo-select-small" style={{ color: "#ffd166" }}>
                 Font
               </InputLabel>
               <Select
@@ -76,7 +92,7 @@ const Text = (props) => {
                 label="Font"
                 onChange={handleChange}
                 autoWidth
-                style={{ fontFamily: font, color:"#e1e1e1"}}
+                style={{ fontFamily: font, color: "#e1e1e1" }}
               >
                 <MenuItem
                   value={"system-ui"}
@@ -118,11 +134,7 @@ const Text = (props) => {
             </FormControl>
           </li>
           <li>
-            <input
-              type="color"
-              ref={lineColor}
-              onChange={changecolor}
-            />
+            <input type="color" ref={lineColor} onChange={changecolor} />
           </li>
         </div>
       )}

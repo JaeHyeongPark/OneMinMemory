@@ -28,6 +28,12 @@ const style = {
   p: 4,
 };
 
+const btn_hover = {
+  '&:hover':{
+    backgroundColor: '#272731'
+  }
+}
+
 const RenderButton = () => {
   // 룸 번호와 효과음
   const votesound = new Audio(voteSound);
@@ -149,7 +155,7 @@ const RenderButton = () => {
 
   return (
     <div>
-      <Button className="Rendering" onClick={openmodal}>
+      <Button sx={btn_hover} className="Rendering" onClick={openmodal}>
         <div className="Render_img_layout">
           <img src={RenderIcon} alt="Rendering" className="Render_img" />
         </div>

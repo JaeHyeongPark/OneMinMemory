@@ -9,7 +9,7 @@ module.exports = function socketRouter(io) {
     // 입장 : 이전 check 대체
     socket.on("joinRoom", async (data) => {
       try {
-        redis.v4.set("E724CA" + "/renderVoteState", "0");
+        redis.v4.set("E724CA" + "/numUser", "0");
         const playlistPermissionState = await redis.v4.get(
           data.roomId + "/playlistPermissionState"
         );

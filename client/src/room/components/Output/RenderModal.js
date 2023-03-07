@@ -82,11 +82,13 @@ const RenderModal = (props) => {
     );
   } else if (!props.loading && !props.Allvote) {
     content = (
-      <div className="ReadyContent">
-        <img src={Ready} />
-        <h1 style={{ color: "#e1e1e1" }}>
-          준비가 모두 완료되면 렌더링을 진행합니다
-        </h1>
+      <div className="Ready_layout">
+        <div className="ReadyContent">
+          <img src={Ready} />
+        </div>
+        <span className="ready_span">
+          모든 참여자 준비 완료 시 영상을 생성합니다
+        </span>
       </div>
     );
   }

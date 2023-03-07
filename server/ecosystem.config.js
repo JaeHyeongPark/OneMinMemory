@@ -4,6 +4,7 @@ module.exports = {
       script: "app.js",
       instances: "2",
       exec_mode: "cluster",
+      autorestart: true,
     },
   ],
 };

@@ -3,7 +3,9 @@ import { useState } from "react";
 import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import Alarm from "../../assets/alarm.mp3"
+import Alarm from "../../assets/alarm.mp3";
+import EditPlaylist from "../../assets/editplaylist.svg";
+import FinishEditing from "../../assets/finishediting.svg";
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -17,7 +19,7 @@ function SnackBar() {
   const [playlistUrlWarning, setplaylistUrlWarning] = useState(false);
   const vertical = "top";
   const horizontal = "center";
-  const alarm = new Audio(Alarm)
+  const alarm = new Audio(Alarm);
   // 주의 : canvas 예외
   const canvasWarningOpen = () => {
     setCanvasWarning(true);
@@ -26,7 +28,7 @@ function SnackBar() {
     setRenderWarning(false);
     setPlaylistEmptyWarning(false);
     setplaylistUrlWarning(false);
-    alarm.play()
+    alarm.play();
   };
   const canvasWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -44,7 +46,7 @@ function SnackBar() {
     setPlaylistEditWarning(false);
     setRenderWarning(false);
     setPlaylistEmptyWarning(false);
-    alarm.play()
+    alarm.play();
   };
   const roomUrlSuccessClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -61,7 +63,7 @@ function SnackBar() {
     setRenderWarning(false);
     setPlaylistEmptyWarning(false);
     setplaylistUrlWarning(true);
-    alarm.play()
+    alarm.play();
   };
   const playlistUrlWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -78,7 +80,7 @@ function SnackBar() {
     setPlaylistEditWarning(true);
     setRenderWarning(false);
     setPlaylistEmptyWarning(false);
-    alarm.play()
+    alarm.play();
   };
   const playlistEditWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -95,7 +97,7 @@ function SnackBar() {
     setPlaylistEditWarning(false);
     setRenderWarning(true);
     setPlaylistEmptyWarning(false);
-    alarm.play()
+    alarm.play();
   };
   const renderWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -112,7 +114,7 @@ function SnackBar() {
     setPlaylistEditWarning(false);
     setRenderWarning(false);
     setPlaylistEmptyWarning(true);
-    alarm.play()
+    alarm.play();
   };
   const playlistEmptyWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -182,7 +184,13 @@ function SnackBar() {
           severity="warning"
           sx={{ width: "100%", fontSize: "20px" }}
         >
-          먼저 플레이리스트 조작권한을 얻어주세요!
+          <img
+            src={EditPlaylist}
+            width="140px"
+            height="26px"
+            alt="discedit"
+          ></img>
+          버튼을 눌러주세요!
         </Alert>
       </Snackbar>
       <Snackbar
@@ -197,7 +205,13 @@ function SnackBar() {
           severity="warning"
           sx={{ width: "100%", fontSize: "20px" }}
         >
-          먼저 플레이리스트 조작권한을 반납해주세요!
+          <img
+            src={FinishEditing}
+            width="140px"
+            height="30px"
+            alt="finishediting"
+          ></img>
+          버튼을 눌러주세요!
         </Alert>
       </Snackbar>
       <Snackbar

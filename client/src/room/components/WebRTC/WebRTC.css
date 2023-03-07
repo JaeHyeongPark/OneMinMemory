@@ -7,8 +7,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  padding: 5px 10px;
-  background-color: #272731;
+  /* padding: 5px 10px; */
+  /* background-color: #272731; */
+  background-color: #000000;
 }
 .videoTagOff {
   height: 100%;

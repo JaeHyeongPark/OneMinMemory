@@ -54,10 +54,26 @@ const TranEffect = (props) => {
     <>
       <Tooltip title="영상 효과" placement="top" arrow>
         <Button
+          sx={
+            props.traneffect && {
+              bgcolor: "#ffd166",
+              borderRadius: "15px",
+              "&:hover": {
+                backgroundColor: "#ffd166",
+              },
+            }
+          }
           className="sidebar-item"
           name="Transition/Effect"
           onClick={check}
-          startIcon={<AddLinkIcon style={{ fontSize: 35 }} />}
+          startIcon={
+            <AddLinkIcon
+              style={{
+                fontSize: 35,
+                color: props.traneffect ? "#17171e" : "#ffd166",
+              }}
+            />
+          }
         ></Button>
       </Tooltip>
       {props.traneffect && (

@@ -29,7 +29,7 @@ const SoundTrack = (props) => {
 
     // 여기부터 파형 색칠
     context.beginPath();
-    context.strokeStyle = "yellow";
+    context.strokeStyle = "skyblue";
     context.lineWidth = 1;
 
     // 노란색으로 파형 색칠
@@ -96,7 +96,7 @@ const SoundTrack = (props) => {
 
       // Color the waveform yellow up to the current playback position
       context.beginPath();
-      context.strokeStyle = "yellow";
+      context.strokeStyle = "skyblue";
       context.lineWidth = 1;
 
       for (let i = 0; i < currentIdx; i++) {

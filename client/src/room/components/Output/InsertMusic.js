@@ -25,13 +25,19 @@ const style = {
   left: "50%",
   justifyContent: "center",
   transform: "translate(-50%, -50%)",
-  width: "50%",
+  width: "40%",
   bgcolor: "#272731",
   borderRadius: "10px",
   boxShadow: 24,
   gap: "10px",
   p: 5,
 };
+
+const btn_hover = {
+  '&:hover':{
+    backgroundColor: '#272731'
+  }
+}
 
 const mytheme = createTheme({
   palette: {
@@ -94,7 +100,7 @@ export default function InsertMusic() {
       <Button
         className="Preset"
         onClick={handleOpen}
-        // sx={{ width: "50%", height: "50%" }}
+        sx={btn_hover}
       >
         <div className="Music_img_layout">
           <img src={music} alt="insert music" className="music_img" />

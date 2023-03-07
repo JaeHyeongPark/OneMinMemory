@@ -5,7 +5,7 @@ import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import { Tooltip } from "@mui/material";
 
 const Painting = (props) => {
-  const lineColor = useRef('black');
+  const lineColor = useRef("black");
   const [linePx, setlinePx] = useState(5);
 
   const changepx = (e) => {
@@ -32,10 +32,26 @@ const Painting = (props) => {
     <>
       <Tooltip title="그리기" placement="top" arrow>
         <Button
+          sx={
+            props.paintmode && {
+              bgcolor: "#ffd166",
+              borderRadius: "15px",
+              "&:hover": {
+                backgroundColor: "#ffd166",
+              },
+            }
+          }
           className="sidebar-item"
           name="Paint Mode"
           onClick={check}
-          startIcon={<BorderColorOutlinedIcon style={{ fontSize: 35 }} />}
+          startIcon={
+            <BorderColorOutlinedIcon
+              style={{
+                fontSize: 35,
+                color: props.paintmode ? "#17171e" : "#ffd166",
+              }}
+            />
+          }
         ></Button>
       </Tooltip>
       {props.paintmode && (
@@ -54,11 +70,7 @@ const Painting = (props) => {
             <span style={{ color: "white" }}>{` ${linePx}px`}</span>
           </li>
           <li>
-            <input
-              type="color"
-              ref={lineColor}
-              onChange={changecolor}
-            />
+            <input type="color" ref={lineColor} onChange={changecolor} />
           </li>
         </div>
       )}

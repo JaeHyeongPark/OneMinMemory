@@ -8,6 +8,7 @@ import SnackBar from "../RoomHeader/SnackBar";
 import trans_off from "../../assets/transition_off.png";
 import trans_on from "../../assets/transition_on.png";
 import { DraggingContext } from "../../pages/DraggingContext";
+import { Tooltip } from "@mui/material";
 
 const TransitionButton = (props) => {
   const playlistCtx = useContext(PlaylistContext);
@@ -84,6 +85,7 @@ const TransitionButton = (props) => {
     );
   } else {
     content = (
+      <Tooltip title={props.transition} placement="top" arrow >
       <img
         ref={playlist}
         className="toplay_transOn"
@@ -99,6 +101,7 @@ const TransitionButton = (props) => {
         onClick={deltransition}
         alt="transon"
       />
+      </Tooltip>
     );
   }
   return content;

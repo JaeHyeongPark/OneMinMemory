@@ -1,4 +1,4 @@
-const Redis = require("redis");
+const Redis = require("redis")
 const dotenv = require("dotenv");
 
 // Redis 연결
@@ -14,6 +14,7 @@ client.on("connect", () => {
 });
 client.on("error", (err) => {
   console.log(err);
+  console.log("RedisClient error!!!!!");
 });
 
 client.connect();

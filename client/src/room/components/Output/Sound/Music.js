@@ -16,7 +16,6 @@ const Music = (props) => {
 
   useEffect(() => {
     const audio = audioRef.current;
-    audio.volume = 0.1;
 
     if (props.isPlaying) {
       setIsPlaying(true);
@@ -32,7 +31,6 @@ const Music = (props) => {
 
   const play = () => {
     const audio = audioRef.current;
-    audio.volume = 0.1;
 
     if (!isPlaying) {
       setIsPlaying(true);
@@ -63,7 +61,7 @@ const Music = (props) => {
         ref={audioRef}
         onTimeUpdate={getCurrDuration}
         onLoadedData={(e) => {
-          setDuration.apply(e.currentTarget.duration.toFixed(2));
+          setDuration(e.currentTarget.duration.toFixed(2));
         }}
         src={props.song}
       ></audio>

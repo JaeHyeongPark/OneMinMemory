@@ -35,20 +35,10 @@ router.get("/roomid", async (req, res, next) => {
 // 위에서 생성된 넘버로 실제 방 생성
 router.post("/makeroom", async (req, res, next) => {
   const roomid = req.body.id;
-  await redis.v4.sendCommand([
-    "SET",
-    roomid + "/playlistPermissionState",
-    "true",
-    "EX",
-    "21600",
-  ]);
-  await redis.v4.sendCommand([
-    "SET",
-    roomid + "/renderVoteState",
-    "0",
-    "EX",
-    "21600",
-  ]);
+  await redis.v4.set(roomid + "/playlistPermissionState", "true")
+  await redis.v4.set(roomid + "/renderVoteState", "0")
+  await redis.v4.expire(roomid + "/playlistPermissionState", 21600)
+  await redis.v4.expire(roomid + "/renderVoteState", 21600)
   res.send("완료");
 });
 

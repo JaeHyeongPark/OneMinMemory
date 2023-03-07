@@ -16,10 +16,26 @@ const EffectItems = (props) => {
     <>
       <Tooltip title="사진 효과" placement="top" arrow>
         <Button
+          sx={
+            props.itemsmode && {
+              bgcolor: "#ffd166",
+              borderRadius: "15px",
+              "&:hover": {
+                backgroundColor: "#ffd166",
+              },
+            }
+          }
           className="sidebar-item"
           name="Canvas Effect"
           onClick={check}
-          startIcon={<AutoFixNormalOutlinedIcon style={{ fontSize: 35 }} />}
+          startIcon={
+            <AutoFixNormalOutlinedIcon
+              style={{
+                fontSize: 35,
+                color: props.itemsmode ? "#17171e" : "#ffd166",
+              }}
+            />
+          }
         ></Button>
       </Tooltip>
       {props.itemsmode && (
@@ -40,7 +56,7 @@ const EffectItems = (props) => {
               }}
               onClick={() => props.apply("Brighten")}
             >
-              Brighten
+              <span style={{ color: "#ffd166" }}>Brighten</span>
             </Button>
           </li>
           <li>
@@ -59,7 +75,7 @@ const EffectItems = (props) => {
                 },
               }}
             >
-              Sharpen
+              <span style={{ color: "#ffd166" }}>Sharpen</span>
             </Button>
           </li>
           <li>
@@ -78,7 +94,7 @@ const EffectItems = (props) => {
                 },
               }}
             >
-              Saturate
+              <span style={{ color: "#ffd166" }}>Saturate</span>
             </Button>
           </li>
           <li>
@@ -97,7 +113,7 @@ const EffectItems = (props) => {
                 },
               }}
             >
-              Grayscale
+              <span style={{ color: "#ffd166" }}>Grayscale</span>
             </Button>
           </li>
         </ul>

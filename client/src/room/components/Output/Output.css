@@ -302,7 +302,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  padding: 0px 40px 0px 40px;
+  padding: 0px 5px 0px 40px;
   background-color: #17171e;
 
   /* 해당 구역 드래그 방지 */
@@ -549,10 +549,12 @@
   width: 25px; /* Set a specific slider handle width */
   height: 25px; /* Slider handle height */
   cursor: pointer; /* Cursor on hover */
+  color: #ffd166;
 }
 
 .slider::-moz-range-thumb {
   width: 25px; /* Set a specific slider handle width */
   height: 25px; /* Slider handle height */
   cursor: pointer; /* Cursor on hover */
+  color: #ffd166;
 }

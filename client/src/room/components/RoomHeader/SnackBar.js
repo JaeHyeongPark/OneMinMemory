@@ -6,6 +6,8 @@ import MuiAlert from "@mui/material/Alert";
 import Alarm from "../../assets/alarm.mp3";
 import spaceBar from "../../assets/space-button-icon.svg";
 import mouseClick from "../../assets/mouseClick.svg";
+import EditPlaylist from "../../assets/editplaylist.svg";
+import FinishEditing from "../../assets/finishediting.svg";
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -212,7 +214,13 @@ function SnackBar() {
           severity="warning"
           sx={{ width: "100%", fontSize: "20px" }}
         >
-          먼저 플레이리스트 조작권한을 얻어주세요!
+          <img
+            src={EditPlaylist}
+            width="140px"
+            height="26px"
+            alt="discedit"
+          ></img>
+          버튼을 눌러주세요!
         </Alert>
       </Snackbar>
       <Snackbar
@@ -227,7 +235,13 @@ function SnackBar() {
           severity="warning"
           sx={{ width: "100%", fontSize: "20px" }}
         >
-          먼저 플레이리스트 조작권한을 반납해주세요!
+          <img
+            src={FinishEditing}
+            width="140px"
+            height="30px"
+            alt="finishediting"
+          ></img>
+          버튼을 눌러주세요!
         </Alert>
       </Snackbar>
       <Snackbar

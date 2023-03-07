@@ -6,6 +6,7 @@ import App from "../../../App";
 import ClearIcon from "@mui/icons-material/Clear";
 import effectOn from "../../assets/effect_on2.png";
 import SnackBar from "../RoomHeader/SnackBar";
+import { Tooltip } from "@mui/material";
 import "./Playlist.css";
 
 const PlaylistMain = (props) => {
@@ -146,7 +147,13 @@ const PlaylistMain = (props) => {
         </ClearIcon>
       )}
       {props.effect && (
-        <img src={effectOn} onClick={deleffect} style={{ cursor: "pointer" }} />
+          <Tooltip title={props.effect} placement="top" arrow >
+          <img
+            src={effectOn}
+            onClick={deleffect}
+            style={{ cursor: "pointer" }}
+          />
+          </Tooltip>
       )}
     </div>
   );

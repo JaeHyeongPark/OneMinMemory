@@ -34,7 +34,7 @@ const Effect = ({ className }) => {
         src={check ? `/EffectList/gif/${className}.gif` : `/EffectList/image/${className}.jpg`}
         alt="effect"
       />
-      <div className="effect-title">{className}</div>
+      {/* <div className="effect-title">{className}</div> */}
     </div>
   );
 };

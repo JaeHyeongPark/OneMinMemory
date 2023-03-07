@@ -85,7 +85,7 @@ const RenderModal = (props) => {
       <div className="ReadyContent">
         <img src={Ready} />
         <h1 style={{ color: "#e1e1e1" }}>
-          준비가 모두 완료되면 렌더링을 진행합니다.
+          준비가 모두 완료되면 렌더링을 진행합니다
         </h1>
       </div>
     );

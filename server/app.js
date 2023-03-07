@@ -11,8 +11,8 @@ const Socket_router = require("./Router_storage/Socket-Router");
 const FFmpeg_router = require("./Router_storage/FFmpeg-Router");
 const dotenv = require("dotenv");
 // ==============클러스터 관련 모듈=================================
-const { createAdapter } = require("@socket.io/cluster-adapter");
-const { setupWorker } = require("@socket.io/sticky");
+// const { createAdapter } = require("@socket.io/cluster-adapter");
+// const { setupWorker } = require("@socket.io/sticky");
 //=====================================================================
 
 // express 기반 http server 생성과 socket 연결
@@ -27,8 +27,8 @@ const io = new socketio.Server(httpServer, {
   },
 });
 
-io.adapter(createAdapter());
-setupWorker(io);
+// io.adapter(createAdapter());
+// setupWorker(io);
 
 app.use(cors());
 app.use(bodyParser.json());

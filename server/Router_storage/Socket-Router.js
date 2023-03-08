@@ -60,13 +60,16 @@ module.exports = function socketRouter(io) {
           redis.v4.expire(socket.roomId + "/numUser", 21600);
         }
         let permissionUser = await redis.v4.get(
-          socket.roomId + "playlistPermissionState"
+          socket.roomId + "/playlistPermissionState"
         );
         let status = -1;
         if (permissionUser === socket.Id) {
-          await redis.v4.set(socket.roomId + "playlistPermissionState", "true");
+          await redis.v4.set(
+            socket.roomId + "/playlistPermissionState",
+            "true"
+          );
           await redis.v4.expire(
-            socket.roomId + "playlistPermissionState",
+            socket.roomId + "/playlistPermissionState",
             21600
           );
           status = 0;

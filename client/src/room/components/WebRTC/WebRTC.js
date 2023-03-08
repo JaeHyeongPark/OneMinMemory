@@ -174,15 +174,12 @@ socket.on("iceForSending", async (data) => {
 
 // 새로운 사용자 들어왔을 때 실행되는 소캣
 socket.on("makeNewPeer", (data) => {
-  console.log(sendingConnection.connectionState);
-  console.log("새로운 친구가 왔을 때 사용되는 소캣");
   streamIdToUser[data.streamId] = data.senderId;
   userInfo[data.senderId] = {};
   userInfo[data.senderId].streamId = data.streamId;
   let i = 0;
   while (i < 4) {
     if (videos[i].isConnected === false) {
-      console.log("여기");
       videos[i].isConnected = true;
       userInfo[data.senderId].video = videos[i];
       break;
@@ -454,28 +451,12 @@ const WebRTC = () => {
               id="imgTag4"
               className="imgTagOff"
             ></img>
-            {/* </div> */}
-            {/* <div className="name_layout">
-            <span className="name_span">Name</span>
-          </div> */}
           </div>
         </div>
       </Tooltip>
     </div>
   );
 };
-
-// 카메라 전환 버튼
-// async function handleCameraChange() {
-//   await getMedia(cameraSelect.value);
-//   if (sendingConnection) {
-//     const videoTrack = myStream.getVideoTracks()[0];
-//     const videoSender = sendingConnection
-//       .getSenders()
-//       .find((sender) => sender.track.kind === "video");
-//     videoSender.replaceTrack(videoTrack);
-//   }
-// }
 
 WebRTC.handleMuteBtn = handleMuteBtn;
 WebRTC.handleCameraBtn = handleCameraBtn;

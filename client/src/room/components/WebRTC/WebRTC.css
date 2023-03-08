@@ -34,8 +34,8 @@
   position: absolute;
 }
 .imgTagOn {
-  height: 99%;
-  width: 99%;
+  height: 100%;
+  width: 100%;
   position: absolute;
   z-index: 2;
 }
@@ -52,7 +52,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 0;
+  padding: 1%;
   box-shadow: 0 0 0 3px skyblue inset;
   position: relative;
 }
@@ -62,7 +62,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 0;
+  padding: 1%;
   box-shadow: 0 0 0 1px #565656 inset;
   position: relative;
 }

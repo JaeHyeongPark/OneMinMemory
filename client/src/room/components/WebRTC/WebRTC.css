@@ -29,13 +29,13 @@
   padding: 0;
 }
 .videoTag {
-  height: 99%;
-  width: 99%;
+  height: 98%;
+  width: 98%;
   position: absolute;
 }
 .imgTagOn {
-  height: 100%;
-  width: 100%;
+  height: 98%;
+  width: 98%;
   position: absolute;
   z-index: 2;
 }

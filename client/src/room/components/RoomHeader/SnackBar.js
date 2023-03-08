@@ -277,7 +277,7 @@ function SnackBar() {
           }}
         >
           <img src={mouseClick} style={{ height: 30 }}></img>
-          <span style={{ marginBottom: 10 }}> : Preview </span>
+          <span style={{ marginBottom: 10 }}> : Play </span>
           <img
             src={spaceBar}
             style={{ marginLeft: 20, height: 30, marginTop: 10 }}

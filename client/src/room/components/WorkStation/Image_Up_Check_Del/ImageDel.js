@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import ImageContext from "./ImageContext";
 import Button from "@mui/material/Button";
-import DeleteIcon from "@mui/icons-material/Delete";
 import trash from "../../../assets/trash-icon.svg";
 
 const ImageDel = (props) => {

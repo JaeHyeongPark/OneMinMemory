@@ -37,7 +37,6 @@ const Transition = ({ className, onChange }) => {
         }
         alt="transition"
       />
-      {/* <div className="transition-title">{className}</div> */}
     </div>
   );
 };

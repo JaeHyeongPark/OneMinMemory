@@ -15,7 +15,6 @@ import PlaylistContext from "../../../shared/context/playlist-context";
 import "./PhotoBox.css";
 
 import App from "../../../App.js";
-// require("dotenv").config();
 
 const PhotoBox = (props) => {
   const [cloud, setcloud] = useState(true);

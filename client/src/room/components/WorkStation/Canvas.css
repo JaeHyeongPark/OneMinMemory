@@ -40,6 +40,7 @@
   left: 0px;
   top: 70px;
   width: 70%;
+  height: 50px;
   list-style: none;
   list-style-type: none;
   display: flex;
@@ -57,6 +58,7 @@
   left: 20%;
   top: 70px;
   width: 50%;
+  height: 50px;
   list-style: none;
   list-style-type: none;
   display: flex;
@@ -76,6 +78,7 @@
   left: 40%;
   top: 70px;
   width: 80%;
+  height: 50px;
   list-style: none;
   list-style-type: none;
   display: flex;
@@ -183,7 +186,7 @@ body {
   width: 50%;
   padding: 10px;
 }
-.effect-modal span{
+.effect-modal span {
   color: #e1e1e1;
   font-family: Pretendard;
   margin-bottom: 10px;

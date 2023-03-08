@@ -68,14 +68,6 @@ function LoginPage() {
           <span>일분추억</span>
         </div>
       </div>
-      {/* <div className="kakaologo">
-        <img
-          src={Startimage}
-          alt=""
-          onClick={handleOpen}
-          style={{ cursor: "pointer" }}
-        />
-      </div> */}
       <Modal
         open={open}
         onClose={handleClose}

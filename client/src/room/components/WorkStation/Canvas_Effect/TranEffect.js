@@ -79,6 +79,7 @@ const TranEffect = (props) => {
       {props.traneffect && (
         <div className="transition-modal">
           <div className="effect-modal">
+            <span>Effect</span>
             <div className="effect-list">
               {EFFECT_LIST.map((effect, index) => {
                 return <Effect className={effect} key={index} />;
@@ -86,10 +87,13 @@ const TranEffect = (props) => {
             </div>
           </div>
           <div className="v-line"></div>
-          <div className="transition-list">
-            {TRANSITION_LIST.map((transition, index) => {
-              return <Transition className={transition} key={index} />;
-            })}
+          <div className="effect-modal">
+            <span>Transition</span>
+            <div className="transition-list">
+              {TRANSITION_LIST.map((transition, index) => {
+                return <Transition className={transition} key={index} />;
+              })}
+            </div>
           </div>
         </div>
       )}

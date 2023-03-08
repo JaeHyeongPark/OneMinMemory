@@ -18,7 +18,6 @@ const Effect = ({ className }) => {
 
   useEffect(() => {
     ChangeEffectDrag(isDragging);
-    // console.log("effectDrag : ", effectDrag);
   }, [isDragging]);
   
   return (
@@ -34,7 +33,6 @@ const Effect = ({ className }) => {
         src={check ? `/EffectList/gif/${className}.gif` : `/EffectList/image/${className}.jpg`}
         alt="effect"
       />
-      {/* <div className="effect-title">{className}</div> */}
     </div>
   );
 };

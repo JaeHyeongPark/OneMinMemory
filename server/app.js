@@ -40,8 +40,6 @@ app.use("/photoBox", AWS_S3_router(io));
 app.use("/canvas", Canvas_router(io));
 // output 라우터는 일루~
 app.use("/output", Output_router(io));
-// FFmpeg 라우터는 here~
-app.use("/FFmpeg", FFmpeg_router(io));
 // MainPage 라우터는 여기로~~~
 app.use("/home", MainPage_router);
 

@@ -2,7 +2,6 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import softwareupload from "../../../assets/software-upload.svg";
 import Button from "@mui/material/Button";
-// require("dotenv").config();
 
 const ImageUpload = (props) => {
   const roomId = useParams().roomId;

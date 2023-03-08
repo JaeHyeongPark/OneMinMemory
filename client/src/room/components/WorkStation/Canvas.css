@@ -40,6 +40,7 @@
   left: 0px;
   top: 70px;
   width: 70%;
+  height: 50px;
   list-style: none;
   list-style-type: none;
   display: flex;
@@ -57,6 +58,7 @@
   left: 20%;
   top: 70px;
   width: 50%;
+  height: 50px;
   list-style: none;
   list-style-type: none;
   display: flex;
@@ -76,6 +78,7 @@
   left: 40%;
   top: 70px;
   width: 80%;
+  height: 50px;
   list-style: none;
   list-style-type: none;
   display: flex;
@@ -145,15 +148,6 @@ body {
   margin: 0;
 }
 
-/* 필요없음 */
-/* .container {
-  position: relative;
-  top: 25%;
-  left: 12%;
-  width: 70%;
-  object-fit: contain;
-} */
-
 .uploaded-image {
   position: relative;
   width: 70%;
@@ -161,9 +155,6 @@ body {
 }
 
 .uploaded-image canvas {
-  /* width: 768px;
-  height: 432px; */
-
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -195,19 +186,22 @@ body {
   width: 50%;
   padding: 10px;
 }
+.effect-modal span {
+  color: #e1e1e1;
+  font-family: Pretendard;
+  margin-bottom: 10px;
+}
 
 .effect-modal::-webkit-scrollbar {
   display: none;
 }
 
 .effect-list {
-  overflow: auto y;
-  flex-basis: 50%;
-  padding: 10px;
-  height: 100%;
+  height: 95%;
   overflow: auto;
   width: 100%;
-  margin: 10px;
+  margin-top: 5%;
+  margin-left: 5%;
 }
 
 .effect-list::-webkit-scrollbar {
@@ -231,11 +225,11 @@ body {
 }
 
 .transition-list {
-  height: 100%;
+  height: 95%;
   overflow: auto;
-  width: 50%;
-  margin: 10px;
-  /* position: relative; */
+  width: 100%;
+  margin-top: 5%;
+  margin-left: 5%;
 }
 
 /* 일단 잠깐 주석처리 */

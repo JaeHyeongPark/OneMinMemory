@@ -23,7 +23,7 @@ module.exports = function socketRouter(io) {
           io.to(data.Id).emit("welcome", { ans: "NO" });
           return;
         }
-        if (playlistPermissionState === "false") {
+        if (playlistPermissionState !== "true") {
           state = 2;
         } else {
           state = 0;
@@ -140,11 +140,10 @@ module.exports = function socketRouter(io) {
                 }
               }
             );
-            redis.v4.expire(`${data.roomId}/playlistPermissionState`, 21600);
           }
         );
         console.log("요청왔어요~");
-        if (oldplaylistPermissionState !== "false") {
+        if (oldplaylistPermissionState === "true") {
           socket
             .to(data.roomId)
             .emit("playlistEditResponse", { state: 2, isChanged: false });
@@ -153,11 +152,16 @@ module.exports = function socketRouter(io) {
             isChanged: false,
           });
         } else {
+          await redis.v4.set(
+            data.roomId + "/playlistPermissionState",
+            oldplaylistPermissionState
+          );
           io.to(data.Id).emit("playlistEditResponse", {
             state: 2,
             isChanged: false,
           });
         }
+        redis.v4.expire(`${data.roomId}/playlistPermissionState`, 21600);
       } catch (e) {
         console.log(e);
       }

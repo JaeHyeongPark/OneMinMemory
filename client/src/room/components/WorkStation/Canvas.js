@@ -147,11 +147,12 @@ function Canvas() {
     }
     const resize_x = canvasRef.current.offsetWidth;
     const resize_y = canvasRef.current.offsetHeight;
+    const resize_size = textSize * (resize_x / 1280)
     const x = e.nativeEvent.offsetX;
     const y = e.nativeEvent.offsetY;
     const z = canvasRef.current.getBoundingClientRect();
-    setX([x * (1280 / resize_x), z.x + x]);
-    setY([y * (720 / resize_y) - textSize / 2, z.y + y - textSize / 2]);
+    setX([x * (1280 / resize_x), z.x + x, resize_size]);
+    setY([y * (720 / resize_y) - textSize / 2, z.y + y - resize_size/2]);
     setinputShow(true);
   };
 
@@ -167,7 +168,6 @@ function Canvas() {
 
       await ctrlStore();
       setinputShow(false);
-      setTextMode(false);
     }
   };
 
@@ -401,7 +401,10 @@ function Canvas() {
                 left: `${x[1]}px`,
                 top: `${y[1]}px`,
                 background: "transparent",
-                height: `${textSize}px`,
+                height: `${x[2]}px`,
+                fontSize:`${x[2]}px`,
+                color:`${textColor}`,
+                fontFamily:`${textfont}`
               }}
               onKeyDown={handleEnter}
             />

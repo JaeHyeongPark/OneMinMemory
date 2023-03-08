@@ -22,20 +22,20 @@ dotenv.config();
 const effectFilters = {
   ZoomIn_Center: [
     "-vf",
-    "scale=6400x3600,zoompan=z='zoom+0.0025':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2):d=300:s=hd720:fps=25",
+    "scale=6400x3600,zoompan=z='zoom+0.0025':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2):d=500:s=hd720:fps=25",
   ],
-  ZoomIn_TopLeft: ["-vf", "zoompan=z='zoom+0.0015':d=300:s=hd720:fps=25"],
+  ZoomIn_TopLeft: ["-vf", "zoompan=z='zoom+0.0015':d=500:s=hd720:fps=25"],
   ZoomIn_TopRight: [
     "-vf",
-    "scale=6400x3600,zoompan=z='zoom+0.0015':x='x+iw/zoom':d=300:s=hd720:fps=25",
+    "scale=6400x3600,zoompan=z='zoom+0.0015':x='x+iw/zoom':d=500:s=hd720:fps=25",
   ],
   ZoomIn_BottomLeft: [
     "-vf",
-    "scale=6400x3600,zoompan=z='zoom+0.0015':y=1836:d=300:s=hd720:fps=25",
+    "scale=6400x3600,zoompan=z='zoom+0.0015':y=1836:d=500:s=hd720:fps=25",
   ],
   ZoomIn_BottomRight: [
     "-vf",
-    "scale=6400x3600,zoompan=z='zoom+0.0015':x='x+iw/zoom':y=1836:d=300:s=hd720:fps=25",
+    "scale=6400x3600,zoompan=z='zoom+0.0015':x='x+iw/zoom':y=1836:d=500:s=hd720:fps=25",
   ],
   ZoomOut_Center: [
     "-vf",
@@ -359,7 +359,7 @@ function addAudio(roomid, inputPath, musicsrc) {
             .size("1280x720")
             .addInput(musicsrc)
             .duration(inputDuration)
-            .audioFilter(`afade=t=out:st=${inputDuration - 5}:d=5`)
+            .audioFilter(`afade=t=out:st=${inputDuration - 3}:d=3`)
             .on("start", function (commandLine) {
               console.log("Spawned Ffmpeg with command: " + commandLine);
             })

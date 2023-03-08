@@ -42,15 +42,4 @@ router.post("/makeroom", async (req, res, next) => {
   res.send("완료");
 });
 
-// 해당 방이 정식적으로 존재하는지 확인
-router.post("/check", async (req, res, next) => {
-  const check = await redis.v4.get(`${req.body.id}`);
-  console.log(req.body.id);
-  if (check === null) {
-    res.send("No");
-  } else {
-    res.send("Yes");
-  }
-});
-
 module.exports = router;

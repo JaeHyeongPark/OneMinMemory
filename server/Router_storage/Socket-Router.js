@@ -164,8 +164,8 @@ module.exports = function socketRouter(io) {
             state: 2,
             isChanged: false,
           });
-          console.log(oldplaylistPermissionState);
         }
+        console.log(oldplaylistPermissionState);
         redis.v4.expire(`${data.roomId}/playlistPermissionState`, 21600);
       } catch (e) {
         console.log(e);

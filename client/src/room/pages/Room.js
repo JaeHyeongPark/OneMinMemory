@@ -27,6 +27,9 @@ const Room = () => {
     App.mainSocket.on("welcome", (data) => {
       if (data.ans === "NO") {
         navigate("/");
+        if (data.reason === "full") {
+          alert("방에 남은 자리가 없습니다.");
+        }
       }
 
       RenderButton.setActiveStep(Number(data.renderVoteState));

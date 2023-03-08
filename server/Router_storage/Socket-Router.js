@@ -9,6 +9,13 @@ module.exports = function socketRouter(io) {
     // 입장 : 이전 check 대체
     socket.on("joinRoom", async (data) => {
       try {
+        let numUsers = await redis.v4.incr(data.roomId + "/numUser");
+        if (numUsers > 5) {
+          await redis.v4.decr(data.roomId + "/numUser");
+          io.to(data.Id).emit("welcome", { ans: "NO", reason: "full" });
+          return;
+        }
+        await redis.v4.expire(data.roomId + "/numUser", 21600);
         const playlistPermissionState = await redis.v4.get(
           data.roomId + "/playlistPermissionState"
         );
@@ -25,8 +32,6 @@ module.exports = function socketRouter(io) {
         socket.Id = data.Id;
         socket.roomId = data.roomId;
 
-        let numUsers = await redis.v4.incr(data.roomId + "/numUser");
-        await redis.v4.expire(data.roomId + "/numUser", 21600);
         let renderVoteState = await redis.v4.get(
           data.roomId + "/renderVoteState"
         );

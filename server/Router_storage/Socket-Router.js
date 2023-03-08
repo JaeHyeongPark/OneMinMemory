@@ -147,8 +147,6 @@ module.exports = function socketRouter(io) {
             );
           }
         );
-        console.log("요청왔어요~");
-        console.log(oldplaylistPermissionState);
         if (oldplaylistPermissionState === "true") {
           socket
             .to(data.roomId)

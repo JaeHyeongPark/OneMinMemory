@@ -2,6 +2,7 @@ const socketio = require("socket.io");
 const redis = require("./RedisClient");
 const express = require("express");
 const router = express.Router();
+const FFmpegRouter = require("./FFmpeg-Router");
 
 module.exports = function socketRouter(io) {
   io.on("connection", (socket) => {
@@ -98,12 +99,12 @@ module.exports = function socketRouter(io) {
     socket.on("IVoted", async (data) => {
       try {
         let renderVoteState;
+        let numUser = await redis.v4.get(data.roomId + "/numUser");
         if (data.voteState === true) {
           renderVoteState = await redis.v4.incr(
             data.roomId + "/renderVoteState"
           );
           redis.v4.expire(data.roomId + "/renderVoteState", 21600);
-
           await redis.v4.set(data.Id + "/renderVoteState", "true");
           await redis.v4.expire(data.Id + "/renderVoteState", 21600);
         } else {
@@ -116,6 +117,9 @@ module.exports = function socketRouter(io) {
           await redis.v4.expire(data.Id + "/renderVoteState", 21600);
         }
         io.to(data.roomId).emit("someoneVoted", { renderVoteState });
+        if (numUser === renderVoteState) {
+          FFmpegRouter.merge(data.roomId);
+        }
       } catch (e) {
         console.log(e);
       }

@@ -29,10 +29,10 @@ const style = {
 };
 
 const btn_hover = {
-  '&:hover':{
-    backgroundColor: '#272731'
-  }
-}
+  "&:hover": {
+    backgroundColor: "#272731",
+  },
+};
 
 const RenderButton = () => {
   // 룸 번호와 효과음
@@ -127,9 +127,6 @@ const RenderButton = () => {
       roomId: App.roomId,
       voteState: true,
     });
-    if (activeStep + 1 === numPeople.length) {
-      merge();
-    }
   };
 
   // playlist의 이미지들로 영상 제작 요청

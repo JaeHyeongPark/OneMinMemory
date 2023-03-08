@@ -7,6 +7,7 @@ const { spawn } = require("child_process");
 const ffmpeg = require("fluent-ffmpeg");
 const fs = require("fs");
 const path = require("path");
+const { merge } = require("./MainPage-Router");
 
 AWS.config.update({
   region: "ap-northeast-2",
@@ -404,113 +405,117 @@ const AddS3 = async (Path, VideoKey) => {
 
 module.exports = function (io) {
   // 랜더링시 호출(각 단계별로 진행되며 이미지로 영상을 추출)
-  router.post("/merge", async (req, res, next) => {
-    const roomid = req.body.roomid;
-    io.to(roomid).emit("mergeStart", {});
-    await redis.v4.set(roomid + "/renderVoteState","0")
-    await redis.v4.expire(roomid + "/renderVoteState", 21600)
-    let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
-    let selectedmusic = JSON.parse(await redis.v4.get(`${roomid}/song`));
-    if (playlist === null) {
-      return console.log("렌더링 불가! 재생목록에 이미지를 넣어주세요.");
+  async function merge(roomid) {
+    try {
+      io.to(roomid).emit("mergeStart", {});
+      await redis.v4.set(roomid + "/renderVoteState", "0");
+      await redis.v4.expire(roomid + "/renderVoteState", 21600);
+      let playlist = JSON.parse(await redis.v4.get(`${roomid}/playlist`));
+      let selectedmusic = JSON.parse(await redis.v4.get(`${roomid}/song`));
+      if (playlist === null) {
+        return console.log("렌더링 불가! 재생목록에 이미지를 넣어주세요.");
+      }
+      if (selectedmusic === null) {
+        selectedmusic = ["0", ""];
+      }
+
+      const renderPath = `./public/render/${roomid}/`;
+      const renderInputPath = `./public/render/${roomid}/input/`;
+      const renderOutputPath = `./public/render/${roomid}/Final/`;
+      const imageUrls = playlist.map(({ url }) => url);
+      const durations = playlist.map(({ duration }) => duration);
+      const effects = playlist.map(({ effect }) => effect);
+      const transitions = playlist.map(({ transition }) => transition);
+
+      await makeFolders(renderPath);
+      await makeFolders(renderInputPath);
+      await makeFolders(renderOutputPath);
+
+      console.log("이미지 >>>> 동영상(with duration) Rendering...");
+      let start = new Date();
+
+      const images = await getImages(roomid, imageUrls, 1280, 720);
+      // 25퍼 진행됐음을 클라이언트에 알림
+      io.to(roomid).emit("renderingProgress", {
+        progress: "Video로 변환 & Effect 적용중 (1/4)",
+      });
+      let end1 = new Date();
+      console.log("이미지 다운 완료:", images);
+      let result = end1.getTime() - start.getTime();
+      console.log("소요시간", result);
+      // resolve {effectedVideos, durations}
+      // const {effectedPaths, tmp_durations} = await addEffects(images, durations, effects, transitions);
+      const effectedPaths = await addEffects(
+        roomid,
+        images,
+        durations,
+        effects,
+        transitions
+      );
+      // 50퍼 진행됐음을 클라이언트에 알림
+      io.to(roomid).emit("renderingProgress", {
+        progress: "Transition 효과 적용중 (2/4)",
+      });
+      let end2 = new Date();
+      console.log(
+        "이펙트 비디오로 변환 완료, 변환된 비디오:",
+        effectedPaths.effectedVideos
+      );
+      result = end2.getTime() - start.getTime();
+      console.log("소요시간", result);
+
+      // console.log(tmp_durations)
+      const transedPath = await mergeTransitions(
+        roomid,
+        effectedPaths.effectedVideos,
+        effectedPaths.durations,
+        transitions
+      );
+      // 75퍼 진행됐음을 클라이언트에 알림
+      io.to(roomid).emit("renderingProgress", {
+        progress: "오디오 삽입중 (3/4)",
+      });
+      let end3 = new Date();
+      console.log("비디오 트랜지션 완료, 오디오 삽입 시작");
+      result = end3.getTime() - start.getTime();
+      console.log("소요시간", result);
+
+      const finishedPath = await addAudio(
+        roomid,
+        transedPath,
+        MusicAssets[selectedmusic[0]]
+      );
+      // 100퍼 진행됐음을 클라이언트에 알림
+      io.to(roomid).emit("renderingProgress", {
+        progress: "렌더링 완료!! 저장중.. (4/4)",
+      });
+      let end4 = new Date();
+      console.log(
+        "오디오 삽입 및 최종 렌더링 완료, 완료된 비디오:",
+        finishedPath
+      );
+      result = end4.getTime() - start.getTime();
+      console.log("소요시간", result);
+
+      // S3에 영상 저장
+      const VideoKey = `${roomid}/Final/oneminute_${Date.now()}.mp4`;
+      await AddS3(finishedPath, VideoKey);
+      console.log("영상 S3 저장 완료");
+
+      // 저장후 작업 폴더 삭제
+      await deleteFilesInFolder(renderPath);
+
+      // 영상 완료에 대한 응답
+      res.send({ success: true });
+
+      io.to(roomid).emit("mergeFinished", {
+        videoURL:
+          "https://oneminutememory.s3.ap-northeast-2.amazonaws.com/" + VideoKey,
+      });
+    } catch (e) {
+      console.log(e);
     }
-    if (selectedmusic === null) {
-      selectedmusic = ["0", ""];
-    }
-
-    const renderPath = `./public/render/${roomid}/`;
-    const renderInputPath = `./public/render/${roomid}/input/`;
-    const renderOutputPath = `./public/render/${roomid}/Final/`;
-    const imageUrls = playlist.map(({ url }) => url);
-    const durations = playlist.map(({ duration }) => duration);
-    const effects = playlist.map(({ effect }) => effect);
-    const transitions = playlist.map(({ transition }) => transition);
-
-    await makeFolders(renderPath);
-    await makeFolders(renderInputPath);
-    await makeFolders(renderOutputPath);
-
-    console.log("이미지 >>>> 동영상(with duration) Rendering...");
-    let start = new Date();
-
-    const images = await getImages(roomid, imageUrls, 1280, 720);
-    // 25퍼 진행됐음을 클라이언트에 알림
-    io.to(roomid).emit("renderingProgress", {
-      progress: "Video로 변환 & Effect 적용중 (1/4)",
-    });
-    let end1 = new Date();
-    console.log("이미지 다운 완료:", images);
-    let result = end1.getTime() - start.getTime();
-    console.log("소요시간", result);
-    // resolve {effectedVideos, durations}
-    // const {effectedPaths, tmp_durations} = await addEffects(images, durations, effects, transitions);
-    const effectedPaths = await addEffects(
-      roomid,
-      images,
-      durations,
-      effects,
-      transitions
-    );
-    // 50퍼 진행됐음을 클라이언트에 알림
-    io.to(roomid).emit("renderingProgress", {
-      progress: "Transition 효과 적용중 (2/4)",
-    });
-    let end2 = new Date();
-    console.log(
-      "이펙트 비디오로 변환 완료, 변환된 비디오:",
-      effectedPaths.effectedVideos
-    );
-    result = end2.getTime() - start.getTime();
-    console.log("소요시간", result);
-
-    // console.log(tmp_durations)
-    const transedPath = await mergeTransitions(
-      roomid,
-      effectedPaths.effectedVideos,
-      effectedPaths.durations,
-      transitions
-    );
-    // 75퍼 진행됐음을 클라이언트에 알림
-    io.to(roomid).emit("renderingProgress", {
-      progress: "오디오 삽입중 (3/4)",
-    });
-    let end3 = new Date();
-    console.log("비디오 트랜지션 완료, 오디오 삽입 시작");
-    result = end3.getTime() - start.getTime();
-    console.log("소요시간", result);
-
-    const finishedPath = await addAudio(
-      roomid,
-      transedPath,
-      MusicAssets[selectedmusic[0]]
-    );
-    // 100퍼 진행됐음을 클라이언트에 알림
-    io.to(roomid).emit("renderingProgress", {
-      progress: "렌더링 완료!! 저장중.. (4/4)",
-    });
-    let end4 = new Date();
-    console.log(
-      "오디오 삽입 및 최종 렌더링 완료, 완료된 비디오:",
-      finishedPath
-    );
-    result = end4.getTime() - start.getTime();
-    console.log("소요시간", result);
-
-    // S3에 영상 저장
-    const VideoKey = `${roomid}/Final/oneminute_${Date.now()}.mp4`;
-    await AddS3(finishedPath, VideoKey);
-    console.log("영상 S3 저장 완료");
-
-    // 저장후 작업 폴더 삭제
-    await deleteFilesInFolder(renderPath);
-
-    // 영상 완료에 대한 응답
-    res.send({ success: true });
-
-    io.to(roomid).emit("mergeFinished", {
-      videoURL:
-        "https://oneminutememory.s3.ap-northeast-2.amazonaws.com/" + VideoKey,
-    });
-  });
+  }
+  router.merge = merge;
   return router;
 };

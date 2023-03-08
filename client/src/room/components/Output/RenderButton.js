@@ -43,9 +43,12 @@ const RenderButton = () => {
   const [open, setOpen] = useState(false);
   const [loading, setloading] = useState(false);
   const [percent, setpercent] = useState("");
+  // =======================이거 왜 한거?========================================
   const [Allvote, setAllvote] = useState(false);
+  //================================================================
   const [finalUrl, setfinalUrl] = useState("");
   const playlistCtx = useContext(PlaylistContext);
+  const [renderingState, setRenderingState] = useState(false);
 
   // 소켓 관련
   const [myVoteState, setMyVoteState] = useState(false);
@@ -70,11 +73,13 @@ const RenderButton = () => {
   useEffect(() => {
     App.mainSocket.on("renderingProgress", (data) => {
       setpercent(data.progress);
+      setRenderingState(true);
     });
     App.mainSocket.on("mergeStart", (data) => {
       setloading(false);
       setOpen(true);
       setAllvote(true);
+      setRenderingState(true);
     });
     App.mainSocket.on("mergeFinished", (data) => {
       setfinalUrl(data.videoURL);
@@ -82,6 +87,7 @@ const RenderButton = () => {
       setloading(true);
       setActiveStep(0);
       setMyVoteState(false);
+      setRenderingState(false);
     });
     App.mainSocket.on("someoneCame", (data) => {
       changeNumPeople(Number(data.numUsers));
@@ -94,6 +100,9 @@ const RenderButton = () => {
 
   // 랜더링 투표 버튼(취소)
   const handleRenderOffButton = () => {
+    if (renderingState === true) {
+      return;
+    }
     setMyVoteState(false);
     App.mainSocket.emit("IVoted", {
       Id: App.mainSocket.id,
@@ -128,22 +137,6 @@ const RenderButton = () => {
       voteState: true,
     });
   };
-
-  // playlist의 이미지들로 영상 제작 요청
-  const merge = () => {
-    axios({
-      method: "post",
-      url: process.env.REACT_APP_expressURL + "/FFmpeg/merge",
-      data: {
-        roomid: roomId,
-      },
-    }).then((res) => {
-      if (res.data.success !== true) {
-        console.log("응답에러");
-      }
-    });
-  };
-
   // 랜더링 모달창 열기,닫기 버튼
   const openmodal = (e) => {
     e.preventDefault();

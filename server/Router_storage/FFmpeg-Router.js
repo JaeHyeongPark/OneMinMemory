@@ -501,9 +501,6 @@ module.exports = async function (roomid, io) {
     // 저장후 작업 폴더 삭제
     await deleteFilesInFolder(renderPath);
 
-    // 영상 완료에 대한 응답
-    res.send({ success: true });
-
     io.to(roomid).emit("mergeFinished", {
       videoURL:
         "https://oneminutememory.s3.ap-northeast-2.amazonaws.com/" + VideoKey,

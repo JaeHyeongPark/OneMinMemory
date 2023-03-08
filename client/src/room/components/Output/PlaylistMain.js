@@ -4,7 +4,7 @@ import { useDrop } from "react-dnd";
 import { useParams } from "react-router-dom";
 import App from "../../../App";
 import ClearIcon from "@mui/icons-material/Clear";
-import effectOn from "../../assets/effect_on2.png";
+import effectOn from "../../assets/effect_on.png";
 import SnackBar from "../RoomHeader/SnackBar";
 import { Tooltip } from "@mui/material";
 import "./Playlist.css";

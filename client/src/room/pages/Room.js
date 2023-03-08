@@ -25,7 +25,6 @@ const Room = () => {
     }, 1000);
 
     App.mainSocket.on("welcome", (data) => {
-      console.log(data);
       if (data.ans === "NO") {
         navigate("/");
         if (data.reason === "full") {

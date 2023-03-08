@@ -143,11 +143,7 @@ module.exports = function socketRouter(io) {
           }
         );
         console.log("요청왔어요~");
-        if (oldplaylistPermissionState !== "true") {
-          await redis.v4.set(
-            data.roomId + "/playlistPermissionState",
-            oldplaylistPermissionState
-          );
+        if (oldplaylistPermissionState === "true") {
           socket
             .to(data.roomId)
             .emit("playlistEditResponse", { state: 2, isChanged: false });
@@ -156,6 +152,10 @@ module.exports = function socketRouter(io) {
             isChanged: false,
           });
         } else {
+          await redis.v4.set(
+            data.roomId + "/playlistPermissionState",
+            oldplaylistPermissionState
+          );
           io.to(data.Id).emit("playlistEditResponse", {
             state: 2,
             isChanged: false,

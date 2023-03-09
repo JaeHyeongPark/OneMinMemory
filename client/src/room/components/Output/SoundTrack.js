@@ -2,6 +2,7 @@ import React, { useContext, useRef, useEffect, useState } from "react";
 import PlaylistContext from "../../../shared/context/playlist-context";
 import "./SoundTrack.css";
 import Wavedata from "./Sound/wavedata.json";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const SoundTrack = (props) => {
   const playlistCtx = useContext(PlaylistContext);
@@ -78,6 +79,8 @@ const SoundTrack = (props) => {
     myAudio.currentTime = Wavedata[newidx].duration * proportion;
     myAudio.play();
     console.log("proportion : " + proportion);
+    console.log("currentTime : " + myAudio.currentTime);
+
     // start coloring the waveform every 0.1s while the audio is playing
     setIsPlaying(true);
 
@@ -90,7 +93,7 @@ const SoundTrack = (props) => {
       const currentTime = myAudio.currentTime;
       const duration = Wavedata[newidx].duration;
       const currentIdx = (currentTime / duration) * 4800;
-
+      console.log("조민 :  " + currentTime.toFixed(1) * 10);
       // 0.1초 단위로 위의 타임바 변경
       props.changetime(currentTime.toFixed(1) * 10);
 

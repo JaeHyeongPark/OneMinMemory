@@ -5,7 +5,7 @@ import "./WebRTC.css";
 import { Tooltip } from "@mui/material";
 import { useEffect } from "react";
 import { io } from "socket.io-client"; // Client Socket
-const socket = io("https://chjungle.shop", {
+const socket = io("https://onem1nutemem0ry.store", {
   path: "/sfusocket",
   withCredentials: true,
   extraHeaders: {

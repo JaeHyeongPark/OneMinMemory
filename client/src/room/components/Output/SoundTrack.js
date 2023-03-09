@@ -78,6 +78,7 @@ const SoundTrack = (props) => {
     const myAudio = audioRef.current;
     myAudio.currentTime = Wavedata[newidx].duration * proportion;
     myAudio.play();
+    console.lop("wavedata duration:" + Wavedata[newidx].duration);
     console.log("proportion : " + proportion);
     console.log("currentTime : " + myAudio.currentTime);
 

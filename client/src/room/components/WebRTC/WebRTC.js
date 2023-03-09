@@ -211,7 +211,7 @@ socket.on("handleNegotiation", async (data) => {
 
 // 누군가 나갔음을 알리는 소캣
 socket.on("someoneLeft", (data) => {
-  console.log(data.senderId);
+  console.log(data.senderId + " 가 나갔습니다");
   userInfo[data.senderId].video.isConnected = false;
   userInfo[data.senderId].video.videoTag.srcObject = null;
   streamIdToUser[userInfo[data.senderId].streamId] = null;
@@ -251,9 +251,11 @@ async function makeSendingConection() {
         sendingConnection.close();
         makeSendingConection();
       } else if (sendingConnection.connectionState === "closed") {
-        streamIdToUser = {};
-        initializeSetting();
-        makeSendingConection();
+        if (streamIdToUser !== {}) {
+          streamIdToUser = {};
+          initializeSetting();
+          makeSendingConection();
+        }
       }
     });
 

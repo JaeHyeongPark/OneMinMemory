@@ -77,7 +77,7 @@ const SoundTrack = (props) => {
     const myAudio = audioRef.current;
     myAudio.currentTime = Wavedata[newidx].duration * proportion;
     myAudio.play();
-
+    console.log("proportion : " + proportion);
     // start coloring the waveform every 0.1s while the audio is playing
     setIsPlaying(true);
 
@@ -90,7 +90,7 @@ const SoundTrack = (props) => {
       const currentTime = myAudio.currentTime;
       const duration = Wavedata[newidx].duration;
       const currentIdx = (currentTime / duration) * 4800;
-      console.log("current time :  " + currentTime);
+
       // 0.1초 단위로 위의 타임바 변경
       props.changetime(currentTime.toFixed(1) * 10);
 

@@ -20,6 +20,7 @@ const Output = () => {
 
   // 재생목록 시간 조절
   function handleSliderChange(event) {
+    event.preventDefault();
     if (event.target.value > playlistCtx.totaltime * 10 || !showimg) {
       return;
     }
@@ -54,6 +55,7 @@ const Output = () => {
 
   // 재생목록 미리보기 초 변경
   const changeTime = (time) => {
+    console.log("current time :  " + time);
     setSliderValue(time);
   };
 

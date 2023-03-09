@@ -55,7 +55,6 @@ const Output = () => {
 
   // 재생목록 미리보기 초 변경
   const changeTime = (time) => {
-    console.log("current time :  " + time);
     setSliderValue(time);
   };
 

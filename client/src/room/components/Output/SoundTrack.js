@@ -81,7 +81,7 @@ const SoundTrack = (props) => {
     console.log("wavedata duration:" + Wavedata[newidx].duration);
     console.log("proportion : " + proportion);
     console.log("currentTime : " + myAudio.currentTime);
-
+    console.log("타입 : " + typeof (Wavedata[newidx].duration * proportion));
     // start coloring the waveform every 0.1s while the audio is playing
     setIsPlaying(true);
 

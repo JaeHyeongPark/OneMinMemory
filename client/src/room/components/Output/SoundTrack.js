@@ -181,7 +181,7 @@ const SoundTrack = (props) => {
 
   return (
     <div className="soundtrack_layout" ref={layoutRef}>
-      <audio ref={audioRef} src={newsrc} id="myAudio"></audio>
+      <audio ref={audioRef} src={newsrc} preload id="myAudio"></audio>
       <canvas className="soundtrack_canvas" ref={canvasRef}></canvas>
     </div>
   );

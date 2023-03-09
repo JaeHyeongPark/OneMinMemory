@@ -162,7 +162,7 @@ module.exports = function (io) {
         duration: 3,
         select: false,
         transition: "",
-        effect: "ZoomIn_TopRight",
+        effect: "ZoomIn_TopLeft",
       },
       {
         url: "",
@@ -197,7 +197,7 @@ module.exports = function (io) {
         duration: 3,
         select: false,
         transition: "",
-        effect: "ZoomIn_TopRight",
+        effect: "ZoomIn_Center",
       },
       {
         url: "",

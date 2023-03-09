@@ -57,7 +57,7 @@ module.exports = function socketRouter(io) {
 
         let numUserLeft = await redis.v4.decr(socket.roomId + "/numUser");
         if (numUserLeft != 0) {
-          redis.v4.expire(socket.roomId + "/numUser", 21600);
+          await redis.v4.expire(socket.roomId + "/numUser", 21600);
         }
         let permissionUser = await redis.v4.get(
           socket.roomId + "/playlistPermissionState"
@@ -80,7 +80,7 @@ module.exports = function socketRouter(io) {
           renderVoteState = await redis.v4.decr(
             socket.roomId + "/renderVoteState"
           );
-          redis.v4.expire(socket.roomId + "/renderVoteState", 21600);
+          await redis.v4.expire(socket.roomId + "/renderVoteState", 21600);
         } else {
           renderVoteState = await redis.v4.get(
             socket.roomId + "/renderVoteState"
@@ -107,14 +107,14 @@ module.exports = function socketRouter(io) {
           renderVoteState = await redis.v4.incr(
             data.roomId + "/renderVoteState"
           );
-          redis.v4.expire(data.roomId + "/renderVoteState", 21600);
+          await redis.v4.expire(data.roomId + "/renderVoteState", 21600);
           await redis.v4.set(data.Id + "/renderVoteState", "true");
           await redis.v4.expire(data.Id + "/renderVoteState", 21600);
         } else {
           renderVoteState = await redis.v4.decr(
             data.roomId + "/renderVoteState"
           );
-          redis.v4.expire(data.roomId + "/renderVoteState", 21600);
+          await redis.v4.expire(data.roomId + "/renderVoteState", 21600);
 
           await redis.v4.set(data.Id + "/renderVoteState", "false");
           await redis.v4.expire(data.Id + "/renderVoteState", 21600);
@@ -169,7 +169,7 @@ module.exports = function socketRouter(io) {
           });
         }
         console.log(oldplaylistPermissionState);
-        redis.v4.expire(`${data.roomId}/playlistPermissionState`, 21600);
+        await redis.v4.expire(`${data.roomId}/playlistPermissionState`, 21600);
       } catch (e) {
         console.log(e);
       }

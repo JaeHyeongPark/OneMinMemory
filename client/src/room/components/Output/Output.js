@@ -20,6 +20,7 @@ const Output = () => {
 
   // 재생목록 시간 조절
   function handleSliderChange(event) {
+    event.preventDefault()
     if (event.target.value > playlistCtx.totaltime * 10 || !showimg) {
       return;
     }
@@ -82,7 +83,7 @@ const Output = () => {
           </div>
         </div>
         <Playlist />
-        <SoundTrack changetime={changeTime} changeshow={setshowimg} />
+        <SoundTrack changetime={(time) => {setSliderValue(time)}} changeshow={setshowimg} />
       </div>
       <div className="ROOM-FOOTER-BUTTONS">
         <div className="Preset_and_Render">

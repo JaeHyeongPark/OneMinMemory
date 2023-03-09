@@ -14,6 +14,7 @@ const SoundTrack = (props) => {
   const audioRef = useRef("");
 
   function handleClick(event) {
+    event.preventDefault()
     props.changeshow(true);
     const canvas = canvasRef.current;
     const layout = layoutRef.current;

@@ -174,6 +174,7 @@ socket.on("iceForSending", async (data) => {
 
 // 새로운 사용자 들어왔을 때 실행되는 소캣
 socket.on("makeNewPeer", (data) => {
+  console.log(data.senderId + " 를 위한 비디오태그를 만들꼐요");
   streamIdToUser[data.streamId] = data.senderId;
   userInfo[data.senderId] = {};
   userInfo[data.senderId].streamId = data.streamId;
@@ -213,7 +214,6 @@ socket.on("handleNegotiation", async (data) => {
 socket.on("someoneLeft", (data) => {
   console.log(data.senderId + " 가 나갔습니다");
   userInfo[data.senderId].video.isConnected = false;
-  userInfo[data.senderId].video.videoTag.srcObject = null;
   streamIdToUser[userInfo[data.senderId].streamId] = null;
   userInfo[data.senderId].streamId = null;
 });

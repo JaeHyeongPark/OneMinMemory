@@ -155,7 +155,7 @@ module.exports = function (io) {
         duration: 3,
         select: false,
         transition: "dissolve",
-        effect: "ZoomIn_TopLeft",
+        effect: "ZoomOut_TopLeft",
       },
       {
         url: "",
@@ -176,7 +176,7 @@ module.exports = function (io) {
         duration: 1,
         select: false,
         transition: "",
-        effect: "ZoomIn_TopRight",
+        effect: "ZoomIn_BottomRight",
       },
       {
         url: "",
@@ -246,7 +246,7 @@ module.exports = function (io) {
         duration: 2,
         select: false,
         transition: "diagtl",
-        effect: "ZoomIn_BottomRight",
+        effect: "ZoomIn_Center",
       },
       {
         url: "",

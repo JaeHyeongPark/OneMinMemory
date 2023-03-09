@@ -249,14 +249,14 @@ async function makeSendingConection() {
         streamIdToUser = {};
         initializeSetting();
         sendingConnection.close();
-        makeSendingConection();
         sendingConnection = null;
+        startMedia();
       } else if (sendingConnection.connectionState === "closed") {
         if (streamIdToUser !== {}) {
           streamIdToUser = {};
           initializeSetting();
-          makeSendingConection();
           sendingConnection = null;
+          startMedia();
         }
       }
     });

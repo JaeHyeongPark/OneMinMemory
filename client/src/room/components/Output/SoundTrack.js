@@ -76,7 +76,7 @@ const SoundTrack = (props) => {
     const proportion =
       x / ((Wavedata[newidx].duration / 60) * layout.offsetWidth);
     const myAudio = audioRef.current;
-    myAudio.currentTime = Wavedata[newidx].duration * proportion;
+    myAudio.currentTime = parseFloat(Wavedata[newidx].duration * proportion);
     myAudio.play();
     console.log("wavedata duration:" + Wavedata[newidx].duration);
     console.log("proportion : " + proportion);
@@ -138,6 +138,8 @@ const SoundTrack = (props) => {
       setNewIdx(playlistCtx.musicidx);
     }
   }, [playlistCtx.musicidx]);
+
+  useEffect(() => {}, [newsrc]);
 
   // 프리셋 고르면 캔버스에 파형 그려주는 useeffect
   useEffect(() => {

@@ -12,7 +12,7 @@ const RoomCode = () => {
     e.preventDefault();
     try {
       await navigator.clipboard.writeText(
-        `https://chjungle.shop/room/${roomid}`
+        process.env.REACT_APP_myURL + `/room/${roomid}`
       );
       SnackBar.roomUrlSuccessOpen();
     } catch (err) {

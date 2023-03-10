@@ -187,7 +187,7 @@ const initializeSetting = () => {
   ];
 };
 const WebRTC = () => {
-  const [refresh, setRefresh] = useState(true);
+  const [refresh, setRefresh] = useState({});
   roomId = useParams().roomId;
   let socket = io("https://onem1nutemem0ry.store", {
     path: "/sfusocket",
@@ -301,13 +301,13 @@ const WebRTC = () => {
           // initializeSetting();
           // sendingConnection = null;
           // startMedia();
-          setRefresh(refresh ? false : true);
+          setRefresh(...{});
         } else if (sendingConnection.connectionState === "closed") {
           if (streamIdToUser !== {}) {
             console.log("P2p 연결이 disconnected");
             streamIdToUser = {};
             socket.close();
-            setRefresh(refresh ? false : true);
+            setRefresh(...{});
             // initializeSetting();
             // sendingConnection = null;
             // startMedia();

@@ -269,6 +269,8 @@ const WebRTC = () => {
       "my-custom-header": "abcd",
     },
   });
+  useEffect(() => {}, [refresh]);
+
   // 방에 들어오면 실행되는 함수
   async function startMedia() {
     // 1. 자신의 스트림을 만든다
@@ -313,8 +315,6 @@ const WebRTC = () => {
           }
         }
       });
-
-      useEffect(() => {}, [refresh]);
 
       // 내가 받을 때만 의미가 있는 이벤트 리스너라 일단 비활성
       sendingConnection.addEventListener("track", (data) => {

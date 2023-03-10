@@ -76,6 +76,7 @@ const SoundTrack = (props) => {
     const proportion =
       x / ((Wavedata[newidx].duration / 60) * layout.offsetWidth);
     const myAudio = audioRef.current;
+    myAudio.load();
     myAudio.currentTime = parseFloat(Wavedata[newidx].duration * proportion);
     myAudio.play();
     console.log("wavedata duration:" + Wavedata[newidx].duration);

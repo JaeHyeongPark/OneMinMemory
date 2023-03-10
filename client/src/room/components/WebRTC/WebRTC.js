@@ -5,13 +5,7 @@ import "./WebRTC.css";
 import { Tooltip } from "@mui/material";
 import { useEffect } from "react";
 import { io } from "socket.io-client"; // Client Socket
-const socket = io("https://onem1nutemem0ry.store", {
-  path: "/sfusocket",
-  withCredentials: true,
-  extraHeaders: {
-    "my-custom-header": "abcd",
-  },
-});
+let socket;
 
 let roomId;
 
@@ -149,14 +143,6 @@ let imgTag1, imgTag2, imgTag3, imgTag4;
 // 수신되는 비디오를 틀어줄 태그들을 관리할 리스트
 let videos;
 
-// 방에 들어오면 실행되는 함수
-async function startMedia() {
-  // 1. 자신의 스트림을 만든다
-  await getMedia();
-  // 2. 자신의 스트림을 서버로 보내줄 연결을 만든다.
-  await makeSendingConection();
-}
-
 // 서버에서 sendingConnection에 대한 answer을 주는 소켓
 socket.on("welcome", async (answer) => {
   try {
@@ -231,67 +217,6 @@ socket.on("answerForNegotiation", async (data) => {
 
 // ---------------------RTC 코드------------------------
 
-// 입장 시 호출되는 sendingConnection과 offer을 생성하여 return하는 함수
-async function makeSendingConection() {
-  try {
-    sendingConnection = new RTCPeerConnection(RTC_config);
-    sendingConnection.addEventListener("icecandidate", (data) => {
-      if (data.candidate != null) {
-        socket.emit("iceForSending", {
-          ice: data.candidate,
-          Id: App.mainSocket.id,
-          roomId,
-        });
-        console.log("i got sending Ice and sent to server");
-      }
-    });
-
-    sendingConnection.addEventListener("connectionstatechange", (unused) => {
-      if (sendingConnection.connectionState === "disconnected") {
-        console.log("P2p 연결이 disconnected");
-        streamIdToUser = {};
-        initializeSetting();
-        sendingConnection.close();
-        sendingConnection = null;
-        startMedia();
-      } else if (sendingConnection.connectionState === "closed") {
-        if (streamIdToUser !== {}) {
-          console.log("P2p 연결이 disconnected");
-          streamIdToUser = {};
-          initializeSetting();
-          sendingConnection = null;
-          startMedia();
-        }
-      }
-    });
-
-    // 내가 받을 때만 의미가 있는 이벤트 리스너라 일단 비활성
-    sendingConnection.addEventListener("track", (data) => {
-      console.log("트랙이벤트 발생");
-      let userId = streamIdToUser[data.streams[0].id];
-      userInfo[userId].video.videoTag.srcObject = data.streams[0];
-    });
-
-    // 스트림 내에 모든 트랙들을 접근하는 함수를 이용하여 myPeercon
-    await myStream.getTracks().forEach(async (track) => {
-      await sendingConnection.addTrack(track, myStream);
-    });
-
-    // SendingConnection을 위한 offer 생성 후 서버에 전달
-    const sendingOffer = await sendingConnection.createOffer();
-    await sendingConnection.setLocalDescription(sendingOffer);
-    console.log("오퍼 보낼께요~");
-    socket.emit("joinRoom", {
-      roomId,
-      sendingOffer: sendingOffer,
-      Id: App.mainSocket.id,
-      RTCId: socket.id,
-    });
-  } catch (e) {
-    console.log(e);
-  }
-}
-
 // 태그들을 자료형에 매핑하는 함수
 const initializeSetting = () => {
   peersFace1 = document.getElementById("peersFace1");
@@ -334,7 +259,88 @@ const initializeSetting = () => {
   ];
 };
 const WebRTC = () => {
+  const [refresh, setRefresh] = useState(true);
   roomId = useParams().roomId;
+  socket = io("https://onem1nutemem0ry.store", {
+    path: "/sfusocket",
+    withCredentials: true,
+    extraHeaders: {
+      "my-custom-header": "abcd",
+    },
+  });
+  // 방에 들어오면 실행되는 함수
+  async function startMedia() {
+    // 1. 자신의 스트림을 만든다
+    await getMedia();
+    // 2. 자신의 스트림을 서버로 보내줄 연결을 만든다.
+    await makeSendingConection();
+  }
+  // 입장 시 호출되는 sendingConnection과 offer을 생성하여 return하는 함수
+  async function makeSendingConection() {
+    try {
+      sendingConnection = new RTCPeerConnection(RTC_config);
+      sendingConnection.addEventListener("icecandidate", (data) => {
+        if (data.candidate != null) {
+          socket.emit("iceForSending", {
+            ice: data.candidate,
+            Id: App.mainSocket.id,
+            roomId,
+          });
+          console.log("i got sending Ice and sent to server");
+        }
+      });
+
+      sendingConnection.addEventListener("connectionstatechange", (unused) => {
+        if (sendingConnection.connectionState === "disconnected") {
+          console.log("P2p 연결이 disconnected");
+          streamIdToUser = {};
+          sendingConnection.close();
+          socket.close();
+          // initializeSetting();
+          // sendingConnection = null;
+          // startMedia();
+          setRefresh(refresh ? false : true);
+        } else if (sendingConnection.connectionState === "closed") {
+          if (streamIdToUser !== {}) {
+            console.log("P2p 연결이 disconnected");
+            streamIdToUser = {};
+            socket.close();
+            setRefresh(refresh ? false : true);
+            // initializeSetting();
+            // sendingConnection = null;
+            // startMedia();
+          }
+        }
+      });
+
+      useEffect(() => {}, [refresh]);
+
+      // 내가 받을 때만 의미가 있는 이벤트 리스너라 일단 비활성
+      sendingConnection.addEventListener("track", (data) => {
+        console.log("트랙이벤트 발생");
+        let userId = streamIdToUser[data.streams[0].id];
+        userInfo[userId].video.videoTag.srcObject = data.streams[0];
+      });
+
+      // 스트림 내에 모든 트랙들을 접근하는 함수를 이용하여 myPeercon
+      await myStream.getTracks().forEach(async (track) => {
+        await sendingConnection.addTrack(track, myStream);
+      });
+
+      // SendingConnection을 위한 offer 생성 후 서버에 전달
+      const sendingOffer = await sendingConnection.createOffer();
+      await sendingConnection.setLocalDescription(sendingOffer);
+      console.log("오퍼 보낼께요~");
+      socket.emit("joinRoom", {
+        roomId,
+        sendingOffer: sendingOffer,
+        Id: App.mainSocket.id,
+        RTCId: socket.id,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
   useEffect(() => {
     setTimeout(() => {
       initializeSetting();

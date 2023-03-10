@@ -6,7 +6,6 @@ import { Tooltip } from "@mui/material";
 import { useEffect } from "react";
 import { io } from "socket.io-client"; // Client Socket
 import { useState } from "react";
-let socket;
 
 let roomId;
 
@@ -144,78 +143,6 @@ let imgTag1, imgTag2, imgTag3, imgTag4;
 // 수신되는 비디오를 틀어줄 태그들을 관리할 리스트
 let videos;
 
-// 서버에서 sendingConnection에 대한 answer을 주는 소켓
-socket.on("welcome", async (answer) => {
-  try {
-    await sendingConnection.setRemoteDescription(answer);
-  } catch (e) {
-    console.log(e);
-  }
-});
-// server가 자신의 연결 후보 Ice Candidate를 받아 보내주는 socket
-socket.on("iceForSending", async (data) => {
-  if (sendingConnection.remoteDescription != null) {
-    await sendingConnection.addIceCandidate(data.ice);
-  }
-});
-
-// 새로운 사용자 들어왔을 때 실행되는 소캣
-socket.on("makeNewPeer", (data) => {
-  console.log(data.senderId + " 를 위한 비디오태그를 만들꼐요");
-  streamIdToUser[data.streamId] = data.senderId;
-  userInfo[data.senderId] = {};
-  userInfo[data.senderId].streamId = data.streamId;
-  let i = 0;
-  while (i < 4) {
-    if (videos[i].isConnected === false) {
-      videos[i].isConnected = true;
-      userInfo[data.senderId].video = videos[i];
-      console.log("태그 잘 만들었어요!");
-      break;
-    }
-    i++;
-  }
-  socket.emit("readyForGettingStream", {
-    roomId,
-    receiverId: App.mainSocket.id,
-    senderId: data.senderId,
-  });
-});
-
-// 서버가 보낸 협상 요청
-socket.on("handleNegotiation", async (data) => {
-  try {
-    sendingConnection.setRemoteDescription(data.offer);
-    let answer = await sendingConnection.createAnswer();
-    await sendingConnection.setLocalDescription(answer);
-    socket.emit("answerForNegotiation", {
-      roomId,
-      answer,
-      receiverId: App.mainSocket.id,
-    });
-  } catch (e) {
-    console.log(e);
-  }
-});
-
-// 누군가 나갔음을 알리는 소캣
-socket.on("someoneLeft", (data) => {
-  console.log(data.senderId + " 가 나갔습니다");
-  userInfo[data.senderId].video.isConnected = false;
-  userInfo[data.senderId].video.videoTag.srcObject = null;
-  streamIdToUser[userInfo[data.senderId].streamId] = null;
-  userInfo[data.senderId].streamId = null;
-});
-
-// 내가 보낸 negotiation의 서버로부터 온 답장
-socket.on("answerForNegotiation", async (data) => {
-  try {
-    await sendingConnection.setRemoteDescription(data.answer);
-  } catch (e) {
-    console.log(e);
-  }
-});
-
 // ---------------------RTC 코드------------------------
 
 // 태그들을 자료형에 매핑하는 함수
@@ -262,13 +189,85 @@ const initializeSetting = () => {
 const WebRTC = () => {
   const [refresh, setRefresh] = useState(true);
   roomId = useParams().roomId;
-  socket = io("https://onem1nutemem0ry.store", {
+  let socket = io("https://onem1nutemem0ry.store", {
     path: "/sfusocket",
     withCredentials: true,
     extraHeaders: {
       "my-custom-header": "abcd",
     },
   });
+  // 서버에서 sendingConnection에 대한 answer을 주는 소켓
+  socket.on("welcome", async (answer) => {
+    try {
+      await sendingConnection.setRemoteDescription(answer);
+    } catch (e) {
+      console.log(e);
+    }
+  });
+  // server가 자신의 연결 후보 Ice Candidate를 받아 보내주는 socket
+  socket.on("iceForSending", async (data) => {
+    if (sendingConnection.remoteDescription != null) {
+      await sendingConnection.addIceCandidate(data.ice);
+    }
+  });
+
+  // 새로운 사용자 들어왔을 때 실행되는 소캣
+  socket.on("makeNewPeer", (data) => {
+    console.log(data.senderId + " 를 위한 비디오태그를 만들꼐요");
+    streamIdToUser[data.streamId] = data.senderId;
+    userInfo[data.senderId] = {};
+    userInfo[data.senderId].streamId = data.streamId;
+    let i = 0;
+    while (i < 4) {
+      if (videos[i].isConnected === false) {
+        videos[i].isConnected = true;
+        userInfo[data.senderId].video = videos[i];
+        console.log("태그 잘 만들었어요!");
+        break;
+      }
+      i++;
+    }
+    socket.emit("readyForGettingStream", {
+      roomId,
+      receiverId: App.mainSocket.id,
+      senderId: data.senderId,
+    });
+  });
+
+  // 서버가 보낸 협상 요청
+  socket.on("handleNegotiation", async (data) => {
+    try {
+      sendingConnection.setRemoteDescription(data.offer);
+      let answer = await sendingConnection.createAnswer();
+      await sendingConnection.setLocalDescription(answer);
+      socket.emit("answerForNegotiation", {
+        roomId,
+        answer,
+        receiverId: App.mainSocket.id,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  });
+
+  // 누군가 나갔음을 알리는 소캣
+  socket.on("someoneLeft", (data) => {
+    console.log(data.senderId + " 가 나갔습니다");
+    userInfo[data.senderId].video.isConnected = false;
+    userInfo[data.senderId].video.videoTag.srcObject = null;
+    streamIdToUser[userInfo[data.senderId].streamId] = null;
+    userInfo[data.senderId].streamId = null;
+  });
+
+  // 내가 보낸 negotiation의 서버로부터 온 답장
+  socket.on("answerForNegotiation", async (data) => {
+    try {
+      await sendingConnection.setRemoteDescription(data.answer);
+    } catch (e) {
+      console.log(e);
+    }
+  });
+
   useEffect(() => {}, [refresh]);
 
   // 방에 들어오면 실행되는 함수

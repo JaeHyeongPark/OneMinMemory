@@ -215,6 +215,7 @@ socket.on("handleNegotiation", async (data) => {
 socket.on("someoneLeft", (data) => {
   console.log(data.senderId + " 가 나갔습니다");
   userInfo[data.senderId].video.isConnected = false;
+  userInfo[data.senderId].videoTag.srcObject = null;
   streamIdToUser[userInfo[data.senderId].streamId] = null;
   userInfo[data.senderId].streamId = null;
 });
@@ -255,7 +256,7 @@ async function makeSendingConection() {
         startMedia();
       } else if (sendingConnection.connectionState === "closed") {
         if (streamIdToUser !== {}) {
-          console.log("P2p 연결이 closed");
+          console.log("P2p 연결이 disconnected");
           streamIdToUser = {};
           initializeSetting();
           sendingConnection = null;

@@ -268,8 +268,6 @@ const WebRTC = () => {
     }
   });
 
-  useEffect(() => {}, [refresh]);
-
   // 방에 들어오면 실행되는 함수
   async function startMedia() {
     // 1. 자신의 스트림을 만든다

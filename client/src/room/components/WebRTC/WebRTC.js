@@ -301,13 +301,13 @@ const WebRTC = () => {
           // initializeSetting();
           // sendingConnection = null;
           // startMedia();
-          setRefresh(...{});
+          setRefresh(...refresh);
         } else if (sendingConnection.connectionState === "closed") {
           if (streamIdToUser !== {}) {
             console.log("P2p 연결이 disconnected");
             streamIdToUser = {};
             socket.close();
-            setRefresh(...{});
+            setRefresh(...refresh);
             // initializeSetting();
             // sendingConnection = null;
             // startMedia();

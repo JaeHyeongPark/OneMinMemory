@@ -183,6 +183,7 @@ socket.on("makeNewPeer", (data) => {
     if (videos[i].isConnected === false) {
       videos[i].isConnected = true;
       userInfo[data.senderId].video = videos[i];
+      console.log("태그 잘 만들었어요!");
       break;
     }
     i++;
@@ -246,6 +247,7 @@ async function makeSendingConection() {
 
     sendingConnection.addEventListener("connectionstatechange", (unused) => {
       if (sendingConnection.connectionState === "disconnected") {
+        console.log("P2p 연결이 disconnected");
         streamIdToUser = {};
         initializeSetting();
         sendingConnection.close();
@@ -253,6 +255,7 @@ async function makeSendingConection() {
         startMedia();
       } else if (sendingConnection.connectionState === "closed") {
         if (streamIdToUser !== {}) {
+          console.log("P2p 연결이 closed");
           streamIdToUser = {};
           initializeSetting();
           sendingConnection = null;

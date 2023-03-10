@@ -176,21 +176,21 @@ module.exports = function (io) {
         duration: 1,
         select: false,
         transition: "",
-        effect: "ZoomIn_BottomRight",
+        effect: "ZoomOut_Center",
       },
       {
         url: "",
         duration: 1,
         select: false,
         transition: "",
-        effect: "ZoomOut_Center",
+        effect: "ZoomIn_Center",
       },
       {
         url: "",
         duration: 2,
         select: false,
         transition: "fadeblack",
-        effect: "ZoomIn_Center",
+        effect: "ZoomOut_Center",
       },
       {
         url: "",
@@ -204,7 +204,7 @@ module.exports = function (io) {
         duration: 3,
         select: false,
         transition: "",
-        effect: "ZoomOut_BottomRight",
+        effect: "ZoomIn_BottomLeft",
       },
       {
         url: "",
@@ -246,7 +246,7 @@ module.exports = function (io) {
         duration: 2,
         select: false,
         transition: "diagtl",
-        effect: "ZoomIn_Center",
+        effect: "ZoomOut_Center",
       },
       {
         url: "",

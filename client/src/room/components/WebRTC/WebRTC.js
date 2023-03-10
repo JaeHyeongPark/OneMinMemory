@@ -187,7 +187,7 @@ const initializeSetting = () => {
   ];
 };
 const WebRTC = () => {
-  const [refresh, setRefresh] = useState({});
+  const [refresh, setRefresh] = useState({ id: 1 });
   roomId = useParams().roomId;
   let socket = io("https://onem1nutemem0ry.store", {
     path: "/sfusocket",

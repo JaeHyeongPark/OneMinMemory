@@ -215,7 +215,7 @@ socket.on("handleNegotiation", async (data) => {
 socket.on("someoneLeft", (data) => {
   console.log(data.senderId + " 가 나갔습니다");
   userInfo[data.senderId].video.isConnected = false;
-  userInfo[data.senderId].videoTag.srcObject = null;
+  userInfo[data.senderId].video.videoTag.srcObject = null;
   streamIdToUser[userInfo[data.senderId].streamId] = null;
   userInfo[data.senderId].streamId = null;
 });

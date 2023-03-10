@@ -297,7 +297,7 @@ const WebRTC = () => {
           console.log("P2p 연결이 disconnected");
           streamIdToUser = {};
           sendingConnection.close();
-          socket.close();
+          socket.disconnect();
           // initializeSetting();
           // sendingConnection = null;
           // startMedia();
@@ -306,7 +306,7 @@ const WebRTC = () => {
           if (streamIdToUser !== {}) {
             console.log("P2p 연결이 disconnected");
             streamIdToUser = {};
-            socket.close();
+            socket.disconnect();
             setRefresh(...refresh);
             // initializeSetting();
             // sendingConnection = null;

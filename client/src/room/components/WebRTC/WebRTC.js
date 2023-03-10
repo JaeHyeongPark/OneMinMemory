@@ -253,14 +253,18 @@ async function makeSendingConection() {
         initializeSetting();
         sendingConnection.close();
         sendingConnection = null;
-        startMedia();
+        setTimeout(() => {
+          startMedia();
+        }, 3000);
       } else if (sendingConnection.connectionState === "closed") {
         if (streamIdToUser !== {}) {
           console.log("P2p 연결이 disconnected");
           streamIdToUser = {};
           initializeSetting();
           sendingConnection = null;
-          startMedia();
+          setTimeout(() => {
+            startMedia();
+          }, 3000);
         }
       }
     });

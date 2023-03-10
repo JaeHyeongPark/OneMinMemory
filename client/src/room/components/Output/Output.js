@@ -83,7 +83,7 @@ const Output = () => {
           </div>
         </div>
         <Playlist />
-        <SoundTrack changetime={(time) => {setSliderValue(time)}} changeshow={setshowimg} />
+        <SoundTrack changetime={changeTime} changeshow={setshowimg} />
       </div>
       <div className="ROOM-FOOTER-BUTTONS">
         <div className="Preset_and_Render">

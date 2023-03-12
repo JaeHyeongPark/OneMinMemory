@@ -1,0 +1,560 @@
+/* 2302225 정근 수정 */
+
+.Preset {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 5px;
+}
+
+.music_span {
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #e1e1e1;
+}
+
+.Music_img_layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4.5vh;
+}
+
+.music_img {
+  /* width: 100%; */
+  height: 100%;
+}
+
+.preset_span {
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #e1e1e1;
+}
+/* 
+.RenderingComponent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5%;
+  padding: 0 10px;
+} */
+
+/* .RenderingAndOpenmodal {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10%;
+  border-top: 1px solid #e1e1e1;
+} */
+
+.Render_img_layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 4vh;
+}
+
+.Render_img {
+  /* width: 100%; */
+  height: 100%;
+}
+
+.Rendering {
+  /* Auto layout */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 5px;
+  width: 100%;
+}
+
+.video-and-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.vote-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.Rendervote {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  padding: 0px;
+  gap: 10px;
+  width: 100%;
+}
+
+.render_span {
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #e1e1e1;
+}
+
+.OpenModal_img_layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4vh;
+}
+
+.Openwindow_img {
+  /* width: 100%; */
+  height: 100%;
+}
+
+.EditDisc_img_layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4.5vh;
+}
+
+.EditDisc {
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 10px;
+}
+
+.EditDisc_img {
+  height: 100%;
+}
+
+.editdisc_span {
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #e1e1e1;
+}
+
+.selectmusic_span {
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 200;
+  font-size: 1.2rem;
+  line-height: 150%;
+  /* identical to box height, or 30px */
+
+  text-align: center;
+
+  /* Text / White */
+
+  color: #ffffff;
+}
+
+.music-item-title {
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 200;
+  font-size: 1.2rem;
+  line-height: 150%;
+  /* identical to box height, or 30px */
+
+  text-align: center;
+
+  /* Text / White */
+
+  color: #ffffff;
+}
+
+.action-box {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.album_image {
+  display: flex;
+  height: 50px;
+}
+
+.music_buttons {
+  display: flex;
+  flex-direction: column;
+  padding: 50px 0px;
+  gap: 10px;
+}
+/* 2302225 정근 수정 */
+
+.ROOM-FOOTER {
+  /* width: 1920px; */
+  /* height: 300px; */
+  height: 30%;
+  align-self: stretch;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0 0 10px 0;
+  background-color: #17171e;
+}
+
+/* .permission_button_group {
+  width: 190px;
+  height: 30px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+} */
+
+/* .permission_button_disable {
+  width: 200px;
+  height: 66.67px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: solid 2px #e74733;
+  background-color: #e74733;
+}
+.permission_button {
+  width: 200px;
+  height: 66.67px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: solid 2px #e74733;
+  background-color: #ffc043;
+  cursor: pointer;
+} */
+
+/* .permission_label_able {
+  height: 28px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: black;
+  cursor: pointer;
+} */
+
+.ROOM-FOOTER-TEST {
+  width: 80%;
+  align-self: stretch;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0px 5px 0px 40px;
+  background-color: #17171e;
+
+  /* 해당 구역 드래그 방지 */
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+
+.insert_music_button {
+  width: 79px;
+  height: 74px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-radius: 15px;
+  background-color: #7c3aed;
+}
+
+.insert_music_icon {
+  width: 32px;
+  height: 32px;
+  flex-grow: 0;
+  /* background-color: #fff; */
+}
+
+/* .music_span {
+  width: 59px;
+  height: 22px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 16px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+} */
+.Preset_and_Render {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 5%;
+}
+
+.ROOM-FOOTER-BUTTONS {
+  width: 20%;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5%;
+  background-color: #17171e;
+}
+
+.FOOTER-ROW {
+  width: 100%;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+/* .render_button_group {
+  width: 116px;
+  height: 44px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+} */
+
+.render_button {
+  width: 116px;
+  height: 44px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: solid 2px #e74733;
+  background-color: #ffc043;
+}
+
+/* img.infinity {
+  width: 24px;
+  height: 24px;
+  flex-grow: 0;
+  object-fit: contain;
+  transform: rotate(-180deg);
+} */
+
+.render_label {
+  width: 67px;
+  height: 34px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 24px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #272833;
+}
+
+.TimeandBar {
+  height: 20%;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 50 0 0 0px;
+}
+
+.TimeBar {
+  height: 50%;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.time {
+  height: 50%;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0;
+}
+
+.start {
+  width: 55px;
+  height: 34px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 21.3px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: normal;
+  text-align: center;
+  color: #e1e1e1;
+}
+
+.end {
+  width: 52px;
+  height: 34px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 21.3px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: normal;
+  text-align: center;
+  color: #e1e1e1;
+}
+.SoundTrack {
+  overflow: auto;
+}
+
+/* .LineA {
+  width: 1px;
+  height: 40px;
+  flex-grow: 0;
+  transform: rotate(-90deg);
+  background-color: #272833;
+}
+
+.LineB {
+  width: 1px;
+  height: 20px;
+  flex-grow: 0;
+  transform: rotate(-90deg);
+  background-color: #000;
+}
+
+.LineC {
+  width: 1px;
+  height: 10px;
+  flex-grow: 0;
+  transform: rotate(-90deg);
+  background-color: #000;
+} */
+
+.slidecontainer {
+  width: 100%; /* Width of the outside container */
+  position: relative;
+}
+.slidecontainer img {
+  position: absolute;
+  width: 350px;
+  bottom: 35px;
+  border-radius: 15px;
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none; /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #17171e; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: 0.2s; /* 0.2 seconds transition on hover */
+  transition: opacity 0.2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  cursor: pointer; /* Cursor on hover */
+  color: #ffd166;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  cursor: pointer; /* Cursor on hover */
+  color: #ffd166;
+}

@@ -1,0 +1,21 @@
+.soundtrack_layout {
+  /* border-color: azure; */
+  height: 30%;
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  position: relative;
+  overflow-x: scroll;
+  padding: 0;
+  border: solid 2px #272731;
+  background-color: #1c1c28;
+}
+.soundtrack_layout::-webkit-scrollbar {
+  display: none;
+}
+
+.soundtrack_canvas {
+  width: 100%;
+}

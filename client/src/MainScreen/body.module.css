@@ -1,0 +1,67 @@
+.MBcontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  width: 100%;
+  height: 100%;
+
+  /* 1min/skyblue */
+
+  background: #17171d;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+}
+.MBtitle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 437px;
+
+  /* 1min/skyblue */
+
+  background: #d9e8ef;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+.MBback {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 385px;
+
+  /* 1min/skyblue */
+
+  /* background: #d9e8ef; */
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+}
+.MBback img {
+  width: 100%;
+  height: 385px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}

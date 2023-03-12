@@ -1,0 +1,257 @@
+.Username_and_canvas {
+  position: relative;
+  width: 65%;
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  text-align: center;
+  align-self: stretch;
+  align-items: center;
+  padding-top: 10px;
+  gap: 10%;
+  background-color: #1c1c26;
+}
+
+.EditButtons {
+  position: relative;
+  /* top: -10%;
+  left: 20%; */
+  height: 60px;
+  width: 60%;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  border-radius: 15px;
+  background-color: #272731;
+}
+
+.EditButtons .canvaseffect__items {
+  padding-left: 0px;
+  margin: 0;
+  position: absolute;
+  left: 0px;
+  top: 70px;
+  width: 70%;
+  height: 50px;
+  list-style: none;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  visibility: visible;
+  /* z-index: 1;
+  opacity: 1; */
+  /* transition: all 0.4s cubic-bezier(0.93, 0.88, 0.1, 0.8); */
+}
+
+.EditButtons .canvaseffect__items__painting {
+  padding-left: 0px;
+  margin: 0;
+  position: absolute;
+  left: 20%;
+  top: 70px;
+  width: 50%;
+  height: 50px;
+  list-style: none;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  z-index: 1;
+  opacity: 1;
+  padding: 10px;
+  background-color: #272731;
+  border-radius: 0.5em;
+  /* transition: all 0.4s cubic-bezier(0.93, 0.88, 0.1, 0.8); */
+}
+
+.canvaseffect__items__text {
+  padding-left: 0px;
+  margin: 0;
+  position: absolute;
+  left: 40%;
+  top: 70px;
+  width: 80%;
+  height: 50px;
+  list-style: none;
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  visibility: visible;
+  z-index: 1;
+  opacity: 1;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #272731;
+  border-radius: 0.5em;
+  /* transition: all 0.4s cubic-bezier(0.93, 0.88, 0.1, 0.8); */
+}
+
+.sidebar {
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.sidebar-item {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  padding: 1rem;
+  position: relative;
+  border-radius: 10px;
+  /* transition: background-color 150ms; */
+  background-color: transparent;
+}
+
+.sidebar-item:hover {
+  background-color: #d0cece;
+}
+
+.sidebar-item:active {
+  background-color: #a6a6a6;
+}
+
+/* .canvas {
+  width: 100%;
+  height: 75%;
+  align-self: stretch;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0;
+  border-radius: 15px;
+  border: solid 2px #272833;
+} */
+
+/* 230211 재형 작업 CSS 추가 */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.uploaded-image {
+  position: relative;
+  width: 70%;
+  object-fit: contain;
+}
+
+.uploaded-image canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.transition-modal {
+  padding: 10px;
+  position: absolute;
+  left: 20%;
+  top: 70px;
+  width: 90%;
+  height: 500px;
+  display: flex;
+  flex-direction: row;
+  z-index: 1;
+  opacity: 1;
+  border-radius: 1em;
+  background-color: #272731;
+}
+
+.transition-modal .v-line {
+  border-right: solid 1px #575555;
+  height: 100%;
+}
+
+.effect-modal {
+  overflow: auto y;
+  flex-basis: 50%;
+  width: 50%;
+  padding: 10px;
+}
+.effect-modal span {
+  color: #e1e1e1;
+  font-family: Pretendard;
+  margin-bottom: 10px;
+}
+
+.effect-modal::-webkit-scrollbar {
+  display: none;
+}
+
+.effect-list {
+  height: 95%;
+  overflow: auto;
+  width: 100%;
+  margin-top: 5%;
+  margin-left: 5%;
+}
+
+.effect-list::-webkit-scrollbar {
+  background: #272731;
+}
+.effect-list::-webkit-scrollbar-thumb {
+  background: #3b3b42;
+}
+.effect-list::-webkit-scrollbar-thumb:hover {
+  background: #72727e;
+}
+
+.transition-list::-webkit-scrollbar {
+  background: #272731;
+}
+.transition-list::-webkit-scrollbar-thumb {
+  background: #3b3b42;
+}
+.transition-list::-webkit-scrollbar-thumb:hover {
+  background: #72727e;
+}
+
+.transition-list {
+  height: 95%;
+  overflow: auto;
+  width: 100%;
+  margin-top: 5%;
+  margin-left: 5%;
+}
+
+/* 일단 잠깐 주석처리 */
+/* .container .transition-list {
+  overflow: auto;
+  width: auto;
+  height: 40%;
+  margin: 10px;
+  position: relative;
+} */
+
+/* .container .transition-clip {
+  width: auto;
+  height: 60%;
+  margin: 10px;
+  position: relative;
+} */
+
+.main-image {
+  cursor: pointer;
+}
+
+.input[type="file"] {
+  display: none;
+}

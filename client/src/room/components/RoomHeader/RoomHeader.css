@@ -1,0 +1,163 @@
+.ROOM-HEADER {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px;
+  width: 100%;
+
+  height: 60px;
+
+  /* 1min/Darkblue/400 */
+
+  background: #17171e;
+}
+
+.Container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 30px;
+  width: 100%;
+  /* height: 60px; */
+}
+
+.Inner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0px;
+  width: 100%;
+  /* height: 60px; */
+}
+
+.min-roomname {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 10px;
+
+  width: 137px;
+  height: 40px;
+}
+
+.logo_and_icon {
+  width: 137px;
+  height: 40px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.title {
+  width: 105px;
+  height: 40px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 28.4px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
+.logoicon {
+  width: 32px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0;
+}
+
+.photo-512-white-1 {
+  width: 32px;
+  height: 32px;
+  flex-grow: 0;
+}
+
+.slash {
+  width: 13px;
+  height: 40px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 28.4px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
+.call_control_layout {
+  width: 270px;
+  height: 38px;
+  flex-grow: 0;
+  display: flex;
+}
+
+.audio_button:hover {
+  cursor: pointer;
+}
+.video_button {
+  width: 120px;
+  height: 38px;
+  display: flex;
+  /* gap: 5px; */
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #0070d2;
+}
+.video_button:hover {
+  cursor: pointer;
+}
+.audio_button {
+  width: 120px;
+  height: 38px;
+  /* gap: 5px; */
+  margin-right: 28px;
+  border-radius: 10px;
+  padding-top: 5px;
+  padding-left: 60px;
+  background-color: #0070d2;
+}
+.audioIcon {
+  font-size: large;
+  color: white;
+}
+img.user-add {
+  width: 24px;
+  height: 24px;
+  flex-grow: 0;
+  object-fit: contain;
+  /* transform: rotate(-180deg); */
+}
+
+.invite_label {
+  width: 74px;
+  height: 28px;
+  flex-grow: 0;
+  font-family: "Pretendard";
+  font-size: 20px;
+  /* font-weight: bold; */
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+}

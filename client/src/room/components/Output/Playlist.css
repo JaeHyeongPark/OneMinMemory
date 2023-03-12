@@ -1,0 +1,226 @@
+/* 230225 정근 추가 */
+.VideoTrack {
+  align-self: stretch;
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0;
+  border: solid 2px #272731;
+  background-color: #1c1c28;
+  border-radius: 1em;
+}
+
+.Tracks {
+  align-self: stretch;
+  /* flex-grow: 1; */
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  /* gap: 10px; */
+  padding: 0;
+}
+/* 230225 정근 추가 */
+
+.toplay_img {
+  height: 100%;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
+  object-fit: contain;
+
+  row-gap: 0px;
+  border: solid 1px #1976d2;
+  border-radius: 10px;
+  background-color: #3b3c48;
+}
+.toplay_img img {
+  position: absolute;
+  object-fit: contain;
+  width: 20px;
+  height: 23px;
+  margin-left: 1px;
+  border-radius: 15px;
+}
+.playlist_space {
+  display: flex;
+  flex-grow: 1;
+}
+
+.selecttoplay_img {
+  height: 100%;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
+  row-gap: 0px;
+  border: solid 2px #e2f01d;
+  border-radius: 10px;
+  background-color: #3b3c48;
+}
+.selecttoplay_img .del {
+  position: relative;
+  background: none;
+  bottom: 30px;
+  border: none;
+  color: red;
+  font-size: 16px;
+  cursor: pointer;
+}
+.selecttoplay_img img {
+  position: absolute;
+  object-fit: contain;
+  width: 20px;
+  height: 23px;
+  border-radius: 15px;
+}
+
+.toplay_block {
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
+  row-gap: 0px;
+  border: solid 0px #000;
+  background-color: #d9e8ef;
+  height: "auto";
+  background-image: "url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEn2ghVyIoZtY3BlVZuQ3t3go3pzU9x01velOwEQwa1vCsS43aDfj4p0hZOMzw3Cj558I&usqp=CAU)";
+  background-size: contain;
+  opacity: 0;
+  background-repeat: no-repeat;
+}
+
+.toplay_transOff {
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
+  row-gap: 0px;
+  border: solid 0px #000;
+}
+.toplay_transOn {
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
+  row-gap: 0px;
+  /* border: solid 0px #000;
+  background-image: url("../../assets/transition_on.png");
+  background-size: contain;
+  background-repeat: no-repeat; */
+}
+
+.toplay_select_img {
+  width: 120px;
+  height: 80px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
+  row-gap: 3px;
+  border: solid 2px #e2f01d;
+  background-color: #d9e8ef;
+}
+
+.upload_toplays {
+  align-self: stretch;
+  flex-grow: 1;
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+  border: solid 1px #272833;
+  /* overflow: scroll; */
+  flex-wrap: wrap;
+}
+
+.playlist_main {
+  height: 70%;
+  /* flex-grow: 1; */
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: stretch;
+  /* gap: 5px; */
+  padding: 0px;
+}
+
+.playlist_transition {
+  height: 30%;
+  /* flex-grow: 1; */
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: stretch;
+  /* gap: 5px; */
+  padding: 0px;
+}
+.modal {
+  position: relative;
+  display: flex;
+  /* flex-direction: row; */
+  justify-content: center;
+  height: 100%;
+}
+
+.modal-content {
+  width: 100%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #17171e;
+  padding: 2%;
+}
+
+.content-and-vote {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 3%;
+  width: 100%;
+}
+
+.video_layout {
+  /* display: flex; */
+  width: 75%;
+  /* height: 70%; */
+  object-fit: contain;
+}
+
+.modal-content video {
+  width: 100%;
+  height: 100%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  padding-top: 1%;
+  /* padding-left: 10px; */
+  gap: 10%;
+  /* styles for button container */
+}

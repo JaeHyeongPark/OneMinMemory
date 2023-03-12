@@ -1,0 +1,119 @@
+/*     */
+.main {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}
+.d1 {
+  position: absolute;
+  background-image: url("./background.jpg");
+  background-size: 2400px 1600px;
+
+  height: 30%;
+  width: 30%;
+
+  background-position: 0 50%;
+
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.8);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  animation: dd1 10s infinite, dd12 10s infinite;
+  animation-delay: 4s, 14s;
+}
+.d2 {
+  position: absolute;
+  background-image: url("./background.jpg");
+  background-size: 2400px 1600px;
+
+  height: 70%;
+  width: 25%;
+
+  background-position: -10% 50%;
+  left: 10%;
+
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  animation: dd2 10s infinite;
+  animation-delay: 4s;
+}
+.d3 {
+  position: absolute;
+  background-image: url("./background.jpg");
+  background-size: 2400px 1600px;
+  overflow: hidden;
+
+  height: 100%;
+  width: 40%;
+  left: 25%;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.8);
+  background-position: -25% 50%;
+
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  animation: dd3 10s infinite;
+  animation-delay: 4s;
+}
+.d4 {
+  position: absolute;
+  overflow: hidden;
+  background-image: url("./background.jpg");
+  background-size: 2400px 1600px;
+
+  height: 80%;
+  width: 25%;
+  left: 60%;
+  background-position: -60% 50%;
+
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  animation: dd4 10s infinite;
+  animation-delay: 4s;
+}
+
+@keyframes dd1 {
+  0% {
+  }
+  50% {
+    width: 65%;
+  }
+}
+@keyframes dd12 {
+  0% {
+  }
+  50% {
+    background-position: Calc(0vw - 40px) 50%;
+  }
+}
+@keyframes dd2 {
+  0% {
+  }
+  50% {
+    background-position: Calc(-10% - 40px) 50%;
+  }
+}
+@keyframes dd3 {
+  0% {
+  }
+  50% {
+    background-position: Calc(-35% - 40px) 50%;
+  }
+}
+@keyframes dd4 {
+  0% {
+  }
+  50% {
+    background-position: Calc(-70% - 40px) 50%;
+  }
+}
+
+.login_p {
+  position: absolute;
+  z-index: 4;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}

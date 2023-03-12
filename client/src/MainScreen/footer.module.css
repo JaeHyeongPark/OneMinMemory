@@ -1,0 +1,69 @@
+.footercontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 170px;
+
+  /* GARA-primary */
+
+  background: #17171D;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+.footertag {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+
+  width: 100%;
+  height: 106px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+.footertag p {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  color: #ffffff;
+
+  width: 100%;
+  height: 26px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+}
+.tags {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 70px;
+
+  width: 284px;
+  height: 48px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}

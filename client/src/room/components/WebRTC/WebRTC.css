@@ -1,0 +1,66 @@
+.ROOM-BODY-WebRTC {
+  width: 20%;
+  height: 100%;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  background-color: #000000;
+}
+.videoTagOff {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  visibility: hidden;
+}
+
+.CAMs {
+  width: 100%;
+  height: 100%;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+}
+.videoTag {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+.imgTagOn {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 2;
+}
+.imgTagOff {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: -1;
+}
+
+.videoTagSpeaking {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0;
+  box-shadow: 0 0 0 3px skyblue inset;
+  position: relative;
+}
+.videoTagNotSpeaking {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0;
+  box-shadow: 0 0 0 1px #565656 inset;
+  position: relative;
+}

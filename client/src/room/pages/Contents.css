@@ -1,0 +1,12 @@
+.ROOM-BODY {
+  height: 70%;
+  align-self: stretch;
+  /* flex-grow: 1; */
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  /* padding: 0px 40px; */
+  /* background-color: #272731; */
+  background-color: #17171e;
+}

@@ -33,8 +33,11 @@
 ### **2023.02.08 ~ 2022.03.10**
 
 ## 📽️ 시연영상
-[![Video Label](http://img.youtube.com/vi/eZOMo9yXRo8/0.jpg)](https://youtu.be/eZOMo9yXRo8?t=0s)
-
+<div align="center">
+                   
+  [![Video Label](http://img.youtube.com/vi/eZOMo9yXRo8/1.jpg)](https://youtu.be/eZOMo9yXRo8?t=0s)
+                   
+</div>
 <br>
 
 ## 👥 Team members

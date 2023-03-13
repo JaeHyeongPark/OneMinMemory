@@ -53,7 +53,7 @@
 <p>
     <img height=40px src="https://img.shields.io/badge/express-FFFF00?style=flat&logo=express&logoColor=black"/>
     <img height=40px src="https://img.shields.io/badge/React-61DBFB?style=flat&logo=react&logoColor=white"/>
-    <img height=40px src="https://img.shields.io/badge/Redis-ff3333?style=flat&logo=Python&logoColor=white"/>
+    <img height=40px src="https://img.shields.io/badge/Redis-ff3333?style=flat&logo=redis&logoColor=white"/>
     <img height=40px src="https://img.shields.io/badge/FFmpeg-8AC502?style=flat&logo=ffmpeg&logoColor=white"/><br/>
     <img height=40px src="https://img.shields.io/badge/Socket.io-000000?style=flat&logo=socket.io&logoColor=white"/>
     <img height=40px src="https://img.shields.io/badge/WebRTC-1aa7ec?style=flat&logo=webrtc&logoColor=white"/>    

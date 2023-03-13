@@ -6,7 +6,7 @@
 
 - [서비스 목적](#-서비스-목적)
 - [개발 기간](#%EF%B8%8F-개발기간)
-- [시연영상](#📽️-시연영상)
+- [시연영상](#%EF%B8%8F-시연영상)
 - [Team members](#-team-members)
 - [기술 스택](#%EF%B8%8F-기술-스택)
 - [Architecture](#%EF%B8%8F-architecture)
@@ -32,7 +32,7 @@
 
 ### **2023.02.08 ~ 2022.03.10**
 
-## 📽️ 시연영상
+## 📽️ 시연영상(click!)
 <div align="center">
                    
   [![Video Label](https://user-images.githubusercontent.com/95831345/224591636-5caab4de-b386-4e63-8b76-2060ec28dc7d.png)](https://youtu.be/eZOMo9yXRo8?t=0s)

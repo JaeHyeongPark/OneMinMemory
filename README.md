@@ -35,7 +35,7 @@
 ## 📽️ 시연영상
 <div align="center">
                    
-  [![Video Label](http://img.youtube.com/vi/eZOMo9yXRo8/1.jpg)](https://youtu.be/eZOMo9yXRo8?t=0s)
+  [![Video Label](https://user-images.githubusercontent.com/95831345/224591636-5caab4de-b386-4e63-8b76-2060ec28dc7d.png)](https://youtu.be/eZOMo9yXRo8?t=0s)
                    
 </div>
 <br>

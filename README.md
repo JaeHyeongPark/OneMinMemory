@@ -6,6 +6,7 @@
 
 - [서비스 목적](#-서비스-목적)
 - [개발 기간](#%EF%B8%8F-개발기간)
+- [시연영상](#📽️-시연영상)
 - [Team members](#-team-members)
 - [기술 스택](#%EF%B8%8F-기술-스택)
 - [Architecture](#%EF%B8%8F-architecture)
@@ -30,6 +31,9 @@
 ## 🗓️ 개발기간
 
 ### **2023.02.08 ~ 2022.03.10**
+
+## 📽️ 시연영상
+[![Video Label](http://img.youtube.com/vi/eZOMo9yXRo8/0.jpg)](https://youtu.be/eZOMo9yXRo8?t=0s)
 
 <br>
 

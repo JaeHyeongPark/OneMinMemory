@@ -2,6 +2,11 @@
   <img src="https://capsule-render.vercel.app/api?type=waving&color=85E4F8&height=200&section=header&text=일분추억🏞️&fontSize=60&animation=fadeIn&fontAlignY=38&desc=&descAlignY=51&descAlign=62" /><br/>
 </div>
 
+<div align="center"">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/95831345/255576195-4e1a3382-47dc-4c78-8a51-9857ba6d83aa.png" /><br/>
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/95831345/255576224-50e9d1a4-1da3-4dfe-8f37-1f7ab95dfdc2.png" /><br/>
+</div>
+
 ## 📖 목차
 
 - [서비스 목적](#-서비스-목적)
@@ -18,7 +23,6 @@
   - [프리셋](#프리셋-불러오기)
   - [재생목록](#재생목록-편집)
   - [랜더링](#랜더링-하기)
-- [포스터](#-포스터)
 
 ## 🌐 서비스 목적
 
@@ -178,9 +182,6 @@
 
 </div>
 
-## 📝 포스터
-
-<div align="center">
 
 ![일분추억_포스터_5](https://user-images.githubusercontent.com/95831345/224260765-eb435b56-0469-4e5f-92e7-1f84b2032301.png)
 
